@@ -1,0 +1,18 @@
+stages:
+  - build
+  - production
+
+build_and_deploy:
+  image: node:lts-alpine
+  stage: build
+  only:
+    - master
+  script:
+    - export ENV=development
+    - yarn install
+    - yarn build
+    - export ENV=production
+    - export MINI_APPS_ACCESS_TOKEN=${CI_VK_MINIAPP_TOKEN}
+    - echo "y" | yarn deploy
+  tags:
+    - gitlab-org-docker
