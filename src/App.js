@@ -1,11 +1,11 @@
-import React from 'react';
+import { AppRoot } from "@vkontakte/vkui";
 
-const App = () => {
+import Main from "./views/Main";
 
-	return (
-		<span>Hello, Alias! Deploy successful!</span>
-	);
-}
+const App = () => (
+  <AppRoot>
+    <Main />
+  </AppRoot>
+);
 
 export default App;
-
