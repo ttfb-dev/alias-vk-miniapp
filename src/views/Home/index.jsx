@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useDispatch } from 'react-redux';
 import { PanelHeader, Group, Div, Button, Spacing } from '@vkontakte/vkui';
 import {
   Icon24Help,
@@ -12,6 +13,7 @@ import { ViewContext } from '../../context';
 const Home = () => {
   const { popoutRootRef, setActivePanel, setIsPopout } =
     useContext(ViewContext);
+  const dispatch = useDispatch();
 
   return (
     <>
@@ -24,7 +26,12 @@ const Home = () => {
             stretched
             before={<Icon24UserAdd />}
             getRootRef={popoutRootRef}
-            onClick={() => setIsPopout(true)}
+            onClick={() => {
+              setIsPopout(true);
+              dispatch.sync({
+                type: 'server/ping',
+              });
+            }}
           >
             Присоединиться
           </Button>

@@ -1,9 +1,11 @@
 import React, { StrictMode } from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 import { AdaptivityProvider, ConfigProvider } from '@vkontakte/vkui';
 import bridge from '@vkontakte/vk-bridge';
 
 import { ViewProvider } from './context';
+import { store } from './store';
 import { App } from './views';
 import { reportWebVitals } from './reportWebVitals';
 
@@ -15,11 +17,13 @@ bridge.send('VKWebAppInit');
 ReactDOM.render(
   <ConfigProvider>
     <AdaptivityProvider>
-      <ViewProvider>
-        <StrictMode>
-          <App />
-        </StrictMode>
-      </ViewProvider>
+      <Provider store={store}>
+        <ViewProvider>
+          <StrictMode>
+            <App />
+          </StrictMode>
+        </ViewProvider>
+      </Provider>
     </AdaptivityProvider>
   </ConfigProvider>,
   document.getElementById('root')
