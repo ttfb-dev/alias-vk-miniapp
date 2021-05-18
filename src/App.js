@@ -1,11 +1,11 @@
-import { AppRoot } from "@vkontakte/vkui";
+import { AppRoot } from '@vkontakte/vkui'
 
-import Main from "./views/Main";
+import { Home } from './views'
 
 const App = () => (
   <AppRoot>
-    <Main />
+    <Home />
   </AppRoot>
-);
+)
 
-export default App;
+export { App }
