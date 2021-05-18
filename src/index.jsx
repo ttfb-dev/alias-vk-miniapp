@@ -26,6 +26,7 @@ ReactDOM.render(
 );
 
 if (process.env.NODE_ENV === 'development') {
+  // eslint-disable-next-line
   import('./eruda').then(({ default: eruda }) => {});
 }
 

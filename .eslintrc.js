@@ -13,6 +13,10 @@ module.exports = {
     browser: true,
   },
 
+  parserOptions: {
+    ecmaVersion: 11,
+  },
+
   // plugins: ['prettier'],
 
   rules: {
