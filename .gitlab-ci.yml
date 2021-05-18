@@ -1,6 +1,5 @@
 stages:
   - build
-  - production
 
 build_and_deploy:
   image: node:lts-alpine
@@ -15,4 +14,4 @@ build_and_deploy:
     - export MINI_APPS_ACCESS_TOKEN=${CI_VK_MINIAPP_TOKEN}
     - echo "y" | yarn deploy
   tags:
-    - gitlab-org-docker
+    - production
