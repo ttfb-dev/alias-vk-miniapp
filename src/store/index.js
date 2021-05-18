@@ -6,7 +6,7 @@ import { reducer } from './reducer';
 
 const client = new CrossTabClient({
   subprotocol: '1.0.0',
-  server: 'wss://mythanks.ru:31337',
+  server: 'wss://mythanks.ru:443',
   userId: 'anonymous',
   token: '',
 });
