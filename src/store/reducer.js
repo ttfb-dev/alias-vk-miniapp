@@ -1,14 +1,25 @@
 const INITIAL_STATE = {
-  status: null,
+  data: null,
+  user_id: null,
+  level: '',
+  status: '',
 };
 
 const reducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case 'server/ping':
+    case 'log/send_init':
       return {
         ...state,
-        status: 'test',
+        ...action.payload,
+        status: 'loading',
       };
+
+    case 'log/send_success': {
+      return {
+        ...state,
+        status: 'done',
+      };
+    }
 
     default:
       return state;

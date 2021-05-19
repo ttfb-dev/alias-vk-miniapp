@@ -29,7 +29,10 @@ const Home = () => {
             onClick={() => {
               setIsPopout(true);
               dispatch.sync({
-                type: 'server/ping',
+                type: 'log/send_init',
+                user_id: 123,
+                level: 'debug',
+                data: { a: 0, b: '0' },
               });
             }}
           >
