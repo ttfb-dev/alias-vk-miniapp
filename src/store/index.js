@@ -6,6 +6,8 @@ import { reducer } from './reducer';
 
 const params = new URLSearchParams(window.location.search)
 
+console.log(params);
+
 const client = new CrossTabClient({
   subprotocol: '1.0.0',
   server: 'wss://mythanks.ru:443',
