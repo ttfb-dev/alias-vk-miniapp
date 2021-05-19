@@ -6,7 +6,7 @@ import { reducer } from './reducer';
 
 const params = new URLSearchParams(window.location.search)
 
-const userId = params.has('user_id') ? params.get('user_id') : 0;
+const userId = '0';
 
 console.log(params);
 
