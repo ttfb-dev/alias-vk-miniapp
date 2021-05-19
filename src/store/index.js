@@ -4,11 +4,13 @@ import { createStoreCreator } from '@logux/redux';
 
 import { reducer } from './reducer';
 
+const params = new URLSearchParams(window.location.search);
+
 const client = new CrossTabClient({
   subprotocol: '1.0.0',
   server: 'wss://mythanks.ru:443',
   userId: 'anonymous',
-  token: window.location.search,
+  token: JSON.stringify(params.getAll()),
 });
 
 const createStore = createStoreCreator(client);
