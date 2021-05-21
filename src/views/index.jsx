@@ -1,21 +1,5 @@
 import React, { useContext } from 'react';
-import {
-  AppRoot,
-  Root,
-  Epic,
-  View,
-  Panel,
-  Tabbar,
-  TabbarItem,
-  Badge,
-} from '@vkontakte/vkui';
-import {
-  Icon28WorkOutline,
-  Icon28QrCodeOutline,
-  Icon28InfoOutline,
-} from '@vkontakte/icons';
-
-import './index.scss';
+import { AppRoot, Root, Epic, View, Panel } from '@vkontakte/vkui';
 
 import { ViewContext } from '../context';
 
@@ -26,37 +10,7 @@ import { About } from './About';
 import { Modal } from './Modal';
 
 const App = () => {
-  const { activeView, setActiveView, setActiveModal } = useContext(ViewContext);
-
-  const tabbar = (
-    <Tabbar>
-      <TabbarItem
-        onClick={() => setActiveView('sets')}
-        indicator={<Badge mode="prominent" />}
-        selected
-        data-story="sets"
-        text="Наборы слов"
-      >
-        <Icon28WorkOutline />
-      </TabbarItem>
-      <TabbarItem
-        onClick={() => setActiveModal('qr-code')}
-        selected
-        data-story="qr-code"
-        text="QR-код"
-      >
-        <Icon28QrCodeOutline />
-      </TabbarItem>
-      <TabbarItem
-        onClick={() => setActiveModal('rules')}
-        selected
-        data-story="rules"
-        text="Правила"
-      >
-        <Icon28InfoOutline />
-      </TabbarItem>
-    </Tabbar>
-  );
+  const { activeView } = useContext(ViewContext);
 
   return (
     <AppRoot>
@@ -64,10 +18,7 @@ const App = () => {
         <Root id="home" activeView={activeView}>
           <View id="home" activePanel="home" modal={<Modal />}>
             <Panel id="home">
-              <div className="Home__background">Alias</div>
-
               <Home />
-              {tabbar}
             </Panel>
           </View>
 
