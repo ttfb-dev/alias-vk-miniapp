@@ -6,7 +6,6 @@ import { ViewContext } from '../context';
 import { Home } from './Home';
 import { Room } from './Room';
 import { Set } from './Set';
-import { About } from './About';
 import { Modal } from './Modal';
 
 const App = () => {
@@ -31,12 +30,6 @@ const App = () => {
           <View id="set" activePanel="set">
             <Panel id="set">
               <Set />
-            </Panel>
-          </View>
-
-          <View id="about" activePanel="about">
-            <Panel id="about">
-              <About />
             </Panel>
           </View>
         </Root>
