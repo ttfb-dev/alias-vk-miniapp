@@ -3,16 +3,16 @@ import { PanelHeader, PanelHeaderBack } from '@vkontakte/vkui';
 
 import { ViewContext } from '../../context';
 
-const Sets = () => {
-  const { setActivePanel } = useContext(ViewContext);
+const Set = () => {
+  const { setActiveView } = useContext(ViewContext);
 
   return (
     <PanelHeader
-      left={<PanelHeaderBack onClick={() => setActivePanel('home')} />}
+      left={<PanelHeaderBack onClick={() => setActiveView('home')} />}
     >
       Наборы слов
     </PanelHeader>
   );
 };
 
-export { Sets };
+export { Set };

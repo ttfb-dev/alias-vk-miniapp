@@ -5,7 +5,7 @@ import { createStoreCreator } from '@logux/redux';
 import { reducer } from './reducer';
 
 const params = new URLSearchParams(window.location.search);
-const userId = params.has('vk_user_id') ? params.get('vk_user_id') : 0;
+const userId = params.get('vk_user_id') ?? 0;
 
 const client = new CrossTabClient({
   subprotocol: '1.0.0',

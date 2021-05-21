@@ -1,0 +1,37 @@
+.Home {
+  &__background {
+    flex: 1;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    &::before {
+      content: '';
+      background: linear-gradient(180deg, #4986cc 0%, #4986cc 100%);
+      opacity: 0.2;
+
+      position: absolute;
+      top: calc(-65vh - 10px);
+      left: calc(-65vw - 100px);
+      width: 130vh;
+      height: 130vh;
+      border-radius: 50%;
+    }
+
+    &::after {
+      content: '';
+      background: #4986cc;
+      opacity: 0.2;
+
+      position: absolute;
+      top: -65vh;
+      left: -65vw;
+      width: 130vh;
+      height: 130vh;
+      border-radius: 50%;
+    }
+  }
+}

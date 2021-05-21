@@ -1,30 +1,27 @@
-import React, { useMemo, useState, useRef } from 'react';
+import React, { useMemo, useState } from 'react';
 import { ViewContext } from './ViewContext';
 
 const ViewProvider = ({ children }) => {
+  const [activeView, setActiveView] = useState('home');
   const [activePanel, setActivePanel] = useState('home');
   const [activeModal, setActiveModal] = useState(null);
-  const [isPopout, setIsPopout] = useState(null);
-  const popoutRootRef = useRef(null);
 
   const contextValue = useMemo(
     () => ({
+      activeView,
       activePanel,
       activeModal,
-      isPopout,
+      setActiveView,
       setActivePanel,
       setActiveModal,
-      setIsPopout,
-      popoutRootRef,
     }),
     [
+      activeView,
       activePanel,
       activeModal,
-      isPopout,
+      setActiveView,
       setActivePanel,
       setActiveModal,
-      setIsPopout,
-      popoutRootRef,
     ]
   );
 

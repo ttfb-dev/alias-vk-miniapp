@@ -1,39 +1,25 @@
 import React, { useContext } from 'react';
-import { useDispatch } from 'react-redux';
-import { PanelHeader, Group, Div, Button, Spacing } from '@vkontakte/vkui';
-import {
-  Icon24Help,
-  Icon24UserAdd,
-  Icon24Settings,
-  Icon24Game,
-} from '@vkontakte/icons';
+import { Group, Div, Button, Spacing } from '@vkontakte/vkui';
+import { Icon16Add } from '@vkontakte/icons';
 
 import { ViewContext } from '../../context';
 
 const Home = () => {
   const { popoutRootRef, setActivePanel, setIsPopout } =
     useContext(ViewContext);
-  const dispatch = useDispatch();
 
   return (
     <>
-      <PanelHeader>Alias</PanelHeader>
       <Group separator="hide" style={{ width: '100%' }}>
         <Div>
           <Button
-            mode="outline"
+            mode="primary"
             size="l"
             stretched
-            before={<Icon24UserAdd />}
+            before={<Icon16Add />}
             getRootRef={popoutRootRef}
             onClick={() => {
               setIsPopout(true);
-              dispatch.sync({
-                type: 'log/send_init',
-                user_id: 123,
-                level: 'debug',
-                data: { a: 0, b: '0' },
-              });
             }}
           >
             Присоединиться
@@ -41,37 +27,15 @@ const Home = () => {
           <Spacing size={12} />
 
           <Button
-            mode="outline"
+            mode="primary"
             size="l"
             stretched
-            before={<Icon24Game />}
             onClick={() => setActivePanel('room')}
           >
-            Новая игра
-          </Button>
-          <Spacing size={12} />
-
-          <Button
-            mode="outline"
-            size="l"
-            stretched
-            before={<Icon24Settings />}
-            onClick={() => setActivePanel('sets')}
-          >
-            Наборы словы
-          </Button>
-          <Spacing size={12} />
-
-          <Button
-            mode="outline"
-            size="l"
-            stretched
-            before={<Icon24Help />}
-            onClick={() => setActivePanel('about')}
-          >
-            Об игре
+            Создать игру
           </Button>
         </Div>
+        <Spacing size={24} />
       </Group>
     </>
   );
