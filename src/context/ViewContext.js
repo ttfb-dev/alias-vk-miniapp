@@ -7,7 +7,6 @@ const ViewContext = createContext({
   setActivePanel: () => {},
   setActiveModal: () => {},
   setIsPopout: () => {},
-  joinGameRef: null,
 });
 
 export { ViewContext };

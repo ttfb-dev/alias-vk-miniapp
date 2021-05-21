@@ -26,7 +26,7 @@ ReactDOM.render(
       </Provider>
     </AdaptivityProvider>
   </ConfigProvider>,
-  document.getElementById('root')
+  document.getElementById('root'),
 );
 
 if (process.env.NODE_ENV === 'development') {

@@ -1,59 +1,70 @@
-[<img width="134" src="https://vk.com/images/apps/mini_apps/vk_mini_apps_logo.svg">](https://vk.com/services)
+# Getting Started with Create React App
 
-# Create VK Mini App [![npm][npm]][npm-url] [![deps][deps]][deps-url]
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## How to use
+## Available Scripts
 
-### With NPX
+In the project directory, you can run:
 
-```bash
-npx @vkontakte/create-vk-mini-app [app-directory-name] [options]
-```
-[NPX](https://github.com/npm/npx) allows you to always use the **latest** version of the package without a global installation.
+### `yarn start`
 
-### With installing the package globally
-Install the package globally via yarn
-```bash
-yarn global add @vkontakte/create-vk-mini-app
-```
-...or npm
-```bash
-npm install --global @vkontakte/create-vk-mini-app
-```
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-and use as follows
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
 
-```bash
-create-vk-mini-app [app-directory-name] [options]
-```
+### `yarn test`
 
-This way is less recommended because you will have to update the package yourself.
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### Options
-Without `--zeit` and `--surge` options 
+### `yarn build`
 
-#### `--zeit`
-Vercel (Zeit) deploy
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-Firstly, you have to create Vercel account and connect it with your GitHub profile on [vercel.com](https://vercel.com)
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-#### `--surge <surge-domain>`
-Surge deploy
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-Firstly, you have to create Surge account and Surge-domain on [surge.sh](https://surge.sh)
+### `yarn eject`
 
-#### `--help`
-Prints the synopsis and a list of options
+**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-## How to start work with app
+If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Go to created folder and run:  
-`yarn start` or  `npm start` to start dev server with hot reload on `localhost:10888`.
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-`yarn run build` or `npm run build` to build production bundle, with tree-shaking, uglify and all this modern fancy stuff.
+You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-[npm]: https://img.shields.io/npm/v/@vkontakte/create-vk-mini-app.svg
-[npm-url]: https://npmjs.com/package/@vkontakte/create-vk-mini-app
+## Learn More
 
-[deps]: https://img.shields.io/david/vkcom/create-vk-mini-app.svg
-[deps-url]: https://david-dm.org/vkcom/create-vk-mini-app
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+
+To learn React, check out the [React documentation](https://reactjs.org/).
+
+### Code Splitting
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+
+### Analyzing the Bundle Size
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+
+### Making a Progressive Web App
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+
+### Advanced Configuration
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+
+### Deployment
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+
+### `yarn build` fails to minify
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

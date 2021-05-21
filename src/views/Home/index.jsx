@@ -1,23 +1,11 @@
 import React, { useContext } from 'react';
-import {
-  Tabbar,
-  TabbarItem,
-  Badge,
-  Group,
-  Div,
-  Button,
-  Spacing,
-} from '@vkontakte/vkui';
-import {
-  Icon16Add,
-  Icon28WorkOutline,
-  Icon28QrCodeOutline,
-  Icon28InfoOutline,
-} from '@vkontakte/icons';
+import { Tabbar, TabbarItem, Badge, Group, Div, Button, Spacing } from '@vkontakte/vkui';
+import { Icon16Add, Icon28WorkOutline, Icon28QrCodeOutline, Icon28InfoOutline } from '@vkontakte/icons';
 import bridge from '@vkontakte/vk-bridge';
 
 import './index.scss';
 
+import { ReactComponent as Logo } from '../../assets/logo.svg';
 import { ViewContext } from '../../context';
 
 const Home = () => {
@@ -27,10 +15,10 @@ const Home = () => {
     <Tabbar>
       <TabbarItem
         onClick={() => setActiveView('sets')}
-        indicator={<Badge mode="prominent" />}
+        indicator={<Badge mode='prominent' />}
         selected
-        data-story="sets"
-        text="Наборы слов"
+        data-story='sets'
+        text='Наборы слов'
       >
         <Icon28WorkOutline />
       </TabbarItem>
@@ -42,17 +30,12 @@ const Home = () => {
           });
         }}
         selected
-        data-story="qr-code"
-        text="QR-код"
+        data-story='qr-code'
+        text='QR-код'
       >
         <Icon28QrCodeOutline />
       </TabbarItem>
-      <TabbarItem
-        onClick={() => setActiveModal('rules')}
-        selected
-        data-story="rules"
-        text="Правила"
-      >
+      <TabbarItem onClick={() => setActiveModal('rules')} selected data-story='rules' text='Правила'>
         <Icon28InfoOutline />
       </TabbarItem>
     </Tabbar>
@@ -60,28 +43,19 @@ const Home = () => {
 
   return (
     <>
-      <div className="Home__background">Alias</div>
+      <div className='Home__background'>
+        <Logo />
+      </div>
 
-      <Group separator="hide" style={{ width: '100%' }}>
+      <Group separator='hide' style={{ width: '100%' }}>
         <Div>
-          <Button
-            mode="primary"
-            size="l"
-            stretched
-            before={<Icon16Add />}
-            onClick={() => setActiveModal('qr-code')}
-          >
+          <Button mode='primary' size='l' stretched before={<Icon16Add />} onClick={() => setActiveModal('qr-code')}>
             Присоединиться
           </Button>
           <Spacing size={12} />
 
-          <Button
-            mode="primary"
-            size="l"
-            stretched
-            onClick={() => setActiveModal('create-room')}
-          >
-            Создать игру
+          <Button mode='primary' size='l' stretched onClick={() => setActiveModal('create-room')}>
+            Создать комнату
           </Button>
         </Div>
         <Spacing />

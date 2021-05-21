@@ -19,6 +19,8 @@
       width: 130vh;
       height: 130vh;
       border-radius: 50%;
+
+      z-index: -1;
     }
 
     &::after {
@@ -32,6 +34,8 @@
       width: 130vh;
       height: 130vh;
       border-radius: 50%;
+
+      z-index: -1;
     }
   }
 }

@@ -1,13 +1,5 @@
 module.exports = {
-  extends: [
-    'airbnb',
-    'airbnb/hooks',
-    'plugin:import/recommended',
-    'plugin:jsx-a11y/recommended',
-    'plugin:react/recommended',
-    'plugin:react-hooks/recommended',
-    'prettier',
-  ],
+  extends: ['react-app', 'prettier'],
 
   env: {
     browser: true,
@@ -17,9 +9,9 @@ module.exports = {
     ecmaVersion: 11,
   },
 
-  // plugins: ['prettier'],
-
   rules: {
+    'no-console': process.env.NODE_ENV === 'production' ? ['error', { allow: ['warn', 'error'] }] : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'linebreak-style': 0,
     'import/prefer-default-export': 0,
     'react/prop-types': 0,

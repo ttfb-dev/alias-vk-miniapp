@@ -13,22 +13,22 @@ const App = () => {
 
   return (
     <AppRoot>
-      <Epic activeStory="home" tabbar>
-        <Root id="home" activeView={activeView}>
-          <View id="home" activePanel="home" modal={<Modal />}>
-            <Panel id="home">
+      <Epic activeStory='home' tabbar>
+        <Root id='home' activeView={activeView}>
+          <View id='home' activePanel='home' modal={<Modal />}>
+            <Panel id='home'>
               <Home />
             </Panel>
           </View>
 
-          <View id="room" activePanel="room">
-            <Panel id="room">
+          <View id='room' activePanel='room'>
+            <Panel id='room'>
               <Room />
             </Panel>
           </View>
 
-          <View id="set" activePanel="set">
-            <Panel id="set">
+          <View id='set' activePanel='set'>
+            <Panel id='set'>
               <Set />
             </Panel>
           </View>
