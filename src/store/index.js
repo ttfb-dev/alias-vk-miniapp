@@ -8,10 +8,12 @@ import { reducer as roomReducer } from './room';
 
 // Init VK Mini App
 bridge.send('VKWebAppInit').then((res, req) => {
+  // eslint-disable-next-line
   console.log(res, req);
   const params = new URLSearchParams(window.location.search);
   const userId = params.get('vk_user_id') ?? 0;
 
+  // eslint-disable-next-line
   console.log(userId);
 });
 
