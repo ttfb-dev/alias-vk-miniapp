@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import { Tabbar, TabbarItem, Badge, Group, Div, Button, Spacing } from '@vkontakte/vkui';
-import { Icon16Add, Icon28WorkOutline, Icon28QrCodeOutline, Icon28InfoOutline } from '@vkontakte/icons';
+import { Tabbar, TabbarItem, Badge, Group, Div, Button, Spacing, UsersStack } from '@vkontakte/vkui';
+import { Icon16Add, Icon28WorkOutline, Icon28ScanViewfinderOutline, Icon28InfoOutline } from '@vkontakte/icons';
 import bridge from '@vkontakte/vk-bridge';
 
 import './index.scss';
@@ -33,7 +33,7 @@ const Home = () => {
         data-story='qr-code'
         text='QR-код'
       >
-        <Icon28QrCodeOutline />
+        <Icon28ScanViewfinderOutline />
       </TabbarItem>
       <TabbarItem onClick={() => setActiveModal('rules')} selected data-story='rules' text='Правила'>
         <Icon28InfoOutline />
@@ -45,6 +45,10 @@ const Home = () => {
     <>
       <div className='Home__background'>
         <Logo />
+        <UsersStack size='m' count={3} layout='vertical'>
+          Алексей, Илья, Михаил
+          <br />и ещё 3 человека
+        </UsersStack>
       </div>
 
       <Group separator='hide' style={{ width: '100%' }}>

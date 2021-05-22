@@ -86,10 +86,14 @@ const Modal = () => {
         onClose={() => setActiveModal(null)}
         header={
           <ModalPageHeader
-            left={(platform === ANDROID || platform === VKCOM) && <PanelHeaderClose>Закрыть</PanelHeaderClose>}
+            left={
+              (platform === ANDROID || platform === VKCOM) && (
+                <PanelHeaderClose onClick={() => setActiveModal(null)}>Закрыть</PanelHeaderClose>
+              )
+            }
             right={
               platform === IOS && (
-                <PanelHeaderClose>
+                <PanelHeaderClose onClick={() => setActiveModal(null)}>
                   <Icon24Dismiss />
                 </PanelHeaderClose>
               )
@@ -151,7 +155,7 @@ const Modal = () => {
         dynamicContentHeight
       >
         <Div>
-          <Title level='1' weight='semibold'>
+          <Title level='2' weight='semibold'>
             Заголовок
           </Title>
           <Spacing size={12} />

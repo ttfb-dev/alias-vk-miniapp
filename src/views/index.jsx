@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { ChannelErrors } from '@logux/client/react';
 import { AppRoot, Root, Epic, View, Panel } from '@vkontakte/vkui';
 
 import { ViewContext } from '../context';
@@ -23,7 +24,9 @@ const App = () => {
 
           <View id='room' activePanel='room'>
             <Panel id='room'>
-              <Room />
+              <ChannelErrors>
+                <Room />
+              </ChannelErrors>
             </Panel>
           </View>
 

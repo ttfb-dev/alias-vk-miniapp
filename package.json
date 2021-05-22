@@ -20,6 +20,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@logux/actions": "^0.2.0",
     "@logux/client": "^0.11.1",
     "@logux/core": "^0.7.0",
     "@logux/redux": "^0.8.0",
@@ -38,7 +39,7 @@
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.4",
     "redux": "^4.1.0",
-    "web-vitals": "^1.0.1"
+    "web-vitals": "^1.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",
