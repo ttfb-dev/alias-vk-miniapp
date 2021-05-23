@@ -148,6 +148,39 @@ const Modal = () => {
       </ModalPage>
 
       <ModalPage
+        id='teams'
+        onClose={() => dispatch(general.action.route({ activeModal: null }))}
+        header={
+          <ModalPageHeader
+            left={
+              (platform === ANDROID || platform === VKCOM) && (
+                <PanelHeaderClose onClick={() => dispatch(general.action.route({ activeModal: null }))}>
+                  Закрыть
+                </PanelHeaderClose>
+              )
+            }
+            right={
+              platform === IOS && (
+                <PanelHeaderClose onClick={() => dispatch(general.action.route({ activeModal: null }))}>
+                  <Icon24Dismiss />
+                </PanelHeaderClose>
+              )
+            }
+          >
+            Выбор команды
+          </ModalPageHeader>
+        }
+        settlingHeight={100}
+      >
+        <Div>
+          <List style={{ flex: 1 }}>123</List>
+          <MiniInfoCell before={<Icon16InfoCirle />} textLevel='secondary' textWrap='full'>
+            Для начала нужно 4 и более участников. После начала игры присоединиться новым участникам будет нельзя.
+          </MiniInfoCell>
+        </Div>
+      </ModalPage>
+
+      <ModalPage
         id='rules'
         onClose={() => dispatch(general.action.route({ activeModal: null }))}
         header={

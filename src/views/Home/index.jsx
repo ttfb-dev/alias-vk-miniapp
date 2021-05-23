@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Tabbar, TabbarItem, Badge, Group, Div, Button, Spacing, UsersStack } from '@vkontakte/vkui';
 import { Icon16Add, Icon28WorkOutline, Icon28ScanViewfinderOutline, Icon28InfoOutline } from '@vkontakte/icons';
@@ -12,18 +12,6 @@ import { ReactComponent as Logo } from '../../assets/logo.svg';
 const Home = () => {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
-
-  useEffect(() => {
-    if (state.room.roomId === null) {
-      dispatch.sync(room.action.whereIAm());
-    }
-  }, [dispatch, state.room.roomId]);
-
-  useEffect(() => {
-    if (state.room.roomId !== null) {
-      dispatch(general.action.route({ activePanel: 'room' }));
-    }
-  }, [dispatch, state.room.roomId]);
 
   const tabbar = (
     <Tabbar>
