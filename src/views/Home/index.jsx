@@ -14,12 +14,16 @@ const Home = () => {
   const state = useSelector((state) => state);
 
   useEffect(() => {
-    dispatch.sync(room.action.whereIAm());
+    if (state.room.roomId === null) {
+      dispatch.sync(room.action.whereIAm());
+    }
+  }, [dispatch, state.room.roomId]);
 
+  useEffect(() => {
     if (state.room.roomId !== null) {
       dispatch(general.action.route({ activePanel: 'room' }));
     }
-  }, [state.room.roomId]);
+  }, [dispatch, state.room.roomId]);
 
   const tabbar = (
     <Tabbar>

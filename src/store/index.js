@@ -1,5 +1,4 @@
-import { combineReducers, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
+import { combineReducers } from 'redux';
 import { CrossTabClient, badge, badgeRu, log } from '@logux/client';
 import { badgeStyles } from '@logux/client/badge/styles';
 import { createStoreCreator } from '@logux/redux';
@@ -27,7 +26,7 @@ const client = new CrossTabClient({
 });
 
 const createStore = createStoreCreator(client);
-const store = createStore(combineReducers({ general: general.reducer, room: room.reducer }), applyMiddleware(thunk));
+const store = createStore(combineReducers({ general: general.reducer, room: room.reducer }));
 
 if (process.env.NODE_ENV === 'development') {
   log(store.client);
