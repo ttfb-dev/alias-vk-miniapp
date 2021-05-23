@@ -1,12 +1,16 @@
 const initialState = {
-  status: '',
+  status: 'initial',
   roomId: null,
   members: [],
   owner: '',
 };
 
 const reducer = (state = initialState, action) => {
-  switch (action.type) {
+  const { type, ...payload } = action;
+
+  // console.log(type, payload);
+
+  switch (type) {
     case 'room/create':
       return {
         ...state,
@@ -17,12 +21,13 @@ const reducer = (state = initialState, action) => {
         ...state,
         status: 'error',
       };
-    case 'room/create_success':
+    case 'room/create_success': {
       return {
         ...state,
         status: 'success',
-        ...action.payload,
+        ...payload,
       };
+    }
 
     case 'room/join':
       return {
@@ -44,6 +49,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         status: 'loading',
+        roomId: null,
       };
     case 'room/leave_error':
       return {
@@ -70,7 +76,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         status: 'success',
-        ...action.payload,
+        ...payload,
       };
 
     default:

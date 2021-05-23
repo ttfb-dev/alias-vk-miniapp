@@ -8,6 +8,8 @@
     "test": "node scripts/test.js",
     "predeploy": "yarn build",
     "deploy": "vk-miniapps-deploy",
+    "predeploy:dev": "yarn build",
+    "deploy:dev": "cross-env MINI_APPS_ENVIRONMENT=dev vk-miniapps-deploy",
     "lint": "run-s lint:all:*",
     "lint:eslint": "eslint --fix",
     "lint:prettier": "prettier --write --loglevel warn",

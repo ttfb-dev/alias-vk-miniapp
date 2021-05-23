@@ -1,10 +1,12 @@
-import { combineReducers } from 'redux';
+import { combineReducers, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 import { CrossTabClient, badge, badgeRu, log } from '@logux/client';
 import { badgeStyles } from '@logux/client/badge/styles';
 import { createStoreCreator } from '@logux/redux';
 import bridge from '@vkontakte/vk-bridge';
 
-import { reducer as roomReducer } from './room';
+import { general } from './general';
+import { room } from './room';
 
 // Init VK Mini App
 bridge.send('VKWebAppInit').then((res, req) => {
@@ -25,7 +27,7 @@ const client = new CrossTabClient({
 });
 
 const createStore = createStoreCreator(client);
-const store = createStore(combineReducers({ room: roomReducer }));
+const store = createStore(combineReducers({ general: general.reducer, room: room.reducer }), applyMiddleware(thunk));
 
 if (process.env.NODE_ENV === 'development') {
   log(store.client);
@@ -40,4 +42,4 @@ if (process.env.NODE_ENV === 'development') {
 
 store.client.start();
 
-export { store, client };
+export { store, client, general, room };

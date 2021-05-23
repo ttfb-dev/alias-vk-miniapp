@@ -1,20 +1,30 @@
-import React, { useContext } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Tabbar, TabbarItem, Badge, Group, Div, Button, Spacing, UsersStack } from '@vkontakte/vkui';
 import { Icon16Add, Icon28WorkOutline, Icon28ScanViewfinderOutline, Icon28InfoOutline } from '@vkontakte/icons';
 import bridge from '@vkontakte/vk-bridge';
 
 import './index.scss';
 
+import { general, room } from '../../store';
 import { ReactComponent as Logo } from '../../assets/logo.svg';
-import { ViewContext } from '../../context';
 
 const Home = () => {
-  const { setActiveView, setActiveModal } = useContext(ViewContext);
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state);
+
+  useEffect(() => {
+    dispatch.sync(room.action.whereIAm());
+
+    if (state.room.roomId !== null) {
+      dispatch(general.action.route({ activePanel: 'room' }));
+    }
+  }, [state.room.roomId]);
 
   const tabbar = (
     <Tabbar>
       <TabbarItem
-        onClick={() => setActiveView('sets')}
+        onClick={() => dispatch(general.action.route({ activeModal: 'sets' }))}
         indicator={<Badge mode='prominent' />}
         selected
         data-story='sets'
@@ -35,7 +45,12 @@ const Home = () => {
       >
         <Icon28ScanViewfinderOutline />
       </TabbarItem>
-      <TabbarItem onClick={() => setActiveModal('rules')} selected data-story='rules' text='Правила'>
+      <TabbarItem
+        onClick={() => dispatch(general.action.route({ activeModal: 'rules' }))}
+        selected
+        data-story='rules'
+        text='Правила'
+      >
         <Icon28InfoOutline />
       </TabbarItem>
     </Tabbar>
@@ -53,12 +68,29 @@ const Home = () => {
 
       <Group separator='hide' style={{ width: '100%' }}>
         <Div>
-          <Button mode='primary' size='l' stretched before={<Icon16Add />} onClick={() => setActiveModal('qr-code')}>
+          <Button
+            mode='primary'
+            size='l'
+            stretched
+            before={<Icon16Add />}
+            onClick={() => dispatch(general.action.route({ activeModal: 'qr-code' }))}
+          >
             Присоединиться
           </Button>
           <Spacing size={12} />
 
-          <Button mode='primary' size='l' stretched onClick={() => setActiveModal('create-room')}>
+          <Button
+            mode='primary'
+            size='l'
+            stretched
+            onClick={() => {
+              if (state.room.roomId !== null) {
+                dispatch(general.action.route({ activePanel: 'room' }));
+              } else {
+                dispatch.sync(room.action.create());
+              }
+            }}
+          >
             Создать комнату
           </Button>
         </Div>

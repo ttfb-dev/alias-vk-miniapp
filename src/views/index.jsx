@@ -1,38 +1,30 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { ChannelErrors } from '@logux/client/react';
 import { AppRoot, Root, Epic, View, Panel } from '@vkontakte/vkui';
 
-import { ViewContext } from '../context';
-
 import { Home } from './Home';
 import { Room } from './Room';
-import { Set } from './Set';
 import { Modal } from './Modal';
 
 const App = () => {
-  const { activeView } = useContext(ViewContext);
+  const state = useSelector((state) => state);
 
   return (
     <AppRoot>
       <Epic activeStory='home' tabbar>
-        <Root id='home' activeView={activeView}>
-          <View id='home' activePanel='home' modal={<Modal />}>
+        <Root id='home' activeView={state.general.activeView}>
+          <View id='home' activePanel={state.general.activePanel} modal={<Modal />}>
             <Panel id='home'>
-              <Home />
+              <ChannelErrors Error={<div>asdaw</div>}>
+                <Home />
+              </ChannelErrors>
             </Panel>
-          </View>
 
-          <View id='room' activePanel='room'>
             <Panel id='room'>
               <ChannelErrors>
                 <Room />
               </ChannelErrors>
-            </Panel>
-          </View>
-
-          <View id='set' activePanel='set'>
-            <Panel id='set'>
-              <Set />
             </Panel>
           </View>
         </Root>

@@ -1,2 +1,14 @@
-export { room } from './action';
-export { reducer } from './reducer';
+import { create, join, leave, whereIAm } from './action';
+import { reducer } from './reducer';
+
+const room = {
+  action: {
+    create,
+    join,
+    leave,
+    whereIAm,
+  },
+  reducer,
+};
+
+export { room };

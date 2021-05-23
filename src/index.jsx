@@ -4,23 +4,20 @@ import { Provider } from 'react-redux';
 import { ClientContext } from '@logux/client/react';
 import { AdaptivityProvider, ConfigProvider } from '@vkontakte/vkui';
 
-import { ViewProvider } from './context';
+import '@vkontakte/vkui/dist/vkui.css';
+
 import { store, client } from './store';
 import { App } from './views';
 import { reportWebVitals } from './reportWebVitals';
-
-import '@vkontakte/vkui/dist/vkui.css';
 
 ReactDOM.render(
   <ConfigProvider>
     <AdaptivityProvider>
       <ClientContext.Provider value={client}>
         <Provider store={store}>
-          <ViewProvider>
-            <StrictMode>
-              <App />
-            </StrictMode>
-          </ViewProvider>
+          <StrictMode>
+            <App />
+          </StrictMode>
         </Provider>
       </ClientContext.Provider>
     </AdaptivityProvider>

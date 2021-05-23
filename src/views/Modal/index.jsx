@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   usePlatform,
   ANDROID,
@@ -28,17 +29,21 @@ import {
 import { Icon16InfoCirle, Icon24Dismiss } from '@vkontakte/icons';
 import bridge from '@vkontakte/vk-bridge';
 
-import { ViewContext } from '../../context';
+import { general } from '../../store';
 
 const Modal = () => {
-  const { activeModal, setActiveModal } = useContext(ViewContext);
   const platform = usePlatform();
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state);
 
   return (
-    <ModalRoot activeModal={activeModal} onClose={() => setActiveModal(null)}>
+    <ModalRoot
+      activeModal={state.general.activeModal}
+      onClose={() => dispatch(general.action.route({ activeModal: null }))}
+    >
       <ModalCard
         id='qr-code'
-        onClose={() => setActiveModal(null)}
+        onClose={() => dispatch(general.action.route({ activeModal: null }))}
         header='Отсканируйте QR-код'
         subheader='или введите код комнаты'
       >
@@ -56,7 +61,12 @@ const Modal = () => {
           >
             Сканировать
           </Button>
-          <Button size='l' mode='primary' stretched onClick={() => setActiveModal('enter-code')}>
+          <Button
+            size='l'
+            mode='primary'
+            stretched
+            onClick={() => dispatch(general.action.route({ activeModal: 'enter-code' }))}
+          >
             Ввести
           </Button>
         </Div>
@@ -65,13 +75,17 @@ const Modal = () => {
         </MiniInfoCell>
       </ModalCard>
 
-      <ModalCard id='enter-code' onClose={() => setActiveModal(null)} header='Введите код'>
+      <ModalCard
+        id='enter-code'
+        onClose={() => dispatch(general.action.route({ activeModal: null }))}
+        header='Введите код'
+      >
         <FormLayout>
           <FormItem>
             <Input type='text' align='center' />
           </FormItem>
           <FormItem>
-            <Button size='l' stretched>
+            <Button type='submit' size='l' mode='primary' stretched>
               Присоединиться
             </Button>
           </FormItem>
@@ -83,17 +97,19 @@ const Modal = () => {
 
       <ModalPage
         id='create-room'
-        onClose={() => setActiveModal(null)}
+        onClose={() => dispatch(general.action.route({ activeModal: null }))}
         header={
           <ModalPageHeader
             left={
               (platform === ANDROID || platform === VKCOM) && (
-                <PanelHeaderClose onClick={() => setActiveModal(null)}>Закрыть</PanelHeaderClose>
+                <PanelHeaderClose onClick={() => dispatch(general.action.route({ activeModal: null }))}>
+                  Закрыть
+                </PanelHeaderClose>
               )
             }
             right={
               platform === IOS && (
-                <PanelHeaderClose onClick={() => setActiveModal(null)}>
+                <PanelHeaderClose onClick={() => dispatch(general.action.route({ activeModal: null }))}>
                   <Icon24Dismiss />
                 </PanelHeaderClose>
               )
@@ -133,17 +149,19 @@ const Modal = () => {
 
       <ModalPage
         id='rules'
-        onClose={() => setActiveModal(null)}
+        onClose={() => dispatch(general.action.route({ activeModal: null }))}
         header={
           <ModalPageHeader
             left={
               (platform === ANDROID || platform === VKCOM) && (
-                <PanelHeaderClose onClick={() => setActiveModal(null)}>Закрыть</PanelHeaderClose>
+                <PanelHeaderClose onClick={() => dispatch(general.action.route({ activeModal: null }))}>
+                  Закрыть
+                </PanelHeaderClose>
               )
             }
             right={
               platform === IOS && (
-                <PanelHeaderClose onClick={() => setActiveModal(null)}>
+                <PanelHeaderClose onClick={() => dispatch(general.action.route({ activeModal: null }))}>
                   <Icon24Dismiss />
                 </PanelHeaderClose>
               )
