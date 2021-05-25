@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   usePlatform,
@@ -25,16 +25,48 @@ import {
   Text,
   Spacing,
   Slider,
+  UsersStack,
+  Snackbar,
+  Avatar,
 } from '@vkontakte/vkui';
-import { Icon16InfoCirle, Icon24Dismiss } from '@vkontakte/icons';
+import { Icon16Done, Icon16InfoCirle, Icon24Dismiss } from '@vkontakte/icons';
 import bridge from '@vkontakte/vk-bridge';
+import qr from '@vkontakte/vk-qr';
 
 import { general } from '../../store';
+
+import styles from './index.module.scss';
 
 const Modal = () => {
   const platform = usePlatform();
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
+  const [showCopyMessage, setShowCopyMessage] = useState(false);
+
+  const qrCode = useMemo(() => {
+    // const url = JSON.stringify({ roomId: state.room.roomId });
+    const url = `http://vk.com/app7856384#join-room=${state.room.roomId}`;
+
+    const svg = qr.createQR(url, {
+      qrSize: 256,
+      isShowLogo: true,
+      foregroundColor: '#4680c2',
+    });
+
+    return { url, svg };
+  }, [state.room.roomId]);
+
+  const onShareCode = () => {
+    bridge.send('VKWebAppShare', { link: qrCode.url });
+  };
+
+  const onCopyCode = async () => {
+    bridge.send('VKWebAppCopyText', { text: qrCode.url }).then((result) => {
+      if (result) {
+        showCopyMessage(true);
+      }
+    });
+  };
 
   return (
     <ModalRoot
@@ -94,6 +126,81 @@ const Modal = () => {
           Код вы можете получить у создателя комнаты
         </MiniInfoCell>
       </ModalCard>
+
+      <ModalPage
+        id='share-code'
+        onClose={() => dispatch(general.action.route({ activeModal: null }))}
+        header={
+          <ModalPageHeader
+            left={
+              (platform === ANDROID || platform === VKCOM) && (
+                <PanelHeaderClose onClick={() => dispatch(general.action.route({ activeModal: null }))}>
+                  Закрыть
+                </PanelHeaderClose>
+              )
+            }
+            right={
+              platform === IOS && (
+                <PanelHeaderClose onClick={() => dispatch(general.action.route({ activeModal: null }))}>
+                  <Icon24Dismiss />
+                </PanelHeaderClose>
+              )
+            }
+          >
+            QR-код для подключения
+          </ModalPageHeader>
+        }
+        dynamicContentHeight
+      >
+        <Div className={styles.share}>
+          <Div className={styles.code} dangerouslySetInnerHTML={{ __html: qrCode.svg }} />
+
+          <Text
+            style={{
+              textAlign: 'center',
+            }}
+          >
+            Передайте его другим участникам. Либо используйте текстовый код:
+            <br />
+            {state.room.roomId}
+          </Text>
+
+          <Spacing size={24} style={{ width: '100%' }} />
+
+          <UsersStack size='m' count={3} layout='vertical'>
+            Алексей, Илья, Михаил
+            <br />и ещё 3 человека
+          </UsersStack>
+
+          <Spacing size={24} style={{ width: '100%' }} />
+
+          <div style={{ display: 'flex', gap: '12px', width: '100%', flexDirection: 'row' }}>
+            <Button size='l' mode='primary' stretched onClick={() => onShareCode()}>
+              Поделиться
+            </Button>
+            <Button size='l' mode='primary' stretched onClick={() => onCopyCode()}>
+              Скопировать
+            </Button>
+          </div>
+          <Spacing size={24} style={{ width: '100%' }} />
+          <MiniInfoCell before={<Icon16InfoCirle />} textLevel='secondary' textWrap='full'>
+            Для начала нужно 4 и более участников. После начала игры присоединиться новым участникам будет нельзя.
+          </MiniInfoCell>
+        </Div>
+        {showCopyMessage && (
+          <Snackbar
+            duration={3000}
+            onClose={() => setShowCopyMessage(false)}
+            before={
+              <Avatar size={24} style={{ background: 'var(--accent)' }}>
+                <Icon16Done fill='#fff' width={14} height={14} />
+              </Avatar>
+            }
+          >
+            Ссылка скопирована
+          </Snackbar>
+        )}
+      </ModalPage>
 
       <ModalPage
         id='create-room'
