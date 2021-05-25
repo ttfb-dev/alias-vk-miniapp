@@ -8,8 +8,6 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   const { type, ...payload } = action;
 
-  // console.log(type, payload);
-
   switch (type) {
     case 'room/create':
       return {
@@ -49,7 +47,6 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         status: 'loading',
-        roomId: null,
       };
     case 'room/leave_error':
       return {
@@ -60,6 +57,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         status: 'success',
+        ...payload,
       };
 
     case 'room/where_i_am':
