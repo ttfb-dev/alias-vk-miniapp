@@ -28,7 +28,8 @@ const Home = () => {
       <TabbarItem
         onClick={() => {
           bridge.send('VKWebAppOpenCodeReader').then(({ code_data }) => {
-            const hashParams = queryStringParse(code_data);
+            const url = new URL(code_data);
+            const hashParams = queryStringParse(url.hash);
 
             if (hashParams['join-room']) {
               dispatch.sync(room.action.join({ roomId: hashParams['join-room'] }));
