@@ -30,7 +30,7 @@ const Room = () => {
 
   const qrCode = useMemo(() => {
     // const url = JSON.stringify({ roomId: state.room.roomId });
-    const url = `http://vk.com/app7856384#join-room=${state.room.roomId}`;
+    const url = `https://vk.com/app7856384#roomId=${state.room.roomId}`;
 
     const svg = qr.createQR(url, {
       qrSize: 256,

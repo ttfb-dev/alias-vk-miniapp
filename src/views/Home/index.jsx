@@ -31,8 +31,8 @@ const Home = () => {
             const url = new URL(code_data);
             const hashParams = queryStringParse(url.hash);
 
-            if (hashParams['join-room']) {
-              dispatch.sync(room.action.join({ roomId: hashParams['join-room'] }));
+            if (hashParams?.roomId) {
+              dispatch.sync(room.action.join({ roomId: parseInt(hashParams.roomId, 10) }));
             }
           });
         }}

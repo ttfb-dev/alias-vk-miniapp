@@ -15,11 +15,13 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    setIsLoading(true);
+    if (state.room.roomId === null) {
+      setIsLoading(true);
 
-    dispatch.sync(room.action.whereIAm()).then(() => {
-      setIsLoading(false);
-    });
+      dispatch.sync(room.action.whereIAm()).then(() => {
+        setIsLoading(false);
+      });
+    }
   }, []); // eslint-disable-line
 
   useEffect(() => {

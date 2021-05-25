@@ -1,6 +1,10 @@
+import { queryStringParse } from '../../helpers';
+
+const hashParams = queryStringParse(window.location.hash);
+
 const initialState = {
   status: 'initial',
-  roomId: null,
+  roomId: hashParams.roomId ? parseInt(hashParams.roomId, 10) : null,
   members: [],
   owner: '',
 };
@@ -41,6 +45,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         status: 'success',
+        ...payload,
       };
 
     case 'room/leave':

@@ -1,14 +1,9 @@
-import { queryStringParse } from '../../helpers';
-
 import { route } from './action';
-
-const hashParams = queryStringParse(window.location.hash);
 
 const initialState = {
   activeView: 'home',
   activePanel: 'home',
   activeModal: null,
-  joinRoom: hashParams['join-room'] ?? '',
 };
 
 const reducer = (state = initialState, action) => {

@@ -33,7 +33,8 @@ import { Icon16Done, Icon16InfoCirle, Icon24Dismiss } from '@vkontakte/icons';
 import bridge from '@vkontakte/vk-bridge';
 import qr from '@vkontakte/vk-qr';
 
-import { general } from '../../store';
+import { queryStringParse } from '../../helpers';
+import { general, room } from '../../store';
 
 import styles from './index.module.scss';
 
@@ -44,8 +45,7 @@ const Modal = () => {
   const [showCopyMessage, setShowCopyMessage] = useState(false);
 
   const qrCode = useMemo(() => {
-    // const url = JSON.stringify({ roomId: state.room.roomId });
-    const url = `http://vk.com/app7856384#join-room=${state.room.roomId}`;
+    const url = `https://vk.com/app7856384#roomId=${state.room.roomId}`;
 
     const svg = qr.createQR(url, {
       qrSize: 256,
@@ -85,9 +85,13 @@ const Modal = () => {
             mode='primary'
             stretched
             onClick={() => {
-              bridge.send('VKWebAppOpenCodeReader').then((result) => {
-                // eslint-disable-next-line
-                console.log(result);
+              bridge.send('VKWebAppOpenCodeReader').then(({ code_data }) => {
+                const url = new URL(code_data);
+                const hashParams = queryStringParse(url.hash);
+
+                if (hashParams?.roomId) {
+                  dispatch.sync(room.action.join({ roomId: parseInt(hashParams.roomId, 10) }));
+                }
               });
             }}
           >
