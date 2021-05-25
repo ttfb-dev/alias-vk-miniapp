@@ -16,6 +16,7 @@ const App = () => {
 
   useEffect(() => {
     setIsLoading(true);
+
     dispatch.sync(room.action.whereIAm()).then(() => {
       setIsLoading(false);
     });
