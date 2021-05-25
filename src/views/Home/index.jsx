@@ -27,13 +27,11 @@ const Home = () => {
       </TabbarItem>
       <TabbarItem
         onClick={() => {
-          bridge.send('VKWebAppOpenCodeReader').then((code_data) => {
-            if (code_data) {
-              const hashParams = queryStringParse(code_data);
+          bridge.send('VKWebAppOpenCodeReader').then(({ code_data }) => {
+            const hashParams = queryStringParse(code_data);
 
-              if (hashParams['join-room']) {
-                dispatch.sync(room.action.join({ roomId: hashParams['join-room'] }));
-              }
+            if (hashParams['join-room']) {
+              dispatch.sync(room.action.join({ roomId: hashParams['join-room'] }));
             }
           });
         }}
