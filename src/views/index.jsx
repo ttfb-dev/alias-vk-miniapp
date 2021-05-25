@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ChannelErrors, useClient } from '@logux/client/react';
+import { ChannelErrors } from '@logux/client/react';
 import { AppRoot, Root, Epic, View, Panel, ScreenSpinner } from '@vkontakte/vkui';
 
 import { general, room } from '../store';

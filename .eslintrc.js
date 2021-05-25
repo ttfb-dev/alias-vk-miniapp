@@ -1,3 +1,5 @@
+const isProd = process.env.NODE_ENV === 'production';
+
 module.exports = {
   extends: ['react-app', 'prettier'],
 
@@ -10,8 +12,8 @@ module.exports = {
   },
 
   rules: {
-    'no-console': process.env.NODE_ENV === 'production' ? ['error', { allow: ['warn', 'error'] }] : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'no-console': isProd ? ['error', { allow: ['warn', 'error'] }] : 'off',
+    'no-debugger': isProd ? 'error' : 'off',
     'linebreak-style': 0,
     'import/prefer-default-export': 0,
     'react/prop-types': 0,
