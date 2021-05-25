@@ -4,6 +4,7 @@ import { Tabbar, TabbarItem, Badge, Group, Div, Button, Spacing, UsersStack } fr
 import { Icon16Add, Icon28WorkOutline, Icon28ScanViewfinderOutline, Icon28InfoOutline } from '@vkontakte/icons';
 import bridge from '@vkontakte/vk-bridge';
 
+import { queryStringParse } from '../../helpers';
 import { general, room } from '../../store';
 import { ReactComponent as Logo } from '../../assets/logo.svg';
 
@@ -26,9 +27,14 @@ const Home = () => {
       </TabbarItem>
       <TabbarItem
         onClick={() => {
-          bridge.send('VKWebAppOpenCodeReader').then((result) => {
-            // eslint-disable-next-line
-            console.log(result);
+          bridge.send('VKWebAppOpenCodeReader').then((code_data) => {
+            if (code_data) {
+              const hashParams = queryStringParse(code_data);
+
+              if (hashParams['join-room']) {
+                dispatch.sync(room.action.join({ roomId: hashParams['join-room'] }));
+              }
+            }
           });
         }}
         selected

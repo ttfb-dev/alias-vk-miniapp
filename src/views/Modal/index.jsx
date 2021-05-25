@@ -60,7 +60,7 @@ const Modal = () => {
     bridge.send('VKWebAppShare', { link: qrCode.url });
   };
 
-  const onCopyCode = async () => {
+  const onCopyCode = () => {
     bridge.send('VKWebAppCopyText', { text: qrCode.url }).then((result) => {
       if (result && !showCopyMessage) {
         setShowCopyMessage(true);

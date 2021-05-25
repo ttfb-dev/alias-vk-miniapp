@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSubscription } from '@logux/redux';
 import {
@@ -14,13 +14,7 @@ import {
   PanelHeaderBack,
   PanelSpinner,
 } from '@vkontakte/vkui';
-import {
-  Icon28UserAddOutline,
-  Icon28WorkOutline,
-  Icon28ScanViewfinderOutline,
-  Icon28InfoOutline,
-} from '@vkontakte/icons';
-import bridge from '@vkontakte/vk-bridge';
+import { Icon28UserAddOutline, Icon28WorkOutline, Icon28QrCodeOutline, Icon28InfoOutline } from '@vkontakte/icons';
 import qr from '@vkontakte/vk-qr';
 
 import { general, room } from '../../store';
@@ -67,17 +61,12 @@ const Room = () => {
         <Icon28WorkOutline />
       </TabbarItem>
       <TabbarItem
-        onClick={() => {
-          bridge.send('VKWebAppOpenCodeReader').then((result) => {
-            // eslint-disable-next-line
-            console.log(result);
-          });
-        }}
+        onClick={() => dispatch(general.action.route({ activeModal: 'share-code' }))}
         selected
         data-story='qr-code'
         text='QR-код'
       >
-        <Icon28ScanViewfinderOutline />
+        <Icon28QrCodeOutline />
       </TabbarItem>
       <TabbarItem
         onClick={() => dispatch(general.action.route({ activeModal: 'rules' }))}
@@ -128,13 +117,7 @@ const Room = () => {
                 </SimpleCell>
               </Card>
               <Card mode='outline' size='m' className={styles.card}>
-                <button
-                  type='button'
-                  className={styles.qr}
-                  onClick={() => dispatch(general.action.route({ activeModal: 'share-code' }))}
-                >
-                  <Div className={styles.code} dangerouslySetInnerHTML={{ __html: qrCode.svg }} />
-                </button>
+                <Div className={styles.code} dangerouslySetInnerHTML={{ __html: qrCode.svg }} />
               </Card>
               <Card mode='outline' size='m' className={styles.card}>
                 <SimpleCell description='8 игр' expandable>
