@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ChannelErrors } from '@logux/client/react';
-import { AppRoot, Root, Epic, View, Panel } from '@vkontakte/vkui';
+import { ChannelErrors, useClient } from '@logux/client/react';
+import { AppRoot, Root, Epic, View, Panel, ScreenSpinner } from '@vkontakte/vkui';
 
 import { general, room } from '../store';
 
@@ -12,12 +12,14 @@ import { Modal } from './Modal';
 const App = () => {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (state.room.roomId === null) {
-      dispatch.sync(room.action.whereIAm());
-    }
-  }, [dispatch, state.room.roomId]);
+    setIsLoading(true);
+    dispatch.sync(room.action.whereIAm()).then(() => {
+      setIsLoading(false);
+    });
+  }, []); // eslint-disable-line
 
   useEffect(() => {
     if (state.room.roomId !== null) {
@@ -29,7 +31,12 @@ const App = () => {
     <AppRoot>
       <Epic activeStory='home' tabbar>
         <Root id='home' activeView={state.general.activeView}>
-          <View id='home' activePanel={state.general.activePanel} modal={<Modal />}>
+          <View
+            id='home'
+            activePanel={state.general.activePanel}
+            modal={<Modal />}
+            popout={isLoading && <ScreenSpinner />}
+          >
             <Panel id='home'>
               <ChannelErrors Error={<div>asdaw</div>}>
                 <Home />

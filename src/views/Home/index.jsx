@@ -4,10 +4,11 @@ import { Tabbar, TabbarItem, Badge, Group, Div, Button, Spacing, UsersStack } fr
 import { Icon16Add, Icon28WorkOutline, Icon28ScanViewfinderOutline, Icon28InfoOutline } from '@vkontakte/icons';
 import bridge from '@vkontakte/vk-bridge';
 
-import './index.scss';
+import styles from './index.module.scss';
 
 import { general, room } from '../../store';
 import { ReactComponent as Logo } from '../../assets/logo.svg';
+// import { ReactComponent as Background } from '../../assets/bg-home.svg';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -50,7 +51,9 @@ const Home = () => {
 
   return (
     <>
-      <div className='Home__background'>
+      <div className={styles.container}>
+        <div className={styles.background} />
+        {/* <Background className={styles.background} /> */}
         <Logo />
         <UsersStack size='m' count={3} layout='vertical'>
           Алексей, Илья, Михаил
