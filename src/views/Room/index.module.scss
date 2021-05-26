@@ -99,3 +99,9 @@
     height: 100%;
   }
 }
+
+.subheader {
+  &::before {
+    padding-top: 0;
+  }
+}
