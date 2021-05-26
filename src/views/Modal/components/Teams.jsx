@@ -44,7 +44,6 @@ const Teams = () => {
           Выбор команды
         </ModalPageHeader>
       }
-      settlingHeight={100}
     >
       <Div>
         <List style={{ flex: 1 }}>123</List>

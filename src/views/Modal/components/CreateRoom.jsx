@@ -51,7 +51,6 @@ const CreateRoom = () => {
           Создать комнату
         </ModalPageHeader>
       }
-      dynamicContentHeight
     >
       <Div>
         <FormLayout>

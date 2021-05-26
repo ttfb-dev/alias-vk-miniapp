@@ -1,6 +1,17 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Tabbar, TabbarItem, Badge, Group, Div, Button, Spacing, UsersStack, FixedLayout } from '@vkontakte/vkui';
+import {
+  Panel,
+  Tabbar,
+  TabbarItem,
+  Badge,
+  Group,
+  Div,
+  Button,
+  Spacing,
+  UsersStack,
+  FixedLayout,
+} from '@vkontakte/vkui';
 import { Icon16Add, Icon28WorkOutline, Icon28ScanViewfinderOutline, Icon28InfoOutline } from '@vkontakte/icons';
 
 import vkapi from '../../api';
@@ -67,7 +78,7 @@ const Home = () => {
   );
 
   return (
-    <>
+    <Panel id='home'>
       <div className={styles.container}>
         <div className={styles.wrapper}>
           <div className={styles.background} />
@@ -78,7 +89,7 @@ const Home = () => {
           </UsersStack>
         </div>
 
-        <FixedLayout vertical='bottom'>
+        <FixedLayout vertical='bottom' style={{ zIndex: 'auto' }}>
           <Group separator='hide' style={{ width: '100%' }}>
             <Div>
               <Button
@@ -113,7 +124,7 @@ const Home = () => {
       </div>
 
       {tabbar}
-    </>
+    </Panel>
   );
 };
 

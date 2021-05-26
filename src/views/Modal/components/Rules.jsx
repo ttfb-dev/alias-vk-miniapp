@@ -46,7 +46,6 @@ const Rules = () => {
           Правила игры
         </ModalPageHeader>
       }
-      dynamicContentHeight
     >
       <Div>
         <Title level='2' weight='semibold'>

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ChannelErrors } from '@logux/client/react';
-import { AppRoot, Root, Epic, View, Panel, ScreenSpinner } from '@vkontakte/vkui';
+import { AppRoot, Root, Epic, View, ScreenSpinner } from '@vkontakte/vkui';
 
 import { general, room } from '../store';
 
@@ -37,15 +36,9 @@ const App = () => {
       <Epic activeStory='home' tabbar>
         <Root id='home' activeView={activeView}>
           <View id='home' activePanel={activePanel} modal={<Modal />} popout={isLoading && <ScreenSpinner />}>
-            <Panel id='home'>
-              <Home />
-            </Panel>
+            <Home id='home' />
 
-            <Panel id='room'>
-              <ChannelErrors Error={<div>asdaw</div>}>
-                <Room />
-              </ChannelErrors>
-            </Panel>
+            <Room id='room' />
           </View>
         </Root>
       </Epic>

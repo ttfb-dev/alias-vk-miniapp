@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSubscription } from '@logux/redux';
 import {
+  Panel,
   Tabbar,
   TabbarItem,
   Badge,
@@ -13,6 +14,7 @@ import {
   PanelHeader,
   PanelHeaderBack,
   PanelSpinner,
+  Title,
 } from '@vkontakte/vkui';
 import { Icon28UserAddOutline, Icon28WorkOutline, Icon28QrCodeOutline, Icon28InfoOutline } from '@vkontakte/icons';
 import qr from '@vkontakte/vk-qr';
@@ -26,6 +28,7 @@ import styles from './index.module.scss';
 const Room = () => {
   const dispatch = useDispatch();
   const roomId = useSelector((state) => state.room.roomId);
+  const settings = useSelector((state) => state.room.settings);
   const isSubscribing = useSubscription([`room/${roomId}`]);
 
   const qrCode = useMemo(() => {
@@ -79,7 +82,7 @@ const Room = () => {
   );
 
   return (
-    <>
+    <Panel id='room'>
       <PanelHeader
         left={
           <PanelHeaderBack
@@ -93,6 +96,11 @@ const Room = () => {
         separator={false}
       >
         <Logo />
+      </PanelHeader>
+      <PanelHeader separator={false} fixed={false}>
+        <Title level={2} weight='semibold'>
+          Комната «{`${settings?.name}`}»
+        </Title>
       </PanelHeader>
 
       <div className={styles.container}>
@@ -134,7 +142,7 @@ const Room = () => {
       </div>
 
       {tabbar}
-    </>
+    </Panel>
   );
 };
 
