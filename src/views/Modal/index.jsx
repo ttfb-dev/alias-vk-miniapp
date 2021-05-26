@@ -41,11 +41,12 @@ import styles from './index.module.scss';
 const Modal = () => {
   const platform = usePlatform();
   const dispatch = useDispatch();
-  const state = useSelector((state) => state);
+  const activeModal = useSelector((state) => state.general.activeModal);
+  const roomId = useSelector((state) => state.room.roomId);
   const [showCopyMessage, setShowCopyMessage] = useState(false);
 
   const qrCode = useMemo(() => {
-    const url = `https://vk.com/app7856384#roomId=${state.room.roomId}`;
+    const url = `https://vk.com/app7856384#roomId=${roomId}`;
 
     const svg = qr.createQR(url, {
       qrSize: 256,
@@ -54,7 +55,7 @@ const Modal = () => {
     });
 
     return { url, svg };
-  }, [state.room.roomId]);
+  }, [roomId]);
 
   const onShareCode = () => {
     bridge.send('VKWebAppShare', { link: qrCode.url });
@@ -69,10 +70,7 @@ const Modal = () => {
   };
 
   return (
-    <ModalRoot
-      activeModal={state.general.activeModal}
-      onClose={() => dispatch(general.action.route({ activeModal: null }))}
-    >
+    <ModalRoot activeModal={activeModal} onClose={() => dispatch(general.action.route({ activeModal: null }))}>
       <ModalCard
         id='qr-code'
         onClose={() => dispatch(general.action.route({ activeModal: null }))}
@@ -166,7 +164,7 @@ const Modal = () => {
           >
             Передайте его другим участникам. Либо используйте текстовый код:
             <br />
-            {state.room.roomId}
+            {roomId}
           </Text>
 
           <Spacing size={24} style={{ width: '100%' }} />

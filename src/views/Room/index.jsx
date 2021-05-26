@@ -25,12 +25,11 @@ import styles from './index.module.scss';
 
 const Room = () => {
   const dispatch = useDispatch();
-  const state = useSelector((state) => state);
-  const isSubscribing = useSubscription([`room/${state.room.roomId}`]);
+  const roomId = useSelector((state) => state.room.roomId);
+  const isSubscribing = useSubscription([`room/${roomId}`]);
 
   const qrCode = useMemo(() => {
-    // const url = JSON.stringify({ roomId: state.room.roomId });
-    const url = `https://vk.com/app7856384#roomId=${state.room.roomId}`;
+    const url = `https://vk.com/app7856384#roomId=${roomId}`;
 
     const svg = qr.createQR(url, {
       qrSize: 256,
@@ -39,7 +38,7 @@ const Room = () => {
     });
 
     return { url, svg };
-  }, [state.room.roomId]);
+  }, [roomId]);
 
   const tabbar = (
     <Tabbar>

@@ -11,11 +11,13 @@ import { Modal } from './Modal';
 
 const App = () => {
   const dispatch = useDispatch();
-  const state = useSelector((state) => state);
+  const activeView = useSelector((state) => state.general.activeView);
+  const activePanel = useSelector((state) => state.general.activePanel);
+  const roomId = useSelector((state) => state.room.roomId);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (state.room.roomId === null) {
+    if (roomId === null) {
       setIsLoading(true);
 
       dispatch.sync(room.action.whereIAm()).then(() => {
@@ -25,25 +27,18 @@ const App = () => {
   }, []); // eslint-disable-line
 
   useEffect(() => {
-    if (state.room.roomId !== null) {
+    if (roomId !== null) {
       dispatch(general.action.route({ activePanel: 'room', activeModal: 'teams' }));
     }
-  }, [dispatch, state.room.roomId]);
+  }, [dispatch, roomId]);
 
   return (
     <AppRoot>
       <Epic activeStory='home' tabbar>
-        <Root id='home' activeView={state.general.activeView}>
-          <View
-            id='home'
-            activePanel={state.general.activePanel}
-            modal={<Modal />}
-            popout={isLoading && <ScreenSpinner />}
-          >
+        <Root id='home' activeView={activeView}>
+          <View id='home' activePanel={activePanel} modal={<Modal />} popout={isLoading && <ScreenSpinner />}>
             <Panel id='home'>
-              <ChannelErrors Error={<div>asdaw</div>}>
-                <Home />
-              </ChannelErrors>
+              <Home />
             </Panel>
 
             <Panel id='room'>
