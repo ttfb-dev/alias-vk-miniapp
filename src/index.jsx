@@ -3,15 +3,15 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ClientContext } from '@logux/client/react';
 import { AdaptivityProvider, ConfigProvider } from '@vkontakte/vkui';
-import bridge from '@vkontakte/vk-bridge';
 
 import '@vkontakte/vkui/dist/vkui.css';
 
+import { app } from './services';
 import { store, client } from './store';
 import { App } from './views';
 import { reportWebVitals } from './reportWebVitals';
 
-bridge.send('VKWebAppInit');
+app.init();
 
 ReactDOM.render(
   <ConfigProvider>

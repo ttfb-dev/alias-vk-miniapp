@@ -1,9 +1,10 @@
-import { route } from './action';
+import { route, setFriends } from './action';
 import { reducer } from './reducer';
 
 const general = {
   action: {
     route,
+    setFriends,
   },
   reducer,
 };

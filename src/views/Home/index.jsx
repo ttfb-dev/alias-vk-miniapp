@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Tabbar, TabbarItem, Badge, Group, Div, Button, Spacing, UsersStack } from '@vkontakte/vkui';
 import { Icon16Add, Icon28WorkOutline, Icon28ScanViewfinderOutline, Icon28InfoOutline } from '@vkontakte/icons';
-import bridge from '@vkontakte/vk-bridge';
 
+import vkapi from '../../api';
+import { app } from '../../services';
 import { queryStringParse } from '../../helpers';
 import { general, room } from '../../store';
 import { ReactComponent as Logo } from '../../assets/logo.svg';
@@ -12,7 +13,14 @@ import styles from './index.module.scss';
 
 const Home = () => {
   const dispatch = useDispatch();
-  const state = useSelector((state) => state);
+  const roomId = useSelector((state) => state.room.roomId);
+  const friendsPhotos = useSelector((state) => state.general.friends.map((friend) => friend.photo_50));
+
+  useEffect(() => {
+    app.getFriends().then((friends) => {
+      dispatch(general.action.setFriends({ friends }));
+    });
+  }, []); // eslint-disable-line
 
   const tabbar = (
     <Tabbar>
@@ -26,15 +34,14 @@ const Home = () => {
         <Icon28WorkOutline />
       </TabbarItem>
       <TabbarItem
-        onClick={() => {
-          bridge.send('VKWebAppOpenCodeReader').then(({ code_data }) => {
-            const url = new URL(code_data);
-            const hashParams = queryStringParse(url.hash);
+        onClick={async () => {
+          const code = await vkapi.openCodeReader();
+          const url = new URL(code);
+          const hashParams = queryStringParse(url.hash);
 
-            if (hashParams?.roomId) {
-              dispatch.sync(room.action.join({ roomId: parseInt(hashParams.roomId, 10) }));
-            }
-          });
+          if (hashParams?.roomId) {
+            dispatch.sync(room.action.join({ roomId: parseInt(hashParams.roomId, 10) }));
+          }
         }}
         selected
         data-story='qr-code'
@@ -58,7 +65,7 @@ const Home = () => {
       <div className={styles.container}>
         <div className={styles.background} />
         <Logo />
-        <UsersStack size='m' count={3} layout='vertical'>
+        <UsersStack photos={friendsPhotos} size='m' count={3} layout='vertical'>
           Алексей, Илья, Михаил
           <br />и ещё 3 человека
         </UsersStack>
@@ -82,7 +89,7 @@ const Home = () => {
             size='l'
             stretched
             onClick={() => {
-              if (state.room.roomId !== null) {
+              if (roomId !== null) {
                 dispatch(general.action.route({ activePanel: 'room' }));
               } else {
                 dispatch.sync(room.action.create());

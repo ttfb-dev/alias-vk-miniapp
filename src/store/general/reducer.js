@@ -1,9 +1,10 @@
-import { route } from './action';
+import { route, setFriends } from './action';
 
 const initialState = {
   activeView: 'home',
   activePanel: 'home',
   activeModal: null,
+  friends: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -11,6 +12,13 @@ const reducer = (state = initialState, action) => {
 
   switch (type) {
     case route.type: {
+      return {
+        ...state,
+        ...payload,
+      };
+    }
+
+    case setFriends.type: {
       return {
         ...state,
         ...payload,
