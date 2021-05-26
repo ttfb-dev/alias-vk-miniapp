@@ -5,9 +5,9 @@ import {
   ANDROID,
   VKCOM,
   IOS,
-  PanelHeaderClose,
   ModalPage,
   ModalPageHeader,
+  PanelHeaderClose,
   Div,
   Text,
   MiniInfoCell,
@@ -41,12 +41,9 @@ const ShareCode = () => {
   const firstNamesShown = firstNames.slice(0, visibleCount);
 
   useEffect(() => {
-    console.log(members);
     app.getUsers(members).then((users) => {
       const photos = users.map((user) => user.photo_50);
       const firstNames = users.map((user) => user.first_name);
-
-      console.log(photos, firstNames);
 
       setPhotos(photos);
       setFirstNames(firstNames);
