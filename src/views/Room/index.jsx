@@ -97,7 +97,7 @@ const Room = () => {
       >
         <Logo />
       </PanelHeader>
-      <PanelHeader separator={false} fixed={false}>
+      <PanelHeader separator={false} fixed={false} style={{ paddingTop: 0 }}>
         <Title level={2} weight='semibold'>
           Комната «{`${settings?.name}`}»
         </Title>
