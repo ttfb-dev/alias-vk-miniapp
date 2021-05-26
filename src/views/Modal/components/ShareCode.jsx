@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   usePlatform,
+  withModalRootContext,
   ANDROID,
   VKCOM,
   IOS,
@@ -26,7 +27,7 @@ import { general } from '../../../store';
 
 import styles from './ShareCode.module.scss';
 
-const ShareCode = () => {
+const ShareCode = ({ updateModalHeight }) => {
   const platform = usePlatform();
   const dispatch = useDispatch();
   const roomId = useSelector((state) => state.room.roomId);
@@ -47,8 +48,10 @@ const ShareCode = () => {
 
       setPhotos(photos);
       setFirstNames(firstNames);
+
+      updateModalHeight();
     });
-  }, [members]);
+  }, [members, updateModalHeight]);
 
   const qrCode = useMemo(() => {
     const url = `https://vk.com/app7856384#roomId=${roomId}`;
@@ -77,7 +80,6 @@ const ShareCode = () => {
   return (
     <ModalPage
       id='share-code'
-      onClose={() => dispatch(general.action.route({ activeModal: null }))}
       header={
         <ModalPageHeader
           left={
@@ -98,6 +100,8 @@ const ShareCode = () => {
           QR-код для подключения
         </ModalPageHeader>
       }
+      onClose={() => dispatch(general.action.route({ activeModal: null }))}
+      dynamicContentHeight
     >
       <Div className={styles.share}>
         <Div className={styles.code} dangerouslySetInnerHTML={{ __html: qrCode.svg }} />
@@ -151,4 +155,4 @@ const ShareCode = () => {
   );
 };
 
-export { ShareCode };
+export default withModalRootContext(ShareCode);
