@@ -3,10 +3,13 @@ import { queryStringParse } from '../../helpers';
 const hashParams = queryStringParse(window.location.hash);
 
 const initialState = {
-  status: 'initial',
+  status: '',
   roomId: hashParams.roomId ? parseInt(hashParams.roomId, 10) : null,
   members: [],
   owner: '',
+  myTeam: null,
+  settings: null,
+  teams: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -14,73 +17,56 @@ const reducer = (state = initialState, action) => {
 
   switch (type) {
     case 'room/create':
-      return {
-        ...state,
-        status: 'loading',
-      };
     case 'room/create_error':
-      return {
-        ...state,
-        status: 'error',
-      };
+      return state;
     case 'room/create_success': {
       return {
         ...state,
-        status: 'success',
         ...payload,
       };
     }
 
     case 'room/join':
-      return {
-        ...state,
-        status: 'loading',
-      };
     case 'room/join_error':
-      return {
-        ...state,
-        status: 'error',
-      };
+      return state;
     case 'room/join_success':
       return {
         ...state,
-        status: 'success',
         ...payload,
       };
 
     case 'room/leave':
-      return {
-        ...state,
-        status: 'loading',
-      };
     case 'room/leave_error':
-      return {
-        ...state,
-        status: 'error',
-      };
+      return state;
     case 'room/leave_success':
       return {
         ...state,
-        status: 'success',
         ...payload,
       };
 
     case 'room/where_i_am':
-      return {
-        ...state,
-        status: 'loading',
-      };
     case 'room/where_i_am_error':
-      return {
-        ...state,
-        status: 'error',
-      };
+      return state;
     case 'room/where_i_am_success':
       return {
         ...state,
-        status: 'success',
         ...payload,
       };
+
+    case 'room/state': {
+      return {
+        ...state,
+        ...payload.room,
+      };
+    }
+
+    case 'room/user_joined':
+    case 'room/user_left': {
+      return {
+        ...state,
+        members: payload.members,
+      };
+    }
 
     default:
       return state;

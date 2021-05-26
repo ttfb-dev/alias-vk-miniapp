@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   usePlatform,
@@ -21,6 +21,7 @@ import { Icon16InfoCirle, Icon16Done, Icon24Dismiss } from '@vkontakte/icons';
 import qr from '@vkontakte/vk-qr';
 
 import vkapi from '../../../api';
+import { app } from '../../../services';
 import { general } from '../../../store';
 
 import styles from './ShareCode.module.scss';
@@ -29,14 +30,28 @@ const ShareCode = () => {
   const platform = usePlatform();
   const dispatch = useDispatch();
   const roomId = useSelector((state) => state.room.roomId);
+  const members = useSelector((state) => state.room.members);
   const [showCopyMessage, setShowCopyMessage] = useState(false);
-  const photos = useSelector((state) => state.general.friends.map((friend) => friend.photo_50));
-  const firstNames = useSelector((state) => state.general.friends.map((friend) => friend.first_name));
+  const [photos, setPhotos] = useState([]);
+  const [firstNames, setFirstNames] = useState([]);
 
   const visibleCount = 4;
   const othersFirstNameCount = Math.max(0, firstNames.length - visibleCount);
   const canShowOthers = othersFirstNameCount > 0;
   const firstNamesShown = firstNames.slice(0, visibleCount);
+
+  useEffect(() => {
+    console.log(members);
+    app.getUsers(members).then((users) => {
+      const photos = users.map((user) => user.photo_50);
+      const firstNames = users.map((user) => user.first_name);
+
+      console.log(photos, firstNames);
+
+      setPhotos(photos);
+      setFirstNames(firstNames);
+    });
+  }, [members]);
 
   const qrCode = useMemo(() => {
     const url = `https://vk.com/app7856384#roomId=${roomId}`;
@@ -86,7 +101,6 @@ const ShareCode = () => {
           QR-код для подключения
         </ModalPageHeader>
       }
-      dynamicContentHeight
     >
       <Div className={styles.share}>
         <Div className={styles.code} dangerouslySetInnerHTML={{ __html: qrCode.svg }} />
@@ -98,7 +112,7 @@ const ShareCode = () => {
         >
           Передайте его другим участникам. Либо используйте текстовый код:
           <br />
-          {roomId}
+          <Text weight='semibold'>{roomId}</Text>
         </Text>
 
         <Spacing size={24} style={{ width: '100%' }} />
