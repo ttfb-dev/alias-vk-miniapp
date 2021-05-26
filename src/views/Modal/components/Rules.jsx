@@ -16,7 +16,7 @@ import {
 } from '@vkontakte/vkui';
 import { Icon24Dismiss } from '@vkontakte/icons';
 
-import { general } from '../../store';
+import { general } from '../../../store';
 
 const Rules = () => {
   const platform = usePlatform();

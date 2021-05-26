@@ -4,12 +4,7 @@ import { ModalRoot } from '@vkontakte/vkui';
 
 import { general } from '../../store';
 
-import { CreateRoom } from './CreateRoom';
-import { EnterCode } from './EnterCode';
-import { QrCode } from './QrCode';
-import { Rules } from './Rules';
-import { ShareCode } from './ShareCode';
-import { Teams } from './Teams';
+import { CreateRoom, EnterCode, QrCode, Rules, ShareCode, Teams } from './components';
 
 const Modal = () => {
   const dispatch = useDispatch();

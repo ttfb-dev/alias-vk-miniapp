@@ -3,9 +3,9 @@ import { useDispatch } from 'react-redux';
 import { ModalCard, Div, MiniInfoCell, Button } from '@vkontakte/vkui';
 import { Icon16InfoCirle } from '@vkontakte/icons';
 
-import vkapi from '../../api';
-import { queryStringParse } from '../../helpers';
-import { general, room } from '../../store';
+import vkapi from '../../../api';
+import { queryStringParse } from '../../../helpers';
+import { general, room } from '../../../store';
 
 const QrCode = () => {
   const dispatch = useDispatch();

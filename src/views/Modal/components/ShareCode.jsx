@@ -20,8 +20,8 @@ import {
 import { Icon16InfoCirle, Icon16Done, Icon24Dismiss } from '@vkontakte/icons';
 import qr from '@vkontakte/vk-qr';
 
-import vkapi from '../../api';
-import { general } from '../../store';
+import vkapi from '../../../api';
+import { general } from '../../../store';
 
 import styles from './ShareCode.module.scss';
 

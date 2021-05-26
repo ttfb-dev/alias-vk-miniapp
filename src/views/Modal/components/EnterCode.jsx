@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { ModalCard, FormLayout, FormItem, Input, MiniInfoCell, Button } from '@vkontakte/vkui';
 import { Icon16InfoCirle } from '@vkontakte/icons';
 
-import { general } from '../../store';
+import { general } from '../../../store';
 
 const EnterCode = () => {
   const dispatch = useDispatch();
