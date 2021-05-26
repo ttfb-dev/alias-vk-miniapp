@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Tabbar, TabbarItem, Badge, Group, Div, Button, Spacing, UsersStack } from '@vkontakte/vkui';
+import { Tabbar, TabbarItem, Badge, Group, Div, Button, Spacing, UsersStack, FixedLayout } from '@vkontakte/vkui';
 import { Icon16Add, Icon28WorkOutline, Icon28ScanViewfinderOutline, Icon28InfoOutline } from '@vkontakte/icons';
 
 import vkapi from '../../api';
@@ -14,7 +14,13 @@ import styles from './index.module.scss';
 const Home = () => {
   const dispatch = useDispatch();
   const roomId = useSelector((state) => state.room.roomId);
-  const friendsPhotos = useSelector((state) => state.general.friends.map((friend) => friend.photo_50));
+  const photos = useSelector((state) => state.general.friends.map((friend) => friend.photo_50));
+  const firstNames = useSelector((state) => state.general.friends.map((friend) => friend.first_name));
+
+  const visibleCount = 4;
+  const othersFirstNameCount = Math.max(0, firstNames.length - visibleCount);
+  const canShowOthers = othersFirstNameCount > 0;
+  const firstNamesShown = firstNames.slice(0, visibleCount);
 
   useEffect(() => {
     app.getFriends().then((friends) => {
@@ -63,44 +69,48 @@ const Home = () => {
   return (
     <>
       <div className={styles.container}>
-        <div className={styles.background} />
-        <Logo />
-        <UsersStack photos={friendsPhotos} size='m' count={3} layout='vertical'>
-          Алексей, Илья, Михаил
-          <br />и ещё 3 человека
-        </UsersStack>
+        <div className={styles.wrapper}>
+          <div className={styles.background} />
+          <Logo />
+          <UsersStack photos={photos} size='m' visibleCount={visibleCount} layout='vertical'>
+            {firstNamesShown.reduce((acc, firstName, index) => `${acc}${index === 0 ? '' : ', '}${firstName}`, '')}
+            {canShowOthers && `и ещё ${othersFirstNameCount} человека`}
+          </UsersStack>
+        </div>
+
+        <FixedLayout vertical='bottom'>
+          <Group separator='hide' style={{ width: '100%' }}>
+            <Div>
+              <Button
+                mode='primary'
+                size='l'
+                stretched
+                before={<Icon16Add />}
+                onClick={() => dispatch(general.action.route({ activeModal: 'qr-code' }))}
+              >
+                Присоединиться
+              </Button>
+              <Spacing size={12} />
+
+              <Button
+                mode='primary'
+                size='l'
+                stretched
+                onClick={() => {
+                  if (roomId !== null) {
+                    dispatch(general.action.route({ activePanel: 'room' }));
+                  } else {
+                    dispatch.sync(room.action.create());
+                  }
+                }}
+              >
+                Создать комнату
+              </Button>
+            </Div>
+            <Spacing />
+          </Group>
+        </FixedLayout>
       </div>
-
-      <Group separator='hide' style={{ width: '100%' }}>
-        <Div>
-          <Button
-            mode='primary'
-            size='l'
-            stretched
-            before={<Icon16Add />}
-            onClick={() => dispatch(general.action.route({ activeModal: 'qr-code' }))}
-          >
-            Присоединиться
-          </Button>
-          <Spacing size={12} />
-
-          <Button
-            mode='primary'
-            size='l'
-            stretched
-            onClick={() => {
-              if (roomId !== null) {
-                dispatch(general.action.route({ activePanel: 'room' }));
-              } else {
-                dispatch.sync(room.action.create());
-              }
-            }}
-          >
-            Создать комнату
-          </Button>
-        </Div>
-        <Spacing />
-      </Group>
 
       {tabbar}
     </>
