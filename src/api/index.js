@@ -24,6 +24,16 @@ class API {
     return response;
   };
 
+  share = ({ link }) => {
+    this.bridge.send('VKWebAppShare', { link });
+  };
+
+  copyText = async ({ text }) => {
+    await this.bridge.send('VKWebAppCopyText', { text });
+
+    return true;
+  };
+
   openCodeReader = async () => {
     const { code_data } = await this.bridge.send('VKWebAppOpenCodeReader');
 
