@@ -7,7 +7,7 @@ import { AdaptivityProvider, ConfigProvider } from '@vkontakte/vkui';
 import '@vkontakte/vkui/dist/vkui.css';
 
 import { app } from './services';
-import { store, client } from './store';
+import { store } from './store';
 import { App } from './views';
 import { reportWebVitals } from './reportWebVitals';
 
@@ -16,7 +16,7 @@ app.init();
 ReactDOM.render(
   <ConfigProvider>
     <AdaptivityProvider>
-      <ClientContext.Provider value={client}>
+      <ClientContext.Provider value={store.client}>
         <Provider store={store}>
           <StrictMode>
             <App />

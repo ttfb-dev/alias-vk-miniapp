@@ -21,10 +21,10 @@ client.type(
   'logux/subscribe',
   (action, meta) => {
     if (action.channel === 'room/null') {
-      client.log.add({ type: 'logux/undo', id: meta.id, action, reason: 'wrong subscribe' });
+      client.log.changeMeta(meta.id, { reasons: [] });
     }
   },
-  { event: 'add' },
+  { event: 'preadd' },
 );
 
 const createStore = createStoreCreator(client);
@@ -43,4 +43,4 @@ if (process.env.NODE_ENV === 'development') {
 
 store.client.start();
 
-export { store, client, general, room };
+export { store, general, room };
