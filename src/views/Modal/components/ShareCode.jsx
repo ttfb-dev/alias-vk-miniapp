@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
   usePlatform,
@@ -15,8 +15,10 @@ import {
   Spacing,
   UsersStack,
   Button,
+  Snackbar,
+  Avatar,
 } from '@vkontakte/vkui';
-import { Icon16InfoCirle, Icon24Dismiss } from '@vkontakte/icons';
+import { Icon16InfoCirle, Icon16Done, Icon24Dismiss } from '@vkontakte/icons';
 import qr from '@vkontakte/vk-qr';
 
 import vkapi from '../../../api';
@@ -27,6 +29,7 @@ const ShareCode = ({ onClose, ...props }) => {
   const platform = usePlatform();
   const roomId = useSelector((state) => state.room.roomId);
   const members = useSelector((state) => state.general.members);
+  const [showCopyMessage, setShowCopyMessage] = useState(false);
 
   const photos = useMemo(() => {
     return members.map((member) => member.photo_50);
@@ -59,6 +62,26 @@ const ShareCode = ({ onClose, ...props }) => {
   const onCopyCode = async () => {
     await vkapi.copyText({ text: qrCode.url });
   };
+
+  useEffect(() => {
+    const events = (event) => {
+      if (!event.detail) {
+        return;
+      }
+
+      const { type, data } = event.detail;
+
+      if (type === 'VKWebAppCopyTextResult') {
+        if (data.result && !showCopyMessage) {
+          setShowCopyMessage(true);
+        }
+      }
+    };
+
+    vkapi.bridge.subscribe(events);
+
+    return () => vkapi.bridge.unsubscribe(events);
+  }, [showCopyMessage]);
 
   return (
     <ModalPage
@@ -120,6 +143,20 @@ const ShareCode = ({ onClose, ...props }) => {
           Для начала нужно 4 и более участников. После начала игры присоединиться новым участникам будет нельзя.
         </MiniInfoCell>
       </FixedLayout>
+
+      {showCopyMessage && (
+        <Snackbar
+          duration={3000}
+          onClose={() => setShowCopyMessage(false)}
+          before={
+            <Avatar size={24} style={{ background: 'var(--accent)' }}>
+              <Icon16Done fill='#fff' width={14} height={14} />
+            </Avatar>
+          }
+        >
+          Код скопирован
+        </Snackbar>
+      )}
     </ModalPage>
   );
 };
