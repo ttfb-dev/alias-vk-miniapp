@@ -5,7 +5,7 @@ const hashParams = queryStringParse(window.location.hash);
 const initialState = {
   status: '',
   roomId: hashParams.roomId ? parseInt(hashParams.roomId, 10) : null,
-  members: [],
+  memberIds: [],
   owner: '',
   myTeam: null,
   settings: null,
@@ -57,6 +57,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         ...payload.room,
+        memberIds: payload.room.members,
       };
     }
 
@@ -64,7 +65,7 @@ const reducer = (state = initialState, action) => {
     case 'room/user_left': {
       return {
         ...state,
-        members: payload.members,
+        memberIds: payload.members,
       };
     }
 

@@ -13,8 +13,8 @@ const token = window.location.search.substring(1) ?? '';
 const client = new CrossTabClient({
   subprotocol: '1.0.0',
   server: 'wss://mythanks.ru:443',
-  userId: userId,
-  token: token,
+  userId,
+  token,
 });
 
 client.type(
