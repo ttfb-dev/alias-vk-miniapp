@@ -33,6 +33,7 @@ if (process.env.NODE_ENV !== 'production') {
   import('./eruda').then(({ default: eruda }) => {
     window.eruda = eruda;
   });
+  window.sync = store.dispatch.sync;
 }
 
 if (process.env.NODE_ENV === 'production') {
