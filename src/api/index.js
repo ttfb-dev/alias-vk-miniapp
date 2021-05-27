@@ -12,8 +12,6 @@ class API {
   getAuthToken = async ({ app_id, scope }) => {
     const data = await this.bridge.send('VKWebAppGetAuthToken', { app_id, scope });
 
-    console.warn(data);
-
     return { access_token: data.access_token, scope: data.scope.split(',') };
   };
 
