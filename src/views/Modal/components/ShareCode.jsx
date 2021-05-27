@@ -1,8 +1,7 @@
-import React, { useState, useMemo, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import {
   usePlatform,
-  withModalRootContext,
   ANDROID,
   VKCOM,
   IOS,
@@ -22,36 +21,26 @@ import { Icon16InfoCirle, Icon16Done, Icon24Dismiss } from '@vkontakte/icons';
 import qr from '@vkontakte/vk-qr';
 
 import vkapi from '../../../api';
-import { app } from '../../../services';
-import { general } from '../../../store';
 
 import styles from './ShareCode.module.scss';
 
-const ShareCode = ({ updateModalHeight }) => {
+const ShareCode = ({ onClose, ...props }) => {
   const platform = usePlatform();
-  const dispatch = useDispatch();
   const roomId = useSelector((state) => state.room.roomId);
-  const members = useSelector((state) => state.room.members);
+  const members = useSelector((state) => state.general.members);
   const [showCopyMessage, setShowCopyMessage] = useState(false);
-  const [photos, setPhotos] = useState([]);
-  const [firstNames, setFirstNames] = useState([]);
+
+  const photos = useMemo(() => {
+    return members.map((member) => member.photo_50);
+  }, [members]);
+  const firstNames = useMemo(() => {
+    return members.map((member) => member.first_name);
+  }, [members]);
 
   const visibleCount = 4;
   const othersFirstNameCount = Math.max(0, firstNames.length - visibleCount);
   const canShowOthers = othersFirstNameCount > 0;
   const firstNamesShown = firstNames.slice(0, visibleCount);
-
-  useEffect(() => {
-    app.getUsers(members).then((users) => {
-      const photos = users.map((user) => user.photo_50);
-      const firstNames = users.map((user) => user.first_name);
-
-      setPhotos(photos);
-      setFirstNames(firstNames);
-
-      updateModalHeight();
-    });
-  }, [members, updateModalHeight]);
 
   const qrCode = useMemo(() => {
     const url = `https://vk.com/app7856384#roomId=${roomId}`;
@@ -79,19 +68,18 @@ const ShareCode = ({ updateModalHeight }) => {
 
   return (
     <ModalPage
-      id='share-code'
+      {...props}
+      onClose={onClose}
       header={
         <ModalPageHeader
           left={
             (platform === ANDROID || platform === VKCOM) && (
-              <PanelHeaderClose onClick={() => dispatch(general.action.route({ activeModal: null }))}>
-                Закрыть
-              </PanelHeaderClose>
+              <PanelHeaderClose onClick={onClose}>Закрыть</PanelHeaderClose>
             )
           }
           right={
             platform === IOS && (
-              <PanelHeaderClose onClick={() => dispatch(general.action.route({ activeModal: null }))}>
+              <PanelHeaderClose onClick={onClose}>
                 <Icon24Dismiss />
               </PanelHeaderClose>
             )
@@ -100,8 +88,6 @@ const ShareCode = ({ updateModalHeight }) => {
           QR-код для подключения
         </ModalPageHeader>
       }
-      onClose={() => dispatch(general.action.route({ activeModal: null }))}
-      dynamicContentHeight
     >
       <Div className={styles.share}>
         <Div className={styles.code} dangerouslySetInnerHTML={{ __html: qrCode.svg }} />
@@ -155,4 +141,4 @@ const ShareCode = ({ updateModalHeight }) => {
   );
 };
 
-export default withModalRootContext(ShareCode);
+export { ShareCode };

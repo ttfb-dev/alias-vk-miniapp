@@ -7,16 +7,11 @@ import vkapi from '../../../api';
 import { queryStringParse } from '../../../helpers';
 import { general, room } from '../../../store';
 
-const QrCode = () => {
+const QrCode = ({ onClose, ...props }) => {
   const dispatch = useDispatch();
 
   return (
-    <ModalCard
-      id='qr-code'
-      onClose={() => dispatch(general.action.route({ activeModal: null }))}
-      header='Отсканируйте QR-код'
-      subheader='или введите код комнаты'
-    >
+    <ModalCard {...props} onClose={onClose} header='Отсканируйте QR-код' subheader='или введите код комнаты'>
       <Div style={{ display: 'flex', gap: '12px' }}>
         <Button
           size='l'

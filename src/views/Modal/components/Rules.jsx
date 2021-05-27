@@ -1,5 +1,4 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import {
   usePlatform,
   ANDROID,
@@ -16,28 +15,23 @@ import {
 } from '@vkontakte/vkui';
 import { Icon24Dismiss } from '@vkontakte/icons';
 
-import { general } from '../../../store';
-
-const Rules = () => {
+const Rules = ({ onClose, ...props }) => {
   const platform = usePlatform();
-  const dispatch = useDispatch();
 
   return (
     <ModalPage
-      id='rules'
-      onClose={() => dispatch(general.action.route({ activeModal: null }))}
+      {...props}
+      onClose={onClose}
       header={
         <ModalPageHeader
           left={
             (platform === ANDROID || platform === VKCOM) && (
-              <PanelHeaderClose onClick={() => dispatch(general.action.route({ activeModal: null }))}>
-                Закрыть
-              </PanelHeaderClose>
+              <PanelHeaderClose onClick={onClose}>Закрыть</PanelHeaderClose>
             )
           }
           right={
             platform === IOS && (
-              <PanelHeaderClose onClick={() => dispatch(general.action.route({ activeModal: null }))}>
+              <PanelHeaderClose onClick={onClose}>
                 <Icon24Dismiss />
               </PanelHeaderClose>
             )
