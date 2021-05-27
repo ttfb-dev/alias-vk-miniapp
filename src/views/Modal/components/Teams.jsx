@@ -107,12 +107,12 @@ const Teams = ({ onClose, ...props }) => {
           ))}
         </Group>
       </List>
-      <Div>
-        <Button mode='secondary' size='m' stretched before={<Icon24Add />}>
-          Добавить команду
-        </Button>
-      </Div>
-      <FixedLayout vertical={'bottom'}>
+      <FixedLayout vertical='bottom'>
+        <Div>
+          <Button mode='secondary' size='m' stretched before={<Icon24Add />}>
+            Добавить команду
+          </Button>
+        </Div>
         <MiniInfoCell before={<Icon16InfoCirle />} textLevel='secondary' textWrap='full'>
           Для начала нужно 4 и более участников. После начала игры присоединиться новым участникам будет нельзя.
         </MiniInfoCell>

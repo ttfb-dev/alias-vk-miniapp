@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import {
   usePlatform,
@@ -15,10 +15,8 @@ import {
   Spacing,
   UsersStack,
   Button,
-  Snackbar,
-  Avatar,
 } from '@vkontakte/vkui';
-import { Icon16InfoCirle, Icon16Done, Icon24Dismiss } from '@vkontakte/icons';
+import { Icon16InfoCirle, Icon24Dismiss } from '@vkontakte/icons';
 import qr from '@vkontakte/vk-qr';
 
 import vkapi from '../../../api';
@@ -29,7 +27,6 @@ const ShareCode = ({ onClose, ...props }) => {
   const platform = usePlatform();
   const roomId = useSelector((state) => state.room.roomId);
   const members = useSelector((state) => state.general.members);
-  const [showCopyMessage, setShowCopyMessage] = useState(false);
 
   const photos = useMemo(() => {
     return members.map((member) => member.photo_50);
@@ -60,11 +57,7 @@ const ShareCode = ({ onClose, ...props }) => {
   };
 
   const onCopyCode = async () => {
-    const done = await vkapi.copyText({ text: qrCode.url });
-
-    if (done && !showCopyMessage) {
-      setShowCopyMessage(true);
-    }
+    await vkapi.copyText({ text: qrCode.url });
   };
 
   return (
@@ -112,34 +105,21 @@ const ShareCode = ({ onClose, ...props }) => {
       </Div>
       <Spacing size={24} style={{ width: '100%' }} />
 
-      <Div>
-        <div style={{ display: 'flex', gap: '12px', width: '100%', flexDirection: 'row' }}>
-          <Button size='l' mode='primary' stretched onClick={() => onShareCode()}>
-            Поделиться
-          </Button>
-          <Button size='l' mode='primary' stretched onClick={() => onCopyCode()}>
-            Скопировать
-          </Button>
-        </div>
-      </Div>
-      <FixedLayout vertical={'bottom'}>
+      <FixedLayout vertical='bottom'>
+        <Div>
+          <div className={styles.actions}>
+            <Button size='l' mode='primary' stretched onClick={() => onShareCode()}>
+              Поделиться
+            </Button>
+            <Button size='l' mode='primary' stretched onClick={() => onCopyCode()}>
+              Скопировать
+            </Button>
+          </div>
+        </Div>
         <MiniInfoCell before={<Icon16InfoCirle />} textLevel='secondary' textWrap='full'>
           Для начала нужно 4 и более участников. После начала игры присоединиться новым участникам будет нельзя.
         </MiniInfoCell>
       </FixedLayout>
-      {showCopyMessage && (
-        <Snackbar
-          duration={3000}
-          onClose={() => setShowCopyMessage(false)}
-          before={
-            <Avatar size={24} style={{ background: 'var(--accent)' }}>
-              <Icon16Done fill='#fff' width={14} height={14} />
-            </Avatar>
-          }
-        >
-          Ссылка скопирована
-        </Snackbar>
-      )}
     </ModalPage>
   );
 };

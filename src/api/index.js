@@ -29,9 +29,9 @@ class API {
   };
 
   copyText = async ({ text }) => {
-    await this.bridge.send('VKWebAppCopyText', { text });
+    const done = await this.bridge.send('VKWebAppCopyText', { text });
 
-    return true;
+    return done;
   };
 
   openCodeReader = async () => {

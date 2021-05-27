@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect } from 'react';
+import React, { useMemo, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSubscription } from '@logux/redux';
 import {
@@ -15,10 +15,19 @@ import {
   PanelHeaderBack,
   PanelSpinner,
   Title,
+  Snackbar,
+  Avatar,
 } from '@vkontakte/vkui';
-import { Icon28UserAddOutline, Icon28WorkOutline, Icon28QrCodeOutline, Icon28InfoOutline } from '@vkontakte/icons';
+import {
+  Icon16Done,
+  Icon28UserAddOutline,
+  Icon28WorkOutline,
+  Icon28QrCodeOutline,
+  Icon28InfoOutline,
+} from '@vkontakte/icons';
 import qr from '@vkontakte/vk-qr';
 
+import vkapi from '../../api';
 import app from '../../services';
 import { general, room } from '../../store';
 import { ReactComponent as Logo } from '../../assets/logo-mini.svg';
@@ -32,6 +41,7 @@ const Room = () => {
   const settings = useSelector((state) => state.room.settings);
   const memberIds = useSelector((state) => state.room.memberIds);
   const isSubscribing = useSubscription([`room/${roomId}`]);
+  const [showCopyMessage, setShowCopyMessage] = useState(false);
 
   const qrCode = useMemo(() => {
     const url = `https://vk.com/app7856384#roomId=${roomId}`;
@@ -50,6 +60,26 @@ const Room = () => {
       dispatch(general.action.setMembers({ members }));
     });
   }, [memberIds, dispatch]);
+
+  useEffect(() => {
+    const events = (event) => {
+      if (!event.detail) {
+        return;
+      }
+
+      const { type, data } = event.detail;
+
+      if (type === 'VKWebAppCopyTextResult') {
+        if (data.result && !showCopyMessage) {
+          setShowCopyMessage(true);
+        }
+      }
+    };
+
+    vkapi.bridge.subscribe(events);
+
+    return () => vkapi.bridge.unsubscribe(events);
+  }, [showCopyMessage]);
 
   const tabbar = (
     <Tabbar>
@@ -150,6 +180,20 @@ const Room = () => {
       </div>
 
       {tabbar}
+
+      {showCopyMessage && (
+        <Snackbar
+          duration={3000}
+          onClose={() => setShowCopyMessage(false)}
+          before={
+            <Avatar size={24} style={{ background: 'var(--accent)' }}>
+              <Icon16Done fill='#fff' width={14} height={14} />
+            </Avatar>
+          }
+        >
+          Ссылка скопирована
+        </Snackbar>
+      )}
     </Panel>
   );
 };
