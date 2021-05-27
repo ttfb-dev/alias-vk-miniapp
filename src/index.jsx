@@ -11,6 +11,9 @@ import { store } from './store';
 import { App } from './views';
 import { reportWebVitals } from './reportWebVitals';
 
+const isDev = process.env.NODE_ENV === 'devepolment';
+const isProd = process.env.NODE_ENV === 'production';
+
 app.init();
 
 ReactDOM.render(
@@ -28,13 +31,14 @@ ReactDOM.render(
   document.getElementById('root'),
 );
 
-if (process.env.NODE_ENV !== 'production') {
+if (isDev) {
   import('./eruda').then(({ default: eruda }) => {
     window.eruda = eruda;
   });
+
   window.sync = store.dispatch.sync;
 }
 
-if (process.env.NODE_ENV === 'production') {
+if (isProd) {
   reportWebVitals();
 }

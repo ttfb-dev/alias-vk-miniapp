@@ -6,8 +6,10 @@ import { createStoreCreator } from '@logux/redux';
 import { general } from './general';
 import { room } from './room';
 
+const isDev = process.env.NODE_ENV === 'development';
+
 const params = new URLSearchParams(window.location.search);
-const userId = params.get('vk_user_id') ?? process.env.REACT_APP_VK_USER_ID;
+const userId = params.get('vk_user_id') || (isDev && process.env.REACT_APP_VK_USER_ID) || '0';
 const token = window.location.search.substring(1) ?? '';
 
 const client = new CrossTabClient({
@@ -30,7 +32,7 @@ client.type(
 const createStore = createStoreCreator(client);
 const store = createStore(combineReducers({ general: general.reducer, room: room.reducer }));
 
-if (process.env.NODE_ENV === 'development') {
+if (isDev) {
   log(store.client);
   badge(store.client, {
     messages: badgeRu,
