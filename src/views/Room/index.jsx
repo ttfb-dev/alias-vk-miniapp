@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSubscription } from '@logux/redux';
 import {
@@ -19,6 +19,7 @@ import {
 import { Icon28UserAddOutline, Icon28WorkOutline, Icon28QrCodeOutline, Icon28InfoOutline } from '@vkontakte/icons';
 import qr from '@vkontakte/vk-qr';
 
+import { app } from '../../services';
 import { general, room } from '../../store';
 import { ReactComponent as Logo } from '../../assets/logo-mini.svg';
 import { ReactComponent as LogoBackground } from '../../assets/logo-bg.svg';
@@ -29,6 +30,7 @@ const Room = () => {
   const dispatch = useDispatch();
   const roomId = useSelector((state) => state.room.roomId);
   const settings = useSelector((state) => state.room.settings);
+  const memberIds = useSelector((state) => state.room.memberIds);
   const isSubscribing = useSubscription([`room/${roomId}`]);
 
   const qrCode = useMemo(() => {
@@ -42,6 +44,12 @@ const Room = () => {
 
     return { url, svg };
   }, [roomId]);
+
+  useEffect(() => {
+    app.getUsers(memberIds).then((members) => {
+      dispatch(general.action.setMembers({ members }));
+    });
+  }, [memberIds, dispatch]);
 
   const tabbar = (
     <Tabbar>
@@ -97,11 +105,11 @@ const Room = () => {
       >
         <Logo />
       </PanelHeader>
-      <PanelHeader separator={false} fixed={false} className={styles.subheader}>
+      <div className={styles.subheader}>
         <Title level={2} weight='semibold'>
           Комната «{`${settings?.name}`}»
         </Title>
-      </PanelHeader>
+      </div>
 
       <div className={styles.container}>
         <div className={styles.wrapper}>
