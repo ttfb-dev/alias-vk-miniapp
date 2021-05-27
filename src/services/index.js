@@ -2,13 +2,14 @@ import vkapi from '../api';
 
 class App {
   constructor() {
-    vkapi.getAuthToken({ app_id: 7856384, scope: 'friends' }).then(({ access_token }) => {
-      this.access_token = access_token;
-    });
+    this.access_token = null;
   }
 
   init = () => {
     vkapi.init();
+    vkapi.getAuthToken({ app_id: 7856384, scope: 'friends' }).then(({ access_token }) => {
+      this.access_token = access_token;
+    });
   };
 
   getUsers = async (userIds) => {
