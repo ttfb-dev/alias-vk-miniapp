@@ -19,7 +19,7 @@ import {
 import { Icon28UserAddOutline, Icon28WorkOutline, Icon28QrCodeOutline, Icon28InfoOutline } from '@vkontakte/icons';
 import qr from '@vkontakte/vk-qr';
 
-import { app } from '../../services';
+import app from '../../services';
 import { general, room } from '../../store';
 import { ReactComponent as Logo } from '../../assets/logo-mini.svg';
 import { ReactComponent as LogoBackground } from '../../assets/logo-bg.svg';

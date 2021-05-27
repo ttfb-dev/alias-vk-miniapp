@@ -6,7 +6,7 @@ import { AdaptivityProvider, ConfigProvider } from '@vkontakte/vkui';
 
 import '@vkontakte/vkui/dist/vkui.css';
 
-import { app } from './services';
+import app from './services';
 import { store } from './store';
 import { App } from './views';
 import { reportWebVitals } from './reportWebVitals';
@@ -29,7 +29,6 @@ ReactDOM.render(
 );
 
 if (process.env.NODE_ENV !== 'production') {
-  // eslint-disable-next-line
   import('./eruda').then(({ default: eruda }) => {
     window.eruda = eruda;
   });

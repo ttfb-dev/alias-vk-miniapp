@@ -15,7 +15,7 @@ import {
 import { Icon16Add, Icon28WorkOutline, Icon28ScanViewfinderOutline, Icon28InfoOutline } from '@vkontakte/icons';
 
 import vkapi from '../../api';
-import { app } from '../../services';
+import app from '../../services';
 import { queryStringParse } from '../../helpers';
 import { general, room } from '../../store';
 import { ReactComponent as Logo } from '../../assets/logo.svg';

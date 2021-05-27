@@ -7,7 +7,7 @@ import { general } from './general';
 import { room } from './room';
 
 const params = new URLSearchParams(window.location.search);
-const userId = params.get('vk_user_id') ?? process.env.REACT_APP_VK_USER_ID ?? '0';
+const userId = params.get('vk_user_id') ?? process.env.REACT_APP_VK_USER_ID;
 const token = window.location.search.substring(1) ?? '';
 
 const client = new CrossTabClient({
