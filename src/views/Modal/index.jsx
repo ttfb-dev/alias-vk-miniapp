@@ -18,7 +18,7 @@ const Modal = () => {
 
       <EnterCode id={'enter-code'} onClose={onClose} />
 
-      <ShareCode id={'share-code'} onClose={onClose} dynamicContentHeight />
+      <ShareCode id={'share-code'} onClose={onClose} dynamicContentHeight settlingHeight={100} />
 
       <CreateRoom id={'create-room'} onClose={onClose} dynamicContentHeight />
 

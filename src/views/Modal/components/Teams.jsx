@@ -16,6 +16,7 @@ import {
   MiniInfoCell,
   Button,
   Spacing,
+  FixedLayout,
 } from '@vkontakte/vkui';
 import { Icon16InfoCirle, Icon24Add, Icon24Dismiss } from '@vkontakte/icons';
 
@@ -48,7 +49,7 @@ const Teams = ({ onClose, ...props }) => {
   const getFirstNames = (teamId) => {
     const team = teams.filter((team) => team.teamId !== teamId)[0];
 
-    const teamMembers = members.filter((member) => team.members.indludes(member.id));
+    const teamMembers = members.filter((member) => team.members.inсludes(member.id));
 
     return `${teamMembers.reduce((acc, { first_name }, index) => `${acc}${index === 0 ? '' : ', '}${first_name}`, '')}`;
   };
@@ -110,10 +111,12 @@ const Teams = ({ onClose, ...props }) => {
         <Button mode='secondary' size='m' stretched before={<Icon24Add />}>
           Добавить команду
         </Button>
+      </Div>
+      <FixedLayout vertical={'bottom'}>
         <MiniInfoCell before={<Icon16InfoCirle />} textLevel='secondary' textWrap='full'>
           Для начала нужно 4 и более участников. После начала игры присоединиться новым участникам будет нельзя.
         </MiniInfoCell>
-      </Div>
+      </FixedLayout>
     </ModalPage>
   );
 };
