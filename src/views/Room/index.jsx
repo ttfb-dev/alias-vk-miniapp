@@ -151,7 +151,11 @@ const Room = () => {
                 </SimpleCell>
               </Card>
               <Card mode='outline' size='l' className={styles.card}>
-                <SimpleCell expandable indicator='2 из 15 выбрано'>
+                <SimpleCell
+                  expandable
+                  indicator='2 из 15 выбрано'
+                  onClick={() => dispatch(general.action.route({ activeModal: 'sets' }))}
+                >
                   Наборы слов
                 </SimpleCell>
               </Card>

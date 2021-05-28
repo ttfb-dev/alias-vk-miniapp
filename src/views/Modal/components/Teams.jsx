@@ -16,7 +16,6 @@ import {
   MiniInfoCell,
   Button,
   Spacing,
-  FixedLayout,
 } from '@vkontakte/vkui';
 import { Icon16InfoCirle, Icon24Add, Icon24Dismiss } from '@vkontakte/icons';
 
@@ -126,12 +125,10 @@ const Teams = ({ onClose, ...props }) => {
           Добавить команду
         </Button>
       </Div>
-      <FixedLayout vertical='bottom'>
-        <Spacing separator size={12} />
-        <MiniInfoCell before={<Icon16InfoCirle />} textLevel='secondary' textWrap='full'>
-          Для начала нужно 4 и более участников. После начала игры присоединиться новым участникам будет нельзя.
-        </MiniInfoCell>
-      </FixedLayout>
+      <Spacing separator size={12} />
+      <MiniInfoCell before={<Icon16InfoCirle />} textLevel='secondary' textWrap='full'>
+        Для начала нужно 4 и более участников. После начала игры присоединиться новым участникам будет нельзя.
+      </MiniInfoCell>
     </ModalPage>
   );
 };
