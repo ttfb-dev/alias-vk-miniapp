@@ -46,6 +46,10 @@ const CreateRoom = ({ onClose, ...props }) => {
         </ModalPageHeader>
       }
     >
+      <MiniInfoCell before={<Icon16InfoCirle />} textLevel='secondary' textWrap='full'>
+        После создания комнаты вы сможете предоставить код остальным участникам
+      </MiniInfoCell>
+
       <Div>
         <FormLayout>
           <Header mode='secondary'>Настройки</Header>
@@ -67,9 +71,6 @@ const CreateRoom = ({ onClose, ...props }) => {
             </Button>
           </FormItem>
         </FormLayout>
-        <MiniInfoCell before={<Icon16InfoCirle />} textLevel='secondary' textWrap='full'>
-          После создания комнаты вы сможете предоставить код остальным участникам
-        </MiniInfoCell>
       </Div>
     </ModalPage>
   );

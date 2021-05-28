@@ -2,17 +2,16 @@
   position: relative;
 
   flex: 1;
-  display: flex;
-  flex-direction: column;
 }
 
 .wrapper {
   position: absolute;
   overflow: hidden;
-  padding-top: 100px;
+  padding-top: 70px;
   width: 100%;
   height: 100%;
   z-index: -1;
+  box-sizing: border-box;
 
   flex: 1;
   display: flex;

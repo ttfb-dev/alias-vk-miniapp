@@ -5,7 +5,6 @@ import {
   ANDROID,
   VKCOM,
   IOS,
-  FixedLayout,
   ModalPage,
   ModalPageHeader,
   PanelHeaderClose,
@@ -106,6 +105,11 @@ const ShareCode = ({ onClose, ...props }) => {
         </ModalPageHeader>
       }
     >
+      <MiniInfoCell before={<Icon16InfoCirle />} textLevel='secondary' textWrap='full'>
+        Для начала нужно 4 и более участников. После начала игры присоединиться новым участникам будет нельзя.
+      </MiniInfoCell>
+      <Spacing separator size={12} />
+
       <Div>
         <Div className={styles.code} dangerouslySetInnerHTML={{ __html: qrCode.svg }} />
 
@@ -126,24 +130,18 @@ const ShareCode = ({ onClose, ...props }) => {
           {firstNamesShown.reduce((acc, firstName, index) => `${acc}${index === 0 ? '' : ', '}${firstName}`, '')}
           {canShowOthers && `и ещё ${othersFirstNameCount} человека`}
         </UsersStack>
-      </Div>
-      <Spacing size={24} />
 
-      <FixedLayout vertical='bottom'>
-        <Div>
-          <div className={styles.actions}>
-            <Button size='l' mode='primary' stretched onClick={() => onShareCode()}>
-              Поделиться
-            </Button>
-            <Button size='l' mode='primary' stretched onClick={() => onCopyCode()}>
-              Скопировать
-            </Button>
-          </div>
-        </Div>
-        <MiniInfoCell before={<Icon16InfoCirle />} textLevel='secondary' textWrap='full'>
-          Для начала нужно 4 и более участников. После начала игры присоединиться новым участникам будет нельзя.
-        </MiniInfoCell>
-      </FixedLayout>
+        <Spacing size={24} />
+
+        <div className={styles.actions}>
+          <Button size='l' mode='primary' stretched onClick={() => onShareCode()}>
+            Поделиться
+          </Button>
+          <Button size='l' mode='primary' stretched onClick={() => onCopyCode()}>
+            Скопировать
+          </Button>
+        </div>
+      </Div>
 
       {showCopyMessage && (
         <Snackbar

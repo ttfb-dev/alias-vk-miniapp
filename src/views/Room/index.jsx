@@ -31,12 +31,17 @@ import styles from './index.module.scss';
 
 const Room = () => {
   const dispatch = useDispatch();
+  const userId = useSelector((state) => state.general.userId);
+  const teams = useSelector((state) => state.room.teams);
   const roomId = useSelector((state) => state.room.roomId);
   const ownerId = useSelector((state) => state.room.ownerId);
-  const userId = useSelector((state) => state.general.userId);
   const settings = useSelector((state) => state.room.settings);
   const memberIds = useSelector((state) => state.room.memberIds);
   const isSubscribing = useSubscription([`room/${roomId}`]);
+
+  const teamsCompleted = useMemo(() => {
+    return teams.reduce((acc, team) => (acc += !!(team.members.length > 1)), 0);
+  }, [teams]);
 
   const qrCode = useMemo(() => {
     const url = `https://vk.com/app7856384#roomId=${roomId}`;
@@ -130,7 +135,7 @@ const Room = () => {
               <Card mode='outline' size='m' className={styles.card}>
                 <SimpleCell
                   onClick={() => dispatch(general.action.route({ activeModal: 'teams' }))}
-                  description='1 из 2'
+                  description={`${teamsCompleted} и ${teams.length}`}
                   expandable
                 >
                   Команды

@@ -12,7 +12,7 @@ const QrCode = ({ onClose, ...props }) => {
 
   return (
     <ModalCard {...props} onClose={onClose} header='Отсканируйте QR-код' subheader='или введите код комнаты'>
-      <Div style={{ display: 'flex', gap: '12px' }}>
+      <Div style={{ width: '100%', display: 'flex', gap: '12px' }}>
         <Button
           size='l'
           mode='primary'
