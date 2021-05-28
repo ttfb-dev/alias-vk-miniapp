@@ -2,6 +2,7 @@ import React, { useMemo, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSubscription } from '@logux/redux';
 import {
+  FixedLayout,
   Panel,
   Tabbar,
   TabbarItem,
@@ -15,8 +16,16 @@ import {
   PanelHeaderBack,
   PanelSpinner,
   Title,
+  Button,
+  Spacing,
 } from '@vkontakte/vkui';
-import { Icon28UserAddOutline, Icon28WorkOutline, Icon28QrCodeOutline, Icon28InfoOutline } from '@vkontakte/icons';
+import {
+  Icon16Add,
+  Icon28UserAddOutline,
+  Icon28WorkOutline,
+  Icon28QrCodeOutline,
+  Icon28InfoOutline,
+} from '@vkontakte/icons';
 import qr from '@vkontakte/vk-qr';
 
 import app from '../../services';
@@ -29,6 +38,8 @@ import styles from './index.module.scss';
 const Room = () => {
   const dispatch = useDispatch();
   const roomId = useSelector((state) => state.room.roomId);
+  const ownerId = useSelector((state) => state.room.ownerId);
+  const userId = useSelector((state) => state.general.userId);
   const settings = useSelector((state) => state.room.settings);
   const memberIds = useSelector((state) => state.room.memberIds);
   const isSubscribing = useSubscription([`room/${roomId}`]);
@@ -148,6 +159,17 @@ const Room = () => {
           </Group>
         )}
       </div>
+
+      {ownerId === userId && (
+        <FixedLayout vertical='bottom' style={{ zIndex: 'auto' }}>
+          <Div>
+            <Button mode='primary' size='l' stretched onClick={() => {}}>
+              Начать игру
+            </Button>
+          </Div>
+          <Spacing />
+        </FixedLayout>
+      )}
 
       {tabbar}
     </Panel>

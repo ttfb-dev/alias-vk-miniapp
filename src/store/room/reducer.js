@@ -6,7 +6,7 @@ const initialState = {
   status: '',
   roomId: hashParams.roomId ? parseInt(hashParams.roomId, 10) : null,
   memberIds: [],
-  owner: '',
+  ownerId: '',
   myTeamId: null,
   settings: null,
   teams: [],
@@ -83,6 +83,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         ...payload.room,
+        ownerId: payload.room.owner,
         memberIds: payload.room.members,
         myTeamId: payload.room.myTeam,
       };

@@ -28,7 +28,7 @@ const Teams = ({ onClose, ...props }) => {
   const teams = useSelector((state) => state.room.teams);
   const roomId = useSelector((state) => state.room.roomId);
   const myTeamId = useSelector((state) => state.room.myTeamId);
-  const ownerId = useSelector((state) => state.room.owner);
+  const ownerId = useSelector((state) => state.room.ownerId);
   const userId = useSelector((state) => state.general.userId);
   const members = useSelector((state) => state.general.members);
   const [isEditActive, setIsEditActive] = useState(false);
@@ -60,7 +60,7 @@ const Teams = ({ onClose, ...props }) => {
   const getFirstNames = (teamId) => {
     const team = teams.find((team) => team.teamId === teamId);
 
-    const teamMembers = members.filter((member) => (team?.members ?? []).includes(member.id));
+    const teamMembers = members.filter((member) => team?.members.includes(member.id));
 
     return `${teamMembers.reduce((acc, { first_name }, index) => `${acc}${index === 0 ? '' : ', '}${first_name}`, '')}`;
   };
@@ -104,7 +104,7 @@ const Teams = ({ onClose, ...props }) => {
     >
       <List>
         <Group>
-          {teams.map((team, index) => (
+          {teams.map((team) => (
             <Fragment key={team.teamId}>
               <Cell
                 name={team.name}
@@ -117,17 +117,17 @@ const Teams = ({ onClose, ...props }) => {
               >
                 {team.name}
               </Cell>
-              <Spacing separator size={24} />
             </Fragment>
           ))}
         </Group>
       </List>
+      <Div>
+        <Button mode='secondary' size='m' stretched before={<Icon24Add />} onClick={() => onCreate()}>
+          Добавить команду
+        </Button>
+      </Div>
       <FixedLayout vertical='bottom'>
-        <Div>
-          <Button mode='secondary' size='m' stretched before={<Icon24Add />} onClick={() => onCreate()}>
-            Добавить команду
-          </Button>
-        </Div>
+        <Spacing separator size={12} />
         <MiniInfoCell before={<Icon16InfoCirle />} textLevel='secondary' textWrap='full'>
           Для начала нужно 4 и более участников. После начала игры присоединиться новым участникам будет нельзя.
         </MiniInfoCell>
