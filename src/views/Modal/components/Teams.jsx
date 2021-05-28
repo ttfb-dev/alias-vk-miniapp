@@ -101,6 +101,11 @@ const Teams = ({ onClose, ...props }) => {
         </ModalPageHeader>
       }
     >
+      <MiniInfoCell before={<Icon16InfoCirle />} textLevel='secondary' textWrap='full'>
+        Для начала нужно 4 и более участников. После начала игры присоединиться новым участникам будет нельзя.
+      </MiniInfoCell>
+      <Spacing separator size={12} />
+
       <List>
         <Group>
           {teams.map((team) => (
@@ -125,10 +130,6 @@ const Teams = ({ onClose, ...props }) => {
           Добавить команду
         </Button>
       </Div>
-      <Spacing separator size={12} />
-      <MiniInfoCell before={<Icon16InfoCirle />} textLevel='secondary' textWrap='full'>
-        Для начала нужно 4 и более участников. После начала игры присоединиться новым участникам будет нельзя.
-      </MiniInfoCell>
     </ModalPage>
   );
 };
