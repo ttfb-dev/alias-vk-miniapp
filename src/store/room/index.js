@@ -1,4 +1,4 @@
-import { create, join, leave, whereIAm } from './action';
+import { create, join, leave, whereIAm, teamJoin, teamLeave, teamCreate, teamDelete } from './action';
 import { reducer } from './reducer';
 
 const room = {
@@ -7,6 +7,10 @@ const room = {
     join,
     leave,
     whereIAm,
+    teamJoin,
+    teamLeave,
+    teamCreate,
+    teamDelete,
   },
   reducer,
 };

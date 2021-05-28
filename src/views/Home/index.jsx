@@ -88,40 +88,40 @@ const Home = () => {
             {canShowOthers && `и ещё ${othersFirstNameCount} человека`}
           </UsersStack>
         </div>
-
-        <FixedLayout vertical='bottom' style={{ zIndex: 'auto' }}>
-          <Group separator='hide' style={{ width: '100%' }}>
-            <Div>
-              <Button
-                mode='primary'
-                size='l'
-                stretched
-                before={<Icon16Add />}
-                onClick={() => dispatch(general.action.route({ activeModal: 'qr-code' }))}
-              >
-                Присоединиться
-              </Button>
-              <Spacing size={12} />
-
-              <Button
-                mode='primary'
-                size='l'
-                stretched
-                onClick={() => {
-                  if (roomId !== null) {
-                    dispatch(general.action.route({ activePanel: 'room' }));
-                  } else {
-                    dispatch.sync(room.action.create());
-                  }
-                }}
-              >
-                Создать комнату
-              </Button>
-            </Div>
-            <Spacing />
-          </Group>
-        </FixedLayout>
       </div>
+
+      <FixedLayout vertical='bottom' style={{ zIndex: 'auto' }}>
+        <Group>
+          <Div>
+            <Button
+              mode='primary'
+              size='l'
+              stretched
+              before={<Icon16Add />}
+              onClick={() => dispatch(general.action.route({ activeModal: 'qr-code' }))}
+            >
+              Присоединиться
+            </Button>
+            <Spacing size={12} />
+
+            <Button
+              mode='primary'
+              size='l'
+              stretched
+              onClick={() => {
+                if (roomId !== null) {
+                  dispatch(general.action.route({ activePanel: 'room' }));
+                } else {
+                  dispatch.sync(room.action.create());
+                }
+              }}
+            >
+              Создать комнату
+            </Button>
+          </Div>
+          <Spacing />
+        </Group>
+      </FixedLayout>
 
       {tabbar}
     </Panel>

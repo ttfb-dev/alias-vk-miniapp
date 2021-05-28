@@ -27,7 +27,7 @@ const App = () => {
 
   useEffect(() => {
     if (roomId !== null) {
-      dispatch(general.action.route({ activePanel: 'room', activeModal: 'teams' }));
+      dispatch(general.action.route({ activePanel: 'room' /* , activeModal: 'teams' */ }));
     }
   }, [dispatch, roomId]);
 

@@ -116,17 +116,18 @@ const ShareCode = ({ onClose, ...props }) => {
         >
           Передайте его другим участникам. Либо используйте текстовый код:
           <br />
+          <Spacing size={12} />
           <Text weight='semibold'>{roomId}</Text>
         </Text>
 
-        <Spacing size={24} style={{ width: '100%' }} />
+        <Spacing size={24} />
 
         <UsersStack photos={photos} size='m' visibleCount={visibleCount} layout='vertical'>
           {firstNamesShown.reduce((acc, firstName, index) => `${acc}${index === 0 ? '' : ', '}${firstName}`, '')}
           {canShowOthers && `и ещё ${othersFirstNameCount} человека`}
         </UsersStack>
       </Div>
-      <Spacing size={24} style={{ width: '100%' }} />
+      <Spacing size={24} />
 
       <FixedLayout vertical='bottom'>
         <Div>

@@ -7,7 +7,7 @@ const initialState = {
   roomId: hashParams.roomId ? parseInt(hashParams.roomId, 10) : null,
   memberIds: [],
   owner: '',
-  myTeam: null,
+  myTeamId: null,
   settings: null,
   teams: [],
 };
@@ -53,11 +53,38 @@ const reducer = (state = initialState, action) => {
         ...payload,
       };
 
+    case 'room/team_join':
+    case 'room/team_leave':
+    case 'room/team_create':
+    case 'room/team_delete':
+    case 'room/join_team_error':
+    case 'room/leave_team_error':
+    case 'room/team_create_error':
+    case 'room/team_delete_error':
+      return state;
+    case 'room/join_team_success':
+    case 'room/leave_team_success': {
+      return {
+        ...state,
+        myTeamId: payload.myTeam,
+      };
+    }
+    case 'room/user_joined_team':
+    case 'room/user_left_team':
+    case 'room/team_created':
+    case 'room/team_deleted': {
+      return {
+        ...state,
+        teams: payload.teams,
+      };
+    }
+
     case 'room/state': {
       return {
         ...state,
         ...payload.room,
         memberIds: payload.room.members,
+        myTeamId: payload.room.myTeam,
       };
     }
 
