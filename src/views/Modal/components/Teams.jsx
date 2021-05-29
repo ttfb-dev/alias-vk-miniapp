@@ -60,7 +60,7 @@ const Teams = ({ onClose, ...props }) => {
   const getFirstNames = (teamId) => {
     const team = teams.find((team) => team.teamId === teamId);
 
-    const teamMembers = members.filter((member) => team?.members.includes(member.id));
+    const teamMembers = members.filter((member) => team?.memberIds.includes(member.id));
 
     return `${teamMembers.reduce((acc, { first_name }, index) => `${acc}${index === 0 ? '' : ', '}${first_name}`, '')}`;
   };
