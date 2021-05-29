@@ -17,8 +17,11 @@ import {
   Switch,
   Button,
   MiniInfoCell,
+  Spacing,
 } from '@vkontakte/vkui';
 import { Icon16InfoCirle, Icon24Dismiss } from '@vkontakte/icons';
+
+import styles from './index.module.scss';
 
 const CreateRoom = ({ onClose, ...props }) => {
   const platform = usePlatform();
@@ -46,10 +49,6 @@ const CreateRoom = ({ onClose, ...props }) => {
         </ModalPageHeader>
       }
     >
-      <MiniInfoCell before={<Icon16InfoCirle />} textLevel='secondary' textWrap='full'>
-        После создания комнаты вы сможете предоставить код остальным участникам
-      </MiniInfoCell>
-
       <Div>
         <FormLayout>
           <Header mode='secondary'>Настройки</Header>
@@ -72,6 +71,13 @@ const CreateRoom = ({ onClose, ...props }) => {
           </FormItem>
         </FormLayout>
       </Div>
+
+      <div className={styles.info}>
+        <Spacing separator size={12} />
+        <MiniInfoCell before={<Icon16InfoCirle />} textLevel='secondary' textWrap='full'>
+          После создания комнаты вы сможете предоставить код остальным участникам
+        </MiniInfoCell>
+      </div>
     </ModalPage>
   );
 };

@@ -19,8 +19,13 @@
 }
 
 .actions {
-  width: 100%;
-
   display: flex;
   gap: 12px;
+}
+
+.info {
+  position: sticky;
+  bottom: var(--safe-area-inset-bottom);
+  background: var(--background_content);
+  z-index: 1;
 }

@@ -21,6 +21,8 @@ import { Icon16InfoCirle, Icon24Add, Icon24Dismiss } from '@vkontakte/icons';
 
 import { room } from '../../../store';
 
+import styles from './index.module.scss';
+
 const Teams = ({ onClose, ...props }) => {
   const platform = usePlatform();
   const dispatch = useDispatch();
@@ -101,11 +103,6 @@ const Teams = ({ onClose, ...props }) => {
         </ModalPageHeader>
       }
     >
-      <MiniInfoCell before={<Icon16InfoCirle />} textLevel='secondary' textWrap='full'>
-        Для начала нужно 4 и более участников. После начала игры присоединиться новым участникам будет нельзя.
-      </MiniInfoCell>
-      <Spacing separator size={12} />
-
       <List>
         <Group>
           {teams.map((team) => (
@@ -125,11 +122,19 @@ const Teams = ({ onClose, ...props }) => {
           ))}
         </Group>
       </List>
-      <Div>
-        <Button mode='secondary' size='m' stretched before={<Icon24Add />} onClick={() => onCreate()}>
-          Добавить команду
-        </Button>
-      </Div>
+
+      <div className={styles.info}>
+        <Div>
+          <Button mode='secondary' size='m' stretched before={<Icon24Add />} onClick={() => onCreate()}>
+            Добавить команду
+          </Button>
+        </Div>
+
+        <Spacing separator size={12} />
+        <MiniInfoCell before={<Icon16InfoCirle />} textLevel='secondary' textWrap='full'>
+          Для начала нужно 4 и более участников. После начала игры присоединиться новым участникам будет нельзя.
+        </MiniInfoCell>
+      </div>
     </ModalPage>
   );
 };

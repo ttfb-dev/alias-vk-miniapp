@@ -22,7 +22,7 @@ import qr from '@vkontakte/vk-qr';
 
 import vkapi from '../../../api';
 
-import styles from './ShareCode.module.scss';
+import styles from './index.module.scss';
 
 const ShareCode = ({ onClose, ...props }) => {
   const platform = usePlatform();
@@ -105,11 +105,6 @@ const ShareCode = ({ onClose, ...props }) => {
         </ModalPageHeader>
       }
     >
-      <MiniInfoCell before={<Icon16InfoCirle />} textLevel='secondary' textWrap='full'>
-        Для начала нужно 4 и более участников. После начала игры присоединиться новым участникам будет нельзя.
-      </MiniInfoCell>
-      <Spacing separator size={12} />
-
       <Div>
         <Div className={styles.code} dangerouslySetInnerHTML={{ __html: qrCode.svg }} />
 
@@ -132,16 +127,23 @@ const ShareCode = ({ onClose, ...props }) => {
         </UsersStack>
 
         <Spacing size={24} />
+      </Div>
 
-        <div className={styles.actions}>
+      <div className={styles.info}>
+        <Div className={styles.actions}>
           <Button size='l' mode='primary' stretched onClick={() => onShareCode()}>
             Поделиться
           </Button>
           <Button size='l' mode='primary' stretched onClick={() => onCopyCode()}>
             Скопировать
           </Button>
-        </div>
-      </Div>
+        </Div>
+
+        <Spacing separator size={12} />
+        <MiniInfoCell before={<Icon16InfoCirle />} textLevel='secondary' textWrap='full'>
+          Для начала нужно 4 и более участников. После начала игры присоединиться новым участникам будет нельзя.
+        </MiniInfoCell>
+      </div>
 
       {showCopyMessage && (
         <Snackbar

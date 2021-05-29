@@ -17,6 +17,8 @@ import {
 } from '@vkontakte/vkui';
 import { Icon16InfoCirle, Icon24Dismiss } from '@vkontakte/icons';
 
+import styles from './index.module.scss';
+
 const Sets = ({ onClose, ...props }) => {
   const platform = usePlatform();
 
@@ -47,11 +49,6 @@ const Sets = ({ onClose, ...props }) => {
         </ModalPageHeader>
       }
     >
-      <MiniInfoCell before={<Icon16InfoCirle />} textLevel='secondary' textWrap='full'>
-        Все ваши купленные словари будут доступны всем участникам комнаты на период игры.
-      </MiniInfoCell>
-      <Spacing separator size={12} />
-
       <List>
         <SimpleCell hasActive={false} hasHover={false} before={<Avatar size={40} />} after={<Switch />}>
           Игорь Фёдоров
@@ -69,6 +66,13 @@ const Sets = ({ onClose, ...props }) => {
           Artur Stambultsian
         </SimpleCell>
       </List>
+
+      <div className={styles.info}>
+        <Spacing separator size={12} />
+        <MiniInfoCell before={<Icon16InfoCirle />} textLevel='secondary' textWrap='full'>
+          Все ваши купленные словари будут доступны всем участникам комнаты на период игры.
+        </MiniInfoCell>
+      </div>
     </ModalPage>
   );
 };

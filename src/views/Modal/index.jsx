@@ -24,7 +24,7 @@ const Modal = () => {
 
       <Teams id={'teams'} onClose={onClose} dynamicContentHeight settlingHeight={100} />
 
-      <Rules id={'rules'} onClose={onClose} dynamicContentHeight />
+      <Rules id={'rules'} onClose={onClose} dynamicContentHeight settlingHeight={100} />
 
       <Sets id={'sets'} onClose={onClose} dynamicContentHeight settlingHeight={100} />
     </ModalRoot>

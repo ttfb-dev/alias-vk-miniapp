@@ -7,12 +7,14 @@ import vkapi from '../../../api';
 import { queryStringParse } from '../../../helpers';
 import { general, room } from '../../../store';
 
+import styles from './index.module.scss';
+
 const QrCode = ({ onClose, ...props }) => {
   const dispatch = useDispatch();
 
   return (
     <ModalCard {...props} onClose={onClose} header='Отсканируйте QR-код' subheader='или введите код комнаты'>
-      <Div style={{ width: '100%', display: 'flex', gap: '12px' }}>
+      <Div className={styles.actions}>
         <Button
           size='l'
           mode='primary'
