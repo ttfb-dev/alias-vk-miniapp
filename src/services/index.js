@@ -16,16 +16,16 @@ class App {
     return users;
   };
 
-  getFriends = async () => {
+  getFriendsIn = async () => {
     const { access_token } = await vkapi.getAuthToken({ app_id: 7856384, scope: 'friends' });
 
-    const friendAppUsers = await vkapi.callAPIMethod({
+    const friendIdsIn = await vkapi.callAPIMethod({
       method: 'friends.getAppUsers',
       params: { v: '5.131', access_token },
     });
-    const friends = await this.getUsers(friendAppUsers);
+    const friendsIn = await this.getUsers(friendIdsIn);
 
-    return friends;
+    return friendsIn;
   };
 }
 

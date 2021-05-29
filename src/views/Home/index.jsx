@@ -34,7 +34,7 @@ const Home = () => {
   const firstNamesShown = firstNames.slice(0, visibleCount);
 
   useEffect(() => {
-    app.getFriends().then((friends) => {
+    app.getFriendsIn().then((friends) => {
       dispatch(general.action.setFriends({ friends }));
     });
   }, []); // eslint-disable-line
