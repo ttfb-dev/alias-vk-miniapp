@@ -40,7 +40,7 @@ const Room = () => {
   const isSubscribing = useSubscription([`room/${roomId}`]);
 
   const teamsCompleted = useMemo(() => {
-    return teams.reduce((acc, team) => (acc += !!(team.members.length > 1)), 0);
+    return teams.reduce((acc, team) => (acc += !!(team.memberIds.length > 1)), 0);
   }, [teams]);
 
   const qrCode = useMemo(() => {
