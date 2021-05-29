@@ -105,6 +105,22 @@ const ShareCode = ({ onClose, ...props }) => {
         </ModalPageHeader>
       }
     >
+      <div className={styles.info}>
+        <MiniInfoCell before={<Icon16InfoCirle />} textLevel='secondary' textWrap='full'>
+          Для начала нужно 4 и более участников. После начала игры присоединиться новым участникам будет нельзя.
+        </MiniInfoCell>
+        <Spacing separator size={12} />
+
+        <Div className={styles.actions}>
+          <Button size='l' mode='primary' stretched onClick={() => onShareCode()}>
+            Поделиться
+          </Button>
+          <Button size='l' mode='primary' stretched onClick={() => onCopyCode()}>
+            Скопировать
+          </Button>
+        </Div>
+      </div>
+
       <Div>
         <Div className={styles.code} dangerouslySetInnerHTML={{ __html: qrCode.svg }} />
 
@@ -128,22 +144,6 @@ const ShareCode = ({ onClose, ...props }) => {
 
         <Spacing size={24} />
       </Div>
-
-      <div className={styles.info}>
-        <Div className={styles.actions}>
-          <Button size='l' mode='primary' stretched onClick={() => onShareCode()}>
-            Поделиться
-          </Button>
-          <Button size='l' mode='primary' stretched onClick={() => onCopyCode()}>
-            Скопировать
-          </Button>
-        </Div>
-
-        <Spacing separator size={12} />
-        <MiniInfoCell before={<Icon16InfoCirle />} textLevel='secondary' textWrap='full'>
-          Для начала нужно 4 и более участников. После начала игры присоединиться новым участникам будет нельзя.
-        </MiniInfoCell>
-      </div>
 
       {showCopyMessage && (
         <Snackbar

@@ -25,7 +25,12 @@
 
 .info {
   position: sticky;
-  bottom: var(--safe-area-inset-bottom);
+  top: 0;
   background: var(--background_content);
   z-index: 1;
+}
+
+.teams {
+  display: flex;
+  flex-direction: column-reverse;
 }

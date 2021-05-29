@@ -49,6 +49,13 @@ const CreateRoom = ({ onClose, ...props }) => {
         </ModalPageHeader>
       }
     >
+      <div className={styles.info}>
+        <Spacing separator size={12} />
+        <MiniInfoCell before={<Icon16InfoCirle />} textLevel='secondary' textWrap='full'>
+          После создания комнаты вы сможете предоставить код остальным участникам
+        </MiniInfoCell>
+      </div>
+
       <Div>
         <FormLayout>
           <Header mode='secondary'>Настройки</Header>
@@ -71,13 +78,6 @@ const CreateRoom = ({ onClose, ...props }) => {
           </FormItem>
         </FormLayout>
       </Div>
-
-      <div className={styles.info}>
-        <Spacing separator size={12} />
-        <MiniInfoCell before={<Icon16InfoCirle />} textLevel='secondary' textWrap='full'>
-          После создания комнаты вы сможете предоставить код остальным участникам
-        </MiniInfoCell>
-      </div>
     </ModalPage>
   );
 };

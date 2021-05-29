@@ -103,8 +103,21 @@ const Teams = ({ onClose, ...props }) => {
         </ModalPageHeader>
       }
     >
+      <div className={styles.info}>
+        <MiniInfoCell before={<Icon16InfoCirle />} textLevel='secondary' textWrap='full'>
+          Для начала нужно 4 и более участников. После начала игры присоединиться новым участникам будет нельзя.
+        </MiniInfoCell>
+        <Spacing separator size={12} />
+
+        <Div>
+          <Button mode='secondary' size='m' stretched before={<Icon24Add />} onClick={() => onCreate()}>
+            Добавить команду
+          </Button>
+        </Div>
+      </div>
+
       <List>
-        <Group>
+        <div className={styles.teams}>
           {teams.map((team) => (
             <Fragment key={team.teamId}>
               <Cell
@@ -120,21 +133,8 @@ const Teams = ({ onClose, ...props }) => {
               </Cell>
             </Fragment>
           ))}
-        </Group>
+        </div>
       </List>
-
-      <div className={styles.info}>
-        <Div>
-          <Button mode='secondary' size='m' stretched before={<Icon24Add />} onClick={() => onCreate()}>
-            Добавить команду
-          </Button>
-        </Div>
-
-        <Spacing separator size={12} />
-        <MiniInfoCell before={<Icon16InfoCirle />} textLevel='secondary' textWrap='full'>
-          Для начала нужно 4 и более участников. После начала игры присоединиться новым участникам будет нельзя.
-        </MiniInfoCell>
-      </div>
     </ModalPage>
   );
 };
