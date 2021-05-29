@@ -18,15 +18,15 @@ const Modal = () => {
 
       <EnterCode id={'enter-code'} onClose={onClose} />
 
-      <ShareCode id={'share-code'} onClose={onClose} dynamicContentHeight settlingHeight={100} />
+      <ShareCode id={'share-code'} onClose={onClose} dynamicContentHeight settlingHeight={75} />
 
       <CreateRoom id={'create-room'} onClose={onClose} dynamicContentHeight />
 
-      <Teams id={'teams'} onClose={onClose} dynamicContentHeight settlingHeight={100} />
+      <Teams id={'teams'} onClose={onClose} dynamicContentHeight settlingHeight={75} />
 
-      <Rules id={'rules'} onClose={onClose} dynamicContentHeight settlingHeight={100} />
+      <Rules id={'rules'} onClose={onClose} dynamicContentHeight settlingHeight={75} />
 
-      <Sets id={'sets'} onClose={onClose} dynamicContentHeight settlingHeight={100} />
+      <Sets id={'sets'} onClose={onClose} dynamicContentHeight settlingHeight={75} />
     </ModalRoot>
   );
 };
