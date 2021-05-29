@@ -66,7 +66,7 @@ const reducer = (state = initialState, action) => {
     case 'room/leave_team_success': {
       return {
         ...state,
-        myTeamId: payload.myTeam,
+        myTeamId: payload.myTeamId,
       };
     }
     case 'room/user_joined_team':
@@ -83,9 +83,6 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         ...payload.room,
-        ownerId: payload.room.owner,
-        memberIds: payload.room.members,
-        myTeamId: payload.room.myTeam,
       };
     }
 
@@ -93,7 +90,7 @@ const reducer = (state = initialState, action) => {
     case 'room/user_left': {
       return {
         ...state,
-        memberIds: payload.members,
+        memberIds: payload.memberIds,
       };
     }
 
