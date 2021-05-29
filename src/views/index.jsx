@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppRoot, Root, Epic, View, ScreenSpinner } from '@vkontakte/vkui';
 
-import { general, room } from '../store';
+import { general, profile, room } from '../store';
 
 import { Home } from './Home';
 import { Room } from './Room';
@@ -18,6 +18,8 @@ const App = () => {
   useEffect(() => {
     if (roomId === null) {
       setIsLoading(true);
+
+      dispatch.sync(profile.action.getSets());
 
       dispatch.sync(room.action.whereIAm()).then(() => {
         setIsLoading(false);

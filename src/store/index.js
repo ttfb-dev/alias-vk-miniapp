@@ -4,6 +4,7 @@ import { badgeStyles } from '@logux/client/badge/styles';
 import { createStoreCreator } from '@logux/redux';
 
 import { general } from './general';
+import { profile } from './profile';
 import { room } from './room';
 
 const isDev = process.env.NODE_ENV === 'development';
@@ -30,7 +31,7 @@ client.type(
 );
 
 const createStore = createStoreCreator(client);
-const store = createStore(combineReducers({ general: general.reducer, room: room.reducer }));
+const store = createStore(combineReducers({ general: general.reducer, profile: profile.reducer, room: room.reducer }));
 
 if (isDev) {
   log(store.client);
@@ -45,4 +46,4 @@ if (isDev) {
 
 store.client.start();
 
-export { store, general, room };
+export { store, general, profile, room };

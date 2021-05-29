@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   usePlatform,
   ANDROID,
@@ -19,10 +20,33 @@ import {
 } from '@vkontakte/vkui';
 import { Icon16InfoCirle, Icon24Dismiss } from '@vkontakte/icons';
 
+import { profile } from '../../../store';
+
 import styles from './index.module.scss';
 
 const Sets = ({ onClose, ...props }) => {
   const platform = usePlatform();
+  const dispatch = useDispatch();
+  const sets = useSelector((state) => state.profile.sets);
+  const availableSets = useSelector((state) => state.profile.availableSets);
+
+  const onChange = useCallback(
+    (set) => {
+      if (set.status === 'active') {
+        dispatch.sync(profile.action.deactivateSet({ datasetId: set.datasetId }));
+      } else if (set.status === 'available') {
+        dispatch.sync(profile.action.activateSet({ datasetId: set.datasetId }));
+      }
+    },
+    [dispatch],
+  );
+
+  const onClick = useCallback(
+    (id) => {
+      dispatch.sync(profile.action.buySet({ datasetId: id }));
+    },
+    [dispatch],
+  );
 
   return (
     <ModalPage
@@ -47,88 +71,52 @@ const Sets = ({ onClose, ...props }) => {
             </>
           }
         >
-          Выбор команды
+          Наборы слов
         </ModalPageHeader>
       }
     >
       <div className={styles.info}>
         <MiniInfoCell before={<Icon16InfoCirle />} textLevel='secondary' textWrap='full'>
-          Все ваши купленные словари будут доступны всем участникам комнаты на период игры.
+          Все ваши купленные наборы будут доступны участникам комнаты на период игры.
         </MiniInfoCell>
         <Spacing separator size={12} />
       </div>
 
       <List>
         <Group>
-          <SimpleCell
-            hasActive={false}
-            hasHover={false}
-            before={<Avatar size={40} />}
-            after={<Switch />}
-            description='ahjsdjahsjdh ajshdj as'
-          >
-            Птицы
-          </SimpleCell>
-          <SimpleCell
-            hasActive={false}
-            hasHover={false}
-            before={<Avatar size={40} />}
-            after={<Switch />}
-            description='ahjsdjahsjdh ajshdj as'
-          >
-            Города
-          </SimpleCell>
-          <SimpleCell
-            hasActive={false}
-            hasHover={false}
-            before={<Avatar size={40} />}
-            after={<Switch />}
-            description='ahjsdjahsjdh ajshdj as'
-          >
-            Одежда
-          </SimpleCell>
+          {sets.map((set) => (
+            <SimpleCell
+              key={set.datasetId}
+              hasActive={false}
+              hasHover={false}
+              before={<Avatar size={40} />}
+              after={<Switch checked={set.status === 'active'} onChange={() => onChange(set)} />}
+              description={set.description}
+            >
+              {set.name}
+            </SimpleCell>
+          ))}
         </Group>
-        <Group header={<Header mode='secondary'>Доступны</Header>}>
-          <SimpleCell
-            hasActive={false}
-            hasHover={false}
-            before={<Avatar size={40} />}
-            after={
-              <Button size='s' onClick={() => {}}>
-                99₽
-              </Button>
-            }
-            description='ahjs jahsjdh ajshdj as'
-          >
-            Транспорт
-          </SimpleCell>
-          <SimpleCell
-            hasActive={false}
-            hasHover={false}
-            before={<Avatar size={40} />}
-            after={
-              <Button size='s' onClick={() => {}}>
-                99₽
-              </Button>
-            }
-            description='ahjsd jahsjdh ajshdj as'
-          >
-            География
-          </SimpleCell>
-          <SimpleCell
-            hasActive={false}
-            hasHover={false}
-            before={<Avatar size={40} />}
-            after={
-              <Button size='s' onClick={() => {}}>
-                99₽
-              </Button>
-            }
-            description='ahjsdjah sjdh ajshdj as'
-          >
-            Страны
-          </SimpleCell>
-        </Group>
+        {!!availableSets.length && (
+          <Group header={<Header mode='secondary'>Доступны</Header>}>
+            {availableSets.map((set) => (
+              <SimpleCell
+                key={set.datasetId}
+                hasActive={false}
+                hasHover={false}
+                before={<Avatar size={40} />}
+                after={
+                  <Button size='s' onClick={() => onClick(set.datasetId)}>
+                    {set.price / 100} ₽
+                  </Button>
+                }
+                description={set.description}
+              >
+                {set.name}
+              </SimpleCell>
+            ))}
+          </Group>
+        )}
       </List>
     </ModalPage>
   );
