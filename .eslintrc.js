@@ -12,7 +12,7 @@ module.exports = {
   },
 
   rules: {
-    'no-console': isProd ? ['error', { allow: ['warn', 'error'] }] : 'off',
+    'no-console': ['error', { allow: ['warn', 'error'] }],
     'no-debugger': isProd ? 'error' : 'off',
     'linebreak-style': 0,
     'import/prefer-default-export': 0,
