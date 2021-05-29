@@ -11,7 +11,6 @@ import {
   ModalPageHeader,
   Div,
   List,
-  Group,
   Cell,
   MiniInfoCell,
   Button,
