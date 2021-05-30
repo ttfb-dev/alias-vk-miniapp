@@ -38,9 +38,19 @@ const App = () => {
       { event: 'add' },
     );
 
+    const joinRoom = client.type(
+      room.action.join.type,
+      () => {
+        setIsLoading(true);
+      },
+      { event: 'add' },
+    );
+
     const joinRoomDone = client.type(
       `${room.action.join.type}_success`,
       () => {
+        setIsLoading(false);
+
         dispatch(general.action.route({ activePanel: 'room' /* , activeModal: 'teams' */ }));
       },
       { event: 'add' },
@@ -49,6 +59,7 @@ const App = () => {
     return () => {
       whereIAm();
       whereIAmDone();
+      joinRoom();
       joinRoomDone();
     };
   }, [client, dispatch]);

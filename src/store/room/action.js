@@ -1,6 +1,6 @@
 import { defineAction } from '@logux/actions';
 
-const setRoomId = defineAction('room/roomId');
+const setRoomId = defineAction('room/setRoomId');
 const create = defineAction('room/create');
 const join = defineAction('room/join');
 const leave = defineAction('room/leave');

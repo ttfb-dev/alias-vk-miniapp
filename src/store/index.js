@@ -40,12 +40,14 @@ if (isDev) {
 }
 
 store.client.start();
+if (userId) {
+  store.dispatch.sync(profile.action.getSets());
+}
 if (userId && !roomId) {
   store.dispatch.sync(room.action.whereIAm());
 } else if (userId && roomId) {
   store.dispatch(room.action.setRoomId({ roomId }));
   store.dispatch.sync(room.action.join({ roomId }));
 }
-store.dispatch.sync(profile.action.getSets());
 
 export { store, general, profile, room };
