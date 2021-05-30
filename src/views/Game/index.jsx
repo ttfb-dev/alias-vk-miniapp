@@ -1,18 +1,7 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  Panel,
-  PanelHeader,
-  PanelHeaderBack,
-  Title,
-  Headline,
-  Div,
-  Caption,
-  Spacing,
-  IconButton,
-} from '@vkontakte/vkui';
+import { Panel, PanelHeader, PanelHeaderBack, Title, Headline, Div, Caption, Spacing } from '@vkontakte/vkui';
 
-import app from '../../services';
 import { general, room } from '../../store';
 import { ReactComponent as Logo } from '../../assets/logo-mini.svg';
 import { ReactComponent as LogoBackground } from '../../assets/logo-bg.svg';
@@ -22,12 +11,17 @@ import styles from './index.module.scss';
 
 const Game = () => {
   const dispatch = useDispatch();
-  const userId = useSelector((state) => state.general.userId);
+  // const userId = useSelector((state) => state.general.userId);
   const teams = useSelector((state) => state.room.teams);
-  const roomId = useSelector((state) => state.room.roomId);
   const myTeamId = useSelector((state) => state.room.myTeamId);
-  const ownerId = useSelector((state) => state.room.ownerId);
-  const memberIds = useSelector((state) => state.room.memberIds);
+  // const ownerId = useSelector((state) => state.room.ownerId);
+  // const members = useSelector((state) => state.room.members);
+
+  const myTeam = useMemo(() => {
+    console.warn(teams, myTeamId);
+
+    return teams.find((team) => team.teamId === myTeamId);
+  }, [teams, myTeamId]);
 
   return (
     <Panel id='room'>
@@ -36,7 +30,7 @@ const Game = () => {
           <PanelHeaderBack
             onClick={() => {
               dispatch.sync(room.action.leave());
-              dispatch(general.action.route({ activePanel: 'home' }));
+              dispatch(general.action.route({ activePanel: 'room' }));
             }}
           />
         }
@@ -45,9 +39,11 @@ const Game = () => {
         <Logo />
       </PanelHeader>
       <div className={styles.subheader}>
-        <Title level={2} weight='semibold'>
-          Команда «{``}»
-        </Title>
+        {!!myTeam && (
+          <Title level={2} weight='semibold'>
+            Команда «{`${myTeam.name}`}»
+          </Title>
+        )}
       </div>
 
       <div className={styles.container}>

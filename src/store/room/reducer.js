@@ -83,6 +83,7 @@ const reducer = (state = initialState, action) => {
     case 'room/leave_team_success':
       return {
         ...state,
+        ...payload,
       };
 
     case 'room/user_joined_team':
