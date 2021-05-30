@@ -164,7 +164,7 @@ const Room = (props) => {
                 <SimpleCell
                   expandable
                   indicator={`${setsActive} из ${setsCount} выбрано`}
-                  onClick={() => dispatch(general.action.route({ activeModal: 'sets' }))}
+                  onClick={() => dispatch(general.action.route({ activeModal: 'room-sets' }))}
                 >
                   Наборы слов
                 </SimpleCell>
