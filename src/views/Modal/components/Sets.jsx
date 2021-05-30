@@ -34,7 +34,7 @@ const Sets = ({ onClose, ...props }) => {
     (set) => {
       if (set.status === 'active') {
         dispatch.sync(profile.action.deactivateSet({ datasetId: set.datasetId }));
-      } else if (set.status === 'available') {
+      } else if (set.status === 'inactive') {
         dispatch.sync(profile.action.activateSet({ datasetId: set.datasetId }));
       }
     },
