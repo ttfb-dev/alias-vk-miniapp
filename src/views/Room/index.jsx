@@ -116,9 +116,11 @@ const Room = () => {
         <Logo />
       </PanelHeader>
       <div className={styles.subheader}>
-        <Title level={2} weight='semibold'>
-          Комната «{`${settings?.name}`}»
-        </Title>
+        {settings?.name && (
+          <Title level={2} weight='semibold'>
+            Комната «{`${settings?.name}`}»
+          </Title>
+        )}
       </div>
 
       <div className={styles.container}>
