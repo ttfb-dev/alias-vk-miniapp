@@ -29,7 +29,7 @@ import { ReactComponent as LogoBackground } from '../../assets/logo-bg.svg';
 
 import styles from './index.module.scss';
 
-const Room = () => {
+const Room = (props) => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.general.userId);
   const teams = useSelector((state) => state.room.teams);
@@ -37,11 +37,21 @@ const Room = () => {
   const ownerId = useSelector((state) => state.room.ownerId);
   const settings = useSelector((state) => state.room.settings);
   const memberIds = useSelector((state) => state.room.memberIds);
+  const sets = useSelector((state) => state.room.sets);
+  const availableSets = useSelector((state) => state.room.availableSets);
   const isSubscribing = useSubscription([`room/${roomId}`]);
 
   const teamsCompleted = useMemo(() => {
     return teams.reduce((acc, team) => (acc += !!(team.memberIds.length > 1)), 0);
   }, [teams]);
+
+  const setsActive = useMemo(() => {
+    return sets.filter((set) => set.status === 'active').length;
+  }, [sets]);
+
+  const setsCount = useMemo(() => {
+    return sets.length + availableSets.length;
+  }, [sets, availableSets]);
 
   const qrCode = useMemo(() => {
     const url = `https://vk.com/app7856384#roomId=${roomId}`;
@@ -72,10 +82,10 @@ const Room = () => {
         <Icon28UserAddOutline />
       </TabbarItem>
       <TabbarItem
-        onClick={() => dispatch(general.action.route({ activeModal: 'sets' }))}
+        onClick={() => dispatch(general.action.route({ activeModal: 'room-sets' }))}
         indicator={<Badge mode='prominent' />}
         selected
-        data-story='sets'
+        data-story='room-sets'
         text='Наборы слов'
       >
         <Icon28WorkOutline />
@@ -100,7 +110,7 @@ const Room = () => {
   );
 
   return (
-    <Panel id='room'>
+    <Panel {...props}>
       <PanelHeader
         left={
           <PanelHeaderBack
@@ -153,7 +163,7 @@ const Room = () => {
               <Card mode='outline' size='l' className={styles.card}>
                 <SimpleCell
                   expandable
-                  indicator='2 из 15 выбрано'
+                  indicator={`${setsActive} из ${setsCount} выбрано`}
                   onClick={() => dispatch(general.action.route({ activeModal: 'sets' }))}
                 >
                   Наборы слов
@@ -167,7 +177,12 @@ const Room = () => {
       {ownerId === userId && (
         <FixedLayout vertical='bottom' style={{ zIndex: 'auto' }}>
           <Div>
-            <Button mode='primary' size='l' stretched onClick={() => {}}>
+            <Button
+              mode='primary'
+              size='l'
+              stretched
+              onClick={() => dispatch(general.action.route({ activePanel: 'game' }))}
+            >
               Начать игру
             </Button>
           </Div>

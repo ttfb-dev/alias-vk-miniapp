@@ -1,10 +1,12 @@
-import { setRoomId, setMembers, create, join, leave, whereIAm } from './action';
+import { setRoomId, setMembers, create, join, leave, whereIAm, activateSet, deactivateSet } from './action';
 
 const initialState = {
   status: '',
   roomId: null,
   memberIds: [],
   members: [],
+  sets: [],
+  availableSets: [],
   ownerId: '',
   myTeamId: null,
   settings: null,
@@ -78,32 +80,69 @@ const reducer = (state = initialState, action) => {
     case 'room/team_delete_error':
       return state;
     case 'room/join_team_success':
-    case 'room/leave_team_success': {
+    case 'room/leave_team_success':
       return {
         ...state,
       };
-    }
+
     case 'room/user_joined_team':
     case 'room/user_left_team':
     case 'room/team_created':
-    case 'room/team_deleted': {
+    case 'room/team_deleted':
       return {
         ...state,
         ...payload,
       };
-    }
 
     case 'room/state': {
+      const sets = payload.room.gameWordDatasets.filter((set) => ['active', 'inactive'].includes(set.status));
+      const availableSets = payload.room.gameWordDatasets.filter((set) => set.status === 'available');
+
       return {
         ...state,
         ...payload.room,
+        sets,
+        availableSets,
       };
     }
 
     case 'room/user_joined':
-    case 'room/user_left': {
+    case 'room/user_left':
       return {
         ...state,
+      };
+
+    case activateSet.type: {
+      const sets = state.sets.slice();
+      const setIndex = sets.findIndex((set) => set.datasetId === payload.datasetId);
+
+      sets[setIndex].status = 'active';
+
+      return {
+        ...state,
+        sets,
+      };
+    }
+    case deactivateSet.type: {
+      const sets = state.sets.slice();
+      const setIndex = sets.findIndex((set) => set.datasetId === payload.datasetId);
+
+      sets[setIndex].status = 'inactive';
+
+      return {
+        ...state,
+        sets,
+      };
+    }
+
+    case 'room/dataset_purchased': {
+      const sets = payload.gameWordDatasets.filter((set) => ['active', 'inactive'].includes(set.status));
+      const availableSets = payload.gameWordDatasets.filter((set) => set.status === 'available');
+
+      return {
+        ...state,
+        sets,
+        availableSets,
       };
     }
 

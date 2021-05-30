@@ -41,7 +41,7 @@ if (isDev) {
 
 store.client.start();
 if (userId) {
-  store.dispatch(general.action.setUserId({ userId }));
+  store.dispatch(general.action.setUserId({ userId: parseInt(userId, 10) }));
   store.dispatch.sync(profile.action.getSets());
 }
 if (userId && !roomId) {

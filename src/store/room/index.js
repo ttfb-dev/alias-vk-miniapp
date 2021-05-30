@@ -9,6 +9,8 @@ import {
   teamLeave,
   teamCreate,
   teamDelete,
+  activateSet,
+  deactivateSet,
 } from './action';
 import { reducer } from './reducer';
 
@@ -24,6 +26,8 @@ const room = {
     teamLeave,
     teamCreate,
     teamDelete,
+    activateSet,
+    deactivateSet,
   },
   reducer,
 };

@@ -1,5 +1,6 @@
 const initialState = {
   sets: [],
+  availableSets: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -10,8 +11,8 @@ const reducer = (state = initialState, action) => {
     case 'profile/activate_dataset_success':
     case 'profile/deactivate_dataset_success':
     case 'profile/buy_game_dataset_success': {
-      const sets = payload.datasets.filter((set) => set.status !== 'available_to_buy');
-      const availableSets = payload.datasets.filter((set) => set.status === 'available_to_buy');
+      const sets = payload.datasets.filter((set) => ['active', 'inactive'].includes(set.status));
+      const availableSets = payload.datasets.filter((set) => set.status === 'available');
 
       return {
         ...state,
