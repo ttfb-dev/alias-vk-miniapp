@@ -3,14 +3,19 @@ import { CrossTabClient, badge, badgeRu, log } from '@logux/client';
 import { badgeStyles } from '@logux/client/badge/styles';
 import { createStoreCreator } from '@logux/redux';
 
+import { queryStringParse } from '../helpers';
+
 import { general } from './general';
 import { profile } from './profile';
 import { room } from './room';
 
 const isDev = process.env.NODE_ENV === 'development';
 
-const params = new URLSearchParams(window.location.search);
-const userId = params.get('vk_user_id') || (isDev && process.env.REACT_APP_VK_USER_ID) || '0';
+const hashParams = queryStringParse(window.location.hash);
+const searchParams = queryStringParse(window.location.search);
+
+const roomId = parseInt(hashParams.roomId, 10);
+const userId = searchParams.vk_user_id || (isDev && process.env.REACT_APP_VK_USER_ID) || '0';
 const token = window.location.search.substring(1) ?? '';
 
 const client = new CrossTabClient({
@@ -19,16 +24,6 @@ const client = new CrossTabClient({
   userId,
   token,
 });
-
-client.type(
-  'logux/subscribe',
-  (action, meta) => {
-    if (action.channel === 'room/null') {
-      client.log.changeMeta(meta.id, { reasons: [] });
-    }
-  },
-  { event: 'preadd' },
-);
 
 const createStore = createStoreCreator(client);
 const store = createStore(combineReducers({ general: general.reducer, profile: profile.reducer, room: room.reducer }));
@@ -45,5 +40,12 @@ if (isDev) {
 }
 
 store.client.start();
+if (userId && !roomId) {
+  store.dispatch.sync(room.action.whereIAm());
+} else if (userId && roomId) {
+  store.dispatch(room.action.setRoomId({ roomId }));
+  store.dispatch.sync(room.action.join({ roomId }));
+}
+store.dispatch.sync(profile.action.getSets());
 
 export { store, general, profile, room };

@@ -1,10 +1,8 @@
-import { queryStringParse } from '../../helpers';
-
-const hashParams = queryStringParse(window.location.hash);
+import { setRoomId, create, join, leave, whereIAm } from './action';
 
 const initialState = {
   status: '',
-  roomId: hashParams.roomId ? parseInt(hashParams.roomId, 10) : null,
+  roomId: null,
   memberIds: [],
   ownerId: '',
   myTeamId: null,
@@ -16,38 +14,45 @@ const reducer = (state = initialState, action) => {
   const { type, ...payload } = action;
 
   switch (type) {
-    case 'room/create':
-    case 'room/create_error':
-      return state;
-    case 'room/create_success': {
-      return {
-        ...state,
-        ...payload,
-      };
-    }
+    case setRoomId.type:
+      return { ...state, ...payload };
 
-    case 'room/join':
-    case 'room/join_error':
+    case create.type:
+    case `${create.type}_error`:
       return state;
-    case 'room/join_success':
+    case `${create.type}_success`:
       return {
         ...state,
         ...payload,
       };
 
-    case 'room/leave':
-    case 'room/leave_error':
-      return state;
-    case 'room/leave_success':
+    case join.type:
       return {
         ...state,
         ...payload,
       };
 
-    case 'room/where_i_am':
-    case 'room/where_i_am_error':
+    case `${join.type}_error`:
       return state;
-    case 'room/where_i_am_success':
+    case `${join.type}_success`:
+      return {
+        ...state,
+        ...payload,
+      };
+
+    case leave.type:
+    case `${leave.type}_error`:
+      return state;
+    case `${leave.type}_success`:
+      return {
+        ...state,
+        ...payload,
+      };
+
+    case whereIAm.type:
+    case `${whereIAm.type}_error`:
+      return state;
+    case `${whereIAm.type}_success`:
       return {
         ...state,
         ...payload,
@@ -74,6 +79,7 @@ const reducer = (state = initialState, action) => {
     case 'room/team_deleted': {
       return {
         ...state,
+        ...payload,
       };
     }
 

@@ -24,7 +24,6 @@ import styles from './index.module.scss';
 
 const Home = () => {
   const dispatch = useDispatch();
-  const roomId = useSelector((state) => state.room.roomId);
   const photos = useSelector((state) => state.general.friends.map((friend) => friend.photo_50));
   const firstNames = useSelector((state) => state.general.friends.map((friend) => friend.first_name));
 
@@ -55,9 +54,10 @@ const Home = () => {
           const code = await vkapi.openCodeReader();
           const url = new URL(code);
           const hashParams = queryStringParse(url.hash);
+          const roomId = parseInt(hashParams?.roomId, 10);
 
-          if (hashParams?.roomId) {
-            dispatch.sync(room.action.join({ roomId: parseInt(hashParams.roomId, 10) }));
+          if (roomId) {
+            dispatch.sync(room.action.join({ roomId }));
           }
         }}
         selected
@@ -110,13 +110,11 @@ const Home = () => {
                 mode='primary'
                 size='l'
                 stretched
-                onClick={() => {
-                  if (roomId !== null) {
-                    dispatch(general.action.route({ activePanel: 'room' }));
-                  } else {
-                    dispatch.sync(room.action.create());
-                  }
-                }}
+                onClick={() =>
+                  dispatch
+                    .sync(room.action.create())
+                    .then(() => dispatch(general.action.route({ activePanel: 'room' })))
+                }
               >
                 Создать комнату
               </Button>
