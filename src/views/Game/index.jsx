@@ -29,7 +29,6 @@ const Game = () => {
         left={
           <PanelHeaderBack
             onClick={() => {
-              dispatch.sync(room.action.leave());
               dispatch(general.action.route({ activePanel: 'room' }));
             }}
           />
