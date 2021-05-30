@@ -22,7 +22,7 @@ import { ReactComponent as Logo } from '../../assets/logo.svg';
 
 import styles from './index.module.scss';
 
-const Home = () => {
+const Home = (props) => {
   const dispatch = useDispatch();
   const photos = useSelector((state) => state.general.friends.map((friend) => friend.photo_50));
   const firstNames = useSelector((state) => state.general.friends.map((friend) => friend.first_name));
@@ -78,7 +78,7 @@ const Home = () => {
   );
 
   return (
-    <Panel id='home'>
+    <Panel {...props}>
       <div className={styles.container}>
         <div className={styles.wrapper}>
           <div className={styles.background} />
