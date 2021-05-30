@@ -1,7 +1,8 @@
 import { defineAction } from '@logux/actions';
 
 const route = defineAction('general/route');
-const setFriends = defineAction('general/set_friends');
-const setMembers = defineAction('general/set_members');
+const setUserId = defineAction('general/setUserId');
+const setFriends = defineAction('general/setFriends');
+const setMembers = defineAction('general/setMembers');
 
-export { route, setFriends, setMembers };
+export { route, setUserId, setFriends, setMembers };

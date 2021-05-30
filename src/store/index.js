@@ -41,6 +41,7 @@ if (isDev) {
 
 store.client.start();
 if (userId) {
+  store.dispatch(general.action.setUserId({ userId }));
   store.dispatch.sync(profile.action.getSets());
 }
 if (userId && !roomId) {
