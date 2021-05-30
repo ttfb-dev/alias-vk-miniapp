@@ -67,3 +67,35 @@
 
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.08);
 }
+
+.current {
+  background: linear-gradient(90.12deg, #4986cc 0.11%, #71abef 99.91%);
+  border-radius: 10px;
+
+  display: flex;
+  justify-content: space-between;
+}
+
+.round {
+  box-sizing: border-box;
+  width: 110px;
+  height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 15px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+
+  & p {
+    margin: 0;
+    margin-top: -10px;
+
+    font-weight: bold;
+    font-size: 45px;
+    line-height: 20px;
+
+    color: #fff;
+    opacity: 0.72;
+  }
+}

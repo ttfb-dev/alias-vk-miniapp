@@ -1,15 +1,26 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Panel, PanelHeader, PanelHeaderBack, Group, Title, Div } from '@vkontakte/vkui';
+import {
+  Panel,
+  PanelHeader,
+  PanelHeaderBack,
+  Title,
+  Headline,
+  Div,
+  Caption,
+  Spacing,
+  IconButton,
+} from '@vkontakte/vkui';
 
 import app from '../../services';
 import { general, room } from '../../store';
 import { ReactComponent as Logo } from '../../assets/logo-mini.svg';
 import { ReactComponent as LogoBackground } from '../../assets/logo-bg.svg';
+import { ReactComponent as Hourglass } from '../../assets/hourglass.svg';
 
 import styles from './index.module.scss';
 
-const Home = () => {
+const Game = () => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.general.userId);
   const teams = useSelector((state) => state.room.teams);
@@ -45,14 +56,40 @@ const Home = () => {
           <LogoBackground />
         </div>
 
-        <Group>
+        <Div>
+          <Div className={styles.current}>
+            <div>
+              <Title level={2} weight='semibold' style={{ color: '#fff' }}>
+                Текущий круг
+              </Title>
+              <Spacing size={4} />
+
+              <Headline weight='regular' style={{ color: '#fff', opacity: 0.72 }}>
+                Отыграли 3 из 4 команд
+              </Headline>
+              <Spacing size={20} />
+
+              <Caption
+                caps
+                level={1}
+                weight='semibold'
+                style={{ color: '#fff', opacity: 0.5, display: 'flex', flexDirection: 'row', alignItems: 'center' }}
+              >
+                <Hourglass style={{ marginRight: '4px' }} />
+                Ожидание хода
+              </Caption>
+            </div>
+
+            <div className={styles.round}>
+              <p>2</p>
+            </div>
+          </Div>
           <Div></Div>
           <Div></Div>
-          <Div></Div>
-        </Group>
+        </Div>
       </div>
     </Panel>
   );
 };
 
-export { Home };
+export { Game };

@@ -5,6 +5,7 @@ import { AppRoot, Root, Epic, View, ScreenSpinner } from '@vkontakte/vkui';
 
 import { general, room } from '../store';
 
+import { Game } from './Game';
 import { Home } from './Home';
 import { Room } from './Room';
 import { Modal } from './Modal';
@@ -72,6 +73,8 @@ const App = () => {
             <Home id='home' />
 
             <Room id='room' />
+
+            <Game id='game' />
           </View>
         </Root>
       </Epic>
