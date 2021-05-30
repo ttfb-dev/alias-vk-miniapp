@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Panel, PanelHeader, PanelHeaderBack, Title, Headline, Div, Caption, Spacing } from '@vkontakte/vkui';
 
-import { general, room } from '../../store';
+import { general } from '../../store';
 import { ReactComponent as Logo } from '../../assets/logo-mini.svg';
 import { ReactComponent as LogoBackground } from '../../assets/logo-bg.svg';
 import { ReactComponent as Hourglass } from '../../assets/hourglass.svg';
