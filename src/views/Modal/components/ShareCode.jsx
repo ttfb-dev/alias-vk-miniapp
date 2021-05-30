@@ -27,7 +27,7 @@ import styles from './index.module.scss';
 const ShareCode = ({ onClose, ...props }) => {
   const platform = usePlatform();
   const roomId = useSelector((state) => state.room.roomId);
-  const members = useSelector((state) => state.general.members);
+  const members = useSelector((state) => state.room.members);
   const [showCopyMessage, setShowCopyMessage] = useState(false);
 
   const photos = useMemo(() => {

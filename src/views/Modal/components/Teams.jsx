@@ -25,12 +25,12 @@ import styles from './index.module.scss';
 const Teams = ({ onClose, ...props }) => {
   const platform = usePlatform();
   const dispatch = useDispatch();
+  const userId = useSelector((state) => state.general.userId);
   const teams = useSelector((state) => state.room.teams);
   const roomId = useSelector((state) => state.room.roomId);
   const myTeamId = useSelector((state) => state.room.myTeamId);
   const ownerId = useSelector((state) => state.room.ownerId);
-  const userId = useSelector((state) => state.general.userId);
-  const members = useSelector((state) => state.general.members);
+  const members = useSelector((state) => state.room.members);
   const [isEditActive, setIsEditActive] = useState(false);
 
   const onDelete = (teamId) => {
