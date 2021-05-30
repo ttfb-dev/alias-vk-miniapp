@@ -113,7 +113,7 @@ const Home = () => {
                 onClick={() =>
                   dispatch
                     .sync(room.action.create())
-                    .then(() => dispatch(general.action.route({ activePanel: 'room' })))
+                    .then(() => dispatch(general.action.route({ activePanel: 'room' /* , activeModal: 'teams' */ })))
                 }
               >
                 Создать комнату
