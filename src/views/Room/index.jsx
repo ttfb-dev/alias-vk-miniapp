@@ -57,7 +57,7 @@ const Room = () => {
 
   useEffect(() => {
     app.getUsers(memberIds).then((members) => {
-      dispatch(general.action.setMembers({ members }));
+      dispatch(room.action.setMembers({ members }));
     });
   }, [memberIds, dispatch]);
 
@@ -66,7 +66,7 @@ const Room = () => {
       <TabbarItem
         onClick={() => dispatch(general.action.route({ activeModal: 'teams' }))}
         selected
-        data-story='sets'
+        data-story='teams'
         text='Команды'
       >
         <Icon28UserAddOutline />
@@ -83,7 +83,7 @@ const Room = () => {
       <TabbarItem
         onClick={() => dispatch(general.action.route({ activeModal: 'share-code' }))}
         selected
-        data-story='qr-code'
+        data-story='share-code'
         text='QR-код'
       >
         <Icon28QrCodeOutline />
