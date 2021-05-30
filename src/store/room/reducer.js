@@ -1,9 +1,10 @@
-import { setRoomId, create, join, leave, whereIAm } from './action';
+import { setRoomId, setMembers, create, join, leave, whereIAm } from './action';
 
 const initialState = {
   status: '',
   roomId: null,
   memberIds: [],
+  members: [],
   ownerId: '',
   myTeamId: null,
   settings: null,
@@ -15,7 +16,16 @@ const reducer = (state = initialState, action) => {
 
   switch (type) {
     case setRoomId.type:
-      return { ...state, ...payload };
+      return {
+        ...state,
+        ...payload,
+      };
+
+    case setMembers.type:
+      return {
+        ...state,
+        ...payload,
+      };
 
     case create.type:
     case `${create.type}_error`:

@@ -1,11 +1,10 @@
-import { route, setUserId, setFriends, setMembers } from './action';
+import { route, setUserId, setFriends } from './action';
 
 const initialState = {
   activeView: 'home',
   activePanel: 'home',
   activeModal: null,
   friends: [],
-  members: [],
   userId: null,
 };
 
@@ -26,12 +25,6 @@ const reducer = (state = initialState, action) => {
       };
 
     case setFriends.type:
-      return {
-        ...state,
-        ...payload,
-      };
-
-    case setMembers.type:
       return {
         ...state,
         ...payload,
