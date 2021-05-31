@@ -12,7 +12,6 @@ import {
   List,
   SimpleCell,
   Avatar,
-  FixedLayout,
   Button,
 } from '@vkontakte/vkui';
 
@@ -85,7 +84,7 @@ const Game = (props) => {
             </div>
 
             <div className={styles.round}>
-              <p>2</p>
+              <p className={styles.count}>2</p>
             </div>
           </Div>
           <Div className={styles.teamWrapper}>
