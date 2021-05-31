@@ -60,6 +60,7 @@ const Room = (props) => {
       qrSize: 256,
       isShowLogo: true,
       foregroundColor: '#4680c2',
+      className: styles.qrCode,
     });
 
     return { url, svg };
@@ -153,7 +154,7 @@ const Room = (props) => {
                 </SimpleCell>
               </Card>
               <Card mode='outline' size='m' className={styles.card}>
-                <Div className={styles.code} dangerouslySetInnerHTML={{ __html: qrCode.svg }} />
+                <Div className={styles.qrCodeWrapper} dangerouslySetInnerHTML={{ __html: qrCode.svg }} />
               </Card>
               <Card mode='outline' size='m' className={styles.card}>
                 <SimpleCell description='8 игр' expandable>

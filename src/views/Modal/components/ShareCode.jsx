@@ -49,6 +49,7 @@ const ShareCode = ({ onClose, ...props }) => {
       qrSize: 256,
       isShowLogo: true,
       foregroundColor: '#4680c2',
+      className: styles.qrCode,
     });
 
     return { url, svg };
@@ -122,7 +123,7 @@ const ShareCode = ({ onClose, ...props }) => {
       </div>
 
       <Div>
-        <Div className={styles.code} dangerouslySetInnerHTML={{ __html: qrCode.svg }} />
+        <Div className={styles.qrCodeWrapper} dangerouslySetInnerHTML={{ __html: qrCode.svg }} />
 
         <Text
           style={{

@@ -1,83 +1,87 @@
 .container {
   position: relative;
 
-  flex: 1;
   display: flex;
+
+  flex: 1;
   flex-direction: column;
 }
 
 .wrapper {
   position: absolute;
-  overflow: hidden;
-  width: 100%;
-  height: 100%;
   z-index: -1;
 
-  flex: 1;
   display: flex;
+
+  flex: 1;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 .background {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 
   &::before {
-    content: '';
-    background: linear-gradient(180deg, #4986cc 0%, #4986cc 100%);
-    opacity: 0.2;
-
     position: absolute;
     top: calc(-65vh - 10px);
     left: calc(-65vw - 100px);
-    width: 130vh;
-    height: 130vh;
-    border-radius: 50%;
 
     z-index: -1;
+
+    width: 130vh;
+    height: 130vh;
+
+    background: linear-gradient(180deg, #4986cc 0%, #4986cc 100%);
+    border-radius: 50%;
+    opacity: 0.2;
+
+    content: '';
   }
 
   &::after {
-    content: '';
-    background: #4986cc;
-    opacity: 0.2;
-
     position: absolute;
     top: -65vh;
     left: -65vw;
-    width: 130vh;
-    height: 130vh;
-    border-radius: 50%;
 
     z-index: -1;
+
+    width: 130vh;
+    height: 130vh;
+
+    background: #4986cc;
+    border-radius: 50%;
+    opacity: 0.2;
+
+    content: '';
   }
 }
 
 .grid {
-  justify-content: initial;
-
   display: grid;
   grid-template-areas:
     'a b'
     'c b'
     'd d';
-  grid-template-columns: 1fr 1fr;
   grid-template-rows: repeat(2, 21.8vw) 56px;
+  grid-template-columns: 1fr 1fr;
   gap: 8px;
+  justify-content: initial;
 }
 
 .card {
-  margin: 0 !important;
-  width: initial !important;
-  height: 100%;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
+  width: initial !important;
+  height: 100%;
+  margin: 0 !important;
 
   &:nth-child(2) {
     grid-area: b;
@@ -87,26 +91,26 @@
   }
 }
 
-.code {
+.qrCodeWrapper {
   box-sizing: border-box;
-  line-height: 0;
 
   width: 100%;
   height: 100%;
 
-  & > svg {
-    width: 100%;
-    height: 100%;
-  }
+  line-height: 0;
+}
+
+.qrCode {
+  width: 100%;
+  height: 100%;
 }
 
 .subheader {
-  height: 52px;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  height: 52px;
 
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.08);
 }
