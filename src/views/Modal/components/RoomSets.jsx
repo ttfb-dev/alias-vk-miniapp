@@ -33,7 +33,6 @@ const RoomSets = ({ onClose, ...props }) => {
 
   const onChange = useCallback(
     (set) => {
-      console.warn(set.status);
       if (set.status === 'active') {
         dispatch.sync(room.action.deactivateSet({ datasetId: set.datasetId, roomId }));
       } else if (set.status === 'inactive') {

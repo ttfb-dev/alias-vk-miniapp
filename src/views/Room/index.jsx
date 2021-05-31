@@ -66,7 +66,7 @@ const Room = (props) => {
   }, [roomId]);
 
   useEffect(() => {
-    app.getUsers(memberIds).then((members) => {
+    app.getUserProfiles(memberIds).then((members) => {
       dispatch(room.action.setMembers({ members }));
     });
   }, [memberIds, dispatch]);
