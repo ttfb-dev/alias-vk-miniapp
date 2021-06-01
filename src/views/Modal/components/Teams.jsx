@@ -50,7 +50,7 @@ const Teams = ({ onClose, ...props }) => {
         }
       }
     },
-    [isEditActive, roomId, myTeamId, dispatch],
+    [dispatch, isEditActive, roomId, myTeamId],
   );
 
   const onCreate = () => {
@@ -109,7 +109,7 @@ const Teams = ({ onClose, ...props }) => {
         <Spacing separator size={12} />
 
         <Div>
-          <Button mode='secondary' size='m' stretched before={<Icon24Add />} onClick={() => onCreate()}>
+          <Button mode='secondary' size='m' stretched before={<Icon24Add />} onClick={onCreate}>
             Добавить команду
           </Button>
         </Div>

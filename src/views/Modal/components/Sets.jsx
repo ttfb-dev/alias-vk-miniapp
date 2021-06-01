@@ -41,12 +41,9 @@ const Sets = ({ onClose, ...props }) => {
     [dispatch],
   );
 
-  const onClick = useCallback(
-    (id) => {
-      dispatch.sync(profile.action.buySet({ datasetId: id }));
-    },
-    [dispatch],
-  );
+  const onClick = (id) => {
+    dispatch.sync(profile.action.buySet({ datasetId: id }));
+  };
 
   return (
     <ModalPage

@@ -42,12 +42,9 @@ const RoomSets = ({ onClose, ...props }) => {
     [dispatch, roomId],
   );
 
-  const onClick = useCallback(
-    (setId) => {
-      dispatch.sync(profile.action.buySet({ datasetId: setId }));
-    },
-    [dispatch],
-  );
+  const onClick = (setId) => {
+    dispatch.sync(profile.action.buySet({ datasetId: setId }));
+  };
 
   return (
     <ModalPage

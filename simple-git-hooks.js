@@ -1,3 +1,3 @@
 module.exports = {
-  'pre-commit': 'yarn lint-staged',
+  'pre-push': 'yarn lint-staged',
 };

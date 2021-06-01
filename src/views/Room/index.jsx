@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useCallback, useState } from 'react';
+import React, { useMemo, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSubscription } from '@logux/redux';
 import {
@@ -82,23 +82,20 @@ const Room = (props) => {
     });
   }, [memberIds, dispatch]);
 
-  const onExit = useCallback(() => {
+  const onExit = () => {
     dispatch.sync(room.action.leave());
     dispatch(general.action.route({ activePanel: 'home' }));
-  }, [dispatch]);
+  };
+
+  const onRoute = (route) => dispatch(general.action.route(route));
 
   const tabbar = (
     <Tabbar>
-      <TabbarItem
-        onClick={() => dispatch(general.action.route({ activeModal: 'teams' }))}
-        selected
-        data-story='teams'
-        text='Команды'
-      >
+      <TabbarItem onClick={() => onRoute({ activeModal: 'teams' })} selected data-story='teams' text='Команды'>
         <Icon28UserAddOutline />
       </TabbarItem>
       <TabbarItem
-        onClick={() => dispatch(general.action.route({ activeModal: 'room-sets' }))}
+        onClick={() => onRoute({ activeModal: 'room-sets' })}
         indicator={<Badge mode='prominent' />}
         selected
         data-story='room-sets'
@@ -106,20 +103,10 @@ const Room = (props) => {
       >
         <Icon28WorkOutline />
       </TabbarItem>
-      <TabbarItem
-        onClick={() => dispatch(general.action.route({ activeModal: 'share-code' }))}
-        selected
-        data-story='share-code'
-        text='QR-код'
-      >
+      <TabbarItem onClick={() => onRoute({ activeModal: 'share-code' })} selected data-story='share-code' text='QR-код'>
         <Icon28QrCodeOutline />
       </TabbarItem>
-      <TabbarItem
-        onClick={() => dispatch(general.action.route({ activeModal: 'rules' }))}
-        selected
-        data-story='rules'
-        text='Правила'
-      >
+      <TabbarItem onClick={() => onRoute({ activeModal: 'rules' })} selected data-story='rules' text='Правила'>
         <Icon28InfoOutline />
       </TabbarItem>
     </Tabbar>
@@ -127,7 +114,7 @@ const Room = (props) => {
 
   return (
     <Panel {...props}>
-      <PanelHeader left={<PanelHeaderBack onClick={() => onExit()} />} separator={false} shadow={true}>
+      <PanelHeader left={<PanelHeaderBack onClick={onExit} />} separator={false} shadow={true}>
         <PanelHeaderContent
           before={
             <div style={{ lineHeight: 0 }}>
@@ -147,7 +134,7 @@ const Room = (props) => {
       </PanelHeader>
       <PanelHeaderContext opened={isOpened} onClose={() => setIsOpened(!isOpened)}>
         <List>
-          <CellButton mode='danger' centered onClick={() => onExit()}>
+          <CellButton mode='danger' centered onClick={onExit}>
             Выйти из комнаты
           </CellButton>
         </List>
@@ -175,7 +162,7 @@ const Room = (props) => {
                   Команды
                 </CellButton> */}
                 <SimpleCell
-                  onClick={() => dispatch(general.action.route({ activeModal: 'teams' }))}
+                  onClick={() => onRoute({ activeModal: 'teams' })}
                   description={`${teamsCompleted} и ${teams.length}`}
                   expandable
                 >
@@ -194,7 +181,7 @@ const Room = (props) => {
                 <SimpleCell
                   expandable
                   indicator={`${setsActive} из ${setsCount} выбрано`}
-                  onClick={() => dispatch(general.action.route({ activeModal: 'room-sets' }))}
+                  onClick={() => onRoute({ activeModal: 'room-sets' })}
                 >
                   Наборы слов
                 </SimpleCell>
@@ -207,12 +194,7 @@ const Room = (props) => {
       <div className={styles.fixedLayout}>
         {userId === ownerId ? (
           <Div>
-            <Button
-              mode='primary'
-              size='l'
-              stretched
-              onClick={() => dispatch(general.action.route({ activePanel: 'game' }))}
-            >
+            <Button mode='primary' size='l' stretched onClick={() => onRoute({ activePanel: 'game' })}>
               Начать игру
             </Button>
           </Div>

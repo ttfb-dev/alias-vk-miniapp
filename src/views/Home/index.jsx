@@ -25,16 +25,36 @@ const Home = (props) => {
     return declension(othersFirstNameCount, ['человек', 'человека', 'человек']);
   }, [othersFirstNameCount]);
 
+  const getFirstNames = useMemo(() => {
+    return firstNamesShown.reduce((acc, firstName, index) => `${acc}${index === 0 ? '' : ', '}${firstName}`, '');
+  }, [firstNamesShown]);
+
   useEffect(() => {
     app.getFriendProfiles().then((friends) => {
       dispatch(general.action.setFriends({ friends }));
     });
   }, []); // eslint-disable-line
 
+  const onRoute = (route) => dispatch(general.action.route(route));
+
+  const onScanQR = async () => {
+    const code = await vkapi.openCodeReader();
+    const url = new URL(code);
+    const hashParams = queryStringParse(url.hash);
+    const roomId = parseInt(hashParams?.roomId, 10);
+
+    if (roomId) {
+      dispatch.sync(room.action.join({ roomId }));
+    }
+  };
+
+  const onCreate = () =>
+    dispatch.sync(room.action.create()).then(() => onRoute({ activePanel: 'room' /* , activeModal: 'teams' */ }));
+
   const tabbar = (
     <Tabbar>
       <TabbarItem
-        onClick={() => dispatch(general.action.route({ activeModal: 'sets' }))}
+        onClick={() => onRoute({ activeModal: 'sets' })}
         indicator={<Badge mode='prominent' />}
         selected
         data-story='sets'
@@ -42,29 +62,10 @@ const Home = (props) => {
       >
         <Icon28WorkOutline />
       </TabbarItem>
-      <TabbarItem
-        onClick={async () => {
-          const code = await vkapi.openCodeReader();
-          const url = new URL(code);
-          const hashParams = queryStringParse(url.hash);
-          const roomId = parseInt(hashParams?.roomId, 10);
-
-          if (roomId) {
-            dispatch.sync(room.action.join({ roomId }));
-          }
-        }}
-        selected
-        data-story='qr-code'
-        text='QR-код'
-      >
+      <TabbarItem onClick={onScanQR} selected data-story='qr-code' text='QR-код'>
         <Icon28ScanViewfinderOutline />
       </TabbarItem>
-      <TabbarItem
-        onClick={() => dispatch(general.action.route({ activeModal: 'rules' }))}
-        selected
-        data-story='rules'
-        text='Правила'
-      >
+      <TabbarItem onClick={() => onRoute({ activeModal: 'rules' })} selected data-story='rules' text='Правила'>
         <Icon28InfoOutline />
       </TabbarItem>
     </Tabbar>
@@ -80,8 +81,8 @@ const Home = (props) => {
           <Spacing size={64} />
 
           <UsersStack photos={photos} size='m' visibleCount={visibleCount} layout='vertical'>
-            {firstNamesShown.reduce((acc, firstName, index) => `${acc}${index === 0 ? '' : ', '}${firstName}`, '')}
-            {canShowOthers && `и ещё ${othersFirstNameCount} ${declensionForm}`}
+            {getFirstNames}
+            {canShowOthers && ` и ещё ${othersFirstNameCount} ${declensionForm}`}
           </UsersStack>
         </div>
       </div>
@@ -89,26 +90,17 @@ const Home = (props) => {
       <div className={styles.fixedLayout}>
         <Div>
           <Button
+            onClick={() => onRoute({ activeModal: 'qr-code' })}
             mode='primary'
             size='l'
             stretched
             before={<Icon16Add />}
-            onClick={() => dispatch(general.action.route({ activeModal: 'qr-code' }))}
           >
             Присоединиться
           </Button>
           <Spacing size={12} />
 
-          <Button
-            mode='primary'
-            size='l'
-            stretched
-            onClick={() =>
-              dispatch
-                .sync(room.action.create())
-                .then(() => dispatch(general.action.route({ activePanel: 'room' /* , activeModal: 'teams' */ })))
-            }
-          >
+          <Button onClick={onCreate} mode='primary' size='l' stretched>
             Создать комнату
           </Button>
         </Div>

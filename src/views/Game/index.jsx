@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useCallback } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 // import { useSubscription } from '@logux/redux';
 import {
@@ -47,16 +47,16 @@ const Game = (props) => {
     return teams.find((team) => team.teamId === myTeamId);
   }, [teams, myTeamId]);
 
-  const onExit = useCallback(() => {
+  const onExit = () => {
     setIsOpened(false);
 
     // dispatch.sync(room.action.leave());
     dispatch(general.action.route({ activePanel: 'room' }));
-  }, [dispatch]);
+  };
 
   return (
     <Panel {...props}>
-      <PanelHeader left={<PanelHeaderBack onClick={() => onExit()} />} separator={false} shadow={true}>
+      <PanelHeader left={<PanelHeaderBack onClick={onExit} />} separator={false} shadow={true}>
         <PanelHeaderContent
           before={
             <div style={{ lineHeight: 0 }}>
@@ -69,14 +69,14 @@ const Game = (props) => {
               onClick={() => setIsOpened(!isOpened)}
             />
           }
-          status={myTeam.name}
+          status={myTeam?.name}
         >
           Alias
         </PanelHeaderContent>
       </PanelHeader>
       <PanelHeaderContext opened={isOpened} onClose={() => setIsOpened(!isOpened)}>
         <List>
-          <CellButton mode='danger' centered onClick={() => onExit()}>
+          <CellButton mode='danger' centered onClick={onExit}>
             Выйти из игры
           </CellButton>
         </List>
