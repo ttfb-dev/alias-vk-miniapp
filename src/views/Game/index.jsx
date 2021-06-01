@@ -1,10 +1,12 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 // import { useSubscription } from '@logux/redux';
 import {
   Panel,
   PanelHeader,
   PanelHeaderBack,
+  PanelHeaderContent,
+  PanelHeaderContext,
   Title,
   Headline,
   Div,
@@ -15,11 +17,12 @@ import {
   SimpleCell,
   Avatar,
   Button,
+  CellButton,
   Text,
   Header,
   MiniInfoCell,
 } from '@vkontakte/vkui';
-import { Icon16InfoCirle } from '@vkontakte/icons';
+import { Icon16InfoCirle, Icon16Dropdown } from '@vkontakte/icons';
 
 import { general } from '../../store';
 import { ReactComponent as Logo } from '../../assets/logo-mini.svg';
@@ -37,34 +40,47 @@ const Game = (props) => {
   const myTeamId = useSelector((state) => state.room.myTeamId);
   const ownerId = useSelector((state) => state.room.ownerId);
   const members = useSelector((state) => state.room.members);
+  const [isOpened, setIsOpened] = useState(false);
   // const isSubscribing = useSubscription([`room/${roomId}/game`]);
 
   const myTeam = useMemo(() => {
     return teams.find((team) => team.teamId === myTeamId);
   }, [teams, myTeamId]);
 
+  const onExit = useCallback(() => {
+    setIsOpened(false);
+
+    // dispatch.sync(room.action.leave());
+    dispatch(general.action.route({ activePanel: 'room' }));
+  }, [dispatch]);
+
   return (
     <Panel {...props}>
-      <PanelHeader
-        left={
-          <PanelHeaderBack
-            onClick={() => {
-              dispatch(general.action.route({ activePanel: 'room' }));
-            }}
-          />
-        }
-        separator={false}
-      >
-        <Logo />
+      <PanelHeader left={<PanelHeaderBack onClick={() => onExit()} />} separator={false} shadow={true}>
+        <PanelHeaderContent
+          before={
+            <div style={{ lineHeight: 0 }}>
+              <Logo style={{ width: '28px', height: '28px' }} />
+            </div>
+          }
+          aside={
+            <Icon16Dropdown
+              style={{ transform: `rotate(${isOpened ? '180deg' : '0'})` }}
+              onClick={() => setIsOpened(!isOpened)}
+            />
+          }
+          status={`«${myTeam.name}»`}
+        >
+          Alias
+        </PanelHeaderContent>
       </PanelHeader>
-
-      <Div className={styles.subheaderWrapper}>
-        {!!myTeam && (
-          <Title level={2} weight='semibold' className={styles.subheader}>
-            {`Команда «${myTeam.name}»`}
-          </Title>
-        )}
-      </Div>
+      <PanelHeaderContext opened={isOpened} fade={true} onClose={() => setIsOpened(!isOpened)}>
+        <List>
+          <CellButton mode='danger' centered onClick={() => onExit()}>
+            Выйти из игры
+          </CellButton>
+        </List>
+      </PanelHeaderContext>
 
       <div className={styles.container}>
         <div className={styles.wrapper}>
@@ -97,10 +113,12 @@ const Game = (props) => {
             </div>
           </Div>
           <Group mode='card' separator='hide' className={styles.teamWrapper}>
-            <Header mode='tertiary'>{`Ход команды «${teams[0].name}»`}</Header>
+            <Header mode='primary'>{`Ход команды «${teams[0].name}»`}</Header>
             <Spacing size={20} />
             <div className={styles.team}>
               <SimpleCell
+                hasHover={false}
+                hasActive={false}
                 before={<Avatar size={40} src={members[0].photo_50} />}
                 style={{ flex: 1, borderRight: '1px solid var(--content_tint_foreground)' }}
                 description='объясняет'
@@ -108,6 +126,8 @@ const Game = (props) => {
                 Трисс
               </SimpleCell>
               <SimpleCell
+                hasHover={false}
+                hasActive={false}
                 before={<Avatar size={40} src={members[0].photo_50} />}
                 style={{ flex: 1 }}
                 description='угадывает'
@@ -117,9 +137,11 @@ const Game = (props) => {
             </div>
           </Group>
           <Group mode='card' separator='hide' className={styles.statistics}>
-            <Header mode='tertiary'>Команды</Header>
+            <Header mode='primary'>Команды</Header>
             <List>
               <SimpleCell
+                hasHover={false}
+                hasActive={false}
                 after={
                   <div className={styles.score}>
                     <Trophy />
@@ -130,6 +152,8 @@ const Game = (props) => {
                 Пирожки
               </SimpleCell>
               <SimpleCell
+                hasHover={false}
+                hasActive={false}
                 after={
                   <div className={styles.score}>
                     <Trophy />

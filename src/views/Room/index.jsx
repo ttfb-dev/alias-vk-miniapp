@@ -1,8 +1,7 @@
-import React, { useMemo, useEffect } from 'react';
+import React, { useMemo, useEffect, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSubscription } from '@logux/redux';
 import {
-  FixedLayout,
   Panel,
   Tabbar,
   TabbarItem,
@@ -14,12 +13,22 @@ import {
   Div,
   PanelHeader,
   PanelHeaderBack,
+  PanelHeaderContent,
+  PanelHeaderContext,
   PanelSpinner,
-  Title,
+  List,
+  CellButton,
   Button,
-  Spacing,
+  MiniInfoCell,
 } from '@vkontakte/vkui';
-import { Icon28UserAddOutline, Icon28WorkOutline, Icon28QrCodeOutline, Icon28InfoOutline } from '@vkontakte/icons';
+import {
+  Icon16InfoCirle,
+  Icon16Dropdown,
+  Icon28UserAddOutline,
+  Icon28WorkOutline,
+  Icon28QrCodeOutline,
+  Icon28InfoOutline,
+} from '@vkontakte/icons';
 import qr from '@vkontakte/vk-qr';
 
 import app from '../../services';
@@ -39,6 +48,7 @@ const Room = (props) => {
   const memberIds = useSelector((state) => state.room.memberIds);
   const sets = useSelector((state) => state.room.sets);
   const availableSets = useSelector((state) => state.room.availableSets);
+  const [isOpened, setIsOpened] = useState(false);
   const isSubscribing = useSubscription([`room/${roomId}`]);
 
   const teamsCompleted = useMemo(() => {
@@ -71,6 +81,11 @@ const Room = (props) => {
       dispatch(room.action.setMembers({ members }));
     });
   }, [memberIds, dispatch]);
+
+  const onExit = useCallback(() => {
+    dispatch.sync(room.action.leave());
+    dispatch(general.action.route({ activePanel: 'home' }));
+  }, [dispatch]);
 
   const tabbar = (
     <Tabbar>
@@ -112,26 +127,31 @@ const Room = (props) => {
 
   return (
     <Panel {...props}>
-      <PanelHeader
-        left={
-          <PanelHeaderBack
-            onClick={() => {
-              dispatch.sync(room.action.leave());
-              dispatch(general.action.route({ activePanel: 'home' }));
-            }}
-          />
-        }
-        separator={false}
-      >
-        <Logo />
+      <PanelHeader left={<PanelHeaderBack onClick={() => onExit()} />} separator={false} shadow={true}>
+        <PanelHeaderContent
+          before={
+            <div style={{ lineHeight: 0 }}>
+              <Logo style={{ width: '28px', height: '28px' }} />
+            </div>
+          }
+          aside={
+            <Icon16Dropdown
+              style={{ transform: `rotate(${isOpened ? '180deg' : '0'})` }}
+              onClick={() => setIsOpened(!isOpened)}
+            />
+          }
+          status={`«${settings?.name}»`}
+        >
+          Alias
+        </PanelHeaderContent>
       </PanelHeader>
-      <div className={styles.subheader}>
-        {settings?.name && (
-          <Title level={2} weight='semibold'>
-            Комната «{`${settings?.name}`}»
-          </Title>
-        )}
-      </div>
+      <PanelHeaderContext opened={isOpened} fade={true} onClose={() => setIsOpened(!isOpened)}>
+        <List>
+          <CellButton mode='danger' centered onClick={() => onExit()}>
+            Выйти из комнаты
+          </CellButton>
+        </List>
+      </PanelHeaderContext>
 
       <div className={styles.container}>
         <div className={styles.wrapper}>
@@ -175,8 +195,8 @@ const Room = (props) => {
         )}
       </div>
 
-      {ownerId === userId && (
-        <FixedLayout vertical='bottom' style={{ zIndex: 'auto' }}>
+      <div className={styles.fixedLayout}>
+        {userId === ownerId ? (
           <Div>
             <Button
               mode='primary'
@@ -187,9 +207,12 @@ const Room = (props) => {
               Начать игру
             </Button>
           </Div>
-          <Spacing />
-        </FixedLayout>
-      )}
+        ) : (
+          <MiniInfoCell before={<Icon16InfoCirle />} textLevel='secondary' textWrap='full'>
+            Для начала нужно 4 и более участников. После начала игры присоединиться новым участникам будет нельзя.
+          </MiniInfoCell>
+        )}
+      </div>
 
       {tabbar}
     </Panel>

@@ -63,24 +63,6 @@
   }
 }
 
-.subheaderWrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-  width: 100%;
-
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.08);
-}
-
-.subheader {
-  overflow: hidden;
-
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
 .content {
   display: grid;
   gap: 12px;
@@ -146,7 +128,7 @@
 .fixedLayout {
   position: fixed;
   bottom: 0;
-  z-index: 3;
+  z-index: 2;
 
   box-sizing: border-box;
   width: 100%;

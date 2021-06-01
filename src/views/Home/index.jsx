@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Panel, Tabbar, TabbarItem, Badge, Div, Button, Spacing, UsersStack, FixedLayout } from '@vkontakte/vkui';
+import { Panel, Tabbar, TabbarItem, Badge, Div, Button, Spacing, UsersStack } from '@vkontakte/vkui';
 import { Icon16Add, Icon28WorkOutline, Icon28ScanViewfinderOutline, Icon28InfoOutline } from '@vkontakte/icons';
 
 import vkapi from '../../api';
@@ -84,35 +84,34 @@ const Home = (props) => {
             {canShowOthers && `и ещё ${othersFirstNameCount} ${declensionForm}`}
           </UsersStack>
         </div>
+      </div>
 
-        <FixedLayout vertical='bottom' style={{ zIndex: 'auto' }}>
-          <Div>
-            <Button
-              mode='primary'
-              size='l'
-              stretched
-              before={<Icon16Add />}
-              onClick={() => dispatch(general.action.route({ activeModal: 'qr-code' }))}
-            >
-              Присоединиться
-            </Button>
-            <Spacing size={12} />
+      <div className={styles.fixedLayout}>
+        <Div>
+          <Button
+            mode='primary'
+            size='l'
+            stretched
+            before={<Icon16Add />}
+            onClick={() => dispatch(general.action.route({ activeModal: 'qr-code' }))}
+          >
+            Присоединиться
+          </Button>
+          <Spacing size={12} />
 
-            <Button
-              mode='primary'
-              size='l'
-              stretched
-              onClick={() =>
-                dispatch
-                  .sync(room.action.create())
-                  .then(() => dispatch(general.action.route({ activePanel: 'room' /* , activeModal: 'teams' */ })))
-              }
-            >
-              Создать комнату
-            </Button>
-          </Div>
-          <Spacing />
-        </FixedLayout>
+          <Button
+            mode='primary'
+            size='l'
+            stretched
+            onClick={() =>
+              dispatch
+                .sync(room.action.create())
+                .then(() => dispatch(general.action.route({ activePanel: 'room' /* , activeModal: 'teams' */ })))
+            }
+          >
+            Создать комнату
+          </Button>
+        </Div>
       </div>
 
       {tabbar}
