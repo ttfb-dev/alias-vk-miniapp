@@ -129,19 +129,18 @@
   opacity: 0.5;
 }
 
-.teamWrapper {
-  background: var(--modal_card_background);
-  border-radius: 10px;
-}
-
 .team {
   display: flex;
   justify-content: space-between;
 }
 
-.statistics {
-  background: var(--modal_card_background);
-  border-radius: 10px;
+.score {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 50px;
+
+  color: var(--text_secondary);
 }
 
 .fixedLayout {
