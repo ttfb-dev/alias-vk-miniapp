@@ -69,12 +69,12 @@ const Game = (props) => {
               onClick={() => setIsOpened(!isOpened)}
             />
           }
-          status={`«${myTeam.name}»`}
+          status={myTeam.name}
         >
           Alias
         </PanelHeaderContent>
       </PanelHeader>
-      <PanelHeaderContext opened={isOpened} fade={true} onClose={() => setIsOpened(!isOpened)}>
+      <PanelHeaderContext opened={isOpened} onClose={() => setIsOpened(!isOpened)}>
         <List>
           <CellButton mode='danger' centered onClick={() => onExit()}>
             Выйти из игры
@@ -112,6 +112,7 @@ const Game = (props) => {
               <p className={styles.count}>2</p>
             </div>
           </Div>
+
           <Group mode='card' separator='hide' className={styles.teamWrapper}>
             <Header mode='primary'>{`Ход команды «${teams[0].name}»`}</Header>
             <Spacing size={20} />
@@ -136,6 +137,7 @@ const Game = (props) => {
               </SimpleCell>
             </div>
           </Group>
+
           <Group mode='card' separator='hide' className={styles.statistics}>
             <Header mode='primary'>Команды</Header>
             <List>

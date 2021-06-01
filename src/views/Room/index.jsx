@@ -140,12 +140,12 @@ const Room = (props) => {
               onClick={() => setIsOpened(!isOpened)}
             />
           }
-          status={`«${settings?.name}»`}
+          status={settings?.name}
         >
           Alias
         </PanelHeaderContent>
       </PanelHeader>
-      <PanelHeaderContext opened={isOpened} fade={true} onClose={() => setIsOpened(!isOpened)}>
+      <PanelHeaderContext opened={isOpened} onClose={() => setIsOpened(!isOpened)}>
         <List>
           <CellButton mode='danger' centered onClick={() => onExit()}>
             Выйти из комнаты
@@ -165,6 +165,15 @@ const Room = (props) => {
           <Group>
             <CardGrid className={styles.grid}>
               <Card mode='outline' size='m' className={styles.card}>
+                {/* <CellButton
+                  expandable
+                  hasHover={false}
+                  hasActive={false}
+                  description={`${teamsCompleted} и ${teams.length}`}
+                  onClick={() => dispatch(general.action.route({ activeModal: 'teams' }))}
+                >
+                  Команды
+                </CellButton> */}
                 <SimpleCell
                   onClick={() => dispatch(general.action.route({ activeModal: 'teams' }))}
                   description={`${teamsCompleted} и ${teams.length}`}
