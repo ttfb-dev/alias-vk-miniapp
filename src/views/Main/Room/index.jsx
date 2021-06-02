@@ -6,10 +6,7 @@ import {
   Tabbar,
   TabbarItem,
   Badge,
-  CardGrid,
-  Card,
   SimpleCell,
-  Group,
   Div,
   PanelHeader,
   PanelHeaderBack,
@@ -31,10 +28,11 @@ import {
 } from '@vkontakte/icons';
 import qr from '@vkontakte/vk-qr';
 
-import app from '../../services';
-import { general, room } from '../../store';
-import { ReactComponent as Logo } from '../../assets/logo-mini.svg';
-import { ReactComponent as LogoBackground } from '../../assets/logo-bg.svg';
+import app from '../../../services';
+import { declension } from '../../../helpers';
+import { general, room } from '../../../store';
+import { ReactComponent as Logo } from '../../../assets/logo-mini.svg';
+import { ReactComponent as LogoBackground } from '../../../assets/logo-bg.svg';
 
 import styles from './index.module.scss';
 
@@ -50,6 +48,18 @@ const Room = (props) => {
   const availableSets = useSelector((state) => state.room.availableSets);
   const [isOpened, setIsOpened] = useState(false);
   const isSubscribing = useSubscription([`room/${roomId}`]);
+
+  const teamsCount = useMemo(() => {
+    return teams.length;
+  }, [teams]);
+
+  const membersCount = useMemo(() => {
+    return memberIds.length;
+  }, [memberIds]);
+
+  const membersForm = useMemo(() => {
+    return declension(membersCount, ['человек', 'человека', 'человек']);
+  }, [membersCount]);
 
   const teamsCompleted = useMemo(() => {
     return teams.reduce((acc, team) => (acc += !!(team.memberIds.length > 1)), 0);
@@ -84,18 +94,23 @@ const Room = (props) => {
 
   const onExit = () => {
     dispatch.sync(room.action.leave());
-    dispatch(general.action.route({ activePanel: 'home' }));
+    dispatch(general.action.route({ main: { activePanel: 'room' } }));
   };
 
   const onRoute = (route) => dispatch(general.action.route(route));
 
   const tabbar = (
     <Tabbar>
-      <TabbarItem onClick={() => onRoute({ activeModal: 'teams' })} selected data-story='teams' text='Команды'>
+      <TabbarItem
+        onClick={() => onRoute({ main: { activeModal: 'teams' } })}
+        selected
+        data-story='teams'
+        text='Команды'
+      >
         <Icon28UserAddOutline />
       </TabbarItem>
       <TabbarItem
-        onClick={() => onRoute({ activeModal: 'room-sets' })}
+        onClick={() => onRoute({ main: { activeModal: 'room-sets' } })}
         indicator={<Badge mode='prominent' />}
         selected
         data-story='room-sets'
@@ -103,10 +118,20 @@ const Room = (props) => {
       >
         <Icon28WorkOutline />
       </TabbarItem>
-      <TabbarItem onClick={() => onRoute({ activeModal: 'share-code' })} selected data-story='share-code' text='QR-код'>
+      <TabbarItem
+        onClick={() => onRoute({ main: { activeModal: 'share-code' } })}
+        selected
+        data-story='share-code'
+        text='QR-код'
+      >
         <Icon28QrCodeOutline />
       </TabbarItem>
-      <TabbarItem onClick={() => onRoute({ activeModal: 'rules' })} selected data-story='rules' text='Правила'>
+      <TabbarItem
+        onClick={() => onRoute({ main: { activeModal: 'rules' } })}
+        selected
+        data-story='rules'
+        text='Правила'
+      >
         <Icon28InfoOutline />
       </TabbarItem>
     </Tabbar>
@@ -118,7 +143,7 @@ const Room = (props) => {
         <PanelHeaderContent
           before={
             <div style={{ lineHeight: 0 }}>
-              <Logo style={{ width: '28px', height: '28px' }} />
+              <Logo style={{ width: '28px', height: '28px', color: 'var(--header_tint)' }} />
             </div>
           }
           aside={
@@ -129,7 +154,7 @@ const Room = (props) => {
           }
           status={settings?.name}
         >
-          Alias
+          Комната
         </PanelHeaderContent>
       </PanelHeader>
       <PanelHeaderContext opened={isOpened} onClose={() => setIsOpened(!isOpened)}>
@@ -149,61 +174,67 @@ const Room = (props) => {
         {isSubscribing ? (
           <PanelSpinner />
         ) : (
-          <Group>
-            <CardGrid className={styles.grid}>
-              <Card mode='outline' size='m' className={styles.card}>
-                {/* <CellButton
-                  expandable
-                  hasHover={false}
-                  hasActive={false}
-                  description={`${teamsCompleted} и ${teams.length}`}
-                  onClick={() => dispatch(general.action.route({ activeModal: 'teams' }))}
-                >
-                  Команды
-                </CellButton> */}
-                <SimpleCell
-                  onClick={() => onRoute({ activeModal: 'teams' })}
-                  description={`${teamsCompleted} и ${teams.length}`}
-                  expandable
-                >
-                  Команды
-                </SimpleCell>
-              </Card>
-              <Card mode='outline' size='m' className={styles.card}>
-                <Div className={styles.qrCodeWrapper} dangerouslySetInnerHTML={{ __html: qrCode.svg }} />
-              </Card>
-              <Card mode='outline' size='m' className={styles.card}>
-                <SimpleCell description='8 игр' expandable>
-                  Статистика
-                </SimpleCell>
-              </Card>
-              <Card mode='outline' size='l' className={styles.card}>
-                <SimpleCell
-                  expandable
-                  indicator={`${setsActive} из ${setsCount} выбрано`}
-                  onClick={() => onRoute({ activeModal: 'room-sets' })}
-                >
-                  Наборы слов
-                </SimpleCell>
-              </Card>
-            </CardGrid>
-          </Group>
+          <Div className={styles.grid}>
+            <Div className={styles.card}>
+              <SimpleCell
+                expandable
+                hasHover={false}
+                hasActive={false}
+                description={`${teamsCompleted} и ${teamsCount}`}
+                onClick={() => onRoute({ main: { activeModal: 'teams' } })}
+              >
+                Команды
+              </SimpleCell>
+            </Div>
+            <Div className={styles.card}>
+              <Div dangerouslySetInnerHTML={{ __html: qrCode.svg }} />
+            </Div>
+            <Div className={styles.card}>
+              <SimpleCell
+                expandable
+                hasHover={false}
+                hasActive={false}
+                description={`${membersCount} ${membersForm}`}
+                onClick={() => {}}
+              >
+                Участники
+              </SimpleCell>
+            </Div>
+            <Div className={styles.card}>
+              <SimpleCell
+                expandable
+                hasHover={false}
+                hasActive={false}
+                indicator={`${setsActive} из ${setsCount} выбрано`}
+                onClick={() => onRoute({ main: { activeModal: 'room-sets' } })}
+              >
+                Наборы слов
+              </SimpleCell>
+            </Div>
+          </Div>
         )}
       </div>
 
-      <div className={styles.fixedLayout}>
-        {userId === ownerId ? (
-          <Div>
-            <Button mode='primary' size='l' stretched onClick={() => onRoute({ activePanel: 'game' })}>
-              Начать игру
-            </Button>
-          </Div>
-        ) : (
-          <MiniInfoCell before={<Icon16InfoCirle />} textLevel='secondary' textWrap='full'>
-            Для начала нужно 4 и более участников. После начала игры присоединиться новым участникам будет нельзя.
-          </MiniInfoCell>
-        )}
-      </div>
+      {!isSubscribing && (
+        <div className={styles.fixedLayout}>
+          {userId === ownerId ? (
+            <Div>
+              <Button
+                mode='primary'
+                size='l'
+                stretched
+                onClick={() => onRoute({ activeView: 'game', game: { activePanel: 'lobby' } })}
+              >
+                Начать игру
+              </Button>
+            </Div>
+          ) : (
+            <MiniInfoCell before={<Icon16InfoCirle />} textLevel='secondary' textWrap='full'>
+              Для начала нужно 4 и более участников. После начала игры присоединиться новым участникам будет нельзя.
+            </MiniInfoCell>
+          )}
+        </div>
+      )}
 
       {tabbar}
     </Panel>

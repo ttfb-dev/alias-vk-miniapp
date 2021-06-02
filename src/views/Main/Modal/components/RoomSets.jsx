@@ -20,7 +20,7 @@ import {
 } from '@vkontakte/vkui';
 import { Icon16InfoCirle, Icon24Dismiss } from '@vkontakte/icons';
 
-import { profile, room } from '../../../store';
+import { profile, room } from '../../../../store';
 
 import styles from './index.module.scss';
 

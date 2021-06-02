@@ -1,6 +1,7 @@
-import React, { Fragment, useState, useCallback } from 'react';
+import React, { Fragment, useState, useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
+  withModalRootContext,
   usePlatform,
   ANDROID,
   VKCOM,
@@ -12,17 +13,16 @@ import {
   Div,
   List,
   Cell,
-  MiniInfoCell,
   Button,
   Spacing,
 } from '@vkontakte/vkui';
-import { Icon16InfoCirle, Icon24Add, Icon24Dismiss } from '@vkontakte/icons';
+import { Icon24Add, Icon24Dismiss } from '@vkontakte/icons';
 
-import { room } from '../../../store';
+import { room } from '../../../../store';
 
 import styles from './index.module.scss';
 
-const Teams = ({ onClose, ...props }) => {
+const TeamsContext = ({ onClose, updateModalHeight, ...props }) => {
   const platform = usePlatform();
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.general.userId);
@@ -33,10 +33,9 @@ const Teams = ({ onClose, ...props }) => {
   const members = useSelector((state) => state.room.members);
   const [isEditActive, setIsEditActive] = useState(false);
 
-  const onDelete = (teamId) => {
-    // const nextTeams = [...teams.slice(0, index), teams.slice(index + 1)];
-    dispatch.sync(room.action.teamDelete({ teamId, roomId }));
-  };
+  useEffect(() => {
+    updateModalHeight();
+  }, [updateModalHeight, teams]);
 
   const onChange = useCallback(
     (teamId) => {
@@ -52,6 +51,11 @@ const Teams = ({ onClose, ...props }) => {
     },
     [dispatch, isEditActive, roomId, myTeamId],
   );
+
+  const onDelete = (teamId) => {
+    // const nextTeams = [...teams.slice(0, index), teams.slice(index + 1)];
+    dispatch.sync(room.action.teamDelete({ teamId, roomId }));
+  };
 
   const onCreate = () => {
     dispatch.sync(room.action.teamCreate({ roomId }));
@@ -102,19 +106,6 @@ const Teams = ({ onClose, ...props }) => {
         </ModalPageHeader>
       }
     >
-      <div className={styles.info}>
-        <MiniInfoCell before={<Icon16InfoCirle />} textLevel='secondary' textWrap='full'>
-          Для начала нужно 4 и более участников. После начала игры присоединиться новым участникам будет нельзя.
-        </MiniInfoCell>
-        <Spacing separator size={12} />
-
-        <Div>
-          <Button mode='secondary' size='m' stretched before={<Icon24Add />} onClick={onCreate}>
-            Добавить команду
-          </Button>
-        </Div>
-      </div>
-
       <List>
         <div className={styles.teams}>
           {teams.map((team) => (
@@ -134,8 +125,19 @@ const Teams = ({ onClose, ...props }) => {
           ))}
         </div>
       </List>
+
+      <div className={styles.info}>
+        <Spacing separator size={1} />
+        <Div>
+          <Button mode='secondary' size='m' stretched before={<Icon24Add />} onClick={onCreate}>
+            Добавить команду
+          </Button>
+        </Div>
+      </div>
     </ModalPage>
   );
 };
+
+const Teams = withModalRootContext(TeamsContext);
 
 export { Teams };

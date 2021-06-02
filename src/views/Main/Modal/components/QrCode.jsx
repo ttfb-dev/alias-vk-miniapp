@@ -3,9 +3,9 @@ import { useDispatch } from 'react-redux';
 import { ModalCard, Div, MiniInfoCell, Button } from '@vkontakte/vkui';
 import { Icon16InfoCirle } from '@vkontakte/icons';
 
-import vkapi from '../../../api';
-import { queryStringParse } from '../../../helpers';
-import { general, room } from '../../../store';
+import vkapi from '../../../../api';
+import { queryStringParse } from '../../../../helpers';
+import { general, room } from '../../../../store';
 
 import styles from './index.module.scss';
 
@@ -36,7 +36,7 @@ const QrCode = ({ onClose, ...props }) => {
           size='l'
           mode='primary'
           stretched
-          onClick={() => dispatch(general.action.route({ activeModal: 'enter-code' }))}
+          onClick={() => dispatch(general.action.route({ main: { activeModal: 'enter-code' } }))}
         >
           Ввести
         </Button>

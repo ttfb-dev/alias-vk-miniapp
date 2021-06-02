@@ -1,9 +1,15 @@
 import { route, setUserId, setFriends } from './action';
 
 const initialState = {
-  activeView: 'home',
-  activePanel: 'home',
-  activeModal: null,
+  activeView: 'main',
+  main: {
+    activePanel: 'home',
+    activeModal: null,
+  },
+  game: {
+    activePanel: 'game',
+    activeModal: null,
+  },
   friends: [],
   userId: null,
 };

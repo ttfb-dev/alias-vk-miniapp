@@ -3,11 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Panel, Tabbar, TabbarItem, Badge, Div, Button, Spacing, UsersStack } from '@vkontakte/vkui';
 import { Icon16Add, Icon28WorkOutline, Icon28ScanViewfinderOutline, Icon28InfoOutline } from '@vkontakte/icons';
 
-import vkapi from '../../api';
-import app from '../../services';
-import { queryStringParse, declension } from '../../helpers';
-import { general, room } from '../../store';
-import { ReactComponent as Logo } from '../../assets/logo.svg';
+import vkapi from '../../../api';
+import app from '../../../services';
+import { queryStringParse, declension } from '../../../helpers';
+import { general, room } from '../../../store';
+import { ReactComponent as Logo } from '../../../assets/logo.svg';
 
 import styles from './index.module.scss';
 
@@ -49,12 +49,14 @@ const Home = (props) => {
   };
 
   const onCreate = () =>
-    dispatch.sync(room.action.create()).then(() => onRoute({ activePanel: 'room' /* , activeModal: 'teams' */ }));
+    dispatch
+      .sync(room.action.create())
+      .then(() => onRoute({ main: { activePanel: 'room' /* , activeModal: 'teams' */ } }));
 
   const tabbar = (
     <Tabbar>
       <TabbarItem
-        onClick={() => onRoute({ activeModal: 'sets' })}
+        onClick={() => onRoute({ main: { activeModal: 'sets' } })}
         indicator={<Badge mode='prominent' />}
         selected
         data-story='sets'
@@ -65,7 +67,12 @@ const Home = (props) => {
       <TabbarItem onClick={onScanQR} selected data-story='qr-code' text='QR-код'>
         <Icon28ScanViewfinderOutline />
       </TabbarItem>
-      <TabbarItem onClick={() => onRoute({ activeModal: 'rules' })} selected data-story='rules' text='Правила'>
+      <TabbarItem
+        onClick={() => onRoute({ main: { activeModal: 'rules' } })}
+        selected
+        data-story='rules'
+        text='Правила'
+      >
         <Icon28InfoOutline />
       </TabbarItem>
     </Tabbar>
@@ -90,7 +97,7 @@ const Home = (props) => {
       <div className={styles.fixedLayout}>
         <Div>
           <Button
-            onClick={() => onRoute({ activeModal: 'qr-code' })}
+            onClick={() => onRoute({ main: { activeModal: 'qr-code' } })}
             mode='primary'
             size='l'
             stretched
