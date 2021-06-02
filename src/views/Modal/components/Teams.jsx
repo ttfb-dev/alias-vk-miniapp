@@ -18,7 +18,7 @@ import {
 } from '@vkontakte/vkui';
 import { Icon24Add, Icon24Dismiss } from '@vkontakte/icons';
 
-import { room } from '../../../../store';
+import { room } from '../../../store';
 
 import styles from './index.module.scss';
 

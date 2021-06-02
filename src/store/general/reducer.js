@@ -4,12 +4,11 @@ const initialState = {
   activeView: 'main',
   main: {
     activePanel: 'home',
-    activeModal: null,
   },
   game: {
-    activePanel: 'game',
-    activeModal: null,
+    activePanel: 'lobby',
   },
+  activeModal: null,
   friends: [],
   userId: null,
 };

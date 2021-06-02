@@ -93,24 +93,22 @@ const Room = (props) => {
   }, [memberIds, dispatch]);
 
   const onExit = () => {
+    setIsOpened(false);
+
     dispatch.sync(room.action.leave());
-    dispatch(general.action.route({ main: { activePanel: 'room' } }));
+
+    dispatch(general.action.route({ main: { activePanel: 'home' } }));
   };
 
   const onRoute = (route) => dispatch(general.action.route(route));
 
   const tabbar = (
     <Tabbar>
-      <TabbarItem
-        onClick={() => onRoute({ main: { activeModal: 'teams' } })}
-        selected
-        data-story='teams'
-        text='Команды'
-      >
+      <TabbarItem onClick={() => onRoute({ activeModal: 'teams' })} selected data-story='teams' text='Команды'>
         <Icon28UserAddOutline />
       </TabbarItem>
       <TabbarItem
-        onClick={() => onRoute({ main: { activeModal: 'room-sets' } })}
+        onClick={() => onRoute({ activeModal: 'room-sets' })}
         indicator={<Badge mode='prominent' />}
         selected
         data-story='room-sets'
@@ -118,20 +116,10 @@ const Room = (props) => {
       >
         <Icon28WorkOutline />
       </TabbarItem>
-      <TabbarItem
-        onClick={() => onRoute({ main: { activeModal: 'share-code' } })}
-        selected
-        data-story='share-code'
-        text='QR-код'
-      >
+      <TabbarItem onClick={() => onRoute({ activeModal: 'share-code' })} selected data-story='share-code' text='QR-код'>
         <Icon28QrCodeOutline />
       </TabbarItem>
-      <TabbarItem
-        onClick={() => onRoute({ main: { activeModal: 'rules' } })}
-        selected
-        data-story='rules'
-        text='Правила'
-      >
+      <TabbarItem onClick={() => onRoute({ activeModal: 'rules' })} selected data-story='rules' text='Правила'>
         <Icon28InfoOutline />
       </TabbarItem>
     </Tabbar>
@@ -181,7 +169,7 @@ const Room = (props) => {
                 hasHover={false}
                 hasActive={false}
                 description={`${teamsCompleted} и ${teamsCount}`}
-                onClick={() => onRoute({ main: { activeModal: 'teams' } })}
+                onClick={() => onRoute({ activeModal: 'teams' })}
               >
                 Команды
               </SimpleCell>
@@ -206,7 +194,7 @@ const Room = (props) => {
                 hasHover={false}
                 hasActive={false}
                 indicator={`${setsActive} из ${setsCount} выбрано`}
-                onClick={() => onRoute({ main: { activeModal: 'room-sets' } })}
+                onClick={() => onRoute({ activeModal: 'room-sets' })}
               >
                 Наборы слов
               </SimpleCell>

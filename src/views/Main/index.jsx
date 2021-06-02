@@ -7,7 +7,6 @@ import { general, room } from '../../store';
 
 import { Home } from './Home';
 import { Room } from './Room';
-import { Modal } from './Modal';
 
 const Main = (props) => {
   const client = useClient();
@@ -64,7 +63,7 @@ const Main = (props) => {
   }, [client, dispatch]);
 
   return (
-    <View {...props} activePanel={activePanel} modal={<Modal />} popout={isLoading && <ScreenSpinner />}>
+    <View {...props} activePanel={activePanel} popout={isLoading && <ScreenSpinner />}>
       <Home id='home' />
 
       <Room id='room' />

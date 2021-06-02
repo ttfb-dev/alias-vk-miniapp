@@ -56,7 +56,7 @@ const Home = (props) => {
   const tabbar = (
     <Tabbar>
       <TabbarItem
-        onClick={() => onRoute({ main: { activeModal: 'sets' } })}
+        onClick={() => onRoute({ activeModal: 'sets' })}
         indicator={<Badge mode='prominent' />}
         selected
         data-story='sets'
@@ -67,12 +67,7 @@ const Home = (props) => {
       <TabbarItem onClick={onScanQR} selected data-story='qr-code' text='QR-код'>
         <Icon28ScanViewfinderOutline />
       </TabbarItem>
-      <TabbarItem
-        onClick={() => onRoute({ main: { activeModal: 'rules' } })}
-        selected
-        data-story='rules'
-        text='Правила'
-      >
+      <TabbarItem onClick={() => onRoute({ activeModal: 'rules' })} selected data-story='rules' text='Правила'>
         <Icon28InfoOutline />
       </TabbarItem>
     </Tabbar>
@@ -97,7 +92,7 @@ const Home = (props) => {
       <div className={styles.fixedLayout}>
         <Div>
           <Button
-            onClick={() => onRoute({ main: { activeModal: 'qr-code' } })}
+            onClick={() => onRoute({ activeModal: 'qr-code' })}
             mode='primary'
             size='l'
             stretched

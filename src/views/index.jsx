@@ -4,6 +4,7 @@ import { AppRoot, Epic, Root } from '@vkontakte/vkui';
 
 import { Main } from './Main';
 import { Game } from './Game';
+import { Modal } from './Modal';
 
 const App = () => {
   const activeView = useSelector((state) => state.general.activeView);
@@ -11,7 +12,7 @@ const App = () => {
   return (
     <AppRoot>
       <Epic activeStory='main' tabbar>
-        <Root id='main' activeView={activeView}>
+        <Root id='main' activeView={activeView} modal={<Modal />}>
           <Main id='main' />
 
           <Game id='game' />
