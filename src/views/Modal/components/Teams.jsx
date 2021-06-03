@@ -22,7 +22,7 @@ import { room } from '../../../store';
 
 import styles from './index.module.scss';
 
-const TeamsContext = ({ onClose, updateModalHeight, ...props }) => {
+const TeamsComponent = ({ onClose, updateModalHeight, ...props }) => {
   const platform = usePlatform();
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.general.userId);
@@ -138,6 +138,6 @@ const TeamsContext = ({ onClose, updateModalHeight, ...props }) => {
   );
 };
 
-const Teams = withModalRootContext(TeamsContext);
+const Teams = withModalRootContext(TeamsComponent);
 
 export { Teams };
