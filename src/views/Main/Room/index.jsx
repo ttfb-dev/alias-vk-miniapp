@@ -183,7 +183,7 @@ const Room = (props) => {
                 hasHover={false}
                 hasActive={false}
                 description={`${membersCount} ${membersForm}`}
-                onClick={() => {}}
+                onClick={() => onRoute({ activeModal: 'members' })}
               >
                 Участники
               </SimpleCell>

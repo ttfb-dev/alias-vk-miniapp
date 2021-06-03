@@ -111,6 +111,7 @@ const reducer = (state = initialState, action) => {
     case 'room/user_left':
       return {
         ...state,
+        memberIds: payload.memberIds,
       };
 
     case activateSet.type: {

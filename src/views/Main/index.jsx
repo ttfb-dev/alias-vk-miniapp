@@ -49,7 +49,7 @@ const Main = (props) => {
       () => {
         setIsLoading(false);
 
-        dispatch(general.action.route({ main: { activePanel: 'room' /* , activeModal: 'teams' */ } }));
+        dispatch(general.action.route({ main: { activePanel: 'room' }, activeModal: null }));
       },
       { event: 'add' },
     );

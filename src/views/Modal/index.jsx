@@ -4,7 +4,7 @@ import { ModalRoot } from '@vkontakte/vkui';
 
 import { general } from '../../store';
 
-import { CreateRoom, EnterCode, QrCode, RoomSets, Rules, Sets, ShareCode, Teams } from './components';
+import { CreateRoom, EnterCode, Members, QrCode, RoomSets, Rules, Sets, ShareCode, Teams } from './components';
 
 const Modal = () => {
   const dispatch = useDispatch();
@@ -18,9 +18,11 @@ const Modal = () => {
 
       <EnterCode id={'enter-code'} onClose={onClose} />
 
-      <ShareCode id={'share-code'} onClose={onClose} dynamicContentHeight settlingHeight={100} />
+      <ShareCode id={'share-code'} onClose={onClose} dynamicContentHeight />
 
       <CreateRoom id={'create-room'} onClose={onClose} dynamicContentHeight />
+
+      <Members id={'members'} onClose={onClose} dynamicContentHeight settlingHeight={100} />
 
       <Teams id={'teams'} onClose={onClose} dynamicContentHeight settlingHeight={100} />
 
