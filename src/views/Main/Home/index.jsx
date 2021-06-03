@@ -16,7 +16,7 @@ const Home = (props) => {
   const photos = useSelector((state) => state.general.friends.map((friend) => friend.photo_50));
   const firstNames = useSelector((state) => state.general.friends.map((friend) => friend.first_name));
 
-  const visibleCount = 4;
+  const visibleCount = 3;
   const othersFirstNameCount = Math.max(0, firstNames.length - visibleCount);
   const canShowOthers = othersFirstNameCount > 0;
   const firstNamesShown = firstNames.slice(0, visibleCount);

@@ -1,4 +1,4 @@
-import { setRoomId, setMembers, create, join, leave, whereIAm, activateSet, deactivateSet } from './action';
+import { setRoomId, setMembers, create, join, leave, whereIAm, activateSet, deactivateSet, startGame } from './action';
 
 const initialState = {
   status: '',
@@ -147,6 +147,12 @@ const reducer = (state = initialState, action) => {
         availableSets,
       };
     }
+
+    case startGame.type:
+      return {
+        ...state,
+        ...payload,
+      };
 
     default:
       return state;

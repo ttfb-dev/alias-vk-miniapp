@@ -28,6 +28,12 @@ const reducer = (state = initialState, action) => {
   const { type, ...payload } = action;
 
   switch (type) {
+    case 'game/state':
+      return {
+        ...state,
+        ...payload,
+      };
+
     case stepCount.type:
       return {
         ...state,

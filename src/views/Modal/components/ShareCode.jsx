@@ -37,10 +37,14 @@ const ShareCode = ({ onClose, ...props }) => {
     return members.map((member) => member.first_name);
   }, [members]);
 
-  const visibleCount = 4;
+  const visibleCount = 3;
   const othersFirstNameCount = Math.max(0, firstNames.length - visibleCount);
   const canShowOthers = othersFirstNameCount > 0;
   const firstNamesShown = firstNames.slice(0, visibleCount);
+
+  const getFirstNames = useMemo(() => {
+    return firstNamesShown.reduce((acc, firstName, index) => `${acc}${index === 0 ? '' : ', '}${firstName}`, '');
+  }, [firstNamesShown]);
 
   const qrCode = useMemo(() => {
     const url = `https://vk.com/app7856384#roomId=${roomId}`;
@@ -123,8 +127,8 @@ const ShareCode = ({ onClose, ...props }) => {
         <Spacing size={24} />
 
         <UsersStack photos={photos} size='m' visibleCount={visibleCount} layout='vertical'>
-          {firstNamesShown.reduce((acc, firstName, index) => `${acc}${index === 0 ? '' : ', '}${firstName}`, '')}
-          {canShowOthers && `и ещё ${othersFirstNameCount} человека`}
+          {getFirstNames}
+          {canShowOthers && ` и ещё ${othersFirstNameCount} человека`}
         </UsersStack>
 
         <Spacing size={24} />

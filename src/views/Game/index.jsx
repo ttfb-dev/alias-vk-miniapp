@@ -9,13 +9,13 @@ import { Step } from './Step';
 const Game = (props) => {
   const activePanel = useSelector((state) => state.general.game.activePanel);
   const roomId = useSelector((state) => state.room.roomId);
-  useSubscription([`room/${roomId}/game`]);
+  const isSubscribing = useSubscription([`room/${roomId}/game`]);
 
   return (
     <View {...props} activePanel={activePanel}>
-      <Lobby id='lobby' />
+      <Lobby id='lobby' isSubscribing={isSubscribing} />
 
-      <Step id='step' />
+      <Step id='step' isSubscribing={isSubscribing} />
     </View>
   );
 };

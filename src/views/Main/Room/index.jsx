@@ -20,7 +20,7 @@ import {
 } from '@vkontakte/vkui';
 import {
   Icon16InfoCirle,
-  Icon16Dropdown,
+  Icon28SettingsOutline,
   Icon28UserAddOutline,
   Icon28WorkOutline,
   Icon28QrCodeOutline,
@@ -48,6 +48,10 @@ const Room = (props) => {
   const availableSets = useSelector((state) => state.room.availableSets);
   const [isOpened, setIsOpened] = useState(false);
   const isSubscribing = useSubscription([`room/${roomId}`]);
+
+  const isOwner = useMemo(() => {
+    return userId === ownerId;
+  }, [userId, ownerId]);
 
   const teamsCount = useMemo(() => {
     return teams.length;
@@ -92,15 +96,21 @@ const Room = (props) => {
     });
   }, [memberIds, dispatch]);
 
+  const onRoute = (route) => dispatch(general.action.route(route));
+
+  const onStart = () => {
+    dispatch.sync(room.action.startGame({ status: 'game' }));
+
+    onRoute({ activeView: 'game', game: { activePanel: 'lobby' } });
+  };
+
   const onExit = () => {
     setIsOpened(false);
 
     dispatch.sync(room.action.leave());
 
-    dispatch(general.action.route({ main: { activePanel: 'home' } }));
+    onRoute({ main: { activePanel: 'home' } });
   };
-
-  const onRoute = (route) => dispatch(general.action.route(route));
 
   const tabbar = (
     <Tabbar>
@@ -131,27 +141,33 @@ const Room = (props) => {
         <PanelHeaderContent
           before={
             <div style={{ lineHeight: 0 }}>
-              <Logo style={{ width: '28px', height: '28px', color: 'var(--header_tint)' }} />
+              <Logo style={{ width: '32px', height: '32px', color: 'var(--header_tint)' }} />
             </div>
           }
           aside={
-            <Icon16Dropdown
-              style={{ transform: `rotate(${isOpened ? '180deg' : '0'})` }}
-              onClick={() => setIsOpened(!isOpened)}
-            />
+            isOwner ? (
+              <Icon28SettingsOutline
+                width={20}
+                height={20}
+                style={{ marginLeft: '4px' }}
+                onClick={() => setIsOpened(!isOpened)}
+              />
+            ) : null
           }
           status={settings?.name}
         >
           Комната
         </PanelHeaderContent>
       </PanelHeader>
-      <PanelHeaderContext opened={isOpened} onClose={() => setIsOpened(!isOpened)}>
-        <List>
-          <CellButton mode='danger' centered onClick={onExit}>
-            Выйти из комнаты
-          </CellButton>
-        </List>
-      </PanelHeaderContext>
+      {isOwner && (
+        <PanelHeaderContext opened={isOpened} onClose={() => setIsOpened(!isOpened)}>
+          <List>
+            <CellButton mode='danger' centered onClick={onExit}>
+              Выйти из комнаты
+            </CellButton>
+          </List>
+        </PanelHeaderContext>
+      )}
 
       <div className={styles.container}>
         <div className={styles.wrapper}>
@@ -205,14 +221,9 @@ const Room = (props) => {
 
       {!isSubscribing && (
         <div className={styles.fixedLayout}>
-          {userId === ownerId ? (
+          {isOwner ? (
             <Div>
-              <Button
-                mode='primary'
-                size='l'
-                stretched
-                onClick={() => onRoute({ activeView: 'game', game: { activePanel: 'lobby' } })}
-              >
+              <Button mode='primary' size='l' stretched onClick={onStart}>
                 Начать игру
               </Button>
             </Div>
