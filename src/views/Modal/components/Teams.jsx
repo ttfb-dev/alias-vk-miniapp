@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useCallback, useEffect } from 'react';
+import React, { Fragment, useState, useCallback, useLayoutEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   withModalRootContext,
@@ -33,7 +33,7 @@ const TeamsContext = ({ onClose, updateModalHeight, ...props }) => {
   const members = useSelector((state) => state.room.members);
   const [isEditActive, setIsEditActive] = useState(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     updateModalHeight();
   }, [updateModalHeight, teams]);
 

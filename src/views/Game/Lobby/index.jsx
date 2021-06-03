@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-// import { useSubscription } from '@logux/redux';
 import {
   Panel,
   PanelHeader,
@@ -35,12 +34,10 @@ const Lobby = (props) => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.general.userId);
   const teams = useSelector((state) => state.room.teams);
-  // const roomId = useSelector((state) => state.room.roomId);
   const myTeamId = useSelector((state) => state.room.myTeamId);
   const ownerId = useSelector((state) => state.room.ownerId);
   const members = useSelector((state) => state.room.members);
   const [isOpened, setIsOpened] = useState(false);
-  // const isSubscribing = useSubscription([`room/${roomId}/game`]);
 
   const myTeam = useMemo(() => {
     return teams.find((team) => team.teamId === myTeamId);
@@ -119,7 +116,7 @@ const Lobby = (props) => {
               <SimpleCell
                 hasHover={false}
                 hasActive={false}
-                before={<Avatar size={40} src={members[0].photo_50} />}
+                before={<Avatar size={40} src={members[0]?.photo_50} />}
                 style={{ flex: 1, borderRight: '1px solid var(--content_tint_foreground)' }}
                 description='объясняет'
               >
@@ -128,7 +125,7 @@ const Lobby = (props) => {
               <SimpleCell
                 hasHover={false}
                 hasActive={false}
-                before={<Avatar size={40} src={members[0].photo_50} />}
+                before={<Avatar size={40} src={members[0]?.photo_50} />}
                 style={{ flex: 1 }}
                 description='угадывает'
               >

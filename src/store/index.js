@@ -5,6 +5,7 @@ import { createStoreCreator } from '@logux/redux';
 
 import { queryStringParse } from '../helpers';
 
+import { game } from './game';
 import { general } from './general';
 import { profile } from './profile';
 import { room } from './room';
@@ -26,7 +27,9 @@ const client = new CrossTabClient({
 });
 
 const createStore = createStoreCreator(client);
-const store = createStore(combineReducers({ general: general.reducer, profile: profile.reducer, room: room.reducer }));
+const store = createStore(
+  combineReducers({ game: game.reducer, general: general.reducer, profile: profile.reducer, room: room.reducer }),
+);
 
 if (isDev) {
   log(store.client);
@@ -51,4 +54,4 @@ if (userId && !roomId) {
   store.dispatch.sync(room.action.join({ roomId }));
 }
 
-export { store, general, profile, room };
+export { store, game, general, profile, room };
