@@ -1,14 +1,11 @@
 import { defineAction } from '@logux/actions';
 
-const stepCount = defineAction('game/stepCount');
-const roundCount = defineAction('game/RoundCount');
-const steps = defineAction('game/steps');
-const stepCurrent = defineAction('game/stepCurrent');
-const score = defineAction('game/score');
-const scoreCurrent = defineAction('game/scoreCurrent');
-const words = defineAction('game/words');
-const wordsCurrent = defineAction('game/wordsCurrent');
-const status = defineAction('game/status');
-const stepStart = defineAction('game/stepStart');
+const setStepNumber = defineAction('game/setStepNumber');
+const setRoundNumber = defineAction('game/setRoundNumber');
+const setStep = defineAction('game/setStep');
+const setStepHistory = defineAction('game/setStepHistory');
+const setWords = defineAction('game/setWords');
+const setStatus = defineAction('game/setStatus');
+const setTimestamp = defineAction('game/setTimestamp');
 
-export { stepCount, roundCount, steps, stepCurrent, score, scoreCurrent, words, wordsCurrent, status, stepStart };
+export { setStepNumber, setRoundNumber, setStep, setStepHistory, setWords, setStatus, setTimestamp };

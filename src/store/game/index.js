@@ -1,29 +1,15 @@
-import {
-  stepCount,
-  roundCount,
-  steps,
-  stepCurrent,
-  score,
-  scoreCurrent,
-  words,
-  wordsCurrent,
-  status,
-  stepStart,
-} from './action';
+import { setStepNumber, setRoundNumber, setStep, setStepHistory, setWords, setStatus, setTimestamp } from './action';
 import { reducer } from './reducer';
 
 const game = {
   action: {
-    stepCount,
-    roundCount,
-    steps,
-    stepCurrent,
-    score,
-    scoreCurrent,
-    words,
-    wordsCurrent,
-    status,
-    stepStart,
+    setStepNumber,
+    setRoundNumber,
+    setStep,
+    setStepHistory,
+    setWords,
+    setStatus,
+    setTimestamp,
   },
   reducer,
 };

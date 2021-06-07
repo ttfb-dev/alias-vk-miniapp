@@ -1,27 +1,13 @@
-import {
-  stepCount,
-  roundCount,
-  steps,
-  stepCurrent,
-  score,
-  scoreCurrent,
-  words,
-  wordsCurrent,
-  status,
-  stepStart,
-} from './action';
+import { setStepNumber, setRoundNumber, setStep, setStepHistory, setWords, setStatus, setTimestamp } from './action';
 
 const initialState = {
-  stepCount: null,
-  roundCount: null,
-  steps: [],
-  stepCurrent: {},
-  score: [],
-  scoreCurrent: {},
+  stepNumber: null,
+  roundNumber: null,
+  step: null,
+  stepHistory: null,
   words: [],
-  wordsCurrent: [],
   status: '',
-  stepStart: null,
+  timestamp: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -31,31 +17,31 @@ const reducer = (state = initialState, action) => {
     case 'game/state':
       return {
         ...state,
-        ...payload,
+        ...payload.game,
       };
 
-    case stepCount.type:
+    case setStepNumber.type:
       return {
         ...state,
         ...payload,
       };
-    case roundCount.type:
+    case setRoundNumber.type:
+      return {
+        ...state,
+        ...payload,
+      };
+    case setStep.type:
+      return {
+        ...state,
+        ...payload,
+      };
+    case setStepHistory.type:
       return state;
-    case steps.type:
+    case setWords.type:
       return state;
-    case stepCurrent.type:
+    case setStatus.type:
       return state;
-    case score.type:
-      return state;
-    case scoreCurrent.type:
-      return state;
-    case words.type:
-      return state;
-    case wordsCurrent.type:
-      return state;
-    case status.type:
-      return state;
-    case stepStart.type:
+    case setTimestamp.type:
       return state;
 
     default:

@@ -23,7 +23,8 @@ import {
 } from '@vkontakte/vkui';
 import { Icon16InfoCirle, Icon20Dropdown } from '@vkontakte/icons';
 
-import { general } from '../../../store';
+import { general, game as gameStore } from '../../../store';
+import { LinkedList } from '../../../helpers';
 import { ReactComponent as Logo } from '../../../assets/logo-mini.svg';
 import { ReactComponent as LogoBackground } from '../../../assets/logo-bg.svg';
 import { ReactComponent as Hourglass } from '../../../assets/hourglass.svg';
@@ -35,10 +36,17 @@ const Lobby = ({ isSubscribing, ...props }) => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.general.userId);
   const teams = useSelector((state) => state.room.teams);
+  const teamsList = useSelector((state) => state.room.teamsList);
   const myTeamId = useSelector((state) => state.room.myTeamId);
   const ownerId = useSelector((state) => state.room.ownerId);
-  const members = useSelector((state) => state.room.members);
+  const membersList = useSelector((state) => state.room.membersList);
+  const game = useSelector((state) => state.game);
+  const step = useSelector((state) => state.game.step);
   const [isOpened, setIsOpened] = useState(false);
+
+  const stepsCount = useMemo(() => {
+    return teams.reduce((acc, team) => (acc += !!(team.memberIds.length > 1)), 0);
+  }, [teams]);
 
   const myTeam = useMemo(() => {
     return teams.find((team) => team.teamId === myTeamId);
@@ -49,6 +57,30 @@ const Lobby = ({ isSubscribing, ...props }) => {
 
     // dispatch.sync(room.action.leave());
     dispatch(general.action.route({ activeView: 'main', main: { activePanel: 'room' } }));
+  };
+
+  const onNextStep = () => {
+    const nextStepNumber = game.stepNumber >= stepsCount ? 1 : game.stepNumber + 1;
+    const nextRoundNumber = game.stepNumber >= stepsCount ? game.roundNumber + 1 : game.roundNumber;
+    const filteredTeams = teams.filter((team) => team.memberIds.length > 1);
+    const teamsList = new LinkedList(filteredTeams);
+    const nextTeam = teamsList.get(game.stepNumber - 1).next.data;
+    const memberIdsList = new LinkedList(nextTeam.memberIds);
+    const nextExplainerId = memberIdsList.get((game.roundNumber - 1) % stepsCount).next.data;
+    const nextGuesserId = memberIdsList.get((game.roundNumber - 1) % stepsCount).next.next.data;
+
+    const nextStep = {
+      teamId: nextTeam.teamId,
+      explainerId: nextExplainerId,
+      guesserId: nextGuesserId,
+      score: 0,
+      words: [],
+    };
+
+    dispatch(gameStore.action.setStepNumber({ stepNumber: nextStepNumber }));
+    dispatch(gameStore.action.setRoundNumber({ roundNumber: nextRoundNumber }));
+    dispatch(gameStore.action.setTimestamp({ timestamp: Date.now() }));
+    dispatch(gameStore.action.setStep({ step: nextStep }));
   };
 
   return (
@@ -97,7 +129,7 @@ const Lobby = ({ isSubscribing, ...props }) => {
                 <Spacing size={4} />
 
                 <Headline weight='regular' style={{ color: '#fff', opacity: 0.72 }}>
-                  Отыграли 3 из 4 команд
+                  {`Сейчас ${game.stepNumber} из ${stepsCount} ходов`}
                 </Headline>
                 <Spacing size={20} />
 
@@ -109,31 +141,31 @@ const Lobby = ({ isSubscribing, ...props }) => {
               </div>
 
               <div className={styles.round}>
-                <p className={styles.count}>2</p>
+                <p className={styles.count}>{game.roundNumber}</p>
               </div>
             </Div>
 
             <Group mode='card' separator='hide' className={styles.teamWrapper}>
-              <Header mode='primary'>{`Ход команды «${teams[0].name}»`}</Header>
+              <Header mode='primary'>{`Ход команды «${teamsList[step.teamId]?.name}»`}</Header>
               <Spacing size={20} />
               <div className={styles.team}>
                 <SimpleCell
                   hasHover={false}
                   hasActive={false}
-                  before={<Avatar size={40} src={members[0]?.photo_50} />}
+                  before={<Avatar size={40} src={membersList[step.explainerId]?.photo_50} />}
                   style={{ flex: 1, borderRight: '1px solid var(--content_tint_foreground)' }}
                   description='объясняет'
                 >
-                  Трисс
+                  {membersList[step.explainerId]?.first_name}
                 </SimpleCell>
                 <SimpleCell
                   hasHover={false}
                   hasActive={false}
-                  before={<Avatar size={40} src={members[0]?.photo_50} />}
+                  before={<Avatar size={40} src={membersList[step.guesserId]?.photo_50} />}
                   style={{ flex: 1 }}
                   description='угадывает'
                 >
-                  Геральт
+                  {membersList[step.guesserId]?.first_name}
                 </SimpleCell>
               </div>
             </Group>
@@ -176,7 +208,7 @@ const Lobby = ({ isSubscribing, ...props }) => {
         <div className={styles.fixedLayout}>
           {userId === ownerId ? (
             <Div>
-              <Button stretched mode='primary' size='l'>
+              <Button stretched mode='primary' size='l' onClick={onNextStep}>
                 Начать ход
               </Button>
             </Div>
