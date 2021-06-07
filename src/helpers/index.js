@@ -1,3 +1,3 @@
 export { declension } from './declension';
-export { linkedList } from './linkedList';
+export { LinkedList } from './linkedList';
 export { queryStringParse } from './queryStringParse';

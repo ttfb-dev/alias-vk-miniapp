@@ -27,8 +27,9 @@ class Node {
 class LinkedList {
   #tail;
 
-  constructor() {
+  constructor(data) {
     this.#tail = null;
+    this.addAll(data);
   }
 
   add(data) {
@@ -41,6 +42,12 @@ class LinkedList {
       this.#tail.next = newNode;
     }
     this.#tail = newNode;
+  }
+
+  addAll([...data]) {
+    for (const node of data) {
+      this.add(node);
+    }
   }
 
   insertBefore(data, index) {
