@@ -1,45 +1,64 @@
-const tail = Symbol('tail');
-
 class Node {
+  #data;
+  #next;
+
   constructor(data) {
-    this.data = data;
-    this.next = null;
+    this.#data = data;
+    this.#next = null;
+  }
+
+  get data() {
+    return this.#data;
+  }
+
+  set data(data) {
+    this.#data = data;
+  }
+
+  get next() {
+    return this.#next;
+  }
+
+  set next(node) {
+    this.#next = node;
   }
 }
 
 class LinkedList {
+  #tail;
+
   constructor() {
-    this[tail] = null;
+    this.#tail = null;
   }
 
   add(data) {
     const newNode = new Node(data);
 
-    if (this[tail] === null) {
+    if (this.#tail === null) {
       newNode.next = newNode;
     } else {
-      newNode.next = this[tail].next;
-      this[tail].next = newNode;
+      newNode.next = this.#tail.next;
+      this.#tail.next = newNode;
     }
-    this[tail] = newNode;
+    this.#tail = newNode;
   }
 
   insertBefore(data, index) {
     const newNode = new Node(data);
 
-    if (this[tail] === null) {
+    if (this.#tail === null) {
       throw new RangeError(`Index ${index} does not exist in the list.`);
     }
 
     if (index === 0) {
-      newNode.next = this[tail].next;
-      this[tail].next = newNode;
+      newNode.next = this.#tail.next;
+      this.#tail.next = newNode;
     } else {
-      let current = this[tail].next;
+      let current = this.#tail.next;
       let previous = null;
       let i = 0;
 
-      while (current.next !== this[tail].next && i < index) {
+      while (current.next !== this.#tail.next && i < index) {
         previous = current;
         current = current.next;
         i++;
@@ -57,11 +76,11 @@ class LinkedList {
   insertAfter(data, index) {
     const newNode = new Node(data);
 
-    if (this[tail] === null) {
+    if (this.#tail === null) {
       throw new RangeError(`Index ${index} does not exist in the list.`);
     }
 
-    let current = this[tail].next;
+    let current = this.#tail.next;
 
     if (index > 0) {
       let i = 0;
@@ -69,7 +88,7 @@ class LinkedList {
       do {
         current = current.next;
         i++;
-      } while (current !== this[tail] && i < index);
+      } while (current !== this.#tail && i < index);
 
       if (i < index) {
         throw new RangeError(`Index ${index} does not exist in the list.`);
@@ -79,35 +98,35 @@ class LinkedList {
     newNode.next = current.next;
     current.next = newNode;
 
-    if (current === this[tail]) {
-      this[tail] = newNode;
+    if (current === this.#tail) {
+      this.#tail = newNode;
     }
   }
 
   get(index) {
-    if (index > -1 && this[tail] !== null) {
-      let current = this[tail].next;
+    if (index > -1 && this.#tail !== null) {
+      let current = this.#tail.next;
       let i = 0;
 
       do {
         if (i === index) {
-          return current.data;
+          return current;
         }
 
         current = current.next;
         i++;
-      } while (current !== this[tail].next && i <= index);
+      } while (current !== this.#tail.next && i <= index);
     }
 
     return undefined;
   }
 
   indexOf(data) {
-    if (this[tail] === null) {
+    if (this.#tail === null) {
       return -1;
     }
 
-    let current = this[tail].next;
+    let current = this.#tail.next;
     let index = 0;
 
     do {
@@ -117,13 +136,13 @@ class LinkedList {
 
       current = current.next;
       index++;
-    } while (current !== this[tail].next);
+    } while (current !== this.#tail.next);
 
     return -1;
   }
 
   remove(index) {
-    if (this[tail] === null) {
+    if (this.#tail === null) {
       throw new RangeError(`Index ${index} does not exist in the list.`);
     }
 
@@ -131,13 +150,13 @@ class LinkedList {
       throw new RangeError(`Index ${index} does not exist in the list.`);
     }
 
-    let current = this[tail].next;
+    let current = this.#tail.next;
 
     if (index === 0) {
-      if (current.next === this[tail]) {
-        this[tail] = null;
+      if (current.next === this.#tail) {
+        this.#tail = null;
       } else {
-        this[tail].next = current.next;
+        this.#tail.next = current.next;
       }
 
       return current.data;
@@ -150,9 +169,9 @@ class LinkedList {
       previous = current;
       current = current.next;
       i++;
-    } while (current !== this[tail].next && i < index);
+    } while (current !== this.#tail.next && i < index);
 
-    if (current !== this[tail].next) {
+    if (current !== this.#tail.next) {
       previous.next = current.next;
 
       return current.data;
@@ -162,21 +181,21 @@ class LinkedList {
   }
 
   clear() {
-    this[tail] = null;
+    this.#tail = null;
   }
 
   get size() {
-    if (this[tail] === null) {
+    if (this.#tail === null) {
       return 0;
     }
 
-    let current = this[tail].next;
+    let current = this.#tail.next;
     let count = 0;
 
     do {
       count++;
       current = current.next;
-    } while (current !== this[tail].next);
+    } while (current !== this.#tail.next);
 
     return count;
   }
@@ -186,23 +205,23 @@ class LinkedList {
   }
 
   *values() {
-    if (this[tail] !== null) {
-      if (this[tail].next === this[tail]) {
-        yield this[tail].data;
+    if (this.#tail !== null) {
+      if (this.#tail.next === this.#tail) {
+        yield this.#tail.data;
       } else {
-        let current = this[tail].next;
+        let current = this.#tail.next;
 
         do {
           yield current.data;
           current = current.next;
-        } while (current !== this[tail].next);
+        } while (current !== this.#tail.next);
       }
     }
   }
 
   *circularValues() {
-    if (this[tail] !== null) {
-      let current = this[tail].next;
+    if (this.#tail !== null) {
+      let current = this.#tail.next;
 
       do {
         yield current.data;
