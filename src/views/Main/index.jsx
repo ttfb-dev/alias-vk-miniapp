@@ -65,8 +65,9 @@ const Main = (props) => {
     const roomState = client.type(
       'room/state',
       (action) => {
-        if (action.room.status === 'game')
+        if (action.room.status === 'game') {
           dispatch(general.action.route({ activeView: 'game', game: { activePanel: 'lobby' } }));
+        }
       },
       { event: 'add' },
     );
