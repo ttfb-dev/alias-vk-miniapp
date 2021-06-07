@@ -1,4 +1,4 @@
-import { setStepNumber, setRoundNumber, setStep, setStepHistory, setWords, setStatus, setTimestamp } from './action';
+import { setStep, setStepHistory, setWords, setStatus, setTimestamp } from './action';
 
 const initialState = {
   stepNumber: null,
@@ -20,16 +20,6 @@ const reducer = (state = initialState, action) => {
         ...payload.game,
       };
 
-    case setStepNumber.type:
-      return {
-        ...state,
-        ...payload,
-      };
-    case setRoundNumber.type:
-      return {
-        ...state,
-        ...payload,
-      };
     case setStep.type:
       return {
         ...state,

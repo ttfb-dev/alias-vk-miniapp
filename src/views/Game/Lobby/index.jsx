@@ -23,7 +23,7 @@ import {
 } from '@vkontakte/vkui';
 import { Icon16InfoCirle, Icon20Dropdown } from '@vkontakte/icons';
 
-import { general, game as gameStore } from '../../../store';
+import { general, game } from '../../../store';
 import { LinkedList } from '../../../helpers';
 import { ReactComponent as Logo } from '../../../assets/logo-mini.svg';
 import { ReactComponent as LogoBackground } from '../../../assets/logo-bg.svg';
@@ -40,17 +40,14 @@ const Lobby = ({ isSubscribing, ...props }) => {
   const myTeamId = useSelector((state) => state.room.myTeamId);
   const ownerId = useSelector((state) => state.room.ownerId);
   const membersList = useSelector((state) => state.room.membersList);
-  const game = useSelector((state) => state.game);
+  const stepNumber = useSelector((state) => state.game.stepNumber);
+  const roundNumber = useSelector((state) => state.game.roundNumber);
   const step = useSelector((state) => state.game.step);
   const [isOpened, setIsOpened] = useState(false);
 
   const stepsCount = useMemo(() => {
     return teams.reduce((acc, team) => (acc += !!(team.memberIds.length > 1)), 0);
   }, [teams]);
-
-  const myTeam = useMemo(() => {
-    return teams.find((team) => team.teamId === myTeamId);
-  }, [teams, myTeamId]);
 
   const onExit = () => {
     setIsOpened(false);
@@ -60,14 +57,14 @@ const Lobby = ({ isSubscribing, ...props }) => {
   };
 
   const onNextStep = () => {
-    const nextStepNumber = game.stepNumber >= stepsCount ? 1 : game.stepNumber + 1;
-    const nextRoundNumber = game.stepNumber >= stepsCount ? game.roundNumber + 1 : game.roundNumber;
+    const nextStepNumber = stepNumber >= stepsCount ? 1 : stepNumber + 1;
+    const nextRoundNumber = stepNumber >= stepsCount ? roundNumber + 1 : roundNumber;
     const filteredTeams = teams.filter((team) => team.memberIds.length > 1);
     const teamsList = new LinkedList(filteredTeams);
-    const nextTeam = teamsList.get(game.stepNumber - 1).next.data;
+    const nextTeam = teamsList.get(stepNumber - 1).next.data;
     const memberIdsList = new LinkedList(nextTeam.memberIds);
-    const nextExplainerId = memberIdsList.get((game.roundNumber - 1) % stepsCount).next.data;
-    const nextGuesserId = memberIdsList.get((game.roundNumber - 1) % stepsCount).next.next.data;
+    const nextExplainerId = memberIdsList.get((roundNumber - 1) % stepsCount).next.data;
+    const nextGuesserId = memberIdsList.get((roundNumber - 1) % stepsCount).next.next.data;
 
     const nextStep = {
       teamId: nextTeam.teamId,
@@ -77,10 +74,8 @@ const Lobby = ({ isSubscribing, ...props }) => {
       words: [],
     };
 
-    dispatch(gameStore.action.setStepNumber({ stepNumber: nextStepNumber }));
-    dispatch(gameStore.action.setRoundNumber({ roundNumber: nextRoundNumber }));
-    dispatch(gameStore.action.setTimestamp({ timestamp: Date.now() }));
-    dispatch(gameStore.action.setStep({ step: nextStep }));
+    dispatch(game.action.setTimestamp({ timestamp: Date.now() }));
+    dispatch(game.action.setStep({ stepNumber: nextStepNumber, roundNumber: nextRoundNumber, step: nextStep }));
   };
 
   return (
@@ -98,7 +93,7 @@ const Lobby = ({ isSubscribing, ...props }) => {
               onClick={() => setIsOpened(!isOpened)}
             />
           }
-          status={myTeam?.name}
+          status={teamsList[myTeamId]?.name}
         >
           Игра
         </PanelHeaderContent>
@@ -129,7 +124,7 @@ const Lobby = ({ isSubscribing, ...props }) => {
                 <Spacing size={4} />
 
                 <Headline weight='regular' style={{ color: '#fff', opacity: 0.72 }}>
-                  {`Сейчас ${game.stepNumber} из ${stepsCount} ходов`}
+                  {`Сейчас ${stepNumber} из ${stepsCount} ходов`}
                 </Headline>
                 <Spacing size={20} />
 
@@ -141,7 +136,7 @@ const Lobby = ({ isSubscribing, ...props }) => {
               </div>
 
               <div className={styles.round}>
-                <p className={styles.count}>{game.roundNumber}</p>
+                <p className={styles.count}>{roundNumber}</p>
               </div>
             </Div>
 
