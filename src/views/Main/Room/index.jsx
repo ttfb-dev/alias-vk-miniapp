@@ -100,8 +100,6 @@ const Room = (props) => {
 
   const onStart = () => {
     dispatch.sync(room.action.startGame({ status: 'game' }));
-
-    onRoute({ activeView: 'game', game: { activePanel: 'lobby' } });
   };
 
   const onExit = () => {

@@ -30,7 +30,7 @@ const Main = (props) => {
 
         if (action.roomId !== null) {
           dispatch(room.action.setRoomId({ roomId: action.roomId }));
-          dispatch(general.action.route({ main: { activePanel: 'room' /* , activeModal: 'teams' */ } }));
+          dispatch(general.action.route({ main: { activePanel: 'room' } /* , activeModal: 'teams' */ }));
         }
       },
       { event: 'add' },
@@ -54,11 +54,30 @@ const Main = (props) => {
       { event: 'add' },
     );
 
+    const startGame = client.type(
+      room.action.startGame.type,
+      () => {
+        dispatch(general.action.route({ activeView: 'game', game: { activePanel: 'lobby' } }));
+      },
+      { event: 'add' },
+    );
+
+    const roomState = client.type(
+      'room/state',
+      (action) => {
+        if (action.room.status === 'game')
+          dispatch(general.action.route({ activeView: 'game', game: { activePanel: 'lobby' } }));
+      },
+      { event: 'add' },
+    );
+
     return () => {
       whereIAm();
       whereIAmDone();
       joinRoom();
       joinRoomDone();
+      startGame();
+      roomState();
     };
   }, [client, dispatch]);
 
