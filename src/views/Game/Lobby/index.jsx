@@ -93,7 +93,7 @@ const Lobby = ({ isSubscribing, ...props }) => {
               onClick={() => setIsOpened(!isOpened)}
             />
           }
-          status={teamsList[myTeamId]?.name}
+          status={(teamsList && teamsList[myTeamId]?.name) || 'Без названия'}
         >
           Игра
         </PanelHeaderContent>
@@ -141,26 +141,26 @@ const Lobby = ({ isSubscribing, ...props }) => {
             </Div>
 
             <Group mode='card' separator='hide' className={styles.teamWrapper}>
-              <Header mode='primary'>{`Ход команды «${teamsList[step.teamId]?.name}»`}</Header>
+              <Header mode='primary'>{`Ход команды «${teamsList[step.teamId]?.name ?? 'Без названия'}»`}</Header>
               <Spacing size={20} />
               <div className={styles.team}>
                 <SimpleCell
                   hasHover={false}
                   hasActive={false}
-                  before={<Avatar size={40} src={membersList[step.explainerId]?.photo_50} />}
+                  before={<Avatar size={40} src={membersList[step.explainerId]?.photo_50 ?? undefined} />}
                   style={{ flex: 1, borderRight: '1px solid var(--content_tint_foreground)' }}
                   description='объясняет'
                 >
-                  {membersList[step.explainerId]?.first_name}
+                  {membersList[step.explainerId]?.first_name ?? 'Без имени'}
                 </SimpleCell>
                 <SimpleCell
                   hasHover={false}
                   hasActive={false}
-                  before={<Avatar size={40} src={membersList[step.guesserId]?.photo_50} />}
+                  before={<Avatar size={40} src={membersList[step.guesserId]?.photo_50 ?? undefined} />}
                   style={{ flex: 1 }}
                   description='угадывает'
                 >
-                  {membersList[step.guesserId]?.first_name}
+                  {membersList[step.guesserId]?.first_name ?? 'Без имени'}
                 </SimpleCell>
               </div>
             </Group>
