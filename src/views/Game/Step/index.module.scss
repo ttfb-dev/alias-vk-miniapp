@@ -63,6 +63,64 @@
   }
 }
 
+.content {
+  display: grid;
+  gap: 12px;
+}
+
+.timerWrapper {
+  padding-top: 20px;
+  padding-bottom: 20px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  background: linear-gradient(180deg, #4986cc 0%, #71abef 100%);
+  border-radius: 10px;
+}
+
+.timerBackground {
+  background: linear-gradient(180deg, #cc4949 0%, #fb8383 100%);
+}
+
+.title {
+  width: 100%;
+  margin-bottom: 16px;
+
+  text-align: center;
+  color: var(--white);
+}
+
+.clock {
+  padding: 40px 0;
+
+  font-family: var(--font-common);
+  font-weight: bold;
+  font-size: 60px;
+  line-height: 20px;
+
+  text-align: center;
+  letter-spacing: -0.24px;
+
+  color: #ffffff;
+
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+
+  background: url('../../../assets/timer.svg') no-repeat center;
+}
+
+.card {
+  box-sizing: border-box;
+
+  background: var(--background_content);
+  border-radius: 10px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .fixedLayout {
   position: fixed;
   bottom: 0;

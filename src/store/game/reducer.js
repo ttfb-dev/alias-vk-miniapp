@@ -7,7 +7,7 @@ const initialState = {
   stepHistory: null,
   words: [],
   status: '',
-  timestamp: null,
+  timestamp: Date.now(),
 };
 
 const reducer = (state = initialState, action) => {
