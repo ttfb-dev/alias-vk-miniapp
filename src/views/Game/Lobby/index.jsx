@@ -74,8 +74,8 @@ const Lobby = ({ isSubscribing, ...props }) => {
       words: [],
     };
 
-    dispatch(game.action.setTimestamp({ timestamp: Date.now() }));
-    dispatch(game.action.setStep({ stepNumber: nextStepNumber, roundNumber: nextRoundNumber, step: nextStep }));
+    dispatch.sync(game.action.setTimestamp({ timestamp: Date.now() }));
+    dispatch.sync(game.action.setStep({ stepNumber: nextStepNumber, roundNumber: nextRoundNumber, step: nextStep }));
   };
 
   return (
