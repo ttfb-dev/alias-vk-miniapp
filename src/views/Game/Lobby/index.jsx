@@ -44,7 +44,7 @@ const Lobby = ({ isSubscribing, ...props }) => {
   const [isOpened, setIsOpened] = useState(false);
 
   const isExplainer = useMemo(() => {
-    return userId === step.explainerId;
+    return userId === step?.explainerId;
   }, [userId, step]);
 
   const stepsCount = useMemo(() => {
