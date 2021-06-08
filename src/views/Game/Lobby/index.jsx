@@ -19,9 +19,8 @@ import {
   CellButton,
   Text,
   Header,
-  MiniInfoCell,
 } from '@vkontakte/vkui';
-import { Icon16InfoCirle, Icon20Dropdown } from '@vkontakte/icons';
+import { Icon20Dropdown } from '@vkontakte/icons';
 
 import { general, game } from '../../../store';
 import { LinkedList } from '../../../helpers';
@@ -38,12 +37,15 @@ const Lobby = ({ isSubscribing, ...props }) => {
   const teams = useSelector((state) => state.room.teams);
   const teamsList = useSelector((state) => state.room.teamsList);
   const myTeamId = useSelector((state) => state.room.myTeamId);
-  const ownerId = useSelector((state) => state.room.ownerId);
   const membersList = useSelector((state) => state.room.membersList);
   const stepNumber = useSelector((state) => state.game.stepNumber);
   const roundNumber = useSelector((state) => state.game.roundNumber);
   const step = useSelector((state) => state.game.step);
   const [isOpened, setIsOpened] = useState(false);
+
+  const isExplainer = useMemo(() => {
+    return userId === step.explainerId;
+  }, [userId, step]);
 
   const stepsCount = useMemo(() => {
     return teams.reduce((acc, team) => (acc += !!(team.memberIds.length > 1)), 0);
@@ -140,8 +142,14 @@ const Lobby = ({ isSubscribing, ...props }) => {
               </div>
             </Div>
 
-            <Group mode='card' separator='hide' className={styles.teamWrapper}>
-              <Header mode='primary'>{`Ход команды «${teamsList[step.teamId]?.name ?? 'Без названия'}»`}</Header>
+            <Group
+              mode='card'
+              separator='hide'
+              className={styles.teamWrapper}
+              header={
+                <Header mode='primary'>{`Ход команды «${teamsList[step.teamId]?.name ?? 'Без названия'}»`}</Header>
+              }
+            >
               <Spacing size={20} />
               <div className={styles.team}>
                 <SimpleCell
@@ -165,8 +173,12 @@ const Lobby = ({ isSubscribing, ...props }) => {
               </div>
             </Group>
 
-            <Group mode='card' separator='hide' className={styles.statistics}>
-              <Header mode='primary'>Команды</Header>
+            <Group
+              mode='card'
+              separator='hide'
+              className={styles.statistics}
+              header={<Header mode='primary'>Команды</Header>}
+            >
               <List>
                 <SimpleCell
                   hasHover={false}
@@ -201,16 +213,12 @@ const Lobby = ({ isSubscribing, ...props }) => {
 
       {!isSubscribing && (
         <div className={styles.fixedLayout}>
-          {userId === ownerId ? (
+          {(isExplainer || true) && (
             <Div>
               <Button stretched mode='primary' size='l' onClick={onNextStep}>
                 Начать ход
               </Button>
             </Div>
-          ) : (
-            <MiniInfoCell before={<Icon16InfoCirle />} textLevel='secondary' textWrap='full'>
-              Для начала нужно 4 и более участников. После начала игры присоединиться новым участникам будет нельзя.
-            </MiniInfoCell>
           )}
         </div>
       )}
