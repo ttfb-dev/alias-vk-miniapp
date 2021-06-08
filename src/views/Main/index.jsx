@@ -66,7 +66,7 @@ const Main = (props) => {
       'room/state',
       (action) => {
         if (action.room.status === 'game') {
-          dispatch(general.action.route({ activeView: 'game', game: { activePanel: 'lobby' } }));
+          dispatch(general.action.route({ activeView: 'game', game: { activePanel: 'step' } }));
         }
       },
       { event: 'add' },

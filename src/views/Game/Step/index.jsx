@@ -18,6 +18,7 @@ import {
   CellButton,
   Button,
   Switch,
+  Placeholder,
 } from '@vkontakte/vkui';
 import { Icon20Dropdown } from '@vkontakte/icons';
 
@@ -30,6 +31,8 @@ import { formatTime } from '../helpers';
 
 import styles from './index.module.scss';
 
+const renderTimestamp = Date.now();
+
 const Step = ({ isSubscribing, ...props }) => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.general.userId);
@@ -37,7 +40,7 @@ const Step = ({ isSubscribing, ...props }) => {
   const myTeamId = useSelector((state) => state.room.myTeamId);
   const timestamp = useSelector((state) => state.game.timestamp);
   const step = useSelector((state) => state.game.step);
-  const diffTime = differenceInSeconds(Date.now(), timestamp);
+  const diffTime = differenceInSeconds(renderTimestamp, timestamp);
   const { time, status } = useTimer(60 - diffTime);
   const [isOpened, setIsOpened] = useState(false);
 
@@ -103,20 +106,24 @@ const Step = ({ isSubscribing, ...props }) => {
               </SimpleCell>
             </Group>
 
-            <Group mode='card' separator='hide' header={<Header mode='tertiary'>Отыгравшие слова</Header>}>
-              {false
-                ? step?.words.map((word) => (
+            {((isExplainer && status === 'STOPPED') || !isExplainer) && (
+              <Group mode='card' separator='hide' header={<Header mode='tertiary'>Отыгравшие слова</Header>}>
+                {step?.words ? (
+                  step?.words.map((word) => (
                     <SimpleCell
                       key={word.index}
                       hasActive={false}
                       hasHover={false}
-                      after={<Switch disabled={status !== 'STOPPED'} checked={word.guessed} onChange={() => {}} />}
+                      after={<Switch disabled={!isExplainer} checked={word.guessed} onChange={() => {}} />}
                     >
                       {word.word}
                     </SimpleCell>
                   ))
-                : 'здесь будут слова'}
-            </Group>
+                ) : (
+                  <Placeholder>Здесь будут отображаться слова, которые отыграли в текущем ходе</Placeholder>
+                )}
+              </Group>
+            )}
           </Div>
         )}
 
@@ -125,7 +132,7 @@ const Step = ({ isSubscribing, ...props }) => {
 
       {!isSubscribing && (
         <div className={styles.fixedLayout}>
-          {(isExplainer || true) && (
+          {isExplainer && (
             <Div>
               <Button stretched mode='primary' size='l' onClick={() => {}}>
                 Закончить ход
