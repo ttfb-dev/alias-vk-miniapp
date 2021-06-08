@@ -100,15 +100,11 @@ const reducer = (state = initialState, action) => {
     case 'room/team_delete_error':
       return state;
     case 'room/join_team_success':
-    case 'room/leave_team_success': {
-      const teamsList = payload.teams.reduce((list, team) => ({ ...list, [team.teamId]: team }), {});
-
+    case 'room/leave_team_success':
       return {
         ...state,
         ...payload,
-        teamsList,
       };
-    }
 
     case 'room/user_joined_team':
     case 'room/user_left_team':
