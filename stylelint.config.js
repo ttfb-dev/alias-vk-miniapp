@@ -3,9 +3,9 @@ module.exports = {
     // 'stylelint-config-standard',
     'stylelint-config-prettier',
     'stylelint-config-css-modules',
-    'stylelint-config-rational-order',
+    // 'stylelint-config-rational-order',
   ],
-  plugins: ['stylelint-scss'],
+  plugins: ['stylelint-scss', 'stylelint-order', 'stylelint-config-rational-order/plugin'],
   rules: {
     'selector-class-pattern': /^[a-z-][a-zA-Z]*(-(enter|leave)(-(active|to))?)?$/,
     'selector-id-pattern': /^[a-z][a-zA-Z]*$/,
@@ -17,6 +17,7 @@ module.exports = {
         ignoreProperties: ['font-named-instance', 'composes', '@import', '@extend', '@include', '@mixin', '@at-root'],
       },
     ],
+    'order/properties-order': [],
     'plugin/rational-order': [
       true,
       {
