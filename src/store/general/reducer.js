@@ -1,5 +1,7 @@
 import { route, setUserId, setFriends } from './action';
 
+const isDev = process.env.NODE_ENV === 'development';
+
 const initialState = {
   activeView: 'main',
   main: {
@@ -11,6 +13,7 @@ const initialState = {
   activeModal: null,
   friends: [],
   userId: null,
+  isDebug: isDev,
 };
 
 const reducer = (state = initialState, action) => {
