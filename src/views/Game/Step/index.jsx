@@ -23,7 +23,7 @@ import {
 import { Icon20Dropdown } from '@vkontakte/icons';
 
 import { general, game } from '../../../store';
-import { LinkedList } from '../../../helpers';
+// import { LinkedList } from '../../../helpers';
 import { ReactComponent as Logo } from '../../../assets/logo-mini.svg';
 import { ReactComponent as LogoBackground } from '../../../assets/logo-bg.svg';
 
@@ -39,13 +39,13 @@ const Step = ({ isSubscribing, ...props }) => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.general.userId);
   const isDebug = useSelector((state) => state.general.isDebug);
-  const teams = useSelector((state) => state.room.teams);
+  // const teams = useSelector((state) => state.room.teams);
   const teamsList = useSelector((state) => state.room.teamsList);
-  const teamsCompleted = useSelector((state) => state.room.teamsCompleted);
+  // const teamsCompleted = useSelector((state) => state.room.teamsCompleted);
   const myTeamId = useSelector((state) => state.room.myTeamId);
   const startedAt = useSelector((state) => state.game.step?.startedAt ?? null);
-  const stepNumber = useSelector((state) => state.game.stepNumber);
-  const roundNumber = useSelector((state) => state.game.roundNumber);
+  // const stepNumber = useSelector((state) => state.game.stepNumber);
+  // const roundNumber = useSelector((state) => state.game.roundNumber);
   const currentWord = useSelector((state) => state.game.currentWord);
   const step = useSelector((state) => state.game.step);
   const diffTime = differenceInSeconds(renderAt, startedAt);
@@ -86,7 +86,7 @@ const Step = ({ isSubscribing, ...props }) => {
     nextWord();
   };
 
-  const onNextStep = () => {
+  /* const onNextStep = () => {
     const nextStepNumber = stepNumber >= teamsCompleted ? 1 : stepNumber + 1;
     const nextRoundNumber = stepNumber >= teamsCompleted ? roundNumber + 1 : roundNumber;
     const filteredTeams = teams.filter((team) => team.memberIds.length > 1);
@@ -107,7 +107,7 @@ const Step = ({ isSubscribing, ...props }) => {
 
     dispatch.sync(game.action.setTimestamp({ timestamp: Date.now() }));
     dispatch.sync(game.action.setStep({ stepNumber: nextStepNumber, roundNumber: nextRoundNumber, step: nextStep }));
-  };
+  }; */
 
   return (
     <Panel {...props}>
