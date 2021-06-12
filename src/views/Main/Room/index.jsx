@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useState } from 'react';
+import React, { useMemo, useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSubscription } from '@logux/redux';
 import {
@@ -93,10 +93,10 @@ const Room = (props) => {
     });
   }, [memberIds, dispatch]);
 
-  const onRoute = (route) => dispatch(general.action.route(route));
+  const onRoute = useCallback((route) => dispatch(general.action.route(route)), [dispatch]);
 
   const onStart = () => {
-    dispatch.sync(room.action.startGame({ status: 'game' }));
+    dispatch.sync(room.action.gameStart());
   };
 
   const onExit = () => {

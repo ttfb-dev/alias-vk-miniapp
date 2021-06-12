@@ -13,6 +13,7 @@ const teamDelete = defineAction('room/team_delete');
 const activateSet = defineAction('room/activate_game_dataset');
 const deactivateSet = defineAction('room/deactivate_game_dataset');
 const gameStart = defineAction('room/game_start');
+const gameEnd = defineAction('room/game_end');
 
 export {
   setRoomId,
@@ -28,4 +29,5 @@ export {
   activateSet,
   deactivateSet,
   gameStart,
+  gameEnd,
 };

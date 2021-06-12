@@ -12,6 +12,7 @@ import {
   activateSet,
   deactivateSet,
   gameStart,
+  gameEnd,
 } from './action';
 import { reducer } from './reducer';
 
@@ -30,6 +31,7 @@ const room = {
     activateSet,
     deactivateSet,
     gameStart,
+    gameEnd,
   },
   reducer,
 };

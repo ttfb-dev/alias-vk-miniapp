@@ -1,4 +1,15 @@
-import { setRoomId, setMembers, create, join, leave, whereIAm, activateSet, deactivateSet, gameStart } from './action';
+import {
+  setRoomId,
+  setMembers,
+  create,
+  join,
+  leave,
+  whereIAm,
+  activateSet,
+  deactivateSet,
+  gameStart,
+  gameEnd,
+} from './action';
 
 const initialState = {
   status: '',
@@ -168,7 +179,13 @@ const reducer = (state = initialState, action) => {
     case gameStart.type:
       return {
         ...state,
-        ...payload,
+        status: 'game',
+      };
+
+    case gameEnd.type:
+      return {
+        ...state,
+        status: 'pregame',
       };
 
     default:
