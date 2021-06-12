@@ -30,7 +30,9 @@ const Main = (props) => {
 
         if (action.roomId !== null) {
           dispatch(room.action.setRoomId({ roomId: action.roomId }));
-          dispatch(general.action.route({ main: { activePanel: 'room' } /* , activeModal: 'teams' */ }));
+          dispatch(
+            general.action.route({ activeView: 'main', main: { activePanel: 'room' } /* , activeModal: 'teams' */ }),
+          );
         }
       },
       { event: 'add' },
@@ -49,15 +51,7 @@ const Main = (props) => {
       () => {
         setIsLoading(false);
 
-        dispatch(general.action.route({ main: { activePanel: 'room' }, activeModal: null }));
-      },
-      { event: 'add' },
-    );
-
-    const startGame = client.type(
-      room.action.startGame.type,
-      () => {
-        dispatch(general.action.route({ activeView: 'game', game: { activePanel: 'lobby' } }));
+        dispatch(general.action.route({ activeView: 'main', main: { activePanel: 'room' }, activeModal: null }));
       },
       { event: 'add' },
     );
@@ -66,8 +60,16 @@ const Main = (props) => {
       'room/state',
       (action) => {
         if (action.room.status === 'game') {
-          dispatch(general.action.route({ activeView: 'game', game: { activePanel: 'step' } }));
+          dispatch(general.action.route({ activeView: 'game', game: { activePanel: 'lobby' } }));
         }
+      },
+      { event: 'add' },
+    );
+
+    const gameStart = client.type(
+      room.action.gameStart.type,
+      () => {
+        dispatch(general.action.route({ activeView: 'game', game: { activePanel: 'lobby' } }));
       },
       { event: 'add' },
     );
@@ -77,7 +79,7 @@ const Main = (props) => {
       whereIAmDone();
       joinRoom();
       joinRoomDone();
-      startGame();
+      gameStart();
       roomState();
     };
   }, [client, dispatch]);

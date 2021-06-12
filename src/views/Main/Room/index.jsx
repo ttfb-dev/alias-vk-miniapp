@@ -40,6 +40,7 @@ const Room = (props) => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.general.userId);
   const teams = useSelector((state) => state.room.teams);
+  const teamsCompleted = useSelector((state) => state.room.teamsCompleted);
   const roomId = useSelector((state) => state.room.roomId);
   const ownerId = useSelector((state) => state.room.ownerId);
   const settings = useSelector((state) => state.room.settings);
@@ -64,10 +65,6 @@ const Room = (props) => {
   const membersForm = useMemo(() => {
     return declension(membersCount, ['человек', 'человека', 'человек']);
   }, [membersCount]);
-
-  const teamsCompleted = useMemo(() => {
-    return teams.reduce((acc, team) => (acc += !!(team.memberIds.length > 1)), 0);
-  }, [teams]);
 
   const setsActive = useMemo(() => {
     return sets.filter((set) => set.status === 'active').length;

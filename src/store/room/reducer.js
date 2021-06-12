@@ -1,4 +1,4 @@
-import { setRoomId, setMembers, create, join, leave, whereIAm, activateSet, deactivateSet, startGame } from './action';
+import { setRoomId, setMembers, create, join, leave, whereIAm, activateSet, deactivateSet, gameStart } from './action';
 
 const initialState = {
   status: '',
@@ -13,6 +13,7 @@ const initialState = {
   settings: null,
   teams: [],
   teamsList: null,
+  teamsCompleted: 0,
 };
 
 const reducer = (state = initialState, action) => {
@@ -23,6 +24,7 @@ const reducer = (state = initialState, action) => {
       const sets = payload.room.gameWordDatasets.filter((set) => ['active', 'inactive'].includes(set.status));
       const availableSets = payload.room.gameWordDatasets.filter((set) => set.status === 'available');
       const teamsList = payload.room.teams.reduce((list, team) => ({ ...list, [team.teamId]: team }), {});
+      const teamsCompleted = payload.room.teams.reduce((acc, team) => (acc += !!(team.memberIds.length > 1)), 0);
 
       return {
         ...state,
@@ -30,6 +32,7 @@ const reducer = (state = initialState, action) => {
         sets,
         availableSets,
         teamsList,
+        teamsCompleted,
       };
     }
 
@@ -111,11 +114,13 @@ const reducer = (state = initialState, action) => {
     case 'room/team_created':
     case 'room/team_deleted': {
       const teamsList = payload.teams.reduce((list, team) => ({ ...list, [team.teamId]: team }), {});
+      const teamsCompleted = payload.teams.reduce((acc, team) => (acc += !!(team.memberIds.length > 1)), 0);
 
       return {
         ...state,
         ...payload,
         teamsList,
+        teamsCompleted,
       };
     }
 
@@ -160,7 +165,7 @@ const reducer = (state = initialState, action) => {
       };
     }
 
-    case startGame.type:
+    case gameStart.type:
       return {
         ...state,
         ...payload,
