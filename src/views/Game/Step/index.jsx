@@ -38,7 +38,6 @@ const renderAt = Date.now();
 const Step = ({ isSubscribing, ...props }) => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.general.userId);
-  const isDebug = useSelector((state) => state.general.isDebug);
   // const teams = useSelector((state) => state.room.teams);
   const teamsList = useSelector((state) => state.room.teamsList);
   // const teamsCompleted = useSelector((state) => state.room.teamsCompleted);
@@ -47,6 +46,7 @@ const Step = ({ isSubscribing, ...props }) => {
   // const stepNumber = useSelector((state) => state.game.stepNumber);
   // const roundNumber = useSelector((state) => state.game.roundNumber);
   const currentWord = useSelector((state) => state.game.currentWord);
+  const wordsCount = useSelector((state) => state.game.wordsCount);
   const step = useSelector((state) => state.game.step);
   const diffTime = differenceInSeconds(renderAt, startedAt);
   const { time, status } = useTimer(60 - diffTime);
@@ -57,18 +57,35 @@ const Step = ({ isSubscribing, ...props }) => {
   }, [userId, step]);
 
   useEffect(() => {
-    if (isExplainer || isDebug) {
-      addWords();
-      nextWord();
+    if (isExplainer) {
+      dispatch.sync(game.action.getWords()).then(() => dispatch(game.action.setWord()));
     }
   }, []); // eslint-disable-line
 
-  const addWords = () => {
-    dispatch.sync(game.action.getWords());
-  };
-
   const nextWord = () => {
     dispatch(game.action.setWord());
+  };
+
+  const onNextWord = (guessed) => {
+    const word = { ...currentWord, guessed };
+
+    dispatch.sync(game.action.setStepWord({ word }));
+
+    nextWord();
+
+    if (wordsCount <= 5) {
+      dispatch.sync(game.action.getWords());
+    }
+  };
+
+  const onEditWord = (word, index) => {
+    const newWord = { ...word, guessed: !word.guessed };
+
+    dispatch.sync(game.action.setStepWord({ word: newWord, index }));
+  };
+
+  const onStepEnd = () => {
+    dispatch.sync(game.action.stepEnd());
   };
 
   const onExit = () => {
@@ -76,14 +93,6 @@ const Step = ({ isSubscribing, ...props }) => {
 
     // dispatch.sync(room.action.leave());
     dispatch(general.action.route({ activeView: 'main', main: { activePanel: 'home' } }));
-  };
-
-  const onNextWord = (guessed) => {
-    const word = { ...currentWord, guessed };
-
-    dispatch(game.action.setStepWord({ word }));
-
-    nextWord();
   };
 
   /* const onNextStep = () => {
@@ -154,7 +163,7 @@ const Step = ({ isSubscribing, ...props }) => {
               <span className={styles.clock}>{formatTime(time)}</span>
             </Div>
 
-            {(isExplainer || isDebug) && (
+            {isExplainer && (
               <Group mode='card' separator='hide'>
                 <SimpleCell hasHover={false} hasActive={false} indicator='+25' className='score' onClick={() => {}}>
                   Текущие очки
@@ -162,20 +171,26 @@ const Step = ({ isSubscribing, ...props }) => {
               </Group>
             )}
 
-            {((isExplainer && status === 'STOPPED') || !isExplainer || isDebug) && (
+            {((isExplainer && status === 'STOPPED') || !isExplainer) && (
               <Group mode='card' separator='hide'>
                 <Header mode='tertiary' className='headerCentered'>
                   Отыгравшие слова
                 </Header>
                 {step?.words && !!step.words.length ? (
-                  step.words.map((word) => (
+                  step.words.map((word, index) => (
                     <SimpleCell
                       key={word.index}
                       hasActive={false}
                       hasHover={false}
-                      after={<Switch disabled={!isExplainer} checked={word.guessed} onChange={() => {}} />}
+                      after={
+                        <Switch
+                          disabled={!isExplainer}
+                          checked={word.guessed}
+                          onChange={() => onEditWord(word, index)}
+                        />
+                      }
                     >
-                      {word.word}
+                      {word.value}
                     </SimpleCell>
                   ))
                 ) : (
@@ -184,16 +199,14 @@ const Step = ({ isSubscribing, ...props }) => {
               </Group>
             )}
 
-            {((isExplainer && status !== 'STOPPED') || isDebug) && (
-              <Div className={styles.wordsContainer}>
-                <Group mode='card' className={styles.wordsWrapper}>
+            {isExplainer && status !== 'STOPPED' && (
+              <Div className={styles.wordContainer}>
+                <Group mode='card' className={clsx(styles.wordWrapper, 'wordWrapper')}>
                   <Header mode='tertiary' className='headerCentered'>
                     Ваше слово
                   </Header>
-                  <Spacing size={32} />
 
-                  <span className={styles.word}>{currentWord?.word ?? ''}</span>
-                  <Spacing size={132} />
+                  <span className={styles.word}>{currentWord?.value ?? ''}</span>
 
                   <Div>
                     <Button stretched mode='primary' size='l' onClick={() => onNextWord(true)}>
@@ -221,15 +234,13 @@ const Step = ({ isSubscribing, ...props }) => {
         <Spacing size={20} />
       </div>
 
-      {!isSubscribing && (
+      {!isSubscribing && isExplainer && status === 'STOPPED' && (
         <div className={styles.fixedLayout}>
-          {(isExplainer || isDebug) && (
-            <Div>
-              <Button stretched mode='primary' size='l' onClick={() => {}}>
-                Закончить ход
-              </Button>
-            </Div>
-          )}
+          <Div>
+            <Button stretched mode='primary' size='l' onClick={onStepEnd}>
+              Закончить ход
+            </Button>
+          </Div>
         </div>
       )}
     </Panel>

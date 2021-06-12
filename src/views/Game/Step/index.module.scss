@@ -115,11 +115,13 @@
   border-radius: 10px;
 }
 
-.wordsContainer {
+.wordContainer {
+  display: flex;
+  flex-direction: column;
   box-sizing: border-box;
   width: 100%;
-  aspect-ratio: 1/1;
   padding: 0;
+  aspect-ratio: 1/1;
 
   @supports not (aspect-ratio: auto) {
     position: relative;
@@ -130,7 +132,9 @@
   }
 }
 
-.wordsWrapper {
+.wordWrapper {
+  display: flex;
+  flex: 1;
   max-width: 100%;
 
   @supports not (aspect-ratio: auto) {
