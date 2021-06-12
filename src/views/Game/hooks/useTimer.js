@@ -15,7 +15,7 @@ const useTimer = (initialTime, interval = 1000) => {
   }, [initialTime]);
 
   useEffect(() => {
-    if (status !== 'STOPPED' && time === 0) {
+    if (status !== 'STOPPED' && time <= 0) {
       setStatus('STOPPED');
       setTime(0);
     }
