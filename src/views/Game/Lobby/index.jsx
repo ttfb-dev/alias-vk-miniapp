@@ -36,10 +36,10 @@ const Lobby = ({ isSubscribing, ...props }) => {
   const userId = useSelector((state) => state.general.userId);
   const isDebug = useSelector((state) => state.general.isDebug);
   const teams = useSelector((state) => state.room.teams);
-  const teamsList = useSelector((state) => state.room.teamsList);
+  const teamsList = useSelector((state) => state.room?.teamsList);
   const teamsCompleted = useSelector((state) => state.room.teamsCompleted);
   const myTeamId = useSelector((state) => state.room.myTeamId);
-  const membersList = useSelector((state) => state.room.membersList);
+  const membersList = useSelector((state) => state.room?.membersList);
   const stepNumber = useSelector((state) => state.game.stepNumber);
   const roundNumber = useSelector((state) => state.game.roundNumber);
   const step = useSelector((state) => state.game.step);
@@ -211,13 +211,14 @@ const Lobby = ({ isSubscribing, ...props }) => {
               <Button stretched mode='primary' size='l' onClick={onStart}>
                 Начать ход
               </Button>
-            </Div>
-          )}
-          {isDebug && (
-            <Div>
-              <Button stretched mode='primary' size='l' onClick={onNextStep}>
-                Передать ход
-              </Button>
+              {isDebug && (
+                <>
+                  <Spacing size={12} />
+                  <Button stretched mode='destructive' size='l' onClick={onNextStep}>
+                    Передать ход
+                  </Button>
+                </>
+              )}
             </Div>
           )}
         </div>
