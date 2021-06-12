@@ -1,4 +1,4 @@
-import { stepStart, setWord, setStepWord, setStep, setStepHistory, setWords, stepEnd } from './action';
+import { stepStart, setWords, setStepWord, setNextWord, setNextStep, setStepHistory, stepEnd } from './action';
 
 const initialState = {
   stepNumber: null,
@@ -20,21 +20,21 @@ const reducer = (state = initialState, action) => {
     }
 
     case stepStart.type: {
-      const { status, startedAt } = payload;
+      const { startedAt } = payload;
 
-      return { ...state, status, step: { ...state.step, startedAt } };
+      return { ...state, status: 'step', step: { ...state.step, startedAt } };
     }
 
-    case setWord.type: {
-      const words = state.words.slice();
-      const currentWord = words.shift();
+    case setWords.type: {
+      const words = [...state.words, ...payload.words];
       const wordsCount = words.length;
 
-      return { ...state, currentWord, words, wordsCount };
+      return { ...state, words, wordsCount };
     }
 
     case setStepWord.type: {
       const { word, index } = payload;
+      const score = state.step.score + Number(word.guessed);
 
       let newWord;
       let words;
@@ -45,24 +45,26 @@ const reducer = (state = initialState, action) => {
         words = [...state.step.words, word];
       }
 
-      return { ...state, step: { ...state.step, words } };
+      return { ...state, step: { ...state.step, score, words } };
     }
 
-    case setStep.type:
+    case setNextWord.type: {
+      const words = state.words.slice();
+      const currentWord = words.shift();
+      const wordsCount = words.length;
+
+      return { ...state, currentWord, words, wordsCount };
+    }
+
+    case setNextStep.type:
       return { ...state, ...payload };
 
     case setStepHistory.type:
       return state;
 
-    case setWords.type: {
-      const words = [...state.words, ...payload.words];
-      const wordsCount = words.length;
-
-      return { ...state, words, wordsCount };
+    case stepEnd.type: {
+      return { ...state, status: 'lobby', step: { ...state.step, startedAt: null } };
     }
-
-    case stepEnd.type:
-      return state;
 
     default:
       return state;

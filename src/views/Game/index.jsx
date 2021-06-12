@@ -39,9 +39,20 @@ const Game = (props) => {
       { event: 'add' },
     );
 
+    const stepEnd = client.type(
+      game.action.stepEnd.type,
+      (action) => {
+        if (action.status === 'lobby') {
+          dispatch(general.action.route({ activeView: 'game', game: { activePanel: 'lobby' } }));
+        }
+      },
+      { event: 'add' },
+    );
+
     return () => {
       gameState();
       stepStart();
+      stepEnd();
     };
   }, [client, dispatch]);
 

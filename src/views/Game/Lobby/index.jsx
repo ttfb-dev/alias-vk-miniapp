@@ -59,7 +59,7 @@ const Lobby = ({ isSubscribing, ...props }) => {
 
   const onStepStart = () => {
     if (teamsCompleted >= 2) {
-      dispatch.sync(game.action.stepStart({ status: 'step', startedAt: Date.now() }));
+      dispatch.sync(game.action.stepStart({ startedAt: Date.now() }));
     }
   };
 
@@ -82,7 +82,9 @@ const Lobby = ({ isSubscribing, ...props }) => {
       startedAt: Date.now(),
     };
 
-    dispatch.sync(game.action.setStep({ stepNumber: nextStepNumber, roundNumber: nextRoundNumber, step: nextStep }));
+    dispatch.sync(
+      game.action.setNextStep({ stepNumber: nextStepNumber, roundNumber: nextRoundNumber, step: nextStep }),
+    );
   };
 
   return (
@@ -148,7 +150,7 @@ const Lobby = ({ isSubscribing, ...props }) => {
             </Div>
 
             <Group mode='card' separator='hide' className={styles.teamWrapper}>
-              <Header mode='primary' className='headerCentered'>
+              <Header mode='tertiary' className='headerCentered'>
                 {`Ход команды «${teamsList[step.teamId]?.name ?? 'Без названия'}»`}
               </Header>
               <Spacing size={20} />

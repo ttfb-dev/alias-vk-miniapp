@@ -23,7 +23,7 @@ import {
 import { Icon20Dropdown } from '@vkontakte/icons';
 
 import { general, game } from '../../../store';
-// import { LinkedList } from '../../../helpers';
+import { LinkedList } from '../../../helpers';
 import { ReactComponent as Logo } from '../../../assets/logo-mini.svg';
 import { ReactComponent as LogoBackground } from '../../../assets/logo-bg.svg';
 
@@ -38,13 +38,13 @@ const renderAt = Date.now();
 const Step = ({ isSubscribing, ...props }) => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.general.userId);
-  // const teams = useSelector((state) => state.room.teams);
+  const teams = useSelector((state) => state.room.teams);
   const teamsList = useSelector((state) => state.room.teamsList);
-  // const teamsCompleted = useSelector((state) => state.room.teamsCompleted);
+  const teamsCompleted = useSelector((state) => state.room.teamsCompleted);
   const myTeamId = useSelector((state) => state.room.myTeamId);
   const startedAt = useSelector((state) => state.game.step?.startedAt ?? null);
-  // const stepNumber = useSelector((state) => state.game.stepNumber);
-  // const roundNumber = useSelector((state) => state.game.roundNumber);
+  const stepNumber = useSelector((state) => state.game.stepNumber);
+  const roundNumber = useSelector((state) => state.game.roundNumber);
   const currentWord = useSelector((state) => state.game.currentWord);
   const wordsCount = useSelector((state) => state.game.wordsCount);
   const step = useSelector((state) => state.game.step);
@@ -58,12 +58,36 @@ const Step = ({ isSubscribing, ...props }) => {
 
   useEffect(() => {
     if (isExplainer) {
-      dispatch.sync(game.action.getWords()).then(() => dispatch(game.action.setWord()));
+      dispatch.sync(game.action.getWords()).then(() => dispatch(game.action.setNextWord()));
     }
   }, []); // eslint-disable-line
 
   const nextWord = () => {
-    dispatch(game.action.setWord());
+    dispatch(game.action.setNextWord());
+  };
+
+  const nextStep = () => {
+    const nextStepNumber = stepNumber >= teamsCompleted ? 1 : stepNumber + 1;
+    const nextRoundNumber = stepNumber >= teamsCompleted ? roundNumber + 1 : roundNumber;
+    const filteredTeams = teams.filter((team) => team.memberIds.length > 1);
+    const teamsList = new LinkedList(filteredTeams);
+    const nextTeam = teamsList.get(stepNumber - 1).next.data;
+    const memberIdsList = new LinkedList(nextTeam.memberIds);
+    const nextExplainerId = memberIdsList.get((roundNumber - 1) % teamsCompleted).next.data;
+    const nextGuesserId = memberIdsList.get((roundNumber - 1) % teamsCompleted).next.next.data;
+
+    const nextStep = {
+      teamId: nextTeam.teamId,
+      explainerId: nextExplainerId,
+      guesserId: nextGuesserId,
+      score: 0,
+      words: [],
+      startedAt: null,
+    };
+
+    dispatch.sync(
+      game.action.setNextStep({ stepNumber: nextStepNumber, roundNumber: nextRoundNumber, step: nextStep }),
+    );
   };
 
   const onNextWord = (guessed) => {
@@ -85,6 +109,10 @@ const Step = ({ isSubscribing, ...props }) => {
   };
 
   const onStepEnd = () => {
+    dispatch.sync(game.action.setStepHistory());
+
+    nextStep();
+
     dispatch.sync(game.action.stepEnd());
   };
 
@@ -94,29 +122,6 @@ const Step = ({ isSubscribing, ...props }) => {
     // dispatch.sync(room.action.leave());
     dispatch(general.action.route({ activeView: 'main', main: { activePanel: 'home' } }));
   };
-
-  /* const onNextStep = () => {
-    const nextStepNumber = stepNumber >= teamsCompleted ? 1 : stepNumber + 1;
-    const nextRoundNumber = stepNumber >= teamsCompleted ? roundNumber + 1 : roundNumber;
-    const filteredTeams = teams.filter((team) => team.memberIds.length > 1);
-    const teamsList = new LinkedList(filteredTeams);
-    const nextTeam = teamsList.get(stepNumber - 1).next.data;
-    const memberIdsList = new LinkedList(nextTeam.memberIds);
-    const nextExplainerId = memberIdsList.get((roundNumber - 1) % teamsCompleted).next.data;
-    const nextGuesserId = memberIdsList.get((roundNumber - 1) % teamsCompleted).next.next.data;
-
-    const nextStep = {
-      teamId: nextTeam.teamId,
-      explainerId: nextExplainerId,
-      guesserId: nextGuesserId,
-      score: 0,
-      words: [],
-      startedAt: null,
-    };
-
-    dispatch.sync(game.action.setTimestamp({ timestamp: Date.now() }));
-    dispatch.sync(game.action.setStep({ stepNumber: nextStepNumber, roundNumber: nextRoundNumber, step: nextStep }));
-  }; */
 
   return (
     <Panel {...props}>
@@ -165,7 +170,13 @@ const Step = ({ isSubscribing, ...props }) => {
 
             {isExplainer && (
               <Group mode='card' separator='hide'>
-                <SimpleCell hasHover={false} hasActive={false} indicator='+25' className='score' onClick={() => {}}>
+                <SimpleCell
+                  hasHover={false}
+                  hasActive={false}
+                  indicator={step?.score ?? '0'}
+                  className='score'
+                  onClick={() => {}}
+                >
                   Текущие очки
                 </SimpleCell>
               </Group>
