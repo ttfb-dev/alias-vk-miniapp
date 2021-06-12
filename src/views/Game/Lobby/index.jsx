@@ -30,6 +30,7 @@ import { ReactComponent as Hourglass } from '../../../assets/hourglass.svg';
 import { ReactComponent as Trophy } from '../../../assets/trophy.svg';
 
 import styles from './index.module.scss';
+import './index.scss';
 
 const Lobby = ({ isSubscribing, ...props }) => {
   const dispatch = useDispatch();
@@ -56,7 +57,7 @@ const Lobby = ({ isSubscribing, ...props }) => {
     dispatch(general.action.route({ activeView: 'main', main: { activePanel: 'home' } }));
   };
 
-  const onStart = () => {
+  const onStepStart = () => {
     if (teamsCompleted >= 2) {
       dispatch.sync(game.action.stepStart({ status: 'step', startedAt: Date.now() }));
     }
@@ -78,6 +79,7 @@ const Lobby = ({ isSubscribing, ...props }) => {
       guesserId: nextGuesserId,
       score: 0,
       words: [],
+      startedAt: Date.now(),
     };
 
     dispatch.sync(game.action.setStep({ stepNumber: nextStepNumber, roundNumber: nextRoundNumber, step: nextStep }));
@@ -146,26 +148,28 @@ const Lobby = ({ isSubscribing, ...props }) => {
             </Div>
 
             <Group mode='card' separator='hide' className={styles.teamWrapper}>
-              <Header mode='primary'>{`Ход команды «${teamsList[step.teamId]?.name ?? 'Без названия'}»`}</Header>
+              <Header mode='primary' className='headerCentered'>
+                {`Ход команды «${teamsList[step.teamId]?.name ?? 'Без названия'}»`}
+              </Header>
               <Spacing size={20} />
               <div className={styles.team}>
                 <SimpleCell
                   hasHover={false}
                   hasActive={false}
-                  before={<Avatar size={40} src={membersList[step.explainerId]?.photo_50 ?? null} />}
+                  before={<Avatar size={40} src={(membersList && membersList[step.explainerId]?.photo_50) || null} />}
                   style={{ flex: 1, borderRight: '1px solid var(--content_tint_foreground)' }}
                   description='объясняет'
                 >
-                  {membersList[step.explainerId]?.first_name ?? 'Без имени'}
+                  {(membersList && membersList[step.explainerId]?.first_name) || 'Без имени'}
                 </SimpleCell>
                 <SimpleCell
                   hasHover={false}
                   hasActive={false}
-                  before={<Avatar size={40} src={membersList[step.guesserId]?.photo_50 ?? null} />}
+                  before={<Avatar size={40} src={(membersList && membersList[step.guesserId]?.photo_50) || null} />}
                   style={{ flex: 1 }}
                   description='угадывает'
                 >
-                  {membersList[step.guesserId]?.first_name ?? 'Без имени'}
+                  {(membersList && membersList[step.guesserId]?.first_name) || 'Без имени'}
                 </SimpleCell>
               </div>
             </Group>
@@ -208,7 +212,7 @@ const Lobby = ({ isSubscribing, ...props }) => {
         <div className={styles.fixedLayout}>
           {(isExplainer || isDebug) && (
             <Div>
-              <Button stretched mode='primary' size='l' onClick={onStart}>
+              <Button stretched mode='primary' size='l' onClick={onStepStart}>
                 Начать ход
               </Button>
               {isDebug && (
