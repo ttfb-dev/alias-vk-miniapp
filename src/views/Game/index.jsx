@@ -4,7 +4,7 @@ import { useClient } from '@logux/client/react';
 import { useSubscription } from '@logux/redux';
 import { View } from '@vkontakte/vkui';
 
-import { general } from '../../store';
+import { general, game } from '../../store';
 
 import { Lobby } from './Lobby';
 import { Step } from './Step';
@@ -22,6 +22,18 @@ const Game = (props) => {
       (action) => {
         if (action.game.status === 'step') {
           dispatch(general.action.route({ activeView: 'game', game: { activePanel: 'step' } }));
+        } else if (action.game.status === 'lobby') {
+          dispatch(general.action.route({ activeView: 'game', game: { activePanel: 'lobby' } }));
+        }
+      },
+      { event: 'add' },
+    );
+
+    const stepStart = client.type(
+      game.action.stepStart.type,
+      (action) => {
+        if (action.status === 'step') {
+          dispatch(general.action.route({ activeView: 'game', game: { activePanel: 'step' } }));
         }
       },
       { event: 'add' },
@@ -29,6 +41,7 @@ const Game = (props) => {
 
     return () => {
       gameState();
+      stepStart();
     };
   }, [client, dispatch]);
 

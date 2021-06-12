@@ -34,8 +34,10 @@ import styles from './index.module.scss';
 const Lobby = ({ isSubscribing, ...props }) => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.general.userId);
+  const isDebug = useSelector((state) => state.general.isDebug);
   const teams = useSelector((state) => state.room.teams);
   const teamsList = useSelector((state) => state.room.teamsList);
+  const teamsCompleted = useSelector((state) => state.room.teamsCompleted);
   const myTeamId = useSelector((state) => state.room.myTeamId);
   const membersList = useSelector((state) => state.room.membersList);
   const stepNumber = useSelector((state) => state.game.stepNumber);
@@ -47,26 +49,28 @@ const Lobby = ({ isSubscribing, ...props }) => {
     return userId === step?.explainerId;
   }, [userId, step]);
 
-  const stepsCount = useMemo(() => {
-    return teams.reduce((acc, team) => (acc += !!(team.memberIds.length > 1)), 0);
-  }, [teams]);
-
   const onExit = () => {
     setIsOpened(false);
 
     // dispatch.sync(room.action.leave());
-    dispatch(general.action.route({ activeView: 'main', main: { activePanel: 'room' } }));
+    dispatch(general.action.route({ activeView: 'main', main: { activePanel: 'home' } }));
+  };
+
+  const onStart = () => {
+    if (teamsCompleted >= 2) {
+      dispatch.sync(game.action.stepStart({ status: 'step', startedAt: Date.now() }));
+    }
   };
 
   const onNextStep = () => {
-    const nextStepNumber = stepNumber >= stepsCount ? 1 : stepNumber + 1;
-    const nextRoundNumber = stepNumber >= stepsCount ? roundNumber + 1 : roundNumber;
+    const nextStepNumber = stepNumber >= teamsCompleted ? 1 : stepNumber + 1;
+    const nextRoundNumber = stepNumber >= teamsCompleted ? roundNumber + 1 : roundNumber;
     const filteredTeams = teams.filter((team) => team.memberIds.length > 1);
     const teamsList = new LinkedList(filteredTeams);
     const nextTeam = teamsList.get(stepNumber - 1).next.data;
     const memberIdsList = new LinkedList(nextTeam.memberIds);
-    const nextExplainerId = memberIdsList.get((roundNumber - 1) % stepsCount).next.data;
-    const nextGuesserId = memberIdsList.get((roundNumber - 1) % stepsCount).next.next.data;
+    const nextExplainerId = memberIdsList.get((roundNumber - 1) % teamsCompleted).next.data;
+    const nextGuesserId = memberIdsList.get((roundNumber - 1) % teamsCompleted).next.next.data;
 
     const nextStep = {
       teamId: nextTeam.teamId,
@@ -76,7 +80,6 @@ const Lobby = ({ isSubscribing, ...props }) => {
       words: [],
     };
 
-    dispatch.sync(game.action.setTimestamp({ timestamp: Date.now() }));
     dispatch.sync(game.action.setStep({ stepNumber: nextStepNumber, roundNumber: nextRoundNumber, step: nextStep }));
   };
 
@@ -126,7 +129,7 @@ const Lobby = ({ isSubscribing, ...props }) => {
                 <Spacing size={4} />
 
                 <Headline weight='regular' style={{ color: '#fff', opacity: 0.72 }}>
-                  {`Сейчас ${stepNumber} из ${stepsCount} ходов`}
+                  {`Сейчас ${stepNumber} из ${teamsCompleted} ходов`}
                 </Headline>
                 <Spacing size={20} />
 
@@ -142,20 +145,14 @@ const Lobby = ({ isSubscribing, ...props }) => {
               </div>
             </Div>
 
-            <Group
-              mode='card'
-              separator='hide'
-              className={styles.teamWrapper}
-              header={
-                <Header mode='primary'>{`Ход команды «${teamsList[step.teamId]?.name ?? 'Без названия'}»`}</Header>
-              }
-            >
+            <Group mode='card' separator='hide' className={styles.teamWrapper}>
+              <Header mode='primary'>{`Ход команды «${teamsList[step.teamId]?.name ?? 'Без названия'}»`}</Header>
               <Spacing size={20} />
               <div className={styles.team}>
                 <SimpleCell
                   hasHover={false}
                   hasActive={false}
-                  before={<Avatar size={40} src={membersList[step.explainerId]?.photo_50 ?? undefined} />}
+                  before={<Avatar size={40} src={membersList[step.explainerId]?.photo_50 ?? null} />}
                   style={{ flex: 1, borderRight: '1px solid var(--content_tint_foreground)' }}
                   description='объясняет'
                 >
@@ -164,7 +161,7 @@ const Lobby = ({ isSubscribing, ...props }) => {
                 <SimpleCell
                   hasHover={false}
                   hasActive={false}
-                  before={<Avatar size={40} src={membersList[step.guesserId]?.photo_50 ?? undefined} />}
+                  before={<Avatar size={40} src={membersList[step.guesserId]?.photo_50 ?? null} />}
                   style={{ flex: 1 }}
                   description='угадывает'
                 >
@@ -173,12 +170,8 @@ const Lobby = ({ isSubscribing, ...props }) => {
               </div>
             </Group>
 
-            <Group
-              mode='card'
-              separator='hide'
-              className={styles.statistics}
-              header={<Header mode='primary'>Команды</Header>}
-            >
+            <Group mode='card' separator='hide' className={styles.statistics}>
+              <Header mode='primary'>Команды</Header>
               <List>
                 <SimpleCell
                   hasHover={false}
@@ -213,10 +206,17 @@ const Lobby = ({ isSubscribing, ...props }) => {
 
       {!isSubscribing && (
         <div className={styles.fixedLayout}>
-          {(isExplainer || true) && (
+          {(isExplainer || isDebug) && (
+            <Div>
+              <Button stretched mode='primary' size='l' onClick={onStart}>
+                Начать ход
+              </Button>
+            </Div>
+          )}
+          {isDebug && (
             <Div>
               <Button stretched mode='primary' size='l' onClick={onNextStep}>
-                Начать ход
+                Передать ход
               </Button>
             </Div>
           )}

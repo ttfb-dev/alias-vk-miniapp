@@ -5,8 +5,13 @@ const useTimer = (initialTime, interval = 1000) => {
   const [time, setTime] = useState();
 
   useEffect(() => {
-    setStatus('RUNNING');
-    setTime(initialTime);
+    if (initialTime === null || Number.isNaN(initialTime)) {
+      setStatus('STOPPED');
+      setTime(0);
+    } else {
+      setStatus('RUNNING');
+      setTime(initialTime);
+    }
   }, [initialTime]);
 
   useEffect(() => {
