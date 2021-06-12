@@ -6,28 +6,8 @@ const initialState = {
   step: null,
   stepHistory: null,
   currentWord: null,
-  words: [
-    { word: 'философия', index: 640, guessed: null },
-    { word: 'фартук', index: 708, guessed: null },
-    { word: 'алохомора', index: 100040, guessed: null },
-    { word: 'плантация', index: 321, guessed: null },
-    { word: 'стержень', index: 947, guessed: null },
-    { word: 'уголь', index: 144, guessed: null },
-    { word: 'гренки', index: 597, guessed: null },
-    { word: 'кафе', index: 663, guessed: null },
-    { word: 'экспеллиармус', index: 100031, guessed: null },
-    { word: 'горшок', index: 743, guessed: null },
-    { word: 'Пушкин', index: 46, guessed: null },
-    { word: 'золото', index: 542, guessed: null },
-    { word: 'парковка', index: 795, guessed: null },
-    { word: 'обезъянка', index: 82, guessed: null },
-    { word: 'улыбка', index: 273, guessed: null },
-    { word: 'бассейн', index: 790, guessed: null },
-    { word: 'успех', index: 444, guessed: null },
-    { word: 'реклама', index: 931, guessed: null },
-    { word: 'ночь', index: 464, guessed: null },
-    { word: 'налог', index: 917, guessed: null },
-  ],
+  words: [],
+  wordsCount: null,
   status: '',
 };
 
@@ -48,12 +28,22 @@ const reducer = (state = initialState, action) => {
     case setWord.type: {
       const words = state.words.slice();
       const currentWord = words.shift();
+      const wordsCount = words.length;
 
-      return { ...state, currentWord, words };
+      return { ...state, currentWord, words, wordsCount };
     }
 
     case setStepWord.type: {
-      const words = [...(state.step.words ?? []), payload.word];
+      const { word, index } = payload;
+
+      let newWord;
+      let words;
+      if (Number.isInteger(index)) {
+        newWord = { ...word, guessed: !word.guessed };
+        words = [...state.step.words.slice(0, index), newWord, ...state.step.words.slice(index + 1)];
+      } else {
+        words = [...state.step.words, word];
+      }
 
       return { ...state, step: { ...state.step, words } };
     }
@@ -64,8 +54,12 @@ const reducer = (state = initialState, action) => {
     case setStepHistory.type:
       return state;
 
-    case setWords.type:
-      return { ...state, words: [...state.words, ...payload.words] };
+    case setWords.type: {
+      const words = [...state.words, ...payload.words];
+      const wordsCount = words.length;
+
+      return { ...state, words, wordsCount };
+    }
 
     case stepEnd.type:
       return state;
