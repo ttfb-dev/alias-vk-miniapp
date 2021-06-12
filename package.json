@@ -28,7 +28,7 @@
     "@logux/client": "^0.12.0",
     "@logux/core": "^0.7.0",
     "@logux/redux": "^0.8.0",
-    "@vkontakte/icons": "1.103.0",
+    "@vkontakte/icons": "^1.105.0",
     "@vkontakte/vk-bridge": "^2.4.2",
     "@vkontakte/vk-miniapps-deploy": "^0.0.25",
     "@vkontakte/vk-qr": "^2.0.10",
