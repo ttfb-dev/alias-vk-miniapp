@@ -1,4 +1,4 @@
-import { route, setUserId, setFriends } from './action';
+import { route, alert, setUserId, setFriends } from './action';
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -14,6 +14,7 @@ const initialState = {
   friends: [],
   userId: null,
   isDebug: isDev,
+  isExit: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -21,22 +22,16 @@ const reducer = (state = initialState, action) => {
 
   switch (type) {
     case route.type:
-      return {
-        ...state,
-        ...payload,
-      };
+      return { ...state, ...payload };
+
+    case alert.type:
+      return { ...state, ...payload };
 
     case setUserId.type:
-      return {
-        ...state,
-        ...payload,
-      };
+      return { ...state, ...payload };
 
     case setFriends.type:
-      return {
-        ...state,
-        ...payload,
-      };
+      return { ...state, ...payload };
 
     default:
       return state;

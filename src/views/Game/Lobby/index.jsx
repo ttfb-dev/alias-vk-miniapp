@@ -53,8 +53,7 @@ const Lobby = ({ isSubscribing, ...props }) => {
   const onExit = () => {
     setIsOpened(false);
 
-    // dispatch.sync(room.action.leave());
-    dispatch(general.action.route({ activeView: 'main', main: { activePanel: 'home' } }));
+    dispatch(general.action.alert({ isExit: true }));
   };
 
   const onStepStart = () => {

@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useClient } from '@logux/client/react';
 import { useSubscription } from '@logux/redux';
-import { View } from '@vkontakte/vkui';
+import { View, Alert } from '@vkontakte/vkui';
 
-import { general, game } from '../../store';
+import { general, game, room } from '../../store';
 
 import { Lobby } from './Lobby';
 import { Step } from './Step';
@@ -13,6 +13,7 @@ const Game = (props) => {
   const client = useClient();
   const dispatch = useDispatch();
   const activePanel = useSelector((state) => state.general.game.activePanel);
+  const isExit = useSelector((state) => state.general.isExit);
   const roomId = useSelector((state) => state.room.roomId);
   const isSubscribing = useSubscription([`room/${roomId}/game`]);
 
@@ -52,8 +53,40 @@ const Game = (props) => {
     };
   }, [client, dispatch]);
 
+  const onExit = useCallback(() => {
+    dispatch.sync(room.action.leave());
+
+    dispatch(general.action.route({ activeView: 'main', main: { activePanel: 'home' } }));
+  }, [dispatch]);
+
+  const onClose = useCallback(() => {
+    dispatch(general.action.alert({ isExit: false }));
+  }, [dispatch]);
+
+  const alert = (
+    <Alert
+      actions={[
+        {
+          title: 'Отмена',
+          autoclose: true,
+          mode: 'cancel',
+        },
+        {
+          title: 'Выйти',
+          autoclose: true,
+          mode: 'destructive',
+          action: onExit,
+        },
+      ]}
+      actionsLayout='horizontal'
+      onClose={onClose}
+      header='Выход из игры'
+      text='Вы уверены, что хотите выйти из игры?'
+    />
+  );
+
   return (
-    <View {...props} activePanel={activePanel}>
+    <View {...props} activePanel={activePanel} popout={isExit && alert}>
       <Lobby id='lobby' isSubscribing={isSubscribing} />
 
       <Step id='step' isSubscribing={isSubscribing} />
