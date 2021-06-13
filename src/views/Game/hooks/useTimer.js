@@ -1,25 +1,30 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
-const useTimer = (initialTime, interval = 1000) => {
+const useTimer = ({ initTime, round = 60, interval = 1000 }) => {
+  const timestamp = useRef(Date.now());
   const [status, setStatus] = useState('INITIAL');
   const [time, setTime] = useState();
 
   useEffect(() => {
-    if (initialTime === null || Number.isNaN(initialTime)) {
+    const diff = (timestamp.current - initTime) / 1000;
+    const time = diff > 0 ? Math.floor(diff) : Math.ceil(diff);
+    const endTime = round - Math.abs(time);
+
+    if (initTime === null || Number.isNaN(initTime) || endTime > round) {
       setStatus('STOPPED');
       setTime(0);
     } else {
       setStatus('RUNNING');
-      setTime(initialTime);
+      setTime(endTime);
     }
-  }, [initialTime]);
+  }, [initTime, round]);
 
   useEffect(() => {
     if (status !== 'STOPPED' && time <= 0) {
       setStatus('STOPPED');
       setTime(0);
     }
-  }, [time, status, initialTime]);
+  }, [time, status]);
 
   useEffect(() => {
     let intervalId = null;

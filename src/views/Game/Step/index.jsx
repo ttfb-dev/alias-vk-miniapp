@@ -1,7 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import clsx from 'clsx';
-import { differenceInSeconds } from 'date-fns';
 import {
   Panel,
   PanelHeader,
@@ -33,8 +32,6 @@ import { formatTime } from '../helpers';
 import styles from './index.module.scss';
 import './index.scss';
 
-const renderAt = Date.now();
-
 const Step = ({ isSubscribing, ...props }) => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.general.userId);
@@ -48,8 +45,7 @@ const Step = ({ isSubscribing, ...props }) => {
   const currentWord = useSelector((state) => state.game.currentWord);
   const wordsCount = useSelector((state) => state.game.wordsCount);
   const step = useSelector((state) => state.game.step);
-  const diffTime = differenceInSeconds(renderAt, startedAt);
-  const { time, status } = useTimer(60 - diffTime);
+  const { time, status } = useTimer({ initTime: startedAt });
   const [isOpened, setIsOpened] = useState(false);
 
   const isExplainer = useMemo(() => {
@@ -60,7 +56,7 @@ const Step = ({ isSubscribing, ...props }) => {
     if (isExplainer) {
       dispatch.sync(game.action.getWords()).then(() => dispatch(game.action.setNextWord()));
     }
-  }, []); // eslint-disable-line
+  }, [dispatch, isExplainer]);
 
   const nextWord = () => {
     dispatch(game.action.setNextWord());
@@ -111,9 +107,9 @@ const Step = ({ isSubscribing, ...props }) => {
   const onStepEnd = () => {
     dispatch.sync(game.action.setStepHistory());
 
-    nextStep();
-
     dispatch.sync(game.action.stepEnd());
+
+    nextStep();
   };
 
   const onExit = () => {
@@ -138,7 +134,7 @@ const Step = ({ isSubscribing, ...props }) => {
               onClick={() => setIsOpened(!isOpened)}
             />
           }
-          status={(teamsList && teamsList[myTeamId]?.name) || 'Без названия'}
+          status={(teamsList && teamsList[myTeamId]?.name) ?? 'Без названия'}
         >
           Игра
         </PanelHeaderContent>
