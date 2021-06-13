@@ -58,9 +58,7 @@ const Lobby = ({ isSubscribing, ...props }) => {
   };
 
   const onStepStart = () => {
-    if (teamsCompleted >= 2) {
-      dispatch.sync(game.action.stepStart({ startedAt: Date.now() }));
-    }
+    dispatch.sync(game.action.stepStart({ startedAt: Date.now() }));
   };
 
   const onNextStep = () => {
@@ -79,7 +77,7 @@ const Lobby = ({ isSubscribing, ...props }) => {
       guesserId: nextGuesserId,
       score: 0,
       words: [],
-      startedAt: Date.now(),
+      startedAt: null,
     };
 
     dispatch.sync(
@@ -133,7 +131,7 @@ const Lobby = ({ isSubscribing, ...props }) => {
                 <Spacing size={4} />
 
                 <Headline weight='regular' style={{ color: '#fff', opacity: 0.72 }}>
-                  {`Сейчас ${stepNumber} из ${teamsCompleted} ходов`}
+                  {`Сейчас ${stepNumber ?? ':('} из ${teamsCompleted} ходов`}
                 </Headline>
                 <Spacing size={20} />
 
@@ -151,27 +149,27 @@ const Lobby = ({ isSubscribing, ...props }) => {
 
             <Group mode='card' separator='hide' className={styles.teamWrapper}>
               <Header mode='tertiary' className='headerCentered'>
-                {`Ход команды «${teamsList[step.teamId]?.name ?? 'Без названия'}»`}
+                {`Ход команды «${(teamsList && teamsList[step?.teamId]?.name) || 'Без названия'}»`}
               </Header>
               <Spacing size={20} />
               <div className={styles.team}>
                 <SimpleCell
                   hasHover={false}
                   hasActive={false}
-                  before={<Avatar size={40} src={(membersList && membersList[step.explainerId]?.photo_50) || null} />}
+                  before={<Avatar size={40} src={(membersList && membersList[step?.explainerId]?.photo_50) || null} />}
                   style={{ flex: 1, borderRight: '1px solid var(--content_tint_foreground)' }}
                   description='объясняет'
                 >
-                  {(membersList && membersList[step.explainerId]?.first_name) || 'Без имени'}
+                  {(membersList && membersList[step?.explainerId]?.first_name) || 'Без имени'}
                 </SimpleCell>
                 <SimpleCell
                   hasHover={false}
                   hasActive={false}
-                  before={<Avatar size={40} src={(membersList && membersList[step.guesserId]?.photo_50) || null} />}
+                  before={<Avatar size={40} src={(membersList && membersList[step?.guesserId]?.photo_50) || null} />}
                   style={{ flex: 1 }}
                   description='угадывает'
                 >
-                  {(membersList && membersList[step.guesserId]?.first_name) || 'Без имени'}
+                  {(membersList && membersList[step?.guesserId]?.first_name) || 'Без имени'}
                 </SimpleCell>
               </div>
             </Group>

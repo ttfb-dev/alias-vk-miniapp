@@ -31,20 +31,16 @@ const Game = (props) => {
 
     const stepStart = client.type(
       game.action.stepStart.type,
-      (action) => {
-        if (action.status === 'step') {
-          dispatch(general.action.route({ activeView: 'game', game: { activePanel: 'step' } }));
-        }
+      () => {
+        dispatch(general.action.route({ activeView: 'game', game: { activePanel: 'step' } }));
       },
       { event: 'add' },
     );
 
     const stepEnd = client.type(
       game.action.stepEnd.type,
-      (action) => {
-        if (action.status === 'lobby') {
-          dispatch(general.action.route({ activeView: 'game', game: { activePanel: 'lobby' } }));
-        }
+      () => {
+        dispatch(general.action.route({ activeView: 'game', game: { activePanel: 'lobby' } }));
       },
       { event: 'add' },
     );
