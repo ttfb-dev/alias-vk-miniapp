@@ -34,14 +34,17 @@ const reducer = (state = initialState, action) => {
 
     case setStepWord.type: {
       const { word, index } = payload;
-      const score = state.step.score + Number(word.guessed);
 
-      let newWord;
+      let score;
       let words;
       if (Number.isInteger(index)) {
-        newWord = { ...word, guessed: !word.guessed };
+        const oldWord = state.step.words[index];
+        const newWord = { ...word, guessed: !oldWord.guessed };
+
+        score = oldWord.guessed ? state.step.score - 1 : state.step.score + 1;
         words = [...state.step.words.slice(0, index), newWord, ...state.step.words.slice(index + 1)];
       } else {
+        score = word.guessed ? state.step.score + 1 : state.step.score - 1;
         words = [...state.step.words, word];
       }
 
