@@ -33,6 +33,7 @@
 
   background: var(--background_content);
 }
+
 .score {
   display: flex;
   align-items: center;
@@ -41,7 +42,18 @@
 
   color: var(--text_secondary);
 }
+
 .teams {
   display: flex;
   flex-direction: column;
+}
+
+.list {
+  padding-inline-start: 20px;
+}
+
+.bottomSticky {
+  position: sticky;
+  bottom: var(--safe-area-inset-bottom);
+  z-index: 1;
 }

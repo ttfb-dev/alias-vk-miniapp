@@ -6,6 +6,8 @@ import { Main } from './Main';
 import { Game } from './Game';
 import { Modal } from './Modal';
 
+import './index.scss';
+
 const App = () => {
   const activeView = useSelector((state) => state.general.activeView);
 
