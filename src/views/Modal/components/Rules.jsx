@@ -144,7 +144,7 @@ const Rules = ({ onClose, ...props }) => {
           Если в&nbsp;результате раунда победитель не&nbsp;выявлен, командам не&nbsp;хватает очков, то&nbsp;наступает
           новый раунд. Так до&nbsp;тех пор, пока не&nbsp;будет выявлен победитель
         </Text>
-        <FormItem style={{ position: 'sticky', bottom: 0 }}>
+        <FormItem style={{ position: 'sticky', bottom: 12 }}>
           <Button type='submit' size='l' mode='primary' stretched onClick={onClose}>
             Всё понятно!
           </Button>
