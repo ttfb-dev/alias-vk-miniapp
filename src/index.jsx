@@ -43,4 +43,4 @@ if (isProd) {
   store.dispatch.sync({ type: 'analytics/send', event: 'app.open', userAgent: window.navigator.userAgent });
 }
 
-webVitals({ enabled: false });
+webVitals();
