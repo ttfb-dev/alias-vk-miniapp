@@ -1,5 +1,6 @@
 export { CreateRoom } from './CreateRoom';
 export { EnterCode } from './EnterCode';
+export { GameResults } from './GameResults';
 export { Members } from './Members';
 export { QrCode } from './QrCode';
 export { RoomSets } from './RoomSets';

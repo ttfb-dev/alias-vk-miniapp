@@ -69,7 +69,7 @@ const Main = (props) => {
     const gameStart = client.type(
       room.action.gameStart.type,
       () => {
-        dispatch(general.action.route({ activeView: 'game', game: { activePanel: 'lobby' } }));
+        dispatch(general.action.route({ activeView: 'game', game: { activePanel: 'lobby' }, activeModal: null }));
       },
       { event: 'add' },
     );

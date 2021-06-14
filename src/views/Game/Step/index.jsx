@@ -35,6 +35,7 @@ import './index.scss';
 const Step = ({ isSubscribing, ...props }) => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.general.userId);
+  const isDebug = useSelector((state) => state.general.isDebug);
   const teams = useSelector((state) => state.room.teams);
   const teamsList = useSelector((state) => state.room.teamsList);
   const teamsCompleted = useSelector((state) => state.room.teamsCompleted);
@@ -244,6 +245,16 @@ const Step = ({ isSubscribing, ...props }) => {
         <div className={styles.fixedLayout}>
           <Div>
             <Button stretched mode='primary' size='l' onClick={onStepEnd}>
+              Закончить ход
+            </Button>
+          </Div>
+        </div>
+      )}
+
+      {!isSubscribing && isDebug && (
+        <div className={styles.fixedLayout}>
+          <Div>
+            <Button stretched mode='destructive' size='l' onClick={onStepEnd}>
               Закончить ход
             </Button>
           </Div>

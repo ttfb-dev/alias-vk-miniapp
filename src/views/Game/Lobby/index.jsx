@@ -207,23 +207,21 @@ const Lobby = ({ isSubscribing, ...props }) => {
         <Spacing size={20} />
       </div>
 
-      {!isSubscribing && (
+      {!isSubscribing && (isExplainer || isDebug) && (
         <div className={styles.fixedLayout}>
-          {(isExplainer || isDebug) && (
-            <Div>
-              <Button stretched mode='primary' size='l' onClick={onStepStart}>
-                Начать ход
-              </Button>
-              {isDebug && (
-                <>
-                  <Spacing size={12} />
-                  <Button stretched mode='destructive' size='l' onClick={onNextStep}>
-                    Передать ход
-                  </Button>
-                </>
-              )}
-            </Div>
-          )}
+          <Div>
+            <Button stretched mode='primary' size='l' onClick={onStepStart}>
+              Начать ход
+            </Button>
+            {isDebug && (
+              <>
+                <Spacing size={12} />
+                <Button stretched mode='destructive' size='l' onClick={onNextStep}>
+                  Передать ход
+                </Button>
+              </>
+            )}
+          </Div>
         </div>
       )}
     </Panel>
