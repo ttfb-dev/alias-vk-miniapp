@@ -16,7 +16,6 @@ package-lock.json
 *.zip
 
 # misc
-.vscode
 .idea
 .DS_Store
 .env.local
