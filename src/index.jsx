@@ -41,5 +41,5 @@ if (isDev) {
 
 if (isProd) {
   reportWebVitals();
-  store.dispatch.sync({ type: 'analytics/send', action: 'app.open', userAgent: window.navigator.userAgent });
+  store.dispatch.sync({ type: 'analytics/send', event: 'app.open', userAgent: window.navigator.userAgent });
 }
