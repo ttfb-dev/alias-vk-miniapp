@@ -5,23 +5,22 @@ import { store } from '../store';
 import { thresholds } from './thresholds';
 
 const defaultReporter = ({ id, delta, entries, name, value }) => {
-  const { title, error, warn, unit } = thresholds[name];
+  const { error, warn } = thresholds[name];
 
   if (value > error) {
-    console.error(`Web Vitals Error: ${title} value is above ${error}${unit} (received ${value}${unit})`);
     store.dispatch.sync({
-      type: 'analytics/send',
+      type: 'metrics/send',
       event: 'app.web-vitals',
       userAgent: window.navigator.userAgent,
       data: { id, delta, entries, name, value },
     });
+
     return;
   }
 
   if (value > warn) {
-    console.error(`Web Vitals Warning: ${title} value is above ${warn}${unit} (received ${value}${unit})`);
     store.dispatch.sync({
-      type: 'analytics/send',
+      type: 'metrics/send',
       event: 'app.web-vitals',
       userAgent: window.navigator.userAgent,
       data: { id, delta, entries, name, value },
@@ -29,7 +28,11 @@ const defaultReporter = ({ id, delta, entries, name, value }) => {
   }
 };
 
-const reportWebVitals = ({ reporter = defaultReporter }) => {
+const webVitals = ({ reporter = defaultReporter, enabled = process.env.NODE_ENV === 'production' } = {}) => {
+  if (!enabled) {
+    return;
+  }
+
   getCLS(reporter);
   getFID(reporter);
   getFCP(reporter);
@@ -37,4 +40,4 @@ const reportWebVitals = ({ reporter = defaultReporter }) => {
   getTTFB(reporter);
 };
 
-export { reportWebVitals };
+export { webVitals };

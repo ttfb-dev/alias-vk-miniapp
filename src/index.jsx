@@ -6,10 +6,10 @@ import { AdaptivityProvider, ConfigProvider } from '@vkontakte/vkui';
 
 import '@vkontakte/vkui/dist/vkui.css';
 
+import { webVitals } from './metrics';
 import app from './services';
 import { store } from './store';
 import { App } from './views';
-import { reportWebVitals } from './reportWebVitals';
 
 const isDev = process.env.NODE_ENV === 'development';
 const isProd = process.env.NODE_ENV === 'production';
@@ -40,6 +40,7 @@ if (isDev) {
 }
 
 if (isProd) {
-  reportWebVitals();
   store.dispatch.sync({ type: 'analytics/send', event: 'app.open', userAgent: window.navigator.userAgent });
 }
+
+webVitals({ enabled: false });

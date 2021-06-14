@@ -1,0 +1,1 @@
+export { webVitals } from './report';
