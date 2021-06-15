@@ -1,5 +1,7 @@
 import vkapi from '../api';
 
+import { store } from '../store';
+
 class App {
   init = () => {
     vkapi.init();
@@ -24,6 +26,8 @@ class App {
       params: { v: '5.131', access_token },
     });
     const friendProfiles = await this.getUserProfiles(friendIds);
+
+    store.dispatch.sync({ type: 'log/send', level: 'debug', data: { friendIds, friendProfiles } });
 
     return friendProfiles;
   };
