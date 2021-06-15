@@ -1,11 +1,11 @@
-import React, { useEffect, useMemo } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Panel, Tabbar, TabbarItem, Badge, Div, Button, Spacing, UsersStack } from '@vkontakte/vkui';
+import { Panel, Tabbar, TabbarItem, Badge, Div, Button, Spacing } from '@vkontakte/vkui';
 import { Icon16Add, Icon28WorkOutline, Icon28ScanViewfinderOutline, Icon28InfoOutline } from '@vkontakte/icons';
 
 import vkapi from '../../../api';
-import app from '../../../services';
-import { queryStringParse, declension } from '../../../helpers';
+import { CustomUsersStack } from '../../../components';
+import { queryStringParse } from '../../../helpers';
 import { general, room } from '../../../store';
 import { ReactComponent as Logo } from '../../../assets/logo.svg';
 
@@ -15,25 +15,6 @@ const Home = (props) => {
   const dispatch = useDispatch();
   const photos = useSelector((state) => state.general.friends.map((friend) => friend.photo_50));
   const firstNames = useSelector((state) => state.general.friends.map((friend) => friend.first_name));
-
-  const visibleCount = 3;
-  const othersFirstNameCount = Math.max(0, firstNames.length - visibleCount);
-  const canShowOthers = othersFirstNameCount > 0;
-  const firstNamesShown = firstNames.slice(0, visibleCount);
-
-  const declensionForm = useMemo(() => {
-    return declension(othersFirstNameCount, ['человек', 'человека', 'человек']);
-  }, [othersFirstNameCount]);
-
-  const getFirstNames = useMemo(() => {
-    return firstNamesShown.reduce((acc, firstName, index) => `${acc}${index === 0 ? '' : ', '}${firstName}`, '');
-  }, [firstNamesShown]);
-
-  useEffect(() => {
-    app.getFriendProfiles().then((friends) => {
-      dispatch(general.action.setFriends({ friends }));
-    });
-  }, []); // eslint-disable-line
 
   const onRoute = (route) => dispatch(general.action.route(route));
 
@@ -82,10 +63,7 @@ const Home = (props) => {
 
           <Spacing size={64} />
 
-          <UsersStack photos={photos} size='m' visibleCount={visibleCount} layout='vertical'>
-            {getFirstNames}
-            {canShowOthers && ` и ещё ${othersFirstNameCount} ${declensionForm}`}
-          </UsersStack>
+          <CustomUsersStack photos={photos} firstNames={firstNames} size='m' visibleCount={3} layout='vertical' />
         </div>
       </div>
 

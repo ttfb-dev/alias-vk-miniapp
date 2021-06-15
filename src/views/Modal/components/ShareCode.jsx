@@ -12,7 +12,6 @@ import {
   Text,
   MiniInfoCell,
   Spacing,
-  UsersStack,
   Button,
   Snackbar,
   Avatar,
@@ -21,30 +20,16 @@ import { Icon16InfoCirle, Icon16Done, Icon24Dismiss } from '@vkontakte/icons';
 import qr from '@vkontakte/vk-qr';
 
 import vkapi from '../../../api';
+import { CustomUsersStack } from '../../../components';
 
 import styles from './index.module.scss';
 
 const ShareCode = ({ onClose, ...props }) => {
   const platform = usePlatform();
   const roomId = useSelector((state) => state.room.roomId);
-  const members = useSelector((state) => state.room.members);
+  const photos = useSelector((state) => state.room.members.map((member) => member.photo_50));
+  const firstNames = useSelector((state) => state.room.members.map((member) => member.first_name));
   const [showCopyMessage, setShowCopyMessage] = useState(false);
-
-  const photos = useMemo(() => {
-    return members.map((member) => member.photo_50);
-  }, [members]);
-  const firstNames = useMemo(() => {
-    return members.map((member) => member.first_name);
-  }, [members]);
-
-  const visibleCount = 3;
-  const othersFirstNameCount = Math.max(0, firstNames.length - visibleCount);
-  const canShowOthers = othersFirstNameCount > 0;
-  const firstNamesShown = firstNames.slice(0, visibleCount);
-
-  const getFirstNames = useMemo(() => {
-    return firstNamesShown.reduce((acc, firstName, index) => `${acc}${index === 0 ? '' : ', '}${firstName}`, '');
-  }, [firstNamesShown]);
 
   const qrCode = useMemo(() => {
     const url = `https://vk.com/app7856384#roomId=${roomId}`;
@@ -126,10 +111,7 @@ const ShareCode = ({ onClose, ...props }) => {
 
         <Spacing size={24} />
 
-        <UsersStack photos={photos} size='m' visibleCount={visibleCount} layout='vertical'>
-          {getFirstNames}
-          {canShowOthers && ` и ещё ${othersFirstNameCount} человека`}
-        </UsersStack>
+        <CustomUsersStack photos={photos} firstNames={firstNames} size='m' visibleCount={3} layout='vertical' />
 
         <Spacing size={24} />
       </Div>
