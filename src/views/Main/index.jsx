@@ -56,6 +56,16 @@ const Main = (props) => {
       { event: 'add' },
     );
 
+    const joinRoomFailed = client.type(
+      `${room.action.join.type}_error`,
+      () => {
+        setIsLoading(false);
+
+        // notify user
+      },
+      { event: 'add' },
+    );
+
     const roomState = client.type(
       'room/state',
       (action) => {
@@ -79,6 +89,7 @@ const Main = (props) => {
       whereIAmDone();
       joinRoom();
       joinRoomDone();
+      joinRoomFailed();
       gameStart();
       roomState();
     };
