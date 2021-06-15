@@ -2,7 +2,7 @@ import vkapi from '../api';
 
 import { store } from '../store';
 
-class App {
+class AppService {
   init = () => {
     vkapi.init();
   };
@@ -33,4 +33,4 @@ class App {
   };
 }
 
-export default new App();
+export default new AppService();

@@ -28,7 +28,7 @@ import {
 } from '@vkontakte/icons';
 import qr from '@vkontakte/vk-qr';
 
-import app from '../../../services';
+import AppService from '../../../services';
 import { declension } from '../../../helpers';
 import { general, room } from '../../../store';
 import { ReactComponent as Logo } from '../../../assets/logo-mini.svg';
@@ -88,7 +88,7 @@ const Room = (props) => {
   }, [roomId]);
 
   useEffect(() => {
-    app.getUserProfiles(memberIds).then((members) => {
+    AppService.getUserProfiles(memberIds).then((members) => {
       dispatch(room.action.setMembers({ members }));
     });
   }, [memberIds, dispatch]);

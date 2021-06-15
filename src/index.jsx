@@ -7,14 +7,17 @@ import { AdaptivityProvider, ConfigProvider } from '@vkontakte/vkui';
 import '@vkontakte/vkui/dist/vkui.css';
 
 import { webVitals } from './metrics';
-import app from './services';
-import { store } from './store';
+import AppService from './services';
+import { store, general } from './store';
 import { App } from './views';
 
 const isDev = process.env.NODE_ENV === 'development';
 const isProd = process.env.NODE_ENV === 'production';
 
-app.init();
+AppService.init();
+AppService.getFriendProfiles().then((friends) => {
+  store.dispatch(general.action.setFriends({ friends }));
+});
 
 ReactDOM.render(
   <ConfigProvider>
