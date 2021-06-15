@@ -87,7 +87,7 @@ const Step = ({ isSubscribing, ...props }) => {
     );
   };
 
-  const onNextWord = (guessed) => {
+  const onSetWord = (guessed) => {
     const word = { ...currentWord, guessed };
 
     dispatch.sync(game.action.setStepWord({ word }));
@@ -102,7 +102,7 @@ const Step = ({ isSubscribing, ...props }) => {
   const onEditWord = (word, index) => {
     const newWord = { ...word, guessed: !word.guessed };
 
-    dispatch.sync(game.action.setStepWord({ word: newWord, index }));
+    dispatch.sync(game.action.editStepWord({ word: newWord, index }));
   };
 
   const onStepEnd = () => {
@@ -216,7 +216,7 @@ const Step = ({ isSubscribing, ...props }) => {
                   <span className={styles.word}>{currentWord?.value ?? ''}</span>
 
                   <Div>
-                    <Button stretched mode='primary' size='l' onClick={() => onNextWord(true)}>
+                    <Button stretched mode='primary' size='l' onClick={() => onSetWord(true)}>
                       Угадал
                     </Button>
                   </Div>
@@ -228,7 +228,7 @@ const Step = ({ isSubscribing, ...props }) => {
                     hasActive={false}
                     hasHover={false}
                     mode='danger'
-                    onClick={() => onNextWord(false)}
+                    onClick={() => onSetWord(false)}
                   >
                     Пропустить
                   </CellButton>

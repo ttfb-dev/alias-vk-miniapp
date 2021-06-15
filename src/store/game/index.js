@@ -1,4 +1,13 @@
-import { stepStart, getWords, setStepWord, setNextWord, setStepHistory, setNextStep, stepEnd } from './action';
+import {
+  stepStart,
+  getWords,
+  setStepWord,
+  editStepWord,
+  setNextWord,
+  setStepHistory,
+  setNextStep,
+  stepEnd,
+} from './action';
 import { reducer } from './reducer';
 
 const game = {
@@ -6,6 +15,7 @@ const game = {
     stepStart,
     getWords,
     setStepWord,
+    editStepWord,
     setNextWord,
     setStepHistory,
     setNextStep,

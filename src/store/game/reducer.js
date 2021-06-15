@@ -1,4 +1,13 @@
-import { stepStart, setWords, setStepWord, setNextWord, setNextStep, setStepHistory, stepEnd } from './action';
+import {
+  stepStart,
+  setWords,
+  setStepWord,
+  editStepWord,
+  setNextWord,
+  setNextStep,
+  setStepHistory,
+  stepEnd,
+} from './action';
 
 const initialState = {
   stepNumber: null,
@@ -33,20 +42,19 @@ const reducer = (state = initialState, action) => {
     }
 
     case setStepWord.type: {
+      const { word } = payload;
+
+      const score = word.guessed ? state.step.score + 1 : state.step.score - 1;
+      const words = [...state.step.words, word];
+
+      return { ...state, step: { ...state.step, score, words } };
+    }
+
+    case editStepWord.type: {
       const { word, index } = payload;
 
-      let score;
-      let words;
-      if (Number.isInteger(index)) {
-        const oldWord = state.step.words[index];
-        const newWord = { ...word, guessed: !oldWord.guessed };
-
-        score = oldWord.guessed ? state.step.score - 1 : state.step.score + 1;
-        words = [...state.step.words.slice(0, index), newWord, ...state.step.words.slice(index + 1)];
-      } else {
-        score = word.guessed ? state.step.score + 1 : state.step.score - 1;
-        words = [...state.step.words, word];
-      }
+      const score = word.guessed ? state.step.score + 1 : state.step.score - 1;
+      const words = [...state.step.words.slice(0, index), word, ...state.step.words.slice(index + 1)];
 
       return { ...state, step: { ...state.step, score, words } };
     }
