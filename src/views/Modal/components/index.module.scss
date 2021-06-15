@@ -52,6 +52,10 @@
   padding-inline-start: 20px;
 }
 
+.list li:not(:first-child) {
+  padding-top: 12px;
+}
+
 .bottomSticky {
   position: sticky;
   bottom: var(--safe-area-inset-bottom);
