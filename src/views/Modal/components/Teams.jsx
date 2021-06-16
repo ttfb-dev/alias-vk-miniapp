@@ -117,7 +117,7 @@ const TeamsComponent = ({ onClose, updateModalHeight, ...props }) => {
                 removable={isEditActive}
                 description={getFirstNames(team.teamId)}
                 onRemove={() => onDelete(team.teamId)}
-                onChange={() => onChange(team.teamId)}
+                onClick={() => onChange(team.teamId)}
               >
                 {team.name}
               </Cell>
