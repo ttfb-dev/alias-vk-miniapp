@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { ModalCard, Button, List, SimpleCell, Text } from '@vkontakte/vkui';
 import { Icon24CupOutline } from '@vkontakte/icons';
@@ -10,10 +10,6 @@ import styles from './index.module.scss';
 const GameResults = ({ onClose, ...props }) => {
   const statistics = useSelector((state) => state.game.statistics);
   const teamsList = useSelector((state) => state.room.teamsList);
-
-  useEffect(() => {
-    console.log(statistics); // eslint-disable-line
-  }, [statistics]);
 
   return (
     <ModalCard

@@ -19,8 +19,9 @@ import {
   CellButton,
   Text,
   Header,
+  Placeholder,
 } from '@vkontakte/vkui';
-import { Icon20Dropdown } from '@vkontakte/icons';
+import { Icon20Dropdown, Icon24CupOutline } from '@vkontakte/icons';
 
 import { general, game } from '../../../store';
 import { LinkedList } from '../../../helpers';
@@ -37,10 +38,11 @@ const Lobby = ({ isSubscribing, ...props }) => {
   const userId = useSelector((state) => state.general.userId);
   const isDebug = useSelector((state) => state.general.isDebug);
   const teams = useSelector((state) => state.room.teams);
-  const teamsList = useSelector((state) => state.room?.teamsList);
+  const teamsList = useSelector((state) => state.room.teamsList);
   const teamsCompleted = useSelector((state) => state.room.teamsCompleted);
   const myTeamId = useSelector((state) => state.room.myTeamId);
-  const membersList = useSelector((state) => state.room?.membersList);
+  const membersList = useSelector((state) => state.room.membersList);
+  const statistics = useSelector((state) => state.game.statistics);
   const stepNumber = useSelector((state) => state.game.stepNumber);
   const roundNumber = useSelector((state) => state.game.roundNumber);
   const step = useSelector((state) => state.game.step);
@@ -175,32 +177,29 @@ const Lobby = ({ isSubscribing, ...props }) => {
 
             <Group mode='card' separator='hide' className={styles.statistics}>
               <Header mode='primary'>Команды</Header>
-              <List>
-                <SimpleCell
-                  hasHover={false}
-                  hasActive={false}
-                  after={
-                    <div className={styles.score}>
-                      <Trophy />
-                      <Text weight='regular'>4223</Text>
-                    </div>
-                  }
-                >
-                  Пирожки
-                </SimpleCell>
-                <SimpleCell
-                  hasHover={false}
-                  hasActive={false}
-                  after={
-                    <div className={styles.score}>
-                      <Trophy />
-                      <Text weight='regular'>433</Text>
-                    </div>
-                  }
-                >
-                  Сладкие булочки
-                </SimpleCell>
-              </List>
+              {!!statistics.length ? (
+                <List>
+                  {statistics.map((team) => (
+                    <SimpleCell
+                      key={team.id}
+                      hasHover={false}
+                      hasActive={false}
+                      after={
+                        <div className={styles.score}>
+                          <Trophy />
+                          <Text weight='regular'>{team.score}</Text>
+                        </div>
+                      }
+                    >
+                      {teamsList[team.id].name}
+                    </SimpleCell>
+                  ))}
+                </List>
+              ) : (
+                <Placeholder icon={<Icon24CupOutline width={48} height={48} />}>
+                  Здесь будет вестить статистика команд
+                </Placeholder>
+              )}
             </Group>
           </Div>
         )}
