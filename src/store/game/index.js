@@ -1,4 +1,5 @@
 import {
+  setInitState,
   stepStart,
   getWords,
   setStepWord,
@@ -12,6 +13,7 @@ import { reducer } from './reducer';
 
 const game = {
   action: {
+    setInitState,
     stepStart,
     getWords,
     setStepWord,

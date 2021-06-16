@@ -185,7 +185,7 @@ const reducer = (state = initialState, action) => {
     case gameEnd.type:
       return {
         ...state,
-        status: 'pregame',
+        status: 'lobby',
       };
 
     default:

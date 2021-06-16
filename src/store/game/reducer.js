@@ -1,4 +1,5 @@
 import {
+  setInitState,
   stepStart,
   setWords,
   setStepWord,
@@ -9,24 +10,46 @@ import {
   stepEnd,
 } from './action';
 
-const initialState = {
+const initState = {
   stepNumber: null,
   roundNumber: null,
-  step: null,
-  stepHistory: null,
-  currentWord: null,
+  statistics: [],
+  statisticsList: {},
+  step: {},
+  stepHistory: [],
+  currentWord: {},
   words: [],
   wordsCount: null,
   status: '',
 };
 
-const reducer = (state = initialState, action) => {
+const reducer = (state = initState, action) => {
   const { type, ...payload } = action;
 
   switch (type) {
     case 'game/state': {
-      return { ...state, ...payload.game };
+      const stepHistory = payload.game.stepHistory.slice();
+      const statisticsList = stepHistory.reduce((acc, step) => {
+        if (acc[step.teamId]) {
+          acc[step.teamId].id = step.teamId;
+          acc[step.teamId].score += step.score;
+        } else {
+          acc[step.teamId] = {};
+          acc[step.teamId].id = step.teamId;
+          // при инициализации score = undefined, поэтому используется этот хак
+          acc[step.teamId].score = ~~acc[step.teamId].score + step.score;
+        }
+
+        return acc;
+      }, {});
+
+      const statistics = Object.values(statisticsList).sort((prev, next) => next.score - prev.score);
+
+      return { ...state, ...payload.game, statistics, statisticsList };
     }
+
+    case setInitState.type:
+      return { ...initState };
 
     case stepStart.type: {
       const { startedAt } = payload;
@@ -70,8 +93,27 @@ const reducer = (state = initialState, action) => {
     case setNextStep.type:
       return { ...state, ...payload };
 
-    case setStepHistory.type:
-      return state;
+    case setStepHistory.type: {
+      const step = { ...state.step };
+      const stepHistory = [...state.stepHistory, step];
+      const statisticsList = stepHistory.reduce((acc, step) => {
+        if (acc[step.teamId]) {
+          acc[step.teamId].id = step.teamId;
+          acc[step.teamId].score += step.score;
+        } else {
+          acc[step.teamId] = {};
+          acc[step.teamId].id = step.teamId;
+          // при инициализации score = undefined, поэтому используется этот хак
+          acc[step.teamId].score = ~~acc[step.teamId].score + step.score;
+        }
+
+        return acc;
+      }, {});
+
+      const statistics = Object.values(statisticsList).sort((prev, next) => next.score - prev.score);
+
+      return { ...state, stepHistory, statistics, statisticsList };
+    }
 
     case stepEnd.type: {
       return { ...state, status: 'lobby', step: { ...state.step, startedAt: null } };

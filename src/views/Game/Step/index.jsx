@@ -21,7 +21,7 @@ import {
 } from '@vkontakte/vkui';
 import { Icon20Dropdown } from '@vkontakte/icons';
 
-import { general, game } from '../../../store';
+import { general, game, room } from '../../../store';
 import { LinkedList } from '../../../helpers';
 import { ReactComponent as Logo } from '../../../assets/logo-mini.svg';
 import { ReactComponent as LogoBackground } from '../../../assets/logo-bg.svg';
@@ -40,13 +40,13 @@ const Step = ({ isSubscribing, ...props }) => {
   const teamsList = useSelector((state) => state.room.teamsList);
   const teamsCompleted = useSelector((state) => state.room.teamsCompleted);
   const myTeamId = useSelector((state) => state.room.myTeamId);
-  const startedAt = useSelector((state) => state.game.step?.startedAt ?? null);
   const stepNumber = useSelector((state) => state.game.stepNumber);
   const roundNumber = useSelector((state) => state.game.roundNumber);
   const currentWord = useSelector((state) => state.game.currentWord);
   const wordsCount = useSelector((state) => state.game.wordsCount);
   const step = useSelector((state) => state.game.step);
-  const { time, status } = useTimer({ initTime: startedAt });
+  const statisticsList = useSelector((state) => state.game.statisticsList);
+  const { time, status } = useTimer({ initTime: step?.startedAt ?? null });
   const [isOpened, setIsOpened] = useState(false);
 
   const isExplainer = useMemo(() => {
@@ -106,11 +106,20 @@ const Step = ({ isSubscribing, ...props }) => {
   };
 
   const onStepEnd = () => {
+    const score = (statisticsList[myTeamId] && statisticsList[myTeamId]?.score) || 0;
+
     dispatch.sync(game.action.setStepHistory());
 
     dispatch.sync(game.action.stepEnd());
 
-    nextStep();
+    if (score + step.score > 60) {
+      dispatch(room.action.gameEnd());
+      dispatch(
+        general.action.route({ activeView: 'main', main: { activePanel: 'room' }, activeModal: 'game-results' }),
+      );
+    } else {
+      nextStep();
+    }
   };
 
   const onExit = () => {

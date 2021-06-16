@@ -79,7 +79,11 @@ const Main = (props) => {
     const gameStart = client.type(
       room.action.gameStart.type,
       () => {
-        dispatch(general.action.route({ activeView: 'game', game: { activePanel: 'lobby' }, activeModal: null }));
+        setTimeout(
+          () =>
+            dispatch(general.action.route({ activeView: 'game', game: { activePanel: 'lobby' }, activeModal: null })),
+          30,
+        );
       },
       { event: 'add' },
     );

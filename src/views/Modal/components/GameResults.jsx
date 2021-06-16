@@ -1,5 +1,5 @@
-import React from 'react';
-// import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { ModalCard, Button, List, SimpleCell, Text } from '@vkontakte/vkui';
 import { Icon24CupOutline } from '@vkontakte/icons';
 
@@ -8,7 +8,12 @@ import { ReactComponent as Trophy } from '../../../assets/trophy.svg';
 import styles from './index.module.scss';
 
 const GameResults = ({ onClose, ...props }) => {
-  // const stepHistory = useSelector((state) => state.game.stepHistory);
+  const statistics = useSelector((state) => state.game.statistics);
+  const teamsList = useSelector((state) => state.room.teamsList);
+
+  useEffect(() => {
+    console.log(statistics); // eslint-disable-line
+  }, [statistics]);
 
   return (
     <ModalCard
@@ -24,30 +29,21 @@ const GameResults = ({ onClose, ...props }) => {
       actionsLayout='horizontal'
     >
       <List>
-        <SimpleCell
-          hasHover={false}
-          hasActive={false}
-          after={
-            <div className={styles.score}>
-              <Trophy />
-              <Text weight='regular'>4223</Text>
-            </div>
-          }
-        >
-          Пирожки
-        </SimpleCell>
-        <SimpleCell
-          hasHover={false}
-          hasActive={false}
-          after={
-            <div className={styles.score}>
-              <Trophy />
-              <Text weight='regular'>433</Text>
-            </div>
-          }
-        >
-          Сладкие булочки
-        </SimpleCell>
+        {statistics.map((team) => (
+          <SimpleCell
+            key={team.id}
+            hasHover={false}
+            hasActive={false}
+            after={
+              <div className={styles.score}>
+                <Trophy />
+                <Text weight='regular'>{team.score}</Text>
+              </div>
+            }
+          >
+            {teamsList[team.id].name}
+          </SimpleCell>
+        ))}
       </List>
     </ModalCard>
   );
