@@ -26,7 +26,7 @@ const MembersComponent = ({ onClose, updateModalHeight, ...props }) => {
     updateModalHeight();
   }, [updateModalHeight, teams, members]);
 
-  const teamName = (memberId) => teams.find((team) => team?.memberIds.includes(memberId)).name;
+  const teamName = (memberId) => teams.find((team) => team?.memberIds?.includes(memberId))?.name ?? '';
 
   return (
     <ModalPage
