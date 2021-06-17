@@ -118,6 +118,8 @@ const TeamsComponent = ({ onClose, updateModalHeight, ...props }) => {
                 description={getFirstNames(team.teamId)}
                 onRemove={() => onDelete(team.teamId)}
                 onClick={() => onChange(team.teamId)}
+                // просто хак, потому как кто-то в ВК решил использовать onClick, а не дефолтный onChange
+                onChange={() => {}}
               >
                 {team.name}
               </Cell>
