@@ -13,7 +13,8 @@ const Game = (props) => {
   const client = useClient();
   const dispatch = useDispatch();
   const activePanel = useSelector((state) => state.general.game.activePanel);
-  const isExit = useSelector((state) => state.general.isExit);
+  const isRoomLeave = useSelector((state) => state.general.isRoomLeave);
+  const isGameEnd = useSelector((state) => state.general.isGameEnd);
   const roomId = useSelector((state) => state.room.roomId);
   const isSubscribing = useSubscription([`room/${roomId}/game`]);
 
@@ -60,10 +61,10 @@ const Game = (props) => {
   }, [dispatch]);
 
   const onClose = useCallback(() => {
-    dispatch(general.action.alert({ isExit: false }));
+    dispatch(general.action.alert({ isRoomLeave: false }));
   }, [dispatch]);
 
-  const alert = (
+  const roomLeaveAlert = (
     <Alert
       actions={[
         {
@@ -81,12 +82,34 @@ const Game = (props) => {
       actionsLayout='horizontal'
       onClose={onClose}
       header='Выход из игры'
-      text='Вы уверены, что хотите выйти из игры?'
+      text='Вы уверены, что хотите выйти из игры и покинуть комнату?'
+    />
+  );
+
+  const gameEndAlert = (
+    <Alert
+      actions={[
+        {
+          title: 'Отмена',
+          autoclose: true,
+          mode: 'cancel',
+        },
+        {
+          title: 'Закончить',
+          autoclose: true,
+          mode: 'destructive',
+          action: onExit,
+        },
+      ]}
+      actionsLayout='horizontal'
+      onClose={onClose}
+      header='Закончить игру'
+      text='Вы уверены, что хотите закончить игру?'
     />
   );
 
   return (
-    <View {...props} activePanel={activePanel} popout={isExit && alert}>
+    <View {...props} activePanel={activePanel} popout={(isRoomLeave && roomLeaveAlert) || (isGameEnd && gameEndAlert)}>
       <Lobby id='lobby' isSubscribing={isSubscribing} />
 
       <Step id='step' isSubscribing={isSubscribing} />

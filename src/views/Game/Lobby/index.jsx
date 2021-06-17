@@ -38,6 +38,7 @@ const Lobby = ({ isSubscribing, ...props }) => {
   const userId = useSelector((state) => state.general.userId);
   const isDebug = useSelector((state) => state.general.isDebug);
   const teams = useSelector((state) => state.room.teams);
+  const ownerId = useSelector((state) => state.room.ownerId);
   const teamsList = useSelector((state) => state.room.teamsList);
   const teamsCompleted = useSelector((state) => state.room.teamsCompleted);
   const myTeamId = useSelector((state) => state.room.myTeamId);
@@ -52,11 +53,9 @@ const Lobby = ({ isSubscribing, ...props }) => {
     return userId === step?.explainerId;
   }, [userId, step]);
 
-  const onExit = () => {
-    setIsOpened(false);
-
-    dispatch(general.action.alert({ isExit: true }));
-  };
+  const isOwner = useMemo(() => {
+    return userId === ownerId;
+  }, [userId, ownerId]);
 
   const onStepStart = () => {
     dispatch.sync(game.action.stepStart({ startedAt: Date.now() }));
@@ -86,6 +85,18 @@ const Lobby = ({ isSubscribing, ...props }) => {
     );
   };
 
+  const onRoomLeave = () => {
+    setIsOpened(false);
+
+    dispatch(general.action.alert({ isRoomLeave: true }));
+  };
+
+  const onGameEnd = () => {
+    setIsOpened(false);
+
+    dispatch(general.action.alert({ isGameEnd: true }));
+  };
+
   return (
     <Panel {...props}>
       <PanelHeader separator={false} shadow={true}>
@@ -108,9 +119,14 @@ const Lobby = ({ isSubscribing, ...props }) => {
       </PanelHeader>
       <PanelHeaderContext opened={isOpened} onClose={() => setIsOpened(!isOpened)}>
         <List>
-          <CellButton mode='danger' centered onClick={onExit}>
+          <CellButton mode='danger' centered onClick={onRoomLeave}>
             Выйти из игры
           </CellButton>
+          {isOwner && (
+            <CellButton mode='danger' centered onClick={onGameEnd}>
+              Закончить игру
+            </CellButton>
+          )}
         </List>
       </PanelHeaderContext>
 

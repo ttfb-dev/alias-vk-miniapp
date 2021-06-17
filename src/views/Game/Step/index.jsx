@@ -37,6 +37,7 @@ const Step = ({ isSubscribing, ...props }) => {
   const userId = useSelector((state) => state.general.userId);
   const isDebug = useSelector((state) => state.general.isDebug);
   const teams = useSelector((state) => state.room.teams);
+  const ownerId = useSelector((state) => state.room.ownerId);
   const teamsList = useSelector((state) => state.room.teamsList);
   const teamsCompleted = useSelector((state) => state.room.teamsCompleted);
   const myTeamId = useSelector((state) => state.room.myTeamId);
@@ -52,6 +53,10 @@ const Step = ({ isSubscribing, ...props }) => {
   const isExplainer = useMemo(() => {
     return userId === step?.explainerId;
   }, [userId, step]);
+
+  const isOwner = useMemo(() => {
+    return userId === ownerId;
+  }, [userId, ownerId]);
 
   useEffect(() => {
     if (isExplainer) {
@@ -110,22 +115,28 @@ const Step = ({ isSubscribing, ...props }) => {
 
     dispatch.sync(game.action.setStepHistory());
 
-    dispatch.sync(game.action.stepEnd());
-
-    if (score + step.score > 60) {
-      dispatch(room.action.gameEnd());
-      dispatch(
-        general.action.route({ activeView: 'main', main: { activePanel: 'room' }, activeModal: 'game-results' }),
-      );
-    } else {
-      nextStep();
-    }
+    dispatch.sync(game.action.stepEnd()).then(() => {
+      if (score + step.score > 60) {
+        dispatch(room.action.gameEnd());
+        dispatch(
+          general.action.route({ activeView: 'main', main: { activePanel: 'room' }, activeModal: 'game-results' }),
+        );
+      } else {
+        nextStep();
+      }
+    });
   };
 
-  const onExit = () => {
+  const onRoomLeave = () => {
     setIsOpened(false);
 
-    dispatch(general.action.alert({ isExit: true }));
+    dispatch(general.action.alert({ isRoomLeave: true }));
+  };
+
+  const onGameEnd = () => {
+    setIsOpened(false);
+
+    dispatch(general.action.alert({ isGameEnd: true }));
   };
 
   return (
@@ -150,9 +161,14 @@ const Step = ({ isSubscribing, ...props }) => {
       </PanelHeader>
       <PanelHeaderContext opened={isOpened} onClose={() => setIsOpened(!isOpened)}>
         <List>
-          <CellButton mode='danger' centered onClick={onExit}>
+          <CellButton mode='danger' centered onClick={onRoomLeave}>
             Выйти из игры
           </CellButton>
+          {isOwner && (
+            <CellButton mode='danger' centered onClick={onGameEnd}>
+              Закончить игру
+            </CellButton>
+          )}
         </List>
       </PanelHeaderContext>
 
