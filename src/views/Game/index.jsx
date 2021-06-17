@@ -1,5 +1,6 @@
 import React, { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { parseId } from '@logux/core';
 import { useClient } from '@logux/client/react';
 import { useSubscription } from '@logux/redux';
 import { View, Alert } from '@vkontakte/vkui';
@@ -15,6 +16,7 @@ const Game = (props) => {
   const activePanel = useSelector((state) => state.general.game.activePanel);
   const isRoomLeave = useSelector((state) => state.general.isRoomLeave);
   const isGameEnd = useSelector((state) => state.general.isGameEnd);
+  const ownerId = useSelector((state) => state.room.ownerId);
   const roomId = useSelector((state) => state.room.roomId);
   const isSubscribing = useSubscription([`room/${roomId}/game`]);
 
@@ -47,12 +49,28 @@ const Game = (props) => {
       { event: 'add' },
     );
 
+    const gameEnd = client.type(
+      room.action.gameEnd.type,
+      (_, meta) => {
+        const { userId } = parseId(meta.id);
+
+        // редиректить в комнату только через resend, у инициатора экшена другое флоу перехода в комнату
+        if (userId !== ownerId) {
+          dispatch(
+            general.action.route({ activeView: 'main', main: { activePanel: 'room' }, activeModal: 'game-results' }),
+          );
+        }
+      },
+      { event: 'add' },
+    );
+
     return () => {
       gameState();
       stepStart();
       stepEnd();
+      gameEnd();
     };
-  }, [client, dispatch]);
+  }, [client, dispatch, ownerId]);
 
   const onExit = useCallback(() => {
     dispatch.sync(room.action.leave());

@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { NotificationContext } from './NotificationContext';
-import { NotificationRoot } from './NotificationRoot';
+import { NotificationRoot } from './components';
 
 import { events, dispatcher, emitter } from './events';
 import { useNotification } from './hooks';
 
-const NotificationProvider = ({ children, delay }) => {
+const NotificationProvider = ({ children, container, delay }) => {
   const { notifications, dispatch } = useNotification();
 
   useEffect(() => {
@@ -23,7 +23,7 @@ const NotificationProvider = ({ children, delay }) => {
   return (
     <NotificationContext.Provider value={''}>
       {children}
-      <NotificationRoot notifications={notifications} onClose={onClose} />
+      <NotificationRoot notifications={notifications} container={container} onClose={onClose} />
     </NotificationContext.Provider>
   );
 };

@@ -6,13 +6,15 @@ const events = {
   HIDE_ALL: 'hideAll',
 };
 
-const dispatcher = ({ dispatch, delay = 3000 }) => {
+const dispatcher = ({ dispatch, delay }) => {
   emitter.on(events.SHOW, (notification) => {
     dispatch({ type: 'ADD', notification });
 
-    setTimeout(() => {
-      dispatch({ type: 'REMOVE', id: notification.id });
-    }, delay);
+    if (delay) {
+      setTimeout(() => {
+        dispatch({ type: 'REMOVE', id: notification.id });
+      }, delay);
+    }
   });
 
   emitter.on(events.HIDE, (id) => dispatch({ type: 'REMOVE', id }));

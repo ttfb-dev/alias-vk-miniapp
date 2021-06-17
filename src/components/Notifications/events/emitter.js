@@ -1,25 +1,27 @@
-const emitter = (() => ({
-  events: new Map(),
+const emitter = (() => {
+  const events = new Map();
 
-  on(event, callback) {
-    if (!this.events.has(event)) {
-      this.events.set(event, []);
-    }
+  return {
+    on(event, callback) {
+      if (!events.has(event)) {
+        events.set(event, []);
+      }
 
-    this.events.get(event).push(callback);
-  },
+      events.get(event).push(callback);
+    },
 
-  emit(event, ...args) {
-    if (!this.events.has(event)) {
-      return;
-    }
+    emit(event, ...args) {
+      if (!events.has(event)) {
+        return;
+      }
 
-    this.events.get(event).forEach((callback) => callback(...args));
-  },
+      events.get(event).forEach((callback) => callback(...args));
+    },
 
-  off() {
-    this.events.clear();
-  },
-}))();
+    off() {
+      events.clear();
+    },
+  };
+})();
 
 export { emitter };

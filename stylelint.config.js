@@ -8,7 +8,7 @@ module.exports = {
   plugins: ['stylelint-scss', 'stylelint-order', 'stylelint-config-rational-order/plugin'],
   rules: {
     'selector-class-pattern': /^[a-z-][a-zA-Z-]*(-(enter|leave)(-(active|to))?)?$/,
-    'selector-id-pattern': /^[a-z][a-zA-Z]*$/,
+    'selector-id-pattern': /^[a-z-][a-zA-Z-]*$/,
     'selector-max-universal': 1,
     'selector-max-type': [0, { ignore: ['child', 'descendant', 'compounded'] }],
     'property-no-unknown': [

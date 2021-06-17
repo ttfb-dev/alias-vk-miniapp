@@ -117,10 +117,13 @@ const Step = ({ isSubscribing, ...props }) => {
 
     dispatch.sync(game.action.stepEnd()).then(() => {
       if (score + step.score > 60) {
-        dispatch(room.action.gameEnd());
-        dispatch(
-          general.action.route({ activeView: 'main', main: { activePanel: 'room' }, activeModal: 'game-results' }),
-        );
+        dispatch
+          .sync(room.action.gameEnd())
+          .then(() =>
+            dispatch(
+              general.action.route({ activeView: 'main', main: { activePanel: 'room' }, activeModal: 'game-results' }),
+            ),
+          );
       } else {
         nextStep();
       }

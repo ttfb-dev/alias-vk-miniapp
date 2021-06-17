@@ -1,0 +1,24 @@
+.container {
+  position: relative;
+  z-index: 1;
+
+  padding: 0 16px;
+}
+
+.ios {
+  top: var(--panelheader_height_ios);
+
+  padding: 0 12px;
+}
+
+.andriod {
+  top: var(--panelheader_height_android);
+
+  padding: 0 16px;
+}
+
+.vkcom {
+  top: var(--panelheader_height_vkcom);
+
+  padding: 0 16px;
+}
