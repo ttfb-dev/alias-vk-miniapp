@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { parseId } from '@logux/core';
 import { useClient } from '@logux/client/react';
 import { View, ScreenSpinner } from '@vkontakte/vkui';
 
@@ -12,7 +13,10 @@ const Main = (props) => {
   const client = useClient();
   const dispatch = useDispatch();
   const activePanel = useSelector((state) => state.general.main.activePanel);
+  const ownerId = useSelector((state) => state.room.ownerId);
   const [isLoading, setIsLoading] = useState(false);
+
+  const onRoute = useCallback((route) => dispatch(general.action.route(route)), [dispatch]);
 
   useEffect(() => {
     const whereIAm = client.type(
@@ -30,9 +34,7 @@ const Main = (props) => {
 
         if (action.roomId !== null) {
           dispatch(room.action.setRoomId({ roomId: action.roomId }));
-          dispatch(
-            general.action.route({ activeView: 'main', main: { activePanel: 'room' } /* , activeModal: 'teams' */ }),
-          );
+          onRoute({ activeView: 'main', main: { activePanel: 'room' } /* , activeModal: 'teams' */ });
         }
       },
       { event: 'add' },
@@ -51,7 +53,7 @@ const Main = (props) => {
       () => {
         setIsLoading(false);
 
-        dispatch(general.action.route({ activeView: 'main', main: { activePanel: 'room' }, activeModal: null }));
+        onRoute({ activeView: 'main', main: { activePanel: 'room' }, activeModal: null });
       },
       { event: 'add' },
     );
@@ -61,7 +63,7 @@ const Main = (props) => {
       () => {
         setIsLoading(false);
 
-        // notify user
+        onRoute({ activeModal: null });
       },
       { event: 'add' },
     );
@@ -70,7 +72,7 @@ const Main = (props) => {
       'room/state',
       (action) => {
         if (action.room.status === 'game') {
-          dispatch(general.action.route({ activeView: 'game', game: { activePanel: 'lobby' } }));
+          onRoute({ activeView: 'game', game: { activePanel: 'lobby' } });
         }
       },
       { event: 'add' },
@@ -78,12 +80,13 @@ const Main = (props) => {
 
     const gameStart = client.type(
       room.action.gameStart.type,
-      () => {
-        setTimeout(
-          () =>
-            dispatch(general.action.route({ activeView: 'game', game: { activePanel: 'lobby' }, activeModal: null })),
-          30,
-        );
+      (_, meta) => {
+        const { userId } = parseId(meta.id);
+
+        // редиректить в игру только через resend, у инициатора экшена другое флоу перехода в игру
+        if (userId !== ownerId) {
+          onRoute({ activeView: 'game', game: { activePanel: 'lobby' }, activeModal: null });
+        }
       },
       { event: 'add' },
     );
@@ -94,10 +97,10 @@ const Main = (props) => {
       joinRoom();
       joinRoomDone();
       joinRoomFailed();
-      gameStart();
       roomState();
+      gameStart();
     };
-  }, [client, dispatch]);
+  }, [client, dispatch, onRoute, ownerId]);
 
   return (
     <View {...props} activePanel={activePanel} popout={isLoading && <ScreenSpinner />}>
