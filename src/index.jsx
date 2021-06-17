@@ -10,9 +10,13 @@ import { webVitals } from './metrics';
 import AppService from './services';
 import { store, general } from './store';
 import { App } from './views';
+import { NotificationProvider } from './components/Notifications/NotificationProvider';
 
 const isDev = process.env.NODE_ENV === 'development';
 const isProd = process.env.NODE_ENV === 'production';
+
+const appRoot = document.getElementById('root');
+const notificationRoot = document.getElementById('notification-root');
 
 AppService.init();
 AppService.getFriendProfiles().then((friends) => {
@@ -23,15 +27,17 @@ ReactDOM.render(
   <ConfigProvider>
     <AdaptivityProvider>
       <ClientContext.Provider value={store.client}>
-        <Provider store={store}>
-          <StrictMode>
-            <App />
-          </StrictMode>
-        </Provider>
+        <NotificationProvider container={notificationRoot}>
+          <Provider store={store}>
+            <StrictMode>
+              <App />
+            </StrictMode>
+          </Provider>
+        </NotificationProvider>
       </ClientContext.Provider>
     </AdaptivityProvider>
   </ConfigProvider>,
-  document.getElementById('root'),
+  appRoot,
 );
 
 if (isDev) {
