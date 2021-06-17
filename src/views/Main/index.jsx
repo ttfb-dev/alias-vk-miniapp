@@ -1,8 +1,11 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { parseId } from '@logux/core';
+import { track } from '@logux/client';
 import { useClient } from '@logux/client/react';
 import { View, ScreenSpinner } from '@vkontakte/vkui';
+
+import { notification } from '../../components';
 
 import { general, room } from '../../store';
 
@@ -42,28 +45,20 @@ const Main = (props) => {
 
     const joinRoom = client.type(
       room.action.join.type,
-      () => {
+      (_, meta) => {
         setIsLoading(true);
-      },
-      { event: 'add' },
-    );
 
-    const joinRoomDone = client.type(
-      `${room.action.join.type}_success`,
-      () => {
-        setIsLoading(false);
+        track(client, meta.id)
+          .then(() => {
+            setIsLoading(false);
 
-        onRoute({ activeView: 'main', main: { activePanel: 'room' }, activeModal: null });
-      },
-      { event: 'add' },
-    );
+            onRoute({ activeView: 'main', main: { activePanel: 'room' }, activeModal: null });
+          })
+          .catch((error) => {
+            setIsLoading(false);
 
-    const joinRoomFailed = client.type(
-      `${room.action.join.type}_error`,
-      () => {
-        setIsLoading(false);
-
-        onRoute({ activeModal: null });
+            notification.error({ message: error.action.message, title: 'Ошибка' });
+          });
       },
       { event: 'add' },
     );
@@ -95,8 +90,6 @@ const Main = (props) => {
       whereIAm();
       whereIAmDone();
       joinRoom();
-      joinRoomDone();
-      joinRoomFailed();
       roomState();
       gameStart();
     };

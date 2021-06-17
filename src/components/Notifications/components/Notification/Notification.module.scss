@@ -4,7 +4,7 @@
     'n-icon n-title'
     'n-icon n-text';
   grid-template-rows: 28px minmax(38px, auto);
-  grid-template-columns: 64px minmax(max-content, auto);
+  grid-template-columns: 64px minmax(min-content, max-content);
 
   font-family: var(--font-family);
 

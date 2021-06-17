@@ -5,11 +5,11 @@ import { Icon28InfoCircleOutline } from '@vkontakte/icons';
 
 import styles from './Notification.module.scss';
 
-const Notification = ({ id, title, message, type }) => {
+const Notification = ({ id, title, message, type, onClose }) => {
   const platform = usePlatform();
 
   return (
-    <article className={clsx(styles.notification, styles[`notification-${platform}`])}>
+    <article className={clsx(styles.notification, styles[`notification-${platform}`])} onClick={() => onClose(id)}>
       <div className={clsx(styles.icon, styles[`icon-${type}`])}>
         <Icon28InfoCircleOutline width={40} height={40} />
       </div>

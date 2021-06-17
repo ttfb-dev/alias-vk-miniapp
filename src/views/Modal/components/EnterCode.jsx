@@ -9,9 +9,9 @@ const EnterCode = ({ onClose, ...props }) => {
   const dispatch = useDispatch();
   const [roomId, setRoomId] = useState(null);
 
-  const onJoin = async () => {
+  const onJoin = () => {
     if (roomId) {
-      dispatch.sync(room.action.join({ roomId }));
+      dispatch.sync(room.action.join({ roomId })).catch(() => onClose());
     }
   };
 

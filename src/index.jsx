@@ -10,7 +10,7 @@ import { webVitals } from './metrics';
 import AppService from './services';
 import { store, general } from './store';
 import { App } from './views';
-import { NotificationProvider } from './components/Notifications/NotificationProvider';
+import { NotificationProvider } from './components';
 
 const isDev = process.env.NODE_ENV === 'development';
 const isProd = process.env.NODE_ENV === 'production';
@@ -27,7 +27,7 @@ ReactDOM.render(
   <ConfigProvider>
     <AdaptivityProvider>
       <ClientContext.Provider value={store.client}>
-        <NotificationProvider container={notificationRoot}>
+        <NotificationProvider container={notificationRoot} delay={3000}>
           <Provider store={store}>
             <StrictMode>
               <App />
