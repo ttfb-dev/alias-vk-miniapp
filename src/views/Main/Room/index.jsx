@@ -19,7 +19,7 @@ import {
   MiniInfoCell,
 } from '@vkontakte/vkui';
 import {
-  Icon16InfoCirle,
+  Icon20Info,
   Icon28SettingsOutline,
   Icon28UserAddOutline,
   Icon28WorkOutline,
@@ -49,6 +49,8 @@ const Room = (props) => {
   const availableSets = useSelector((state) => state.room.availableSets);
   const [isOpened, setIsOpened] = useState(false);
   const isSubscribing = useSubscription([`room/${roomId}`]);
+
+  const hasTeam = useMemo(() => teams.some((team) => team.memberIds.includes(userId)), [teams, userId]);
 
   const isOwner = useMemo(() => {
     return userId === ownerId;
@@ -95,11 +97,13 @@ const Room = (props) => {
 
   const onRoute = useCallback((route) => dispatch(general.action.route(route)), [dispatch]);
 
-  const onStart = () => {
-    dispatch.sync(room.action.gameStart());
+  const onGameStart = () => {
+    dispatch
+      .sync(room.action.gameStart())
+      .then(() => onRoute({ activeView: 'game', game: { activePanel: 'lobby' }, activeModal: null }));
   };
 
-  const onExit = () => {
+  const onLeave = () => {
     setIsOpened(false);
 
     dispatch.sync(room.action.leave());
@@ -132,7 +136,7 @@ const Room = (props) => {
 
   return (
     <Panel {...props}>
-      <PanelHeader left={<PanelHeaderBack onClick={onExit} />} separator={false} shadow={true}>
+      <PanelHeader left={<PanelHeaderBack onClick={onLeave} />} separator={false} shadow={true}>
         <PanelHeaderContent
           before={
             <div style={{ lineHeight: 0 }}>
@@ -157,8 +161,8 @@ const Room = (props) => {
       {isOwner && (
         <PanelHeaderContext opened={isOpened} onClose={() => setIsOpened(!isOpened)}>
           <List>
-            <CellButton mode='danger' centered onClick={onExit}>
-              Выйти из комнаты
+            <CellButton mode='primary' disabled centered>
+              Настройки
             </CellButton>
           </List>
         </PanelHeaderContext>
@@ -216,17 +220,23 @@ const Room = (props) => {
 
       {!isSubscribing && (
         <div className={styles.fixedLayout}>
-          {isOwner ? (
+          {!hasTeam ? (
+            <MiniInfoCell
+              before={<Icon20Info />}
+              mode='more'
+              textLevel='primary'
+              textWrap='full'
+              onClick={() => onRoute({ activeModal: 'teams' })}
+            >
+              Для участия в игре выберите команду.
+            </MiniInfoCell>
+          ) : hasTeam && isOwner ? (
             <Div>
-              <Button mode='primary' size='l' stretched onClick={onStart}>
+              <Button mode='primary' size='l' stretched onClick={onGameStart}>
                 Начать игру
               </Button>
             </Div>
-          ) : (
-            <MiniInfoCell before={<Icon16InfoCirle />} textLevel='secondary' textWrap='full'>
-              Для начала нужно 4 и более участников. После начала игры присоединиться новым участникам будет нельзя.
-            </MiniInfoCell>
-          )}
+          ) : null}
         </div>
       )}
 
