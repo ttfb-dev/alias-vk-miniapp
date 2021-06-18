@@ -5,7 +5,7 @@ import { track } from '@logux/client';
 import { useClient } from '@logux/client/react';
 import { View, ScreenSpinner } from '@vkontakte/vkui';
 
-import { notification } from '../../components';
+import { notify } from '../../components';
 
 import { general, room } from '../../store';
 
@@ -57,7 +57,7 @@ const Main = (props) => {
           .catch((error) => {
             setIsLoading(false);
 
-            notification.error({ message: error.action.message, title: 'Ошибка' });
+            notify.error({ message: error.action.message, title: 'Ошибка' });
           });
       },
       { event: 'add' },

@@ -219,7 +219,8 @@ const Lobby = ({ isSubscribing, ...props }) => {
             </Group>
           </Div>
         )}
-        <Spacing size={20} />
+
+        {isExplainer && <Spacing size={20} />}
       </div>
 
       {!isSubscribing && (isExplainer || isDebug) && (

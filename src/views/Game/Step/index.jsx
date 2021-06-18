@@ -266,7 +266,7 @@ const Step = ({ isSubscribing, ...props }) => {
           </Div>
         )}
 
-        <Spacing size={20} />
+        {isExplainer && <Spacing size={20} />}
       </div>
 
       {!isSubscribing && isExplainer && status === 'STOPPED' && (
