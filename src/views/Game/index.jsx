@@ -1,6 +1,7 @@
 import React, { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { parseId } from '@logux/core';
+import { track } from '@logux/client';
 import { useClient } from '@logux/client/react';
 import { useSubscription } from '@logux/redux';
 import { View, Alert } from '@vkontakte/vkui';
@@ -15,19 +16,21 @@ const Game = (props) => {
   const dispatch = useDispatch();
   const activePanel = useSelector((state) => state.general.game.activePanel);
   const isRoomLeave = useSelector((state) => state.general.isRoomLeave);
+  const userId = useSelector((state) => state.general.userId);
   const isGameEnd = useSelector((state) => state.general.isGameEnd);
-  const ownerId = useSelector((state) => state.room.ownerId);
   const roomId = useSelector((state) => state.room.roomId);
   const isSubscribing = useSubscription([`room/${roomId}/game`]);
+
+  const onRoute = useCallback((route) => dispatch(general.action.route(route)), [dispatch]);
 
   useEffect(() => {
     const gameState = client.type(
       'game/state',
       (action) => {
         if (action.game.status === 'step') {
-          dispatch(general.action.route({ activeView: 'game', game: { activePanel: 'step' } }));
+          onRoute({ activeView: 'game', game: { activePanel: 'step' } });
         } else if (action.game.status === 'lobby') {
-          dispatch(general.action.route({ activeView: 'game', game: { activePanel: 'lobby' } }));
+          onRoute({ activeView: 'game', game: { activePanel: 'lobby' } });
         }
       },
       { event: 'add' },
@@ -36,7 +39,7 @@ const Game = (props) => {
     const stepStart = client.type(
       game.action.stepStart.type,
       () => {
-        dispatch(general.action.route({ activeView: 'game', game: { activePanel: 'step' } }));
+        onRoute({ activeView: 'game', game: { activePanel: 'step' } });
       },
       { event: 'add' },
     );
@@ -44,7 +47,7 @@ const Game = (props) => {
     const stepEnd = client.type(
       game.action.stepEnd.type,
       () => {
-        dispatch(general.action.route({ activeView: 'game', game: { activePanel: 'lobby' } }));
+        onRoute({ activeView: 'game', game: { activePanel: 'lobby' } });
       },
       { event: 'add' },
     );
@@ -52,13 +55,17 @@ const Game = (props) => {
     const gameEnd = client.type(
       room.action.gameEnd.type,
       (_, meta) => {
-        const { userId } = parseId(meta.id);
+        const { userId: parsedUserId } = parseId(meta.id);
+        const actionUserId = parseInt(parsedUserId, 10);
 
         // редиректить в комнату только через resend, у инициатора экшена другое флоу перехода в комнату
-        if (userId !== ownerId) {
-          dispatch(
-            general.action.route({ activeView: 'main', main: { activePanel: 'room' }, activeModal: 'game-results' }),
-          );
+        if (actionUserId !== userId) {
+          onRoute({ activeView: 'main', main: { activePanel: 'room' }, activeModal: 'game-results' });
+        } else {
+          // у инициатора редирект происходит после перехода экшена в состояние processed
+          track(client, meta.id).then(() => {
+            onRoute({ activeView: 'main', main: { activePanel: 'room' }, activeModal: 'game-results' });
+          });
         }
       },
       { event: 'add' },
@@ -70,7 +77,7 @@ const Game = (props) => {
       stepEnd();
       gameEnd();
     };
-  }, [client, dispatch, ownerId]);
+  }, [client, onRoute, userId]);
 
   const onExit = useCallback(() => {
     dispatch.sync(room.action.leave());

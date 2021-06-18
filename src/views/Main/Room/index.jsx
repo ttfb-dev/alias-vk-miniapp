@@ -98,9 +98,7 @@ const Room = (props) => {
   const onRoute = useCallback((route) => dispatch(general.action.route(route)), [dispatch]);
 
   const onGameStart = () => {
-    dispatch
-      .sync(room.action.gameStart())
-      .then(() => onRoute({ activeView: 'game', game: { activePanel: 'lobby' }, activeModal: null }));
+    dispatch.sync(room.action.gameStart());
   };
 
   const onLeave = () => {

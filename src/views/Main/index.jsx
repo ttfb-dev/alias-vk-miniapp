@@ -16,7 +16,7 @@ const Main = (props) => {
   const client = useClient();
   const dispatch = useDispatch();
   const activePanel = useSelector((state) => state.general.main.activePanel);
-  const ownerId = useSelector((state) => state.room.ownerId);
+  const userId = useSelector((state) => state.general.userId);
   const [isLoading, setIsLoading] = useState(false);
 
   const onRoute = useCallback((route) => dispatch(general.action.route(route)), [dispatch]);
@@ -76,11 +76,17 @@ const Main = (props) => {
     const gameStart = client.type(
       room.action.gameStart.type,
       (_, meta) => {
-        const { userId } = parseId(meta.id);
+        const { userId: parsedUserId } = parseId(meta.id);
+        const actionUserId = parseInt(parsedUserId, 10);
 
-        // редиректить в игру только через resend, у инициатора экшена другое флоу перехода в игру
-        if (userId !== ownerId) {
+        if (actionUserId !== userId) {
+          // редиректить в игру только через resend, у инициатора экшена другое флоу перехода в игру
           onRoute({ activeView: 'game', game: { activePanel: 'lobby' }, activeModal: null });
+        } else {
+          // у инициатора редирект происходит после перехода экшена в состояние processed
+          track(client, meta.id).then(() => {
+            onRoute({ activeView: 'game', game: { activePanel: 'lobby' }, activeModal: null });
+          });
         }
       },
       { event: 'add' },
@@ -93,7 +99,7 @@ const Main = (props) => {
       roomState();
       gameStart();
     };
-  }, [client, dispatch, onRoute, ownerId]);
+  }, [client, dispatch, onRoute, userId]);
 
   return (
     <View {...props} activePanel={activePanel} popout={isLoading && <ScreenSpinner />}>
