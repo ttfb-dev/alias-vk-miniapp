@@ -31,7 +31,8 @@ const useTimer = ({ initTime, round = 60, interval = 1000 }) => {
 
     if (status === 'RUNNING') {
       intervalId = setInterval(() => {
-        setTime(time - 1);
+        const timeLeft = round - (Date.now() - initTime) / 1000;
+        setTime(timeLeft);
       }, interval);
     } else if (intervalId) {
       clearInterval(intervalId);
@@ -42,7 +43,7 @@ const useTimer = ({ initTime, round = 60, interval = 1000 }) => {
         clearInterval(intervalId);
       }
     };
-  }, [status, interval, time]);
+  }, [status, interval, time, initTime, round]);
 
   return { time, status };
 };
