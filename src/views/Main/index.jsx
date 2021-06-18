@@ -54,10 +54,10 @@ const Main = (props) => {
 
             onRoute({ activeView: 'main', main: { activePanel: 'room' }, activeModal: null });
           })
-          .catch((error) => {
+          .catch(({ action }) => {
             setIsLoading(false);
 
-            notify.error({ message: error.action.message, title: 'Ошибка' });
+            notify.error({ message: action.message, title: 'Ошибка' });
           });
       },
       { event: 'add' },

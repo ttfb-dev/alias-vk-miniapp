@@ -232,7 +232,7 @@ const Room = (props) => {
             </MiniInfoCell>
           ) : hasTeam && isOwner ? (
             <Div>
-              <Button mode='primary' size='l' stretched onClick={onGameStart}>
+              <Button mode='primary' size='l' disabled={teamsCompleted < 2} stretched onClick={onGameStart}>
                 Начать игру
               </Button>
             </Div>

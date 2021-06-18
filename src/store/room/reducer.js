@@ -16,14 +16,14 @@ const initialState = {
   roomId: null,
   memberIds: [],
   members: [],
-  membersList: null,
+  membersList: {},
   sets: [],
   availableSets: [],
-  ownerId: '',
+  ownerId: null,
   myTeamId: null,
-  settings: null,
+  settings: {},
   teams: [],
-  teamsList: null,
+  teamsList: {},
   teamsCompleted: 0,
 };
 

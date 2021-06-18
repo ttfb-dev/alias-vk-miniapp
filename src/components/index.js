@@ -1,2 +1,2 @@
 export { CustomUsersStack } from './CustomUsersStack';
-export { notification, NotificationProvider } from './Notifications';
+export { notify, NotificationProvider } from './Notifications';
