@@ -50,13 +50,8 @@ const Step = ({ isSubscribing, ...props }) => {
   const { time, status } = useTimer({ initTime: step?.startedAt ?? null });
   const [isOpened, setIsOpened] = useState(false);
 
-  const isExplainer = useMemo(() => {
-    return userId === step?.explainerId;
-  }, [userId, step]);
-
-  const isOwner = useMemo(() => {
-    return userId === ownerId;
-  }, [userId, ownerId]);
+  const isExplainer = useMemo(() => userId === step?.explainerId, [userId, step]);
+  const isOwner = useMemo(() => userId === ownerId, [userId, ownerId]);
 
   useEffect(() => {
     if (isExplainer) {
