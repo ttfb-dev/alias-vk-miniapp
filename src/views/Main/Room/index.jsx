@@ -142,14 +142,14 @@ const Room = (props) => {
             </div>
           }
           aside={
-            isOwner ? (
+            isOwner && (
               <Icon28SettingsOutline
                 width={20}
                 height={20}
                 style={{ marginLeft: '4px' }}
                 onClick={() => setIsOpened(!isOpened)}
               />
-            ) : null
+            )
           }
           status={settings?.name}
         >
