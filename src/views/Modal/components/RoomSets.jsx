@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   usePlatform,
@@ -28,8 +28,12 @@ const RoomSets = ({ onClose, ...props }) => {
   const platform = usePlatform();
   const dispatch = useDispatch();
   const roomId = useSelector((state) => state.room.roomId);
+  const userId = useSelector((state) => state.general.userId);
+  const ownerId = useSelector((state) => state.room.ownerId);
   const sets = useSelector((state) => state.room.sets);
   const availableSets = useSelector((state) => state.room.availableSets);
+
+  const isOwner = useMemo(() => userId === ownerId, [userId, ownerId]);
 
   const onChange = useCallback(
     (set) => {
@@ -88,7 +92,7 @@ const RoomSets = ({ onClose, ...props }) => {
               hasActive={false}
               hasHover={false}
               before={<Avatar size={40} />}
-              after={<Switch checked={set.status === 'active'} onChange={() => onChange(set)} />}
+              after={<Switch disabled={!isOwner} checked={set.status === 'active'} onChange={() => onChange(set)} />}
               description={set.description}
             >
               {set.name}
