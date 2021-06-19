@@ -25,8 +25,8 @@ import { Icon20Dropdown, Icon24CupOutline } from '@vkontakte/icons';
 
 import { general, game } from '../../../store';
 import { LinkedList } from '../../../helpers';
+import { Container } from '../../../components';
 import { ReactComponent as Logo } from '../../../assets/logo-mini.svg';
-import { ReactComponent as LogoBackground } from '../../../assets/logo-bg.svg';
 import { ReactComponent as Hourglass } from '../../../assets/hourglass.svg';
 import { ReactComponent as Trophy } from '../../../assets/trophy.svg';
 
@@ -94,42 +94,37 @@ const Lobby = ({ isSubscribing, ...props }) => {
 
   return (
     <Panel {...props}>
-      <PanelHeader separator={false} shadow={true}>
-        <PanelHeaderContent
-          before={
-            <div style={{ lineHeight: 0 }}>
-              <Logo style={{ width: '32px', height: '32px', color: 'var(--header_tint)' }} />
-            </div>
-          }
-          aside={
-            <Icon20Dropdown
-              style={{ transform: `rotate(${isOpened ? '180deg' : '0'})` }}
-              onClick={() => setIsOpened(!isOpened)}
-            />
-          }
-          status={(teamsList && teamsList[myTeamId]?.name) || 'Без названия'}
-        >
-          Игра
-        </PanelHeaderContent>
-      </PanelHeader>
-      <PanelHeaderContext opened={isOpened} onClose={() => setIsOpened(!isOpened)}>
-        <List>
-          {isOwner && (
-            <CellButton mode='danger' centered onClick={onGameEnd}>
-              Закончить игру
+      <Container>
+        <PanelHeader separator={false} shadow={true}>
+          <PanelHeaderContent
+            before={
+              <div style={{ lineHeight: 0 }}>
+                <Logo style={{ width: '32px', height: '32px', color: 'var(--header_tint)' }} />
+              </div>
+            }
+            aside={
+              <Icon20Dropdown
+                style={{ transform: `rotate(${isOpened ? '180deg' : '0'})` }}
+                onClick={() => setIsOpened(!isOpened)}
+              />
+            }
+            status={(teamsList && teamsList[myTeamId]?.name) || 'Без названия'}
+          >
+            Игра
+          </PanelHeaderContent>
+        </PanelHeader>
+        <PanelHeaderContext opened={isOpened} onClose={() => setIsOpened(!isOpened)}>
+          <List>
+            {isOwner && (
+              <CellButton mode='danger' centered onClick={onGameEnd}>
+                Закончить игру
+              </CellButton>
+            )}
+            <CellButton mode='danger' centered onClick={onRoomLeave}>
+              Выйти из игры
             </CellButton>
-          )}
-          <CellButton mode='danger' centered onClick={onRoomLeave}>
-            Выйти из игры
-          </CellButton>
-        </List>
-      </PanelHeaderContext>
-
-      <div className={styles.container}>
-        <div className={styles.wrapper}>
-          <div className={styles.background} />
-          <LogoBackground />
-        </div>
+          </List>
+        </PanelHeaderContext>
 
         {isSubscribing ? (
           <PanelSpinner />
@@ -216,25 +211,25 @@ const Lobby = ({ isSubscribing, ...props }) => {
         )}
 
         {isExplainer && <Spacing size={20} />}
-      </div>
 
-      {!isSubscribing && (isExplainer || isDebug) && (
-        <div className={styles.fixedLayout}>
-          <Div>
-            <Button stretched mode='primary' size='l' onClick={onStepStart}>
-              Начать ход
-            </Button>
-            {isDebug && (
-              <>
-                <Spacing size={12} />
-                <Button stretched mode='destructive' size='l' onClick={onNextStep}>
-                  Передать ход
-                </Button>
-              </>
-            )}
-          </Div>
-        </div>
-      )}
+        {!isSubscribing && (isExplainer || isDebug) && (
+          <div className={styles.fixedLayout}>
+            <Div>
+              <Button stretched mode='primary' size='l' onClick={onStepStart}>
+                Начать ход
+              </Button>
+              {isDebug && (
+                <>
+                  <Spacing size={12} />
+                  <Button stretched mode='destructive' size='l' onClick={onNextStep}>
+                    Передать ход
+                  </Button>
+                </>
+              )}
+            </Div>
+          </div>
+        )}
+      </Container>
     </Panel>
   );
 };

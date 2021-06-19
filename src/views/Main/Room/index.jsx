@@ -30,9 +30,9 @@ import qr from '@vkontakte/vk-qr';
 
 import AppService from '../../../services';
 import { declension } from '../../../helpers';
+import { Container } from '../../../components';
 import { general, room } from '../../../store';
 import { ReactComponent as Logo } from '../../../assets/logo-mini.svg';
-import { ReactComponent as LogoBackground } from '../../../assets/logo-bg.svg';
 
 import styles from './index.module.scss';
 
@@ -134,43 +134,38 @@ const Room = (props) => {
 
   return (
     <Panel {...props}>
-      <PanelHeader left={<PanelHeaderBack onClick={onLeave} />} separator={false} shadow={true}>
-        <PanelHeaderContent
-          before={
-            <div style={{ lineHeight: 0 }}>
-              <Logo style={{ width: '32px', height: '32px', color: 'var(--header_tint)' }} />
-            </div>
-          }
-          aside={
-            isOwner && (
-              <Icon28SettingsOutline
-                width={20}
-                height={20}
-                style={{ marginLeft: '4px' }}
-                onClick={() => setIsOpened(!isOpened)}
-              />
-            )
-          }
-          status={settings?.name}
-        >
-          Комната
-        </PanelHeaderContent>
-      </PanelHeader>
-      {isOwner && (
-        <PanelHeaderContext opened={isOpened} onClose={() => setIsOpened(!isOpened)}>
-          <List>
-            <CellButton mode='primary' disabled centered>
-              Настройки
-            </CellButton>
-          </List>
-        </PanelHeaderContext>
-      )}
-
-      <div className={styles.container}>
-        <div className={styles.wrapper}>
-          <div className={styles.background} />
-          <LogoBackground />
-        </div>
+      <Container>
+        <PanelHeader left={<PanelHeaderBack onClick={onLeave} />} separator={false} shadow={true}>
+          <PanelHeaderContent
+            before={
+              <div style={{ lineHeight: 0 }}>
+                <Logo style={{ width: '32px', height: '32px', color: 'var(--header_tint)' }} />
+              </div>
+            }
+            aside={
+              isOwner && (
+                <Icon28SettingsOutline
+                  width={20}
+                  height={20}
+                  style={{ marginLeft: '4px' }}
+                  onClick={() => setIsOpened(!isOpened)}
+                />
+              )
+            }
+            status={settings?.name}
+          >
+            Комната
+          </PanelHeaderContent>
+        </PanelHeader>
+        {isOwner && (
+          <PanelHeaderContext opened={isOpened} onClose={() => setIsOpened(!isOpened)}>
+            <List>
+              <CellButton mode='primary' disabled centered>
+                Настройки
+              </CellButton>
+            </List>
+          </PanelHeaderContext>
+        )}
 
         {isSubscribing ? (
           <PanelSpinner />
@@ -214,31 +209,31 @@ const Room = (props) => {
             </Div>
           </Div>
         )}
-      </div>
 
-      {!isSubscribing && (
-        <div className={styles.fixedLayout}>
-          {!hasTeam ? (
-            <MiniInfoCell
-              before={<Icon20Info />}
-              mode='more'
-              textLevel='primary'
-              textWrap='full'
-              onClick={() => onRoute({ activeModal: 'teams' })}
-            >
-              Для участия в игре выберите команду.
-            </MiniInfoCell>
-          ) : hasTeam && isOwner ? (
-            <Div>
-              <Button mode='primary' size='l' disabled={teamsCompleted < 2} stretched onClick={onGameStart}>
-                Начать игру
-              </Button>
-            </Div>
-          ) : null}
-        </div>
-      )}
+        {!isSubscribing && (
+          <div className={styles.fixedLayout}>
+            {!hasTeam ? (
+              <MiniInfoCell
+                before={<Icon20Info />}
+                mode='more'
+                textLevel='primary'
+                textWrap='full'
+                onClick={() => onRoute({ activeModal: 'teams' })}
+              >
+                Для участия в игре выберите команду.
+              </MiniInfoCell>
+            ) : hasTeam && isOwner ? (
+              <Div>
+                <Button mode='primary' size='l' disabled={teamsCompleted < 2} stretched onClick={onGameStart}>
+                  Начать игру
+                </Button>
+              </Div>
+            ) : null}
+          </div>
+        )}
 
-      {tabbar}
+        {tabbar}
+      </Container>
     </Panel>
   );
 };
