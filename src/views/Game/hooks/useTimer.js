@@ -1,21 +1,26 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
+
+const timeDiff = ({ initTime, round }) => {
+  const diff = (Date.now() - initTime) / 1000;
+  const time = diff > 0 ? Math.floor(diff) : Math.ceil(diff);
+  const timeLeft = round - Math.abs(time);
+
+  return timeLeft;
+};
 
 const useTimer = ({ initTime, round = 60, interval = 1000 }) => {
-  const timestamp = useRef(Date.now());
   const [status, setStatus] = useState('INITIAL');
   const [time, setTime] = useState();
 
   useEffect(() => {
-    const diff = (timestamp.current - initTime) / 1000;
-    const time = diff > 0 ? Math.floor(diff) : Math.ceil(diff);
-    const endTime = round - Math.abs(time);
+    const timeLeft = timeDiff({ initTime, round });
 
-    if (initTime === null || Number.isNaN(initTime) || endTime > round) {
+    if (!initTime || timeLeft > round) {
       setStatus('STOPPED');
       setTime(0);
     } else {
       setStatus('RUNNING');
-      setTime(endTime);
+      setTime(timeLeft);
     }
   }, [initTime, round]);
 
@@ -31,7 +36,8 @@ const useTimer = ({ initTime, round = 60, interval = 1000 }) => {
 
     if (status === 'RUNNING') {
       intervalId = setInterval(() => {
-        const timeLeft = round - (Date.now() - initTime) / 1000;
+        const timeLeft = timeDiff({ initTime, round });
+
         setTime(timeLeft);
       }, interval);
     } else if (intervalId) {
