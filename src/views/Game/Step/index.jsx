@@ -127,13 +127,13 @@ const Step = ({ isSubscribing, ...props }) => {
   const onRoomLeave = () => {
     setIsOpened(false);
 
-    dispatch(general.action.alert({ isRoomLeave: true }));
+    dispatch(general.action.alert({ isRoomLeaveAlert: true }));
   };
 
   const onGameEnd = () => {
     setIsOpened(false);
 
-    dispatch(general.action.alert({ isGameEnd: true }));
+    dispatch(general.action.alert({ isGameEndAlert: true }));
   };
 
   return (
@@ -158,14 +158,14 @@ const Step = ({ isSubscribing, ...props }) => {
       </PanelHeader>
       <PanelHeaderContext opened={isOpened} onClose={() => setIsOpened(!isOpened)}>
         <List>
-          <CellButton mode='danger' centered onClick={onRoomLeave}>
-            Выйти из игры
-          </CellButton>
           {isOwner && (
             <CellButton mode='danger' centered onClick={onGameEnd}>
               Закончить игру
             </CellButton>
           )}
+          <CellButton mode='danger' centered onClick={onRoomLeave}>
+            Выйти из игры
+          </CellButton>
         </List>
       </PanelHeaderContext>
 

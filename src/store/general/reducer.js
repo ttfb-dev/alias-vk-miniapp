@@ -14,8 +14,8 @@ const initialState = {
   friends: [],
   userId: null,
   isDebug: isDev,
-  isRoomLeave: false,
-  isGameEnd: false,
+  isRoomLeaveAlert: false,
+  isGameEndAlert: false,
 };
 
 const reducer = (state = initialState, action) => {

@@ -15,9 +15,9 @@ const Game = (props) => {
   const client = useClient();
   const dispatch = useDispatch();
   const activePanel = useSelector((state) => state.general.game.activePanel);
-  const isRoomLeave = useSelector((state) => state.general.isRoomLeave);
+  const isRoomLeaveAlert = useSelector((state) => state.general.isRoomLeaveAlert);
+  const isGameEndAlert = useSelector((state) => state.general.isGameEndAlert);
   const userId = useSelector((state) => state.general.userId);
-  const isGameEnd = useSelector((state) => state.general.isGameEnd);
   const roomId = useSelector((state) => state.room.roomId);
   const isSubscribing = useSubscription([`room/${roomId}/game`]);
 
@@ -79,14 +79,20 @@ const Game = (props) => {
     };
   }, [client, onRoute, userId]);
 
-  const onExit = useCallback(() => {
+  const onRoomLeave = useCallback(() => {
     dispatch.sync(room.action.leave());
 
     dispatch(general.action.route({ activeView: 'main', main: { activePanel: 'home' } }));
   }, [dispatch]);
 
+  const onGameEnd = useCallback(() => {
+    dispatch.sync(room.action.leave());
+
+    dispatch(general.action.route({ activeView: 'main', main: { activePanel: 'room' } }));
+  }, [dispatch]);
+
   const onClose = useCallback(() => {
-    dispatch(general.action.alert({ isRoomLeave: false }));
+    dispatch(general.action.alert({ isRoomLeaveAlert: false, isGameEndAlert: false }));
   }, [dispatch]);
 
   const roomLeaveAlert = (
@@ -101,7 +107,7 @@ const Game = (props) => {
           title: 'Выйти',
           autoclose: true,
           mode: 'destructive',
-          action: onExit,
+          action: onRoomLeave,
         },
       ]}
       actionsLayout='horizontal'
@@ -123,7 +129,7 @@ const Game = (props) => {
           title: 'Закончить',
           autoclose: true,
           mode: 'destructive',
-          action: onExit,
+          action: onGameEnd,
         },
       ]}
       actionsLayout='horizontal'
@@ -134,7 +140,11 @@ const Game = (props) => {
   );
 
   return (
-    <View {...props} activePanel={activePanel} popout={(isRoomLeave && roomLeaveAlert) || (isGameEnd && gameEndAlert)}>
+    <View
+      {...props}
+      activePanel={activePanel}
+      popout={(isRoomLeaveAlert && roomLeaveAlert) || (isGameEndAlert && gameEndAlert)}
+    >
       <Lobby id='lobby' isSubscribing={isSubscribing} />
 
       <Step id='step' isSubscribing={isSubscribing} />
