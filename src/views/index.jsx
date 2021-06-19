@@ -65,7 +65,7 @@ const App = () => {
         const actionUserId = parseInt(parsedUserId, 10);
 
         if (actionUserId !== userId) {
-          // редиректить в игру только через resend, у инициатора экшена другое флоу перехода в игру
+          // редиректить в игру всех, кроме инициатора экшена
           onRoute({ activeView: 'game', game: { activePanel: 'lobby' }, activeModal: null });
         } else {
           // у инициатора редирект происходит после перехода экшена в состояние processed
@@ -111,7 +111,7 @@ const App = () => {
         const { userId: parsedUserId } = parseId(meta.id);
         const actionUserId = parseInt(parsedUserId, 10);
 
-        // редиректить в комнату только через resend, у инициатора экшена другое флоу перехода в комнату
+        // редиректить в комнату всех, кроме инициатора экшена
         if (actionUserId !== userId) {
           onRoute({ activeView: 'main', main: { activePanel: 'room' }, activeModal: 'game-results' });
         } else {
