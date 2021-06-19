@@ -1,11 +1,8 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { parseId } from '@logux/core';
 import { track } from '@logux/client';
 import { useClient } from '@logux/client/react';
 import { View, ScreenSpinner } from '@vkontakte/vkui';
-
-import { notify } from '../../components';
 
 import { general, room } from '../../store';
 
@@ -32,13 +29,8 @@ const Main = (props) => {
 
     const whereIAmDone = client.type(
       `${room.action.whereIAm.type}_success`,
-      (action) => {
+      () => {
         setIsLoading(false);
-
-        if (action.roomId !== null) {
-          dispatch(room.action.setRoomId({ roomId: action.roomId }));
-          onRoute({ activeView: 'main', main: { activePanel: 'room' } /* , activeModal: 'teams' */ });
-        }
       },
       { event: 'add' },
     );
@@ -51,43 +43,10 @@ const Main = (props) => {
         track(client, meta.id)
           .then(() => {
             setIsLoading(false);
-
-            onRoute({ activeView: 'main', main: { activePanel: 'room' }, activeModal: null });
           })
-          .catch(({ action }) => {
+          .catch(() => {
             setIsLoading(false);
-
-            notify.error({ message: action.message, title: 'Ошибка' });
           });
-      },
-      { event: 'add' },
-    );
-
-    const roomState = client.type(
-      'room/state',
-      (action) => {
-        if (action.room.status === 'game') {
-          onRoute({ activeView: 'game', game: { activePanel: 'lobby' } });
-        }
-      },
-      { event: 'add' },
-    );
-
-    const gameStart = client.type(
-      room.action.gameStart.type,
-      (_, meta) => {
-        const { userId: parsedUserId } = parseId(meta.id);
-        const actionUserId = parseInt(parsedUserId, 10);
-
-        if (actionUserId !== userId) {
-          // редиректить в игру только через resend, у инициатора экшена другое флоу перехода в игру
-          onRoute({ activeView: 'game', game: { activePanel: 'lobby' }, activeModal: null });
-        } else {
-          // у инициатора редирект происходит после перехода экшена в состояние processed
-          track(client, meta.id).then(() => {
-            onRoute({ activeView: 'game', game: { activePanel: 'lobby' }, activeModal: null });
-          });
-        }
       },
       { event: 'add' },
     );
@@ -96,8 +55,6 @@ const Main = (props) => {
       whereIAm();
       whereIAmDone();
       joinRoom();
-      roomState();
-      gameStart();
     };
   }, [client, dispatch, onRoute, userId]);
 
