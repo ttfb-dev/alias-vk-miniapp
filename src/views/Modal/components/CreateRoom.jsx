@@ -19,7 +19,7 @@ import {
   MiniInfoCell,
   Spacing,
 } from '@vkontakte/vkui';
-import { Icon16InfoCirle, Icon24Dismiss } from '@vkontakte/icons';
+import { Icon20Info, Icon24Dismiss } from '@vkontakte/icons';
 
 import styles from './index.module.scss';
 
@@ -51,7 +51,7 @@ const CreateRoom = ({ onClose, ...props }) => {
     >
       <div className={styles.info}>
         <Spacing separator size={12} />
-        <MiniInfoCell before={<Icon16InfoCirle />} textLevel='secondary' textWrap='full'>
+        <MiniInfoCell before={<Icon20Info />} textLevel='secondary' textWrap='full'>
           После создания комнаты вы сможете предоставить код остальным участникам
         </MiniInfoCell>
       </div>

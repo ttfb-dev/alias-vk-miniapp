@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { ModalCard, Div, MiniInfoCell, Button } from '@vkontakte/vkui';
-import { Icon16InfoCirle } from '@vkontakte/icons';
+import { Icon20Info } from '@vkontakte/icons';
 
 import vkapi from '../../../api';
 import { queryStringParse } from '../../../helpers';
@@ -38,7 +38,7 @@ const QrCode = ({ onClose, ...props }) => {
           Ввести
         </Button>
       </Div>
-      <MiniInfoCell before={<Icon16InfoCirle />} textLevel='secondary' textWrap='full'>
+      <MiniInfoCell before={<Icon20Info />} textLevel='secondary' textWrap='full'>
         Код вы можете получить у создателя комнаты
       </MiniInfoCell>
     </ModalCard>

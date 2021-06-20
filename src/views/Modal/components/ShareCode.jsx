@@ -10,13 +10,12 @@ import {
   PanelHeaderClose,
   Div,
   Text,
-  MiniInfoCell,
   Spacing,
   Button,
   Snackbar,
   Avatar,
 } from '@vkontakte/vkui';
-import { Icon16InfoCirle, Icon16Done, Icon24Dismiss } from '@vkontakte/icons';
+import { Icon16Done, Icon24Dismiss } from '@vkontakte/icons';
 import qr from '@vkontakte/vk-qr';
 
 import vkapi from '../../../api';
@@ -125,10 +124,6 @@ const ShareCode = ({ onClose, ...props }) => {
             Скопировать
           </Button>
         </Div>
-        <Spacing separator size={12} />
-        <MiniInfoCell before={<Icon16InfoCirle />} textLevel='secondary' textWrap='full'>
-          Для начала нужно 4 и более участников. После начала игры присоединиться новым участникам будет нельзя.
-        </MiniInfoCell>
       </div>
 
       {showCopyMessage && (

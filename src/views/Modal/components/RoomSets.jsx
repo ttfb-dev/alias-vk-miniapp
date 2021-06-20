@@ -79,7 +79,7 @@ const RoomSets = ({ onClose, ...props }) => {
     >
       <div className={styles.info}>
         <MiniInfoCell before={<Icon16InfoCirle />} textLevel='secondary' textWrap='full'>
-          Все ваши купленные наборы будут доступны участникам комнаты на период игры.
+          Все ваши наборы будут доступны участникам комнаты на период игры.
         </MiniInfoCell>
         <Spacing separator size={12} />
       </div>

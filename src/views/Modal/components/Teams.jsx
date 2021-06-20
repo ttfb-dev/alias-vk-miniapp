@@ -11,6 +11,7 @@ import {
   ModalPage,
   ModalPageHeader,
   Div,
+  Group,
   List,
   Cell,
   Button,
@@ -106,8 +107,8 @@ const TeamsComponent = ({ onClose, updateModalHeight, ...props }) => {
         </ModalPageHeader>
       }
     >
-      <List>
-        <div className={styles.teams}>
+      <Group>
+        <List>
           {teams.map((team) => (
             <Fragment key={team.teamId}>
               <Cell
@@ -125,8 +126,8 @@ const TeamsComponent = ({ onClose, updateModalHeight, ...props }) => {
               </Cell>
             </Fragment>
           ))}
-        </div>
-      </List>
+        </List>
+      </Group>
 
       <div className={styles.info}>
         <Spacing separator size={1} />

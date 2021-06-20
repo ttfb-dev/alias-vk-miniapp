@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { ModalCard, FormLayout, FormItem, Input, MiniInfoCell, Button } from '@vkontakte/vkui';
-import { Icon16InfoCirle } from '@vkontakte/icons';
+import { Icon20Info } from '@vkontakte/icons';
 
 import { room } from '../../../store';
 
@@ -33,8 +33,8 @@ const EnterCode = ({ onClose, ...props }) => {
           </Button>
         </FormItem>
       </FormLayout>
-      <MiniInfoCell before={<Icon16InfoCirle />} textLevel='secondary' textWrap='full'>
-        Код вы можете получить у создателя комнаты
+      <MiniInfoCell before={<Icon20Info />} textLevel='secondary' textWrap='full'>
+        Код вы можете получить у участников комнаты
       </MiniInfoCell>
     </ModalCard>
   );

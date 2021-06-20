@@ -12,7 +12,6 @@ import {
   List,
   Group,
   SimpleCell,
-  Header,
   Avatar,
 } from '@vkontakte/vkui';
 import { Icon24Dismiss } from '@vkontakte/icons';
@@ -51,7 +50,7 @@ const MembersComponent = ({ onClose, updateModalHeight, ...props }) => {
         </ModalPageHeader>
       }
     >
-      <Group header={<Header mode='secondary'>Участники</Header>}>
+      <Group>
         <List>
           {members.map((member) => (
             <SimpleCell
