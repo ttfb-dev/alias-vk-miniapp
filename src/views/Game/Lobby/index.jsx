@@ -102,13 +102,9 @@ const Lobby = ({ isSubscribing, ...props }) => {
                 <Logo style={{ width: '32px', height: '32px', color: 'var(--header_tint)' }} />
               </div>
             }
-            aside={
-              <Icon20Dropdown
-                style={{ transform: `rotate(${isOpened ? '180deg' : '0'})` }}
-                onClick={() => setIsOpened(!isOpened)}
-              />
-            }
+            aside={<Icon20Dropdown style={{ transform: `rotate(${isOpened ? '180deg' : '0'})` }} />}
             status={(teamsList && teamsList[myTeamId]?.name) || 'Без названия'}
+            onClick={() => setIsOpened(!isOpened)}
           >
             Игра
           </PanelHeaderContent>

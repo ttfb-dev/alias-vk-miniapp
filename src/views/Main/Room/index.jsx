@@ -142,17 +142,9 @@ const Room = (props) => {
                 <Logo style={{ width: '32px', height: '32px', color: 'var(--header_tint)' }} />
               </div>
             }
-            aside={
-              isOwner && (
-                <Icon28SettingsOutline
-                  width={20}
-                  height={20}
-                  style={{ marginLeft: '4px' }}
-                  onClick={() => setIsOpened(!isOpened)}
-                />
-              )
-            }
+            aside={isOwner && <Icon28SettingsOutline width={20} height={20} style={{ marginLeft: '4px' }} />}
             status={settings?.name}
+            onClick={isOwner && (() => setIsOpened(!isOpened))}
           >
             Комната
           </PanelHeaderContent>
@@ -160,7 +152,7 @@ const Room = (props) => {
         {isOwner && (
           <PanelHeaderContext opened={isOpened} onClose={() => setIsOpened(!isOpened)}>
             <List>
-              <CellButton mode='primary' disabled centered>
+              <CellButton mode='primary' centered>
                 Настройки
               </CellButton>
             </List>
