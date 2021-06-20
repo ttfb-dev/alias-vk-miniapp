@@ -138,8 +138,8 @@ const App = () => {
 
   return (
     <AppRoot>
-      <Epic tabbar>
-        <Root activeView={activeView} modal={<Modal />}>
+      <Epic activeStory='main' tabbar>
+        <Root id='main' activeView={activeView} modal={<Modal />}>
           <Main id='main' />
 
           <Game id='game' />

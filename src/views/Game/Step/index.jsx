@@ -8,7 +8,6 @@ import {
   PanelHeaderContext,
   PanelSpinner,
   Header,
-  Title,
   Div,
   Group,
   Spacing,
@@ -18,6 +17,7 @@ import {
   Button,
   Switch,
   Placeholder,
+  Card,
 } from '@vkontakte/vkui';
 import { Icon20Dropdown } from '@vkontakte/icons';
 
@@ -52,6 +52,11 @@ const Step = ({ isSubscribing, ...props }) => {
 
   const isExplainer = useMemo(() => userId === step?.explainerId, [userId, step]);
   const isOwner = useMemo(() => userId === ownerId, [userId, ownerId]);
+  const score = useMemo(() => {
+    const score = step?.score ?? 0;
+
+    return `${score > 0 ? `+${score}` : `${score}`}`;
+  }, [step]);
 
   useEffect(() => {
     if (isExplainer) {
@@ -169,88 +174,77 @@ const Step = ({ isSubscribing, ...props }) => {
           <PanelSpinner />
         ) : (
           <Div className={styles.content}>
-            <Div className={clsx(styles.timerWrapper, status === 'STOPPED' && styles.timerBackground)}>
-              <Title className={styles.title} level={2} weight='semibold'>
-                Таймер
-              </Title>
+            <Div className={clsx(styles.timer, status === 'STOPPED' && styles.timerEnded)}>
               <span className={styles.clock}>{formatTime(time)}</span>
             </Div>
 
-            {isExplainer && (
-              <Group mode='card' separator='hide'>
-                <SimpleCell
-                  hasHover={false}
-                  hasActive={false}
-                  indicator={step?.score ?? '0'}
-                  className='score'
-                  onClick={() => {}}
-                >
+            {((isExplainer && status === 'STOPPED') || !isExplainer) && (
+              <Card mode='shadow'>
+                <SimpleCell hasHover={false} hasActive={false} indicator={score} className='score'>
                   Текущие очки
                 </SimpleCell>
-              </Group>
+              </Card>
             )}
 
-            {((isExplainer && status === 'STOPPED') || !isExplainer) && (
-              <Group mode='card' separator='hide'>
-                <Header mode='tertiary' className='headerCentered'>
-                  Отыгравшие слова
-                </Header>
-                {step?.words && !!step.words.length ? (
-                  step.words.map((word, index) => (
-                    <SimpleCell
-                      key={word.index}
-                      hasActive={false}
-                      hasHover={false}
-                      after={
-                        <Switch
-                          disabled={!isExplainer}
-                          checked={word.guessed}
-                          onChange={() => onEditWord(word, index)}
-                        />
-                      }
-                    >
-                      {word.value}
-                    </SimpleCell>
-                  ))
-                ) : (
-                  <Placeholder>Здесь будут отображаться слова, которые отыграли в текущем ходе</Placeholder>
-                )}
-              </Group>
-            )}
+            <Div className={styles.card}>
+              {((isExplainer && status === 'STOPPED') || !isExplainer) && (
+                <Group mode='plain' separator='hide'>
+                  <Header mode='tertiary' className='headerCentered'>
+                    Отыгравшие слова
+                  </Header>
+                  {step?.words && !!step.words.length ? (
+                    step.words.map((word, index) => (
+                      <SimpleCell
+                        key={word.index}
+                        hasActive={false}
+                        hasHover={false}
+                        after={
+                          <Switch
+                            disabled={!isExplainer}
+                            checked={word.guessed}
+                            onChange={() => onEditWord(word, index)}
+                          />
+                        }
+                      >
+                        {word.value}
+                      </SimpleCell>
+                    ))
+                  ) : (
+                    <Placeholder>Здесь будут отображаться слова, которые отыграли в текущем ходе</Placeholder>
+                  )}
+                </Group>
+              )}
 
-            {isExplainer && status !== 'STOPPED' && (
-              <Div className={styles.wordContainer}>
-                <Group mode='card' className={clsx(styles.wordWrapper, 'wordWrapper')}>
+              {isExplainer && status !== 'STOPPED' && (
+                <>
                   <Header mode='tertiary' className='headerCentered'>
                     Ваше слово
                   </Header>
 
                   <span className={styles.word}>{currentWord?.value ?? ''}</span>
 
-                  <Div>
+                  <Group mode='plain' separator='hide'>
                     <Button stretched mode='primary' size='l' onClick={() => onSetWord(true)}>
                       Угадал
                     </Button>
-                  </Div>
-                </Group>
-
-                <Div>
-                  <CellButton
-                    centered
-                    hasActive={false}
-                    hasHover={false}
-                    mode='danger'
-                    onClick={() => onSetWord(false)}
-                  >
-                    Пропустить
-                  </CellButton>
-                </Div>
-              </Div>
-            )}
+                    <Spacing size={12} />
+                    <CellButton
+                      centered
+                      hasActive={false}
+                      hasHover={false}
+                      mode='danger'
+                      onClick={() => onSetWord(false)}
+                    >
+                      Пропустить
+                    </CellButton>
+                  </Group>
+                </>
+              )}
+            </Div>
           </Div>
         )}
 
-        {isExplainer && <Spacing size={20} />}
+        {(!isExplainer || status === 'STOPPED') && <Spacing size={20} />}
 
         {!isSubscribing && isExplainer && status === 'STOPPED' && (
           <div className={styles.fixedLayout}>

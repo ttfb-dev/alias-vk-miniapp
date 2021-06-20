@@ -1,8 +1,9 @@
 .container {
-  position: absolute;
+  position: relative;
 
-  width: 100%;
-  height: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
 }
 
 .wrapper {
@@ -33,8 +34,8 @@
 
     z-index: -1;
 
-    width: 130vh;
-    height: 130vh;
+    width: 150vh;
+    height: 150vh;
 
     background: linear-gradient(180deg, #4986cc 0%, #4986cc 100%);
     border-radius: 50%;
@@ -50,8 +51,8 @@
 
     z-index: -1;
 
-    width: 130vh;
-    height: 130vh;
+    width: 150vh;
+    height: 150vh;
 
     background: #4986cc;
     border-radius: 50%;
