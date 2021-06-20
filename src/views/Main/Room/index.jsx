@@ -14,6 +14,7 @@ import {
   PanelHeaderContext,
   PanelSpinner,
   List,
+  Card,
   CellButton,
   Button,
   MiniInfoCell,
@@ -163,7 +164,7 @@ const Room = (props) => {
           <PanelSpinner />
         ) : (
           <Div className={styles.grid}>
-            <Div className={styles.card}>
+            <Card mode='shadow' className={styles.card}>
               <SimpleCell
                 expandable
                 hasHover={false}
@@ -173,11 +174,11 @@ const Room = (props) => {
               >
                 Команды
               </SimpleCell>
-            </Div>
-            <Div className={styles.card}>
+            </Card>
+            <Card mode='shadow' className={styles.card}>
               <Div dangerouslySetInnerHTML={{ __html: qrCode.svg }} />
-            </Div>
-            <Div className={styles.card}>
+            </Card>
+            <Card mode='shadow' className={styles.card}>
               <SimpleCell
                 expandable
                 hasHover={false}
@@ -187,8 +188,8 @@ const Room = (props) => {
               >
                 Участники
               </SimpleCell>
-            </Div>
-            <Div className={styles.card}>
+            </Card>
+            <Card mode='shadow' className={styles.card}>
               <SimpleCell
                 expandable
                 hasHover={false}
@@ -198,22 +199,26 @@ const Room = (props) => {
               >
                 Наборы слов
               </SimpleCell>
-            </Div>
+            </Card>
           </Div>
         )}
 
         {!isSubscribing && (
           <div className={styles.fixedLayout}>
-            {!hasTeam ? (
-              <MiniInfoCell
-                before={<Icon20Info />}
-                mode='more'
-                textLevel='primary'
-                textWrap='full'
-                onClick={() => onRoute({ activeModal: 'teams' })}
-              >
-                Для участия в игре выберите команду.
-              </MiniInfoCell>
+            {true ? (
+              <Div>
+                <Card mode='shadow'>
+                  <MiniInfoCell
+                    before={<Icon20Info />}
+                    mode='more'
+                    textLevel='secondary'
+                    textWrap='full'
+                    onClick={() => onRoute({ activeModal: 'teams' })}
+                  >
+                    Для участия в игре выберите команду. После начала игры присоединиться новым участникам будет нельзя.
+                  </MiniInfoCell>
+                </Card>
+              </Div>
             ) : hasTeam && isOwner ? (
               <Div>
                 <Button mode='primary' size='l' disabled={teamsCompleted < 2} stretched onClick={onGameStart}>
