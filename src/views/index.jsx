@@ -34,7 +34,7 @@ const App = () => {
       { event: 'add' },
     );
 
-    const joinRoom = client.type(
+    const join = client.type(
       room.action.join.type,
       (_, meta) => {
         track(client, meta.id)
@@ -47,6 +47,16 @@ const App = () => {
       },
       { event: 'add' },
     );
+
+    const leave = client.type(room.action.leave.type, (_, meta) => {
+      track(client, meta.id)
+        .then(() => {
+          onRoute({ activeView: 'main', main: { activePanel: 'home' }, activeModal: null });
+        })
+        .catch(({ action }) => {
+          notify.error({ message: action.message, title: 'Ошибка' });
+        });
+    });
 
     const roomState = client.type(
       'room/state',
@@ -126,7 +136,8 @@ const App = () => {
 
     return () => {
       whereIAmDone();
-      joinRoom();
+      join();
+      leave();
       roomState();
       gameStart();
       gameState();

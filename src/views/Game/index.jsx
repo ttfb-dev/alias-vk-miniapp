@@ -19,14 +19,10 @@ const Game = (props) => {
 
   const onRoomLeave = useCallback(() => {
     dispatch.sync(room.action.leave());
-
-    dispatch(general.action.route({ activeView: 'main', main: { activePanel: 'home' } }));
   }, [dispatch]);
 
   const onGameEnd = useCallback(() => {
     dispatch.sync(room.action.gameEnd());
-
-    dispatch(general.action.route({ activeView: 'main', main: { activePanel: 'room' } }));
   }, [dispatch]);
 
   const onClose = useCallback(() => {
