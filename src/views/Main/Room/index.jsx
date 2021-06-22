@@ -205,7 +205,7 @@ const Room = (props) => {
 
         {!isSubscribing && (
           <div className={styles.fixedLayout}>
-            {true ? (
+            {!hasTeam ? (
               <Div>
                 <Card mode='shadow'>
                   <MiniInfoCell
