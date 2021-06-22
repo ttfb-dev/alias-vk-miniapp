@@ -137,9 +137,14 @@ const reducer = (state = initialState, action) => {
 
     case 'room/user_joined':
     case 'room/user_left':
+      const sets = payload.gameWordDatasets.filter((set) => ['active', 'inactive'].includes(set.status));
+      const availableSets = payload.gameWordDatasets.filter((set) => set.status === 'available');
+
       return {
         ...state,
         memberIds: payload.memberIds,
+        sets,
+        availableSets,
       };
 
     case activateSet.type: {
