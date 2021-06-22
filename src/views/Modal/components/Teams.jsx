@@ -1,5 +1,8 @@
 import React, { Fragment, useState, useCallback, useLayoutEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useClient } from '@logux/client/react';
+import { track } from '@logux/client';
+import { notify } from '../../../components';
 import {
   withModalRootContext,
   usePlatform,
@@ -22,17 +25,17 @@ import { Icon24Add, Icon24Dismiss } from '@vkontakte/icons';
 import { room } from '../../../store';
 
 import styles from './index.module.scss';
+import { useEffect } from 'react';
 
 const TeamsComponent = ({ onClose, updateModalHeight, ...props }) => {
   const platform = usePlatform();
   const dispatch = useDispatch();
-  const userId = useSelector((state) => state.general.userId);
   const teams = useSelector((state) => state.room.teams);
   const roomId = useSelector((state) => state.room.roomId);
   const myTeamId = useSelector((state) => state.room.myTeamId);
-  const ownerId = useSelector((state) => state.room.ownerId);
   const members = useSelector((state) => state.room.members);
   const [isEditActive, setIsEditActive] = useState(false);
+  const client = useClient();
 
   useLayoutEffect(() => {
     updateModalHeight();
@@ -58,12 +61,32 @@ const TeamsComponent = ({ onClose, updateModalHeight, ...props }) => {
     dispatch.sync(room.action.teamDelete({ teamId, roomId }));
   };
 
+  useEffect(() => {
+    const teamDelete = client.type(
+      room.action.teamDelete.type,
+      (_, meta) => {
+        track(client, meta.id).catch(({ action }) => {
+          notify.error({ message: action.message, title: 'Ошибка' });
+        });
+      },
+      { event: 'add' },
+    );
+
+    return () => {
+      teamDelete();
+    };
+  }, [client]);
+
   const onCreate = () => {
     dispatch.sync(room.action.teamCreate({ roomId }));
   };
 
+  const findTeam = (teamId) => {
+    return teams.find((team) => team.teamId === teamId);
+  };
+
   const getFirstNames = (teamId) => {
-    const team = teams.find((team) => team.teamId === teamId);
+    const team = findTeam(teamId);
 
     const teamMembers = members.filter((member) => team?.memberIds.includes(member.id));
 
@@ -81,7 +104,7 @@ const TeamsComponent = ({ onClose, updateModalHeight, ...props }) => {
               {(platform === ANDROID || platform === VKCOM) && (
                 <PanelHeaderClose onClick={onClose}>Закрыть</PanelHeaderClose>
               )}
-              {platform === IOS && ownerId === userId && (
+              {platform === IOS && (
                 <PanelHeaderEdit
                   editLabel='Редак.'
                   isActive={isEditActive}
@@ -92,7 +115,7 @@ const TeamsComponent = ({ onClose, updateModalHeight, ...props }) => {
           }
           right={
             <>
-              {(platform === ANDROID || platform === VKCOM) && ownerId === userId && (
+              {(platform === ANDROID || platform === VKCOM) && (
                 <PanelHeaderEdit isActive={isEditActive} onClick={() => setIsEditActive(!isEditActive)} />
               )}
               {platform === IOS && (
