@@ -1,36 +1,35 @@
-import React, { useState, useMemo, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import clsx from 'clsx';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Icon20Dropdown } from '@vkontakte/icons';
 import {
+  Button,
+  Card,
+  CellButton,
+  Div,
+  Group,
+  Header,
+  List,
   Panel,
   PanelHeader,
   PanelHeaderContent,
   PanelHeaderContext,
   PanelSpinner,
-  Header,
-  Div,
-  Group,
-  Spacing,
-  List,
-  SimpleCell,
-  CellButton,
-  Button,
-  Switch,
   Placeholder,
-  Card,
+  SimpleCell,
+  Spacing,
+  Switch,
 } from '@vkontakte/vkui';
-import { Icon20Dropdown } from '@vkontakte/icons';
+import clsx from 'clsx';
 
-import { general, game, room } from '../../../store';
-import { LinkedList } from '../../../helpers';
-import { Container } from '../../../components';
 import { ReactComponent as Logo } from '../../../assets/logo-mini.svg';
-
-import { useTimer } from '../hooks';
+import { Container } from '../../../components';
+import { LinkedList } from '../../../helpers';
+import { game, general, room } from '../../../store';
 import { formatTime } from '../helpers';
+import { useTimer } from '../hooks';
 
-import styles from './index.module.scss';
-import './index.scss';
+import './Step.scss';
+import styles from './Step.module.scss';
 
 const Step = ({ isSubscribing, ...props }) => {
   const dispatch = useDispatch();
@@ -112,11 +111,13 @@ const Step = ({ isSubscribing, ...props }) => {
 
   const onStepEnd = () => {
     const score = (statisticsList[myTeamId] && statisticsList[myTeamId]?.score) || 0;
+    const scoreSummary = score + step.score > 60;
+    const isLastStepInRound = stepNumber === teamsCompleted;
 
     dispatch.sync(game.action.setStepHistory());
 
     dispatch.sync(game.action.stepEnd()).then(() => {
-      if (score + step.score > 60) {
+      if (isLastStepInRound && scoreSummary) {
         dispatch.sync(room.action.gameEnd());
       } else {
         nextStep();

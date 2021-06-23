@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import { NotificationContext } from './NotificationContext';
-import { NotificationRoot } from './components';
 
-import { events, dispatcher, emitter } from './events';
+import { NotificationRoot } from './components';
+import { dispatcher, emitter, events } from './events';
 import { useNotification } from './hooks';
+import { NotificationContext } from './NotificationContext';
 
 const NotificationProvider = ({ children, container, delay }) => {
   const { notifications, dispatch } = useNotification();

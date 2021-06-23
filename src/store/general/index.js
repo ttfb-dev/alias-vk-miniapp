@@ -1,4 +1,4 @@
-import { route, alert, setUserId, setFriends } from './action';
+import { alert, route, setFriends, setUserId } from './action';
 import { reducer } from './reducer';
 
 const general = {

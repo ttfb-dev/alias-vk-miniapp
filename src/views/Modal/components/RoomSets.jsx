@@ -1,24 +1,24 @@
 import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Icon16InfoCirle, Icon24Dismiss } from '@vkontakte/icons';
 import {
-  usePlatform,
   ANDROID,
-  VKCOM,
-  IOS,
-  PanelHeaderClose,
-  ModalPage,
-  ModalPageHeader,
-  List,
-  SimpleCell,
   Avatar,
-  Switch,
-  MiniInfoCell,
-  Spacing,
   Button,
   Group,
   Header,
+  IOS,
+  List,
+  MiniInfoCell,
+  ModalPage,
+  ModalPageHeader,
+  PanelHeaderClose,
+  SimpleCell,
+  Spacing,
+  Switch,
+  usePlatform,
+  VKCOM,
 } from '@vkontakte/vkui';
-import { Icon16InfoCirle, Icon24Dismiss } from '@vkontakte/icons';
 
 import { profile, room } from '../../../store';
 

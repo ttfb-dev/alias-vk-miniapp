@@ -1,4 +1,4 @@
-import { getSets, activateSet, deactivateSet, buySet } from './action';
+import { activateSet, buySet, deactivateSet, getSets } from './action';
 import { reducer } from './reducer';
 
 const profile = {

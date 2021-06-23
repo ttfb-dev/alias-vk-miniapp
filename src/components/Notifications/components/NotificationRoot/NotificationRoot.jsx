@@ -1,7 +1,7 @@
-import React, { memo, useState, useEffect } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import clsx from 'clsx';
 import { usePlatform } from '@vkontakte/vkui';
+import clsx from 'clsx';
 
 import { Notification } from '..';
 

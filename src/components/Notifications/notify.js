@@ -1,4 +1,4 @@
-import { events, emitter, notifier } from './events';
+import { emitter, events, notifier } from './events';
 
 const applyNotify = ({ ...notification }) => emitter.emit(events.SHOW, notifier({ ...notification }));
 

@@ -1,25 +1,25 @@
 import React from 'react';
+import { Icon20Info, Icon24Dismiss } from '@vkontakte/icons';
 import {
-  usePlatform,
   ANDROID,
-  VKCOM,
+  Button,
+  Div,
+  FormItem,
+  FormLayout,
+  Header,
   IOS,
-  PanelHeaderClose,
+  List,
+  MiniInfoCell,
   ModalPage,
   ModalPageHeader,
-  Div,
-  FormLayout,
-  FormItem,
-  Header,
-  List,
+  PanelHeaderClose,
   SimpleCell,
   Slider,
-  Switch,
-  Button,
-  MiniInfoCell,
   Spacing,
+  Switch,
+  usePlatform,
+  VKCOM,
 } from '@vkontakte/vkui';
-import { Icon20Info, Icon24Dismiss } from '@vkontakte/icons';
 
 import styles from './index.module.scss';
 

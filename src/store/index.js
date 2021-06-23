@@ -1,7 +1,7 @@
-import { combineReducers } from 'redux';
-import { CrossTabClient, badge, badgeRu, log } from '@logux/client';
+import { badge, badgeRu, CrossTabClient, log } from '@logux/client';
 import { badgeStyles } from '@logux/client/badge/styles';
 import { createStoreCreator } from '@logux/redux';
+import { combineReducers } from 'redux';
 
 import { queryStringParse } from '../helpers';
 
@@ -54,4 +54,4 @@ if (userId && !roomId) {
   store.dispatch.sync(room.action.join({ roomId }));
 }
 
-export { store, game, general, profile, room };
+export { game, general, profile, room, store };

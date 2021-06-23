@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { track } from '@logux/client';
 import { useClient } from '@logux/client/react';
-import { View, ScreenSpinner } from '@vkontakte/vkui';
+import { ScreenSpinner, View } from '@vkontakte/vkui';
 
 import { general, room } from '../../store';
 

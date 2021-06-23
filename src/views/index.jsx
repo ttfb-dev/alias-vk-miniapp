@@ -1,15 +1,15 @@
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { parseId } from '@logux/core';
 import { track } from '@logux/client';
 import { useClient } from '@logux/client/react';
+import { parseId } from '@logux/core';
 import { AppRoot, Epic, Root } from '@vkontakte/vkui';
 
-import { general, room, game } from '../store';
 import { notify } from '../components';
+import { game, general, room } from '../store';
 
-import { Main } from './Main';
 import { Game } from './Game';
+import { Main } from './Main';
 import { Modal } from './Modal';
 
 import './index.scss';

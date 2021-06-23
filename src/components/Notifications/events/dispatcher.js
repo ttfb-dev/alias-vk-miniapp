@@ -22,4 +22,4 @@ const dispatcher = ({ dispatch, delay }) => {
   emitter.on(events.HIDE_ALL, () => dispatch({ type: 'REMOVE_ALL' }));
 };
 
-export { events, dispatcher };
+export { dispatcher, events };

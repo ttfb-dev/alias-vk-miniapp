@@ -1,14 +1,14 @@
 import {
-  setRoomId,
-  setMembers,
+  activateSet,
   create,
+  deactivateSet,
+  gameEnd,
+  gameStart,
   join,
   leave,
+  setMembers,
+  setRoomId,
   whereIAm,
-  activateSet,
-  deactivateSet,
-  gameStart,
-  gameEnd,
 } from './action';
 
 const initialState = {

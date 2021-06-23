@@ -5,4 +5,4 @@ const activateSet = defineAction('profile/activate_dataset');
 const deactivateSet = defineAction('profile/deactivate_dataset');
 const buySet = defineAction('profile/buy_game_dataset');
 
-export { getSets, activateSet, deactivateSet, buySet };
+export { activateSet, buySet, deactivateSet, getSets };

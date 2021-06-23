@@ -1,37 +1,37 @@
 import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Icon20Dropdown, Icon24CupOutline } from '@vkontakte/icons';
 import {
+  Avatar,
+  Button,
+  Caption,
+  CellButton,
+  Div,
+  Group,
+  Header,
+  Headline,
+  List,
   Panel,
   PanelHeader,
   PanelHeaderContent,
   PanelHeaderContext,
   PanelSpinner,
-  Title,
-  Headline,
-  Div,
-  Group,
-  Caption,
-  Spacing,
-  List,
-  SimpleCell,
-  Avatar,
-  Button,
-  CellButton,
-  Text,
-  Header,
   Placeholder,
+  SimpleCell,
+  Spacing,
+  Text,
+  Title,
 } from '@vkontakte/vkui';
-import { Icon20Dropdown, Icon24CupOutline } from '@vkontakte/icons';
 
-import { general, game } from '../../../store';
-import { LinkedList } from '../../../helpers';
-import { Container } from '../../../components';
-import { ReactComponent as Logo } from '../../../assets/logo-mini.svg';
 import { ReactComponent as Hourglass } from '../../../assets/hourglass.svg';
+import { ReactComponent as Logo } from '../../../assets/logo-mini.svg';
 import { ReactComponent as Trophy } from '../../../assets/trophy.svg';
+import { Container } from '../../../components';
+import { LinkedList } from '../../../helpers';
+import { game, general } from '../../../store';
 
-import styles from './index.module.scss';
-import './index.scss';
+import './Lobby.scss';
+import styles from './Lobby.module.scss';
 
 const Lobby = ({ isSubscribing, ...props }) => {
   const dispatch = useDispatch();

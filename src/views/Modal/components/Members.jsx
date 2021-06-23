@@ -1,20 +1,20 @@
 import React, { useLayoutEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { Icon24Dismiss } from '@vkontakte/icons';
 import {
-  withModalRootContext,
-  usePlatform,
   ANDROID,
-  VKCOM,
+  Avatar,
+  Group,
   IOS,
-  PanelHeaderClose,
+  List,
   ModalPage,
   ModalPageHeader,
-  List,
-  Group,
+  PanelHeaderClose,
   SimpleCell,
-  Avatar,
+  usePlatform,
+  VKCOM,
+  withModalRootContext,
 } from '@vkontakte/vkui';
-import { Icon24Dismiss } from '@vkontakte/icons';
 
 const MembersComponent = ({ onClose, updateModalHeight, ...props }) => {
   const platform = usePlatform();

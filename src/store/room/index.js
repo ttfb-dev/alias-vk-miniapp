@@ -1,18 +1,18 @@
 import {
-  setRoomId,
-  setMembers,
+  activateSet,
   create,
+  deactivateSet,
+  gameEnd,
+  gameStart,
   join,
   leave,
-  whereIAm,
-  teamJoin,
-  teamLeave,
+  setMembers,
+  setRoomId,
   teamCreate,
   teamDelete,
-  activateSet,
-  deactivateSet,
-  gameStart,
-  gameEnd,
+  teamJoin,
+  teamLeave,
+  whereIAm,
 } from './action';
 import { reducer } from './reducer';
 

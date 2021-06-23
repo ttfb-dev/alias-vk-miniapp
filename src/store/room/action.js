@@ -16,18 +16,18 @@ const gameStart = defineAction('room/game_start');
 const gameEnd = defineAction('room/game_end');
 
 export {
-  setRoomId,
-  setMembers,
+  activateSet,
   create,
+  deactivateSet,
+  gameEnd,
+  gameStart,
   join,
   leave,
-  whereIAm,
-  teamJoin,
-  teamLeave,
+  setMembers,
+  setRoomId,
   teamCreate,
   teamDelete,
-  activateSet,
-  deactivateSet,
-  gameStart,
-  gameEnd,
+  teamJoin,
+  teamLeave,
+  whereIAm,
 };

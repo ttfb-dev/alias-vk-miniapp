@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { ModalCard, Button, List, SimpleCell, Text } from '@vkontakte/vkui';
 import { Icon24CupOutline } from '@vkontakte/icons';
+import { Button, List, ModalCard, SimpleCell, Text } from '@vkontakte/vkui';
 
 import { ReactComponent as Trophy } from '../../../assets/trophy.svg';
 

@@ -1,28 +1,28 @@
-import React, { Fragment, useEffect, useState, useCallback, useLayoutEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useClient } from '@logux/client/react';
+import React, { Fragment, useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { track } from '@logux/client';
+import { useClient } from '@logux/client/react';
+import { Icon24Add, Icon24Dismiss } from '@vkontakte/icons';
 import {
-  withModalRootContext,
-  usePlatform,
   ANDROID,
-  VKCOM,
-  IOS,
-  PanelHeaderEdit,
-  PanelHeaderClose,
-  ModalPage,
-  ModalPageHeader,
+  Button,
+  Cell,
   Div,
   Group,
+  IOS,
   List,
-  Cell,
-  Button,
+  ModalPage,
+  ModalPageHeader,
+  PanelHeaderClose,
+  PanelHeaderEdit,
   Spacing,
+  usePlatform,
+  VKCOM,
+  withModalRootContext,
 } from '@vkontakte/vkui';
-import { Icon24Add, Icon24Dismiss } from '@vkontakte/icons';
 
-import { room } from '../../../store';
 import { notify } from '../../../components';
+import { room } from '../../../store';
 
 import styles from './index.module.scss';
 

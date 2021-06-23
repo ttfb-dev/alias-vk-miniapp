@@ -1,13 +1,13 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Panel, Tabbar, TabbarItem, Badge, Div, Button, Spacing } from '@vkontakte/vkui';
-import { Icon16Add, Icon28WorkOutline, Icon28ScanViewfinderOutline, Icon28InfoOutline } from '@vkontakte/icons';
+import { Icon16Add, Icon28InfoOutline, Icon28ScanViewfinderOutline, Icon28WorkOutline } from '@vkontakte/icons';
+import { Badge, Button, Div, Panel, Spacing, Tabbar, TabbarItem } from '@vkontakte/vkui';
 
 import vkapi from '../../../api';
+import { ReactComponent as Logo } from '../../../assets/logo.svg';
 import { CustomUsersStack } from '../../../components';
 import { queryStringParse } from '../../../helpers';
 import { general, room } from '../../../store';
-import { ReactComponent as Logo } from '../../../assets/logo.svg';
 
 import styles from './index.module.scss';
 

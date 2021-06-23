@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { ModalCard, Div, MiniInfoCell, Button } from '@vkontakte/vkui';
 import { Icon20Info } from '@vkontakte/icons';
+import { Button, Div, MiniInfoCell, ModalCard } from '@vkontakte/vkui';
 
 import vkapi from '../../../api';
 import { queryStringParse } from '../../../helpers';

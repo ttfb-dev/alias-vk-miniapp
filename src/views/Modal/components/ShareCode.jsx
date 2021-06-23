@@ -1,22 +1,22 @@
-import React, { useMemo, useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { Icon16Done, Icon24Dismiss } from '@vkontakte/icons';
+import qr from '@vkontakte/vk-qr';
 import {
-  usePlatform,
   ANDROID,
-  VKCOM,
+  Avatar,
+  Button,
+  Div,
   IOS,
   ModalPage,
   ModalPageHeader,
   PanelHeaderClose,
-  Div,
-  Text,
-  Spacing,
-  Button,
   Snackbar,
-  Avatar,
+  Spacing,
+  Text,
+  usePlatform,
+  VKCOM,
 } from '@vkontakte/vkui';
-import { Icon16Done, Icon24Dismiss } from '@vkontakte/icons';
-import qr from '@vkontakte/vk-qr';
 
 import vkapi from '../../../api';
 import { CustomUsersStack } from '../../../components';

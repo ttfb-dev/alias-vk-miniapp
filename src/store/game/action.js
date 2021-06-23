@@ -12,14 +12,14 @@ const setNextStep = defineAction('game/set_next_step');
 const stepEnd = defineAction('game/step_end');
 
 export {
-  setInitState,
-  stepStart,
-  getWords,
-  setWords,
-  setStepWord,
   editStepWord,
+  getWords,
+  setInitState,
+  setNextStep,
   setNextWord,
   setStepHistory,
-  setNextStep,
+  setStepWord,
+  setWords,
   stepEnd,
+  stepStart,
 };

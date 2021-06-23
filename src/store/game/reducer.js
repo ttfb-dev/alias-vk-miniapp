@@ -1,13 +1,13 @@
 import {
-  setInitState,
-  stepStart,
-  setWords,
-  setStepWord,
   editStepWord,
-  setNextWord,
+  setInitState,
   setNextStep,
+  setNextWord,
   setStepHistory,
+  setStepWord,
+  setWords,
   stepEnd,
+  stepStart,
 } from './action';
 
 const initState = {

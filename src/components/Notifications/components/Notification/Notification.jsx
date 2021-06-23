@@ -1,7 +1,7 @@
 import React from 'react';
-import clsx from 'clsx';
-import { usePlatform } from '@vkontakte/vkui';
 import { Icon28InfoCircleOutline } from '@vkontakte/icons';
+import { usePlatform } from '@vkontakte/vkui';
+import clsx from 'clsx';
 
 import styles from './Notification.module.scss';
 

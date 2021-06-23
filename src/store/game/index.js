@@ -1,13 +1,13 @@
 import {
-  setInitState,
-  stepStart,
-  getWords,
-  setStepWord,
   editStepWord,
+  getWords,
+  setInitState,
+  setNextStep,
   setNextWord,
   setStepHistory,
-  setNextStep,
+  setStepWord,
   stepEnd,
+  stepStart,
 } from './action';
 import { reducer } from './reducer';
 

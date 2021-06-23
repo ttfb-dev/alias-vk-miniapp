@@ -1,39 +1,39 @@
-import React, { useMemo, useEffect, useState, useCallback } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSubscription } from '@logux/redux';
 import {
-  Panel,
-  Tabbar,
-  TabbarItem,
+  Icon20Info,
+  Icon28InfoOutline,
+  Icon28QrCodeOutline,
+  Icon28SettingsOutline,
+  Icon28UserAddOutline,
+  Icon28WorkOutline,
+} from '@vkontakte/icons';
+import qr from '@vkontakte/vk-qr';
+import {
   Badge,
-  SimpleCell,
+  Button,
+  Card,
+  CellButton,
   Div,
+  List,
+  MiniInfoCell,
+  Panel,
   PanelHeader,
   PanelHeaderBack,
   PanelHeaderContent,
   PanelHeaderContext,
   PanelSpinner,
-  List,
-  Card,
-  CellButton,
-  Button,
-  MiniInfoCell,
+  SimpleCell,
+  Tabbar,
+  TabbarItem,
 } from '@vkontakte/vkui';
-import {
-  Icon20Info,
-  Icon28SettingsOutline,
-  Icon28UserAddOutline,
-  Icon28WorkOutline,
-  Icon28QrCodeOutline,
-  Icon28InfoOutline,
-} from '@vkontakte/icons';
-import qr from '@vkontakte/vk-qr';
 
-import AppService from '../../../services';
-import { declension } from '../../../helpers';
-import { Container } from '../../../components';
-import { general, room } from '../../../store';
 import { ReactComponent as Logo } from '../../../assets/logo-mini.svg';
+import { Container } from '../../../components';
+import { declension } from '../../../helpers';
+import AppService from '../../../services';
+import { general, room } from '../../../store';
 
 import styles from './index.module.scss';
 

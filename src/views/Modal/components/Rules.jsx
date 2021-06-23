@@ -1,18 +1,18 @@
 import React from 'react';
+import { Icon24Dismiss } from '@vkontakte/icons';
 import {
-  usePlatform,
   ANDROID,
-  VKCOM,
+  Button,
+  Div,
   IOS,
-  PanelHeaderClose,
   ModalPage,
   ModalPageHeader,
-  Div,
-  Title,
+  PanelHeaderClose,
   Text,
-  Button,
+  Title,
+  usePlatform,
+  VKCOM,
 } from '@vkontakte/vkui';
-import { Icon24Dismiss } from '@vkontakte/icons';
 
 import styles from './index.module.scss';
 
