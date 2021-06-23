@@ -12,6 +12,11 @@
   margin: 0 auto;
 
   line-height: 0;
+
+  @media screen and (max-width: 320px) {
+    width: 160px;
+    height: 160px;
+  }
 }
 
 .qrCode {
@@ -20,7 +25,8 @@
 }
 
 .actions {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 12px;
 }
 
