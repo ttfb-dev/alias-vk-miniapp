@@ -176,7 +176,7 @@ const Room = (props) => {
               </SimpleCell>
             </Card>
             <Card mode='shadow' className={styles.card}>
-              <Div dangerouslySetInnerHTML={{ __html: qrCode.svg }} />
+              <Div dangerouslySetInnerHTML={{ __html: qrCode.svg }} className={styles.qrCodeWrapper} />
             </Card>
             <Card mode='shadow' className={styles.card}>
               <SimpleCell

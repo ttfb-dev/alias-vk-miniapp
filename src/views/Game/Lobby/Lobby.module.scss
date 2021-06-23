@@ -9,6 +9,11 @@
 
   background: linear-gradient(90deg, #4986cc 0%, #71abef 100%);
   border-radius: 10px;
+
+  @media screen and (min-height: 600px) {
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
+  }
 }
 
 .teamWrapper {
