@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { track } from '@logux/client';
 import { useClient } from '@logux/client/react';
@@ -28,13 +28,13 @@ import styles from './index.module.scss';
 
 const TeamsComponent = ({ onClose, updateModalHeight, ...props }) => {
   const platform = usePlatform();
+  const client = useClient();
   const dispatch = useDispatch();
   const teams = useSelector((state) => state.room.teams);
   const roomId = useSelector((state) => state.room.roomId);
   const myTeamId = useSelector((state) => state.room.myTeamId);
   const members = useSelector((state) => state.room.members);
   const [isEditActive, setIsEditActive] = useState(false);
-  const client = useClient();
 
   useLayoutEffect(() => {
     updateModalHeight();
