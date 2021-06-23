@@ -67,7 +67,7 @@ const reducer = (state = initState, action) => {
     case setStepWord.type: {
       const { word } = payload;
 
-      const score = word.guessed ? state.step.score + 1 : state.step.score - 1;
+      const score = word.guessed ? state.step.score + 1 : state.step.score <= 0 ? 0 : state.step.score - 1;
       const words = [...state.step.words, word];
 
       return { ...state, step: { ...state.step, score, words } };
@@ -76,7 +76,7 @@ const reducer = (state = initState, action) => {
     case editStepWord.type: {
       const { word, index } = payload;
 
-      const score = word.guessed ? state.step.score + 1 : state.step.score - 1;
+      const score = word.guessed ? state.step.score + 1 : state.step.score <= 0 ? 0 : state.step.score - 1;
       const words = [...state.step.words.slice(0, index), word, ...state.step.words.slice(index + 1)];
 
       return { ...state, step: { ...state.step, score, words } };

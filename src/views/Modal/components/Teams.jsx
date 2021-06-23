@@ -123,21 +123,20 @@ const TeamsComponent = ({ onClose, updateModalHeight, ...props }) => {
       <Group>
         <List>
           {teams.map((team) => (
-            <Fragment key={team.teamId}>
-              <Cell
-                name={team.name}
-                checked={team.teamId === myTeamId}
-                selectable={!isEditActive}
-                removable={isEditActive}
-                description={getFirstNames(team.teamId)}
-                onRemove={() => onDelete(team.teamId)}
-                onClick={() => onChange(team.teamId)}
-                // просто хак, потому как кто-то в ВК решил использовать onClick, а не дефолтный onChange
-                onChange={() => {}}
-              >
-                {team.name}
-              </Cell>
-            </Fragment>
+            <Cell
+              key={team.teamId}
+              name={team.name}
+              checked={team.teamId === myTeamId}
+              selectable={!isEditActive}
+              removable={isEditActive}
+              description={getFirstNames(team.teamId)}
+              onRemove={() => onDelete(team.teamId)}
+              onClick={() => onChange(team.teamId)}
+              // просто хак, потому как кто-то в ВК решил использовать onClick, а не дефолтный onChange
+              onChange={() => {}}
+            >
+              {team.name}
+            </Cell>
           ))}
         </List>
       </Group>
@@ -145,7 +144,7 @@ const TeamsComponent = ({ onClose, updateModalHeight, ...props }) => {
       <div className={styles.info}>
         <Spacing separator size={1} />
         <Div>
-          <Button mode='secondary' size='m' stretched before={<Icon24Add />} onClick={onCreate}>
+          <Button mode='secondary' size='l' stretched before={<Icon24Add />} onClick={onCreate}>
             Добавить команду
           </Button>
         </Div>
