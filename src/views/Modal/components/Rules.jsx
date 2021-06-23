@@ -1,10 +1,8 @@
 import React from 'react';
-import { Icon24Dismiss } from '@vkontakte/icons';
 import {
   ANDROID,
   Button,
   Div,
-  IOS,
   ModalPage,
   ModalPageHeader,
   PanelHeaderClose,
@@ -28,13 +26,6 @@ const Rules = ({ onClose, ...props }) => {
           left={
             (platform === ANDROID || platform === VKCOM) && (
               <PanelHeaderClose onClick={onClose}>Закрыть</PanelHeaderClose>
-            )
-          }
-          right={
-            platform === IOS && (
-              <PanelHeaderClose onClick={onClose}>
-                <Icon24Dismiss />
-              </PanelHeaderClose>
             )
           }
         >

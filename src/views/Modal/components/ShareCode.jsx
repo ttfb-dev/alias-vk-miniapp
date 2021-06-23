@@ -1,13 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Icon16Done, Icon24Dismiss } from '@vkontakte/icons';
+import { Icon16Done } from '@vkontakte/icons';
 import qr from '@vkontakte/vk-qr';
 import {
   ANDROID,
   Avatar,
   Button,
   Div,
-  IOS,
   ModalPage,
   ModalPageHeader,
   PanelHeaderClose,
@@ -80,13 +79,6 @@ const ShareCode = ({ onClose, ...props }) => {
           left={
             (platform === ANDROID || platform === VKCOM) && (
               <PanelHeaderClose onClick={onClose}>Закрыть</PanelHeaderClose>
-            )
-          }
-          right={
-            platform === IOS && (
-              <PanelHeaderClose onClick={onClose}>
-                <Icon24Dismiss />
-              </PanelHeaderClose>
             )
           }
         >

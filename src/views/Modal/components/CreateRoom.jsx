@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon20Info, Icon24Dismiss } from '@vkontakte/icons';
+import { Icon20Info } from '@vkontakte/icons';
 import {
   ANDROID,
   Button,
@@ -7,7 +7,6 @@ import {
   FormItem,
   FormLayout,
   Header,
-  IOS,
   List,
   MiniInfoCell,
   ModalPage,
@@ -35,13 +34,6 @@ const CreateRoom = ({ onClose, ...props }) => {
           left={
             (platform === ANDROID || platform === VKCOM) && (
               <PanelHeaderClose onClick={onClose}>Закрыть</PanelHeaderClose>
-            )
-          }
-          right={
-            platform === IOS && (
-              <PanelHeaderClose onClick={onClose}>
-                <Icon24Dismiss />
-              </PanelHeaderClose>
             )
           }
         >

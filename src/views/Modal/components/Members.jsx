@@ -1,11 +1,9 @@
 import React, { useLayoutEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { Icon24Dismiss } from '@vkontakte/icons';
 import {
   ANDROID,
   Avatar,
   Group,
-  IOS,
   List,
   ModalPage,
   ModalPageHeader,
@@ -36,13 +34,6 @@ const MembersComponent = ({ onClose, updateModalHeight, ...props }) => {
           left={
             (platform === ANDROID || platform === VKCOM) && (
               <PanelHeaderClose onClick={onClose}>Закрыть</PanelHeaderClose>
-            )
-          }
-          right={
-            platform === IOS && (
-              <PanelHeaderClose onClick={onClose}>
-                <Icon24Dismiss />
-              </PanelHeaderClose>
             )
           }
         >

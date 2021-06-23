@@ -1,13 +1,12 @@
 import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Icon16InfoCirle, Icon24Dismiss } from '@vkontakte/icons';
+import { Icon16InfoCirle } from '@vkontakte/icons';
 import {
   ANDROID,
   Avatar,
   Button,
   Group,
   Header,
-  IOS,
   List,
   MiniInfoCell,
   ModalPage,
@@ -55,15 +54,6 @@ const Sets = ({ onClose, ...props }) => {
             <>
               {(platform === ANDROID || platform === VKCOM) && (
                 <PanelHeaderClose onClick={onClose}>Закрыть</PanelHeaderClose>
-              )}
-            </>
-          }
-          right={
-            <>
-              {platform === IOS && (
-                <PanelHeaderClose onClick={onClose}>
-                  <Icon24Dismiss />
-                </PanelHeaderClose>
               )}
             </>
           }

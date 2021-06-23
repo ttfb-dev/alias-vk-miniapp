@@ -2,7 +2,7 @@ import React, { Fragment, useCallback, useEffect, useLayoutEffect, useState } fr
 import { useDispatch, useSelector } from 'react-redux';
 import { track } from '@logux/client';
 import { useClient } from '@logux/client/react';
-import { Icon24Add, Icon24Dismiss } from '@vkontakte/icons';
+import { Icon24Add } from '@vkontakte/icons';
 import {
   ANDROID,
   Button,
@@ -112,11 +112,6 @@ const TeamsComponent = ({ onClose, updateModalHeight, ...props }) => {
             <>
               {(platform === ANDROID || platform === VKCOM) && (
                 <PanelHeaderEdit isActive={isEditActive} onClick={() => setIsEditActive(!isEditActive)} />
-              )}
-              {platform === IOS && (
-                <PanelHeaderClose onClick={onClose}>
-                  <Icon24Dismiss />
-                </PanelHeaderClose>
               )}
             </>
           }
