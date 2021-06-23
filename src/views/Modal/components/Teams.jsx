@@ -45,7 +45,7 @@ const TeamsComponent = ({ onClose, updateModalHeight, ...props }) => {
       room.action.teamDelete.type,
       (_, meta) => {
         track(client, meta.id).catch(({ action }) => {
-          notify.error({ message: action.message, title: 'Ошибка' });
+          notify.error({ message: action.message });
         });
       },
       { event: 'add' },

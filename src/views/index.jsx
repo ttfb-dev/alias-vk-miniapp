@@ -42,7 +42,7 @@ const App = () => {
             onRoute({ activeView: 'main', main: { activePanel: 'room' }, activeModal: null });
           })
           .catch(({ action }) => {
-            notify.error({ message: action.message, title: 'Ошибка' });
+            notify.error({ message: action.message });
           });
       },
       { event: 'add' },
@@ -54,7 +54,7 @@ const App = () => {
           onRoute({ activeView: 'main', main: { activePanel: 'home' }, activeModal: null });
         })
         .catch(({ action }) => {
-          notify.error({ message: action.message, title: 'Ошибка' });
+          notify.error({ message: action.message });
         });
     });
 

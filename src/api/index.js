@@ -35,9 +35,7 @@ class API {
   };
 
   openCodeReader = async () => {
-    const { code_data } = await this.bridge.send('VKWebAppOpenCodeReader');
-
-    return code_data;
+    return await this.bridge.send('VKWebAppOpenCodeReader');
   };
 }
 

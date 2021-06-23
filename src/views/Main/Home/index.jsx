@@ -5,7 +5,7 @@ import { Badge, Button, Div, Panel, Spacing, Tabbar, TabbarItem } from '@vkontak
 
 import vkapi from '@/api';
 import { ReactComponent as Logo } from '@/assets/logo.svg';
-import { CustomUsersStack } from '@/components';
+import { CustomUsersStack, notify } from '@/components';
 import { queryStringParse } from '@/helpers';
 import { general, room } from '@/store';
 
@@ -19,13 +19,21 @@ const Home = (props) => {
   const onRoute = (route) => dispatch(general.action.route(route));
 
   const onScanQR = async () => {
-    const code = await vkapi.openCodeReader();
-    const url = new URL(code);
-    const hashParams = queryStringParse(url.hash);
-    const roomId = parseInt(hashParams?.roomId, 10);
+    try {
+      const code = await vkapi.openCodeReader();
+      const url = new URL(code);
+      const hashParams = queryStringParse(url.hash);
+      const roomId = parseInt(hashParams?.roomId, 10);
 
-    if (roomId) {
-      dispatch.sync(room.action.join({ roomId }));
+      if (roomId) {
+        dispatch.sync(room.action.join({ roomId }));
+      }
+    } catch ({ error_type, error_data }) {
+      if (error_data?.error_reason === 'Unsupported platform') {
+        notify.error({ message: 'Ваше устройство не поддерживает сканирование QR-кодов.' });
+      } else {
+        notify.error({ message: 'Что-то пошло не так, попробуйте ещё раз отсканировать QR-код.' });
+      }
     }
   };
 

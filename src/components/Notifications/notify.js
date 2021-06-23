@@ -6,7 +6,7 @@ const notify = ({ ...data }) => applyNotify({ ...data, type: 'default' });
 
 notify.success = ({ ...data }) => applyNotify({ ...data, type: 'success' });
 
-notify.error = ({ ...data }) => applyNotify({ ...data, type: 'error' });
+notify.error = ({ ...data }) => applyNotify({ ...data, type: 'error', title: 'Ошибка' });
 
 notify.info = ({ ...data }) => applyNotify({ ...data, type: 'info' });
 
