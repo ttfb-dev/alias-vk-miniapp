@@ -1,16 +1,14 @@
-// import { useClient } from '@logux/client/react';
 import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSubscription } from '@logux/redux';
 import { Alert, View } from '@vkontakte/vkui';
 
-import { general, room } from '../../store';
+import { general, room } from '@/store';
 
 import { Lobby } from './Lobby';
 import { Step } from './Step';
 
 const Game = (props) => {
-  // const client = useClient();
   const dispatch = useDispatch();
   const activePanel = useSelector((state) => state.general.game.activePanel);
   const isRoomLeaveAlert = useSelector((state) => state.general.isRoomLeaveAlert);

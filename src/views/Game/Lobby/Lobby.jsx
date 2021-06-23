@@ -27,8 +27,9 @@ import { ReactComponent as Hourglass } from '@/assets/hourglass.svg';
 import { ReactComponent as Logo } from '@/assets/logo-mini.svg';
 import { ReactComponent as Trophy } from '@/assets/trophy.svg';
 import { Container } from '@/components';
-import { LinkedList } from '@/helpers';
 import { game, general } from '@/store';
+
+import { getNextStep } from '../helpers';
 
 import './Lobby.scss';
 import styles from './Lobby.module.scss';
@@ -57,27 +58,14 @@ const Lobby = ({ isSubscribing, ...props }) => {
   };
 
   const onNextStep = () => {
-    const nextStepNumber = stepNumber >= teamsCompleted ? 1 : stepNumber + 1;
-    const nextRoundNumber = stepNumber >= teamsCompleted ? roundNumber + 1 : roundNumber;
-    const filteredTeams = teams.filter((team) => team.memberIds.length > 1);
-    const teamsList = new LinkedList(filteredTeams);
-    const nextTeam = teamsList.get(stepNumber - 1).next.data;
-    const memberIdsList = new LinkedList(nextTeam.memberIds);
-    const nextExplainerId = memberIdsList.get((roundNumber - 1) % teamsCompleted).next.data;
-    const nextGuesserId = memberIdsList.get((roundNumber - 1) % teamsCompleted).next.next.data;
+    const { nextStepNumber, nextRoundNumber, step } = getNextStep({
+      stepNumber,
+      roundNumber,
+      teamsCompleted,
+      teams,
+    });
 
-    const nextStep = {
-      teamId: nextTeam.teamId,
-      explainerId: nextExplainerId,
-      guesserId: nextGuesserId,
-      score: 0,
-      words: [],
-      startedAt: null,
-    };
-
-    dispatch.sync(
-      game.action.setNextStep({ stepNumber: nextStepNumber, roundNumber: nextRoundNumber, step: nextStep }),
-    );
+    dispatch.sync(game.action.setNextStep({ stepNumber: nextStepNumber, roundNumber: nextRoundNumber, step }));
   };
 
   const onRoomLeave = () => {

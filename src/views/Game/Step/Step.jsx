@@ -23,10 +23,9 @@ import clsx from 'clsx';
 
 import { ReactComponent as Logo } from '@/assets/logo-mini.svg';
 import { Container } from '@/components';
-import { LinkedList } from '@/helpers';
 import { game, general, room } from '@/store';
 
-import { formatTime } from '../helpers';
+import { formatTime, getNextStep } from '../helpers';
 import { useTimer } from '../hooks';
 
 import './Step.scss';
@@ -36,17 +35,17 @@ const Step = ({ isSubscribing, ...props }) => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.general.userId);
   const isDebug = useSelector((state) => state.general.isDebug);
-  const teams = useSelector((state) => state.room.teams);
   const ownerId = useSelector((state) => state.room.ownerId);
   const teamsList = useSelector((state) => state.room.teamsList);
-  const teamsCompleted = useSelector((state) => state.room.teamsCompleted);
   const myTeamId = useSelector((state) => state.room.myTeamId);
-  const stepNumber = useSelector((state) => state.game.stepNumber);
-  const roundNumber = useSelector((state) => state.game.roundNumber);
+  const teams = useSelector((state) => state.room.teams);
   const currentWord = useSelector((state) => state.game.currentWord);
   const wordsCount = useSelector((state) => state.game.wordsCount);
   const step = useSelector((state) => state.game.step);
-  const statisticsList = useSelector((state) => state.game.statisticsList);
+  const teamsCompleted = useSelector((state) => state.room.teamsCompleted);
+  const stepNumber = useSelector((state) => state.game.stepNumber);
+  const roundNumber = useSelector((state) => state.game.roundNumber);
+  const statistics = useSelector((state) => state.game.statistics);
   const { time, status } = useTimer({ initTime: step?.startedAt ?? null });
   const [isOpened, setIsOpened] = useState(false);
 
@@ -55,7 +54,7 @@ const Step = ({ isSubscribing, ...props }) => {
   const score = useMemo(() => {
     const score = step?.score ?? 0;
 
-    return `${score > 0 ? `+${score}` : `${score}`}`;
+    return score > 0 ? `+${score}` : `${score}`;
   }, [step]);
 
   useEffect(() => {
@@ -64,40 +63,12 @@ const Step = ({ isSubscribing, ...props }) => {
     }
   }, [dispatch, isExplainer]);
 
-  const nextWord = () => {
-    dispatch(game.action.setNextWord());
-  };
-
-  const nextStep = () => {
-    const nextStepNumber = stepNumber >= teamsCompleted ? 1 : stepNumber + 1;
-    const nextRoundNumber = stepNumber >= teamsCompleted ? roundNumber + 1 : roundNumber;
-    const filteredTeams = teams.filter((team) => team.memberIds.length > 1);
-    const teamsList = new LinkedList(filteredTeams);
-    const nextTeam = teamsList.get(stepNumber - 1).next.data;
-    const memberIdsList = new LinkedList(nextTeam.memberIds);
-    const nextExplainerId = memberIdsList.get((roundNumber - 1) % teamsCompleted).next.data;
-    const nextGuesserId = memberIdsList.get((roundNumber - 1) % teamsCompleted).next.next.data;
-
-    const nextStep = {
-      teamId: nextTeam.teamId,
-      explainerId: nextExplainerId,
-      guesserId: nextGuesserId,
-      score: 0,
-      words: [],
-      startedAt: null,
-    };
-
-    dispatch.sync(
-      game.action.setNextStep({ stepNumber: nextStepNumber, roundNumber: nextRoundNumber, step: nextStep }),
-    );
-  };
-
   const onSetWord = (guessed) => {
     const word = { ...currentWord, guessed };
 
     dispatch.sync(game.action.setStepWord({ word }));
 
-    nextWord();
+    dispatch(game.action.setNextWord());
 
     if (wordsCount <= 5) {
       dispatch.sync(game.action.getWords());
@@ -111,17 +82,23 @@ const Step = ({ isSubscribing, ...props }) => {
   };
 
   const onStepEnd = () => {
-    const score = (statisticsList[myTeamId] && statisticsList[myTeamId]?.score) || 0;
-    const scoreSummary = score + step.score > 60;
-    const isLastStepInRound = stepNumber === teamsCompleted;
-
     dispatch.sync(game.action.setStepHistory());
 
     dispatch.sync(game.action.stepEnd()).then(() => {
-      if (isLastStepInRound && scoreSummary) {
+      const hasWinner = statistics.some((team) => team.score > 60);
+      const isLastStepInRound = stepNumber === teamsCompleted;
+
+      if (isLastStepInRound && hasWinner) {
         dispatch.sync(room.action.gameEnd());
       } else {
-        nextStep();
+        const { nextStepNumber, nextRoundNumber, step } = getNextStep({
+          stepNumber,
+          roundNumber,
+          teamsCompleted,
+          teams,
+        });
+
+        dispatch.sync(game.action.setNextStep({ stepNumber: nextStepNumber, roundNumber: nextRoundNumber, step }));
       }
     });
   };
@@ -226,13 +203,7 @@ const Step = ({ isSubscribing, ...props }) => {
                       Угадал
                     </Button>
                     <Spacing size={12} />
-                    <CellButton
-                      centered
-                      hasActive={false}
-                      hasHover={false}
-                      mode='danger'
-                      onClick={() => onSetWord(false)}
-                    >
+                    <CellButton centered hasActive={false} mode='danger' onClick={() => onSetWord(false)}>
                       Пропустить
                     </CellButton>
                   </Group>
