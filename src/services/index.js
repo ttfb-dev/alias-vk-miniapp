@@ -1,4 +1,4 @@
-import vkapi from '../api';
+import vkapi from '@/api';
 
 class AppService {
   init = () => {

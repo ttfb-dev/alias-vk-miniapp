@@ -21,10 +21,11 @@ import {
 } from '@vkontakte/vkui';
 import clsx from 'clsx';
 
-import { ReactComponent as Logo } from '../../../assets/logo-mini.svg';
-import { Container } from '../../../components';
-import { LinkedList } from '../../../helpers';
-import { game, general, room } from '../../../store';
+import { ReactComponent as Logo } from '@/assets/logo-mini.svg';
+import { Container } from '@/components';
+import { LinkedList } from '@/helpers';
+import { game, general, room } from '@/store';
+
 import { formatTime } from '../helpers';
 import { useTimer } from '../hooks';
 

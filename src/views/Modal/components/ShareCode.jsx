@@ -18,8 +18,8 @@ import {
   VKCOM,
 } from '@vkontakte/vkui';
 
-import vkapi from '../../../api';
-import { CustomUsersStack } from '../../../components';
+import vkapi from '@/api';
+import { CustomUsersStack } from '@/components';
 
 import styles from './index.module.scss';
 

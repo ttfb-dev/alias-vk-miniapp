@@ -21,8 +21,8 @@ import {
   withModalRootContext,
 } from '@vkontakte/vkui';
 
-import { notify } from '../../../components';
-import { room } from '../../../store';
+import { notify } from '@/components';
+import { room } from '@/store';
 
 import styles from './index.module.scss';
 

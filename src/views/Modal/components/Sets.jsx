@@ -20,7 +20,7 @@ import {
   VKCOM,
 } from '@vkontakte/vkui';
 
-import { profile } from '../../../store';
+import { profile } from '@/store';
 
 import styles from './index.module.scss';
 

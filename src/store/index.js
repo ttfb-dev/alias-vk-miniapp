@@ -3,7 +3,7 @@ import { badgeStyles } from '@logux/client/badge/styles';
 import { createStoreCreator } from '@logux/redux';
 import { combineReducers } from 'redux';
 
-import { queryStringParse } from '../helpers';
+import { queryStringParse } from '@/helpers';
 
 import { game } from './game';
 import { general } from './general';

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ReactComponent as LogoBackground } from '../../assets/logo-bg.svg';
+import { ReactComponent as LogoBackground } from '@/assets/logo-bg.svg';
 
 import styles from './index.module.scss';
 

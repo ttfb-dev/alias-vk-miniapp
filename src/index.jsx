@@ -4,11 +4,11 @@ import { Provider } from 'react-redux';
 import { ClientContext } from '@logux/client/react';
 import { AdaptivityProvider, ConfigProvider } from '@vkontakte/vkui';
 
-import { NotificationProvider } from './components';
-import { webVitals } from './metrics';
-import AppService from './services';
-import { general, store } from './store';
-import { App } from './views';
+import { NotificationProvider } from '@/components';
+import { webVitals } from '@/metrics';
+import AppService from '@/services';
+import { general, store } from '@/store';
+import { App } from '@/views';
 
 import '@vkontakte/vkui/dist/vkui.css';
 

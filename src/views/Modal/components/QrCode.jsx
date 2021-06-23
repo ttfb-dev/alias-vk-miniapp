@@ -3,9 +3,9 @@ import { useDispatch } from 'react-redux';
 import { Icon20Info } from '@vkontakte/icons';
 import { Button, Div, MiniInfoCell, ModalCard } from '@vkontakte/vkui';
 
-import vkapi from '../../../api';
-import { queryStringParse } from '../../../helpers';
-import { general, room } from '../../../store';
+import vkapi from '@/api';
+import { queryStringParse } from '@/helpers';
+import { general, room } from '@/store';
 
 import styles from './index.module.scss';
 

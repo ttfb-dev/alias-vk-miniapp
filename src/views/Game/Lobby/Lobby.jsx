@@ -23,12 +23,12 @@ import {
   Title,
 } from '@vkontakte/vkui';
 
-import { ReactComponent as Hourglass } from '../../../assets/hourglass.svg';
-import { ReactComponent as Logo } from '../../../assets/logo-mini.svg';
-import { ReactComponent as Trophy } from '../../../assets/trophy.svg';
-import { Container } from '../../../components';
-import { LinkedList } from '../../../helpers';
-import { game, general } from '../../../store';
+import { ReactComponent as Hourglass } from '@/assets/hourglass.svg';
+import { ReactComponent as Logo } from '@/assets/logo-mini.svg';
+import { ReactComponent as Trophy } from '@/assets/trophy.svg';
+import { Container } from '@/components';
+import { LinkedList } from '@/helpers';
+import { game, general } from '@/store';
 
 import './Lobby.scss';
 import styles from './Lobby.module.scss';

@@ -3,11 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Icon16Add, Icon28InfoOutline, Icon28ScanViewfinderOutline, Icon28WorkOutline } from '@vkontakte/icons';
 import { Badge, Button, Div, Panel, Spacing, Tabbar, TabbarItem } from '@vkontakte/vkui';
 
-import vkapi from '../../../api';
-import { ReactComponent as Logo } from '../../../assets/logo.svg';
-import { CustomUsersStack } from '../../../components';
-import { queryStringParse } from '../../../helpers';
-import { general, room } from '../../../store';
+import vkapi from '@/api';
+import { ReactComponent as Logo } from '@/assets/logo.svg';
+import { CustomUsersStack } from '@/components';
+import { queryStringParse } from '@/helpers';
+import { general, room } from '@/store';
 
 import styles from './index.module.scss';
 

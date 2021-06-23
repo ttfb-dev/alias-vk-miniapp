@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Icon24CupOutline } from '@vkontakte/icons';
 import { Button, List, ModalCard, SimpleCell, Text } from '@vkontakte/vkui';
 
-import { ReactComponent as Trophy } from '../../../assets/trophy.svg';
+import { ReactComponent as Trophy } from '@/assets/trophy.svg';
 
 import styles from './index.module.scss';
 

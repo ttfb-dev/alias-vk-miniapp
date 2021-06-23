@@ -29,11 +29,11 @@ import {
   TabbarItem,
 } from '@vkontakte/vkui';
 
-import { ReactComponent as Logo } from '../../../assets/logo-mini.svg';
-import { Container } from '../../../components';
-import { declension } from '../../../helpers';
-import AppService from '../../../services';
-import { general, room } from '../../../store';
+import { ReactComponent as Logo } from '@/assets/logo-mini.svg';
+import { Container } from '@/components';
+import { declension } from '@/helpers';
+import AppService from '@/services';
+import { general, room } from '@/store';
 
 import styles from './index.module.scss';
 

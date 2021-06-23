@@ -5,8 +5,8 @@ import { useClient } from '@logux/client/react';
 import { parseId } from '@logux/core';
 import { AppRoot, Epic, Root } from '@vkontakte/vkui';
 
-import { notify } from '../components';
-import { game, general, room } from '../store';
+import { notify } from '@/components';
+import { game, general, room } from '@/store';
 
 import { Game } from './Game';
 import { Main } from './Main';

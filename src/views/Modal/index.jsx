@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ModalRoot } from '@vkontakte/vkui';
 
-import { general } from '../../store';
+import { general } from '@/store';
 
 import {
   CreateRoom,
