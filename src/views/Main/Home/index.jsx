@@ -40,7 +40,7 @@ const Home = (props) => {
   const onCreate = () =>
     dispatch
       .sync(room.action.create())
-      .then(() => onRoute({ main: { activePanel: 'room' /* , activeModal: 'teams' */ } }));
+      .then(() => onRoute({ activeView: 'game', game: { activePanel: 'room' /* , activeModal: 'teams' */ } }));
 
   const tabbar = (
     <Tabbar>

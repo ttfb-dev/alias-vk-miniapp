@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useSubscription } from '@logux/redux';
 import {
   Icon20Info,
   Icon28InfoOutline,
@@ -35,9 +34,9 @@ import { declension } from '@/helpers';
 import AppService from '@/services';
 import { general, room } from '@/store';
 
-import styles from './index.module.scss';
+import styles from './Room.module.scss';
 
-const Room = (props) => {
+const Room = ({ isSubscribing, ...props }) => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.general.userId);
   const teams = useSelector((state) => state.room.teams);
@@ -49,7 +48,6 @@ const Room = (props) => {
   const sets = useSelector((state) => state.room.sets);
   const availableSets = useSelector((state) => state.room.availableSets);
   const [isOpened, setIsOpened] = useState(false);
-  const isSubscribing = useSubscription([`room/${roomId}`]);
 
   const hasTeam = useMemo(() => teams.some((team) => team.memberIds.includes(userId)), [teams, userId]);
 
@@ -107,7 +105,7 @@ const Room = (props) => {
 
     dispatch.sync(room.action.leave());
 
-    onRoute({ main: { activePanel: 'home' } });
+    onRoute({ activeView: 'main', main: { activePanel: 'home' } });
   };
 
   const tabbar = (

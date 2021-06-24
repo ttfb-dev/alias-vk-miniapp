@@ -8,9 +8,9 @@ const initialState = {
     activePanel: 'home',
   },
   game: {
-    activePanel: 'lobby',
+    activePanel: 'room',
   },
-  activeModal: null,
+  activeModal: '',
   friends: [],
   userId: null,
   isDebug: isDev,

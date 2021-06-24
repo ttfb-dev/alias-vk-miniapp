@@ -51,6 +51,7 @@ const Lobby = ({ isSubscribing, ...props }) => {
   const [isOpened, setIsOpened] = useState(false);
 
   const isExplainer = useMemo(() => userId === step?.explainerId, [userId, step]);
+  const isGuesser = useMemo(() => userId === step?.guesserId, [userId, step]);
   const isOwner = useMemo(() => userId === ownerId, [userId, ownerId]);
 
   const onStepStart = () => {
@@ -91,7 +92,7 @@ const Lobby = ({ isSubscribing, ...props }) => {
               </div>
             }
             aside={<Icon20Dropdown style={{ transform: `rotate(${isOpened ? '180deg' : '0'})` }} />}
-            status={(teamsList && teamsList[myTeamId]?.name) || 'Без названия'}
+            status={teamsList[myTeamId]?.name ?? 'Без названия'}
             onClick={() => setIsOpened(!isOpened)}
           >
             Игра
@@ -128,7 +129,7 @@ const Lobby = ({ isSubscribing, ...props }) => {
 
                 <Caption caps level={1} weight='semibold' className={styles.awaiting}>
                   <Hourglass style={{ marginRight: '4px' }} />
-                  Ожидание хода
+                  {isExplainer || isGuesser ? 'Ваш ход' : 'Ожидание хода'}
                 </Caption>
                 <Spacing size={12} />
               </div>
@@ -140,27 +141,27 @@ const Lobby = ({ isSubscribing, ...props }) => {
 
             <Group mode='card' separator='hide' className={styles.teamWrapper}>
               <Header mode='tertiary' className='headerCentered'>
-                {`Ход команды «${(teamsList && teamsList[step?.teamId]?.name) || 'Без названия'}»`}
+                {`Ход команды «${teamsList[step?.teamId]?.name ?? 'Без названия'}»`}
               </Header>
               <Spacing size={20} />
               <div className={styles.team}>
                 <SimpleCell
                   hasHover={false}
                   hasActive={false}
-                  before={<Avatar size={40} src={(membersList && membersList[step?.explainerId]?.photo_50) || null} />}
+                  before={<Avatar size={40} src={membersList[step?.explainerId]?.photo_50 ?? null} />}
                   style={{ flex: 1, borderRight: '1px solid var(--content_tint_foreground)' }}
                   description='объясняет'
                 >
-                  {(membersList && membersList[step?.explainerId]?.first_name) || 'Без имени'}
+                  {membersList[step?.explainerId]?.first_name ?? 'Без имени'}
                 </SimpleCell>
                 <SimpleCell
                   hasHover={false}
                   hasActive={false}
-                  before={<Avatar size={40} src={(membersList && membersList[step?.guesserId]?.photo_50) || null} />}
+                  before={<Avatar size={40} src={membersList[step?.guesserId]?.photo_50 ?? null} />}
                   style={{ flex: 1 }}
                   description='угадывает'
                 >
-                  {(membersList && membersList[step?.guesserId]?.first_name) || 'Без имени'}
+                  {membersList[step?.guesserId]?.first_name ?? 'Без имени'}
                 </SimpleCell>
               </div>
             </Group>

@@ -6,6 +6,7 @@ import { Alert, View } from '@vkontakte/vkui';
 import { general, room } from '@/store';
 
 import { Lobby } from './Lobby';
+import { Room } from './Room';
 import { Step } from './Step';
 
 const Game = (props) => {
@@ -14,7 +15,7 @@ const Game = (props) => {
   const isRoomLeaveAlert = useSelector((state) => state.general.isRoomLeaveAlert);
   const isGameEndAlert = useSelector((state) => state.general.isGameEndAlert);
   const roomId = useSelector((state) => state.room.roomId);
-  const isSubscribing = useSubscription([`room/${roomId}/game`]);
+  const isSubscribing = useSubscription([`room/${roomId}`]);
 
   const onRoomLeave = useCallback(() => {
     dispatch.sync(room.action.leave());
@@ -78,6 +79,8 @@ const Game = (props) => {
       activePanel={activePanel}
       popout={(isRoomLeaveAlert && roomLeaveAlert) || (isGameEndAlert && gameEndAlert)}
     >
+      <Room id='room' isSubscribing={isSubscribing} />
+
       <Lobby id='lobby' isSubscribing={isSubscribing} />
 
       <Step id='step' isSubscribing={isSubscribing} />

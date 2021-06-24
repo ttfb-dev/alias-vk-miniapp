@@ -28,7 +28,7 @@ const App = () => {
       (action) => {
         if (action.roomId !== null) {
           dispatch(room.action.setRoomId({ roomId: action.roomId }));
-          onRoute({ activeView: 'main', main: { activePanel: 'room' } /* , activeModal: 'teams' */ });
+          onRoute({ activeView: 'game', game: { activePanel: 'room' } /* , activeModal: 'teams' */ });
         }
       },
       { event: 'add' },
@@ -39,7 +39,7 @@ const App = () => {
       (_, meta) => {
         track(client, meta.id)
           .then(() => {
-            onRoute({ activeView: 'main', main: { activePanel: 'room' }, activeModal: null });
+            onRoute({ activeView: 'game', game: { activePanel: 'room' }, activeModal: null });
           })
           .catch(({ action }) => {
             notify.error({ message: action.message });

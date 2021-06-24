@@ -7,7 +7,6 @@ import { ScreenSpinner, View } from '@vkontakte/vkui';
 import { general, room } from '../../store';
 
 import { Home } from './Home';
-import { Room } from './Room';
 
 const Main = (props) => {
   const client = useClient();
@@ -61,8 +60,6 @@ const Main = (props) => {
   return (
     <View {...props} activePanel={activePanel} popout={isLoading && <ScreenSpinner />}>
       <Home id='home' />
-
-      <Room id='room' />
     </View>
   );
 };

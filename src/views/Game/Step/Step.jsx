@@ -126,7 +126,7 @@ const Step = ({ isSubscribing, ...props }) => {
               </div>
             }
             aside={<Icon20Dropdown style={{ transform: `rotate(${isOpened ? '180deg' : '0'})` }} />}
-            status={(teamsList && teamsList[myTeamId]?.name) ?? 'Без названия'}
+            status={teamsList[myTeamId]?.name ?? 'Без названия'}
             onClick={() => setIsOpened(!isOpened)}
           >
             Игра
