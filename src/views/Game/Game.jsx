@@ -59,7 +59,6 @@ const Game = (props) => {
             currentWord: {},
             words: [],
             wordsCount: null,
-            status: '',
           }),
         );
 
