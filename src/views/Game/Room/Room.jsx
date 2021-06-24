@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Icon20Info,
@@ -36,7 +36,7 @@ import { game, general, room } from '@/store';
 
 import styles from './Room.module.scss';
 
-const Room = ({ isSubscribing, ...props }) => {
+const Room = ({ ...props }) => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.general.userId);
   const teams = useSelector((state) => state.room.teams);
@@ -158,9 +158,7 @@ const Room = ({ isSubscribing, ...props }) => {
           </PanelHeaderContext>
         )}
 
-        {isSubscribing ? (
-          <PanelSpinner />
-        ) : (
+        <Suspense fallback={<PanelSpinner />}>
           <Div className={styles.grid}>
             <Card mode='shadow' className={styles.card}>
               <SimpleCell
@@ -199,9 +197,7 @@ const Room = ({ isSubscribing, ...props }) => {
               </SimpleCell>
             </Card>
           </Div>
-        )}
 
-        {!isSubscribing && (
           <div className={styles.fixedLayout}>
             {!hasTeam ? (
               <Div>
@@ -225,7 +221,7 @@ const Room = ({ isSubscribing, ...props }) => {
               </Div>
             ) : null}
           </div>
-        )}
+        </Suspense>
 
         {tabbar}
       </Container>

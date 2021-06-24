@@ -22,7 +22,8 @@ const Game = (props) => {
   const isGameFinishAlert = useSelector((state) => state.general.isGameFinishAlert);
   const roomId = useSelector((state) => state.room.roomId);
   const teams = useSelector((state) => state.room.teams);
-  const isSubscribing = useSubscription([`room/${roomId}`]);
+
+  useSubscription([`room/${roomId}`]);
 
   const onRoute = useCallback((route) => dispatch(general.action.route(route)), [dispatch]);
 
@@ -181,11 +182,11 @@ const Game = (props) => {
       activePanel={activePanel}
       popout={(isRoomLeaveAlert && roomLeaveAlert) || (isGameFinishAlert && gameFinishAlert)}
     >
-      <Room id='room' isSubscribing={isSubscribing} />
+      <Room id='room' />
 
-      <Lobby id='lobby' isSubscribing={isSubscribing} />
+      <Lobby id='lobby' />
 
-      <Step id='step' isSubscribing={isSubscribing} />
+      <Step id='step' />
     </View>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { Suspense, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Div, Panel, PanelSpinner, Spacing } from '@vkontakte/vkui';
 
@@ -13,7 +13,7 @@ import { Score, Timer, Word, Words } from './components';
 
 import styles from './Step.module.scss';
 
-const Step = ({ isSubscribing, ...props }) => {
+const Step = ({ ...props }) => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.general.userId);
   const isDebug = useSelector((state) => state.general.isDebug);
@@ -63,9 +63,7 @@ const Step = ({ isSubscribing, ...props }) => {
       <Container>
         <Header />
 
-        {isSubscribing ? (
-          <PanelSpinner />
-        ) : (
+        <Suspense fallback={<PanelSpinner />}>
           <Div className={styles.container}>
             <Timer time={time} status={status} />
 
@@ -75,29 +73,29 @@ const Step = ({ isSubscribing, ...props }) => {
 
             {isRunning && <Word />}
           </Div>
-        )}
 
-        {isStopped && <Spacing size={20} />}
+          {isStopped && <Spacing size={20} />}
 
-        {!isSubscribing && isStopped && (
-          <div className={styles.fixedLayout}>
-            <Div>
-              <Button stretched mode='primary' size='l' onClick={onStepFinish}>
-                Закончить ход
-              </Button>
-            </Div>
-          </div>
-        )}
+          {isStopped && (
+            <div className={styles.fixedLayout}>
+              <Div>
+                <Button stretched mode='primary' size='l' onClick={onStepFinish}>
+                  Закончить ход
+                </Button>
+              </Div>
+            </div>
+          )}
 
-        {!isSubscribing && isDebug && (
-          <div className={styles.fixedLayout}>
-            <Div>
-              <Button stretched mode='destructive' size='l' onClick={onStepFinish}>
-                Закончить ход
-              </Button>
-            </Div>
-          </div>
-        )}
+          {isDebug && (
+            <div className={styles.fixedLayout}>
+              <Div>
+                <Button stretched mode='destructive' size='l' onClick={onStepFinish}>
+                  Закончить ход
+                </Button>
+              </Div>
+            </div>
+          )}
+        </Suspense>
       </Container>
     </Panel>
   );

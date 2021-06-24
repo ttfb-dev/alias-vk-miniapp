@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { Suspense, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Div, Panel, PanelSpinner, Spacing } from '@vkontakte/vkui';
 
@@ -12,7 +12,7 @@ import { Round, Statistics, Team } from './components';
 
 import styles from './Lobby.module.scss';
 
-const Lobby = ({ isSubscribing, ...props }) => {
+const Lobby = ({ ...props }) => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.general.userId);
   const isDebug = useSelector((state) => state.general.isDebug);
@@ -44,9 +44,7 @@ const Lobby = ({ isSubscribing, ...props }) => {
       <Container>
         <Header />
 
-        {isSubscribing ? (
-          <PanelSpinner />
-        ) : (
+        <Suspense fallback={<PanelSpinner />}>
           <Div className={styles.container}>
             <Round />
 
@@ -54,27 +52,27 @@ const Lobby = ({ isSubscribing, ...props }) => {
 
             <Statistics />
           </Div>
-        )}
 
-        {isExplainer && <Spacing size={20} />}
+          {isExplainer && <Spacing size={20} />}
 
-        {!isSubscribing && (isExplainer || isDebug) && (
-          <div className={styles.fixedLayout}>
-            <Div>
-              <Button stretched mode='primary' size='l' onClick={onStepStart}>
-                Начать ход
-              </Button>
-              {isDebug && (
-                <>
-                  <Spacing size={12} />
-                  <Button stretched mode='destructive' size='l' onClick={onNextStep}>
-                    Передать ход
-                  </Button>
-                </>
-              )}
-            </Div>
-          </div>
-        )}
+          {(isExplainer || isDebug) && (
+            <div className={styles.fixedLayout}>
+              <Div>
+                <Button stretched mode='primary' size='l' onClick={onStepStart}>
+                  Начать ход
+                </Button>
+                {isDebug && (
+                  <>
+                    <Spacing size={12} />
+                    <Button stretched mode='destructive' size='l' onClick={onNextStep}>
+                      Передать ход
+                    </Button>
+                  </>
+                )}
+              </Div>
+            </div>
+          )}
+        </Suspense>
       </Container>
     </Panel>
   );
