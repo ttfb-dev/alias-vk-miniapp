@@ -1,65 +1,8 @@
-.content {
+.container {
   display: flex;
   flex: 1;
   flex-direction: column;
   gap: 12px;
-}
-
-.card {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  justify-content: space-between;
-  box-sizing: border-box;
-
-  background: var(--modal_card_background);
-  border-radius: 8px;
-  box-shadow: 0 2px 24px 0 rgb(0 0 0 / 8%), 0 0 2px 0 rgb(0 0 0 / 8%);
-}
-
-.timer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  background: linear-gradient(180deg, #4986cc 0%, #71abef 100%);
-  border-radius: 10px;
-
-  @media screen and (min-height: 600px) {
-    padding-top: 20px !important;
-    padding-bottom: 20px !important;
-  }
-}
-
-.timerEnded {
-  background: linear-gradient(180deg, #cc4949 0%, #fb8383 100%);
-}
-
-.clock {
-  display: block;
-  padding: 40px 0;
-
-  color: var(--white);
-  font-weight: 700;
-  font-size: 60px;
-  font-family: var(--font-common);
-  line-height: 20px;
-
-  text-align: center;
-  text-overflow: ellipsis;
-
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-
-  background: url('../../../assets/timer.svg') no-repeat center;
-}
-
-.word {
-  display: block;
-
-  font-weight: 600;
-  font-size: 40px;
-  font-family: var(--font-common);
-  text-align: center;
 }
 
 .fixedLayout {

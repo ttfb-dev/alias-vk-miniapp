@@ -1,61 +1,34 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Icon20Dropdown } from '@vkontakte/icons';
-import {
-  Button,
-  Card,
-  CellButton,
-  Div,
-  Group,
-  Header,
-  List,
-  Panel,
-  PanelHeader,
-  PanelHeaderContent,
-  PanelHeaderContext,
-  PanelSpinner,
-  Placeholder,
-  SimpleCell,
-  Spacing,
-  Switch,
-} from '@vkontakte/vkui';
-import clsx from 'clsx';
+import { Button, Div, Panel, PanelSpinner, Spacing } from '@vkontakte/vkui';
 
-import { ReactComponent as Logo } from '@/assets/logo-mini.svg';
 import { Container } from '@/components';
-import { game, general } from '@/store';
+import { game } from '@/store';
 
-import { formatTime, getNextStep } from '../helpers';
+import { Header } from '../components';
+import { getNextStep } from '../helpers';
 import { useTimer } from '../hooks';
 
-import './Step.scss';
+import { Score, Timer, Word, Words } from './components';
+
 import styles from './Step.module.scss';
 
 const Step = ({ isSubscribing, ...props }) => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.general.userId);
   const isDebug = useSelector((state) => state.general.isDebug);
-  const ownerId = useSelector((state) => state.room.ownerId);
-  const teamsList = useSelector((state) => state.room.teamsList);
-  const myTeamId = useSelector((state) => state.room.myTeamId);
   const teams = useSelector((state) => state.room.teams);
   const teamsCompleted = useSelector((state) => state.room.teamsCompleted);
-  const currentWord = useSelector((state) => state.game.currentWord);
-  const wordsCount = useSelector((state) => state.game.wordsCount);
   const stepNumber = useSelector((state) => state.game.stepNumber);
   const roundNumber = useSelector((state) => state.game.roundNumber);
   const statistics = useSelector((state) => state.game.statistics);
   const step = useSelector((state) => state.game.step);
   const { time, status } = useTimer({ initTime: step?.startedAt ?? null });
-  const [isOpened, setIsOpened] = useState(false);
 
   const isExplainer = useMemo(() => userId === step?.explainerId, [userId, step]);
-  const isOwner = useMemo(() => userId === ownerId, [userId, ownerId]);
-  const score = useMemo(() => {
-    const score = step?.score ?? 0;
-
-    return score > 0 ? `+${score}` : `${score}`;
-  }, [step]);
+  const isWatcher = useMemo(() => userId !== step?.explainerId, [userId, step]);
+  const isRunning = useMemo(() => isExplainer && status !== 'STOPPED', [isExplainer, status]);
+  const isStopped = useMemo(() => isExplainer && status === 'STOPPED', [isExplainer, status]);
 
   useEffect(() => {
     if (isExplainer) {
@@ -63,25 +36,7 @@ const Step = ({ isSubscribing, ...props }) => {
     }
   }, [dispatch, isExplainer]);
 
-  const onSetWord = (guessed) => {
-    const word = { ...currentWord, guessed };
-
-    dispatch.sync(game.action.stepSetWord({ word }));
-
-    dispatch(game.action.stepSetNextWord());
-
-    if (wordsCount <= 5) {
-      dispatch.sync(game.action.getWords());
-    }
-  };
-
-  const onEditWord = (word, index) => {
-    const newWord = { ...word, guessed: !word.guessed };
-
-    dispatch.sync(game.action.stepEditWord({ word: newWord, index }));
-  };
-
-  const onStepEnd = () => {
+  const onStepFinish = () => {
     dispatch.sync(game.action.stepSetHistory()).then(() => {
       const hasWinner = statistics.some((team) => team.score > 60);
       const isLastStepInRound = stepNumber === teamsCompleted;
@@ -103,122 +58,31 @@ const Step = ({ isSubscribing, ...props }) => {
     });
   };
 
-  const onRoomLeave = () => {
-    setIsOpened(false);
-
-    dispatch(general.action.alert({ isRoomLeaveAlert: true }));
-  };
-
-  const onGameFinish = () => {
-    setIsOpened(false);
-
-    dispatch(general.action.alert({ isGameFinishAlert: true }));
-  };
-
   return (
     <Panel {...props}>
       <Container>
-        <PanelHeader separator={false} shadow={true}>
-          <PanelHeaderContent
-            before={
-              <div style={{ lineHeight: 0 }}>
-                <Logo style={{ width: '28px', height: '28px', color: 'var(--header_tint)' }} />
-              </div>
-            }
-            aside={<Icon20Dropdown style={{ transform: `rotate(${isOpened ? '180deg' : '0'})` }} />}
-            status={teamsList[myTeamId]?.name ?? 'Без названия'}
-            onClick={() => setIsOpened(!isOpened)}
-          >
-            Игра
-          </PanelHeaderContent>
-        </PanelHeader>
-        <PanelHeaderContext opened={isOpened} onClose={() => setIsOpened(!isOpened)}>
-          <List>
-            {isOwner && (
-              <CellButton mode='danger' centered onClick={onGameFinish}>
-                Закончить игру
-              </CellButton>
-            )}
-            <CellButton mode='danger' centered onClick={onRoomLeave}>
-              Выйти из игры
-            </CellButton>
-          </List>
-        </PanelHeaderContext>
+        <Header />
 
         {isSubscribing ? (
           <PanelSpinner />
         ) : (
-          <Div className={styles.content}>
-            <Div className={clsx(styles.timer, status === 'STOPPED' && styles.timerEnded)}>
-              <span className={styles.clock}>{formatTime(time)}</span>
-            </Div>
+          <Div className={styles.container}>
+            <Timer time={time} status={status} />
 
-            {((isExplainer && status === 'STOPPED') || !isExplainer) && (
-              <Card mode='shadow'>
-                <SimpleCell hasHover={false} hasActive={false} indicator={score} className='score'>
-                  Текущие очки
-                </SimpleCell>
-              </Card>
-            )}
+            {(isStopped || isWatcher) && <Score />}
 
-            <Div className={styles.card}>
-              {((isExplainer && status === 'STOPPED') || !isExplainer) && (
-                <Group mode='plain' separator='hide'>
-                  <Header mode='tertiary' className='headerCentered'>
-                    Отыгравшие слова
-                  </Header>
-                  {step?.words && !!step.words.length ? (
-                    step.words.map((word, index) => (
-                      <SimpleCell
-                        key={word.index}
-                        hasActive={false}
-                        hasHover={false}
-                        after={
-                          <Switch
-                            disabled={!isExplainer}
-                            checked={word.guessed}
-                            onChange={() => onEditWord(word, index)}
-                          />
-                        }
-                      >
-                        {word.value}
-                      </SimpleCell>
-                    ))
-                  ) : (
-                    <Placeholder>Здесь будут отображаться слова, которые отыграли в текущем ходе</Placeholder>
-                  )}
-                </Group>
-              )}
+            {(isStopped || isWatcher) && <Words />}
 
-              {isExplainer && status !== 'STOPPED' && (
-                <>
-                  <Header mode='tertiary' className='headerCentered'>
-                    Ваше слово
-                  </Header>
-
-                  <span className={styles.word}>{currentWord?.value ?? ''}</span>
-
-                  <Group mode='plain' separator='hide'>
-                    <Button stretched mode='primary' size='l' onClick={() => onSetWord(true)}>
-                      Угадал
-                    </Button>
-                    <Spacing size={12} />
-                    <CellButton centered hasActive={false} mode='danger' onClick={() => onSetWord(false)}>
-                      Пропустить
-                    </CellButton>
-                  </Group>
-                </>
-              )}
-            </Div>
+            {isRunning && <Word />}
           </Div>
         )}
 
-        {(!isExplainer || status === 'STOPPED') && <Spacing size={20} />}
+        {isStopped && <Spacing size={20} />}
 
-        {!isSubscribing && isExplainer && status === 'STOPPED' && (
+        {!isSubscribing && isStopped && (
           <div className={styles.fixedLayout}>
             <Div>
-              <Button stretched mode='primary' size='l' onClick={onStepEnd}>
+              <Button stretched mode='primary' size='l' onClick={onStepFinish}>
                 Закончить ход
               </Button>
             </Div>
@@ -228,7 +92,7 @@ const Step = ({ isSubscribing, ...props }) => {
         {!isSubscribing && isDebug && (
           <div className={styles.fixedLayout}>
             <Div>
-              <Button stretched mode='destructive' size='l' onClick={onStepEnd}>
+              <Button stretched mode='destructive' size='l' onClick={onStepFinish}>
                 Закончить ход
               </Button>
             </Div>

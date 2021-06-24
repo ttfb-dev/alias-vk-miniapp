@@ -1,0 +1,20 @@
+.container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+
+  background: var(--modal_card_background);
+  border-radius: 8px;
+  box-shadow: 0 2px 24px 0 rgb(0 0 0 / 8%), 0 0 2px 0 rgb(0 0 0 / 8%);
+}
+
+.word {
+  display: block;
+
+  font-weight: 600;
+  font-size: 40px;
+  font-family: var(--font-common);
+  text-align: center;
+}
