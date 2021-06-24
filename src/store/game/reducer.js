@@ -11,23 +11,30 @@ import {
 } from './action';
 
 const initState = {
-  stepNumber: null,
-  roundNumber: null,
+  stepNumber: 1,
+  roundNumber: 1,
   statistics: [],
   statisticsList: {},
-  step: {},
+  step: {
+    teamId: null,
+    explainerId: null,
+    guesserId: null,
+    score: 0,
+    words: [],
+    startedAt: null,
+  },
   stepHistory: [],
   currentWord: {},
   words: [],
   wordsCount: null,
-  status: '',
+  status: 'lobby',
 };
 
 const reducer = (state = initState, action) => {
   const { type, ...payload } = action;
 
   switch (type) {
-    case 'game/state': {
+    case 'room/state': {
       const stepHistory = payload.game.stepHistory.slice();
       const statisticsList = stepHistory.reduce((acc, step) => {
         if (acc[step.teamId]) {
@@ -49,7 +56,7 @@ const reducer = (state = initState, action) => {
     }
 
     case setInitState.type:
-      return { ...initState };
+      return { ...payload };
 
     case stepStart.type: {
       const { startedAt } = payload;

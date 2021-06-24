@@ -4,7 +4,8 @@ import { track } from '@logux/client';
 import { useClient } from '@logux/client/react';
 import { ScreenSpinner, View } from '@vkontakte/vkui';
 
-import { general, room } from '../../store';
+import { notify } from '@/components';
+import { general, room } from '@/store';
 
 import { Home } from './Home';
 
@@ -12,7 +13,6 @@ const Main = (props) => {
   const client = useClient();
   const dispatch = useDispatch();
   const activePanel = useSelector((state) => state.general.main.activePanel);
-  const userId = useSelector((state) => state.general.userId);
   const [isLoading, setIsLoading] = useState(false);
 
   const onRoute = useCallback((route) => dispatch(general.action.route(route)), [dispatch]);
@@ -28,13 +28,18 @@ const Main = (props) => {
 
     const whereIAmDone = client.type(
       `${room.action.whereIAm.type}_success`,
-      () => {
+      (action) => {
         setIsLoading(false);
+
+        if (action.roomId !== null) {
+          dispatch(room.action.setRoomId({ roomId: action.roomId }));
+          onRoute({ activeView: 'game', game: { activePanel: 'room' } /* , activeModal: 'teams' */ });
+        }
       },
       { event: 'add' },
     );
 
-    const joinRoom = client.type(
+    const join = client.type(
       room.action.join.type,
       (_, meta) => {
         setIsLoading(true);
@@ -42,20 +47,35 @@ const Main = (props) => {
         track(client, meta.id)
           .then(() => {
             setIsLoading(false);
+
+            onRoute({ activeView: 'game', game: { activePanel: 'room' }, activeModal: null });
           })
-          .catch(() => {
+          .catch(({ action }) => {
             setIsLoading(false);
+
+            notify.error({ message: action.message });
           });
       },
       { event: 'add' },
     );
 
+    const leave = client.type(room.action.leave.type, (_, meta) => {
+      track(client, meta.id)
+        .then(() => {
+          onRoute({ activeView: 'main', main: { activePanel: 'home' }, activeModal: null });
+        })
+        .catch(({ action }) => {
+          notify.error({ message: action.message });
+        });
+    });
+
     return () => {
       whereIAm();
       whereIAmDone();
-      joinRoom();
+      join();
+      leave();
     };
-  }, [client, dispatch, onRoute, userId]);
+  }, [client, dispatch, onRoute]);
 
   return (
     <View {...props} activePanel={activePanel} popout={isLoading && <ScreenSpinner />}>

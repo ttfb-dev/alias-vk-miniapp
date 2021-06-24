@@ -10,7 +10,7 @@ const initialState = {
   game: {
     activePanel: 'room',
   },
-  activeModal: '',
+  activeModal: null,
   friends: [],
   userId: null,
   isDebug: isDev,

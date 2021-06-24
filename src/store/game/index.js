@@ -13,15 +13,15 @@ import { reducer } from './reducer';
 
 const game = {
   action: {
-    setInitState,
-    stepStart,
-    getWords,
-    setStepWord,
     editStepWord,
+    getWords,
+    setInitState,
+    setNextStep,
     setNextWord,
     setStepHistory,
-    setNextStep,
+    setStepWord,
     stepEnd,
+    stepStart,
   },
   reducer,
 };
