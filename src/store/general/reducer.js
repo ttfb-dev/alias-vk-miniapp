@@ -15,7 +15,7 @@ const initialState = {
   userId: null,
   isDebug: isDev,
   isRoomLeaveAlert: false,
-  isGameEndAlert: false,
+  isGameFinishAlert: false,
 };
 
 const reducer = (state = initialState, action) => {

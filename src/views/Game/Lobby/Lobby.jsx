@@ -75,10 +75,10 @@ const Lobby = ({ isSubscribing, ...props }) => {
     dispatch(general.action.alert({ isRoomLeaveAlert: true }));
   };
 
-  const onGameEnd = () => {
+  const onGameFinish = () => {
     setIsOpened(false);
 
-    dispatch(general.action.alert({ isGameEndAlert: true }));
+    dispatch(general.action.alert({ isGameFinishAlert: true }));
   };
 
   return (
@@ -101,7 +101,7 @@ const Lobby = ({ isSubscribing, ...props }) => {
         <PanelHeaderContext opened={isOpened} onClose={() => setIsOpened(!isOpened)}>
           <List>
             {isOwner && (
-              <CellButton mode='danger' centered onClick={onGameEnd}>
+              <CellButton mode='danger' centered onClick={onGameFinish}>
                 Закончить игру
               </CellButton>
             )}

@@ -19,7 +19,7 @@ const Game = (props) => {
   const activePanel = useSelector((state) => state.general.game.activePanel);
   const userId = useSelector((state) => state.general.game.userId);
   const isRoomLeaveAlert = useSelector((state) => state.general.isRoomLeaveAlert);
-  const isGameEndAlert = useSelector((state) => state.general.isGameEndAlert);
+  const isGameFinishAlert = useSelector((state) => state.general.isGameFinishAlert);
   const roomId = useSelector((state) => state.room.roomId);
   const teams = useSelector((state) => state.room.teams);
   const isSubscribing = useSubscription([`room/${roomId}`]);
@@ -27,7 +27,7 @@ const Game = (props) => {
   const onRoute = useCallback((route) => dispatch(general.action.route(route)), [dispatch]);
 
   useEffect(() => {
-    const roomState = client.type(
+    const state = client.type(
       'room/state',
       (action) => {
         if (action.room.status === 'game') {
@@ -112,7 +112,7 @@ const Game = (props) => {
     );
 
     return () => {
-      roomState();
+      state();
       start();
       finish();
       stepStart();
@@ -124,12 +124,12 @@ const Game = (props) => {
     dispatch.sync(room.action.leave());
   }, [dispatch]);
 
-  const onGameEnd = useCallback(() => {
-    dispatch.sync(room.action.gameEnd());
+  const onGameFinish = useCallback(() => {
+    dispatch.sync(game.action.finish());
   }, [dispatch]);
 
   const onClose = useCallback(() => {
-    dispatch(general.action.alert({ isRoomLeaveAlert: false, isGameEndAlert: false }));
+    dispatch(general.action.alert({ isRoomLeaveAlert: false, isGameFinishAlert: false }));
   }, [dispatch]);
 
   const roomLeaveAlert = (
@@ -154,7 +154,7 @@ const Game = (props) => {
     />
   );
 
-  const gameEndAlert = (
+  const gameFinishAlert = (
     <Alert
       actions={[
         {
@@ -166,7 +166,7 @@ const Game = (props) => {
           title: 'Закончить',
           autoclose: true,
           mode: 'destructive',
-          action: onGameEnd,
+          action: onGameFinish,
         },
       ]}
       actionsLayout='horizontal'
@@ -180,7 +180,7 @@ const Game = (props) => {
     <View
       {...props}
       activePanel={activePanel}
-      popout={(isRoomLeaveAlert && roomLeaveAlert) || (isGameEndAlert && gameEndAlert)}
+      popout={(isRoomLeaveAlert && roomLeaveAlert) || (isGameFinishAlert && gameFinishAlert)}
     >
       <Room id='room' isSubscribing={isSubscribing} />
 
