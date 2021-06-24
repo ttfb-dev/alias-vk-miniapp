@@ -79,7 +79,7 @@ const Game = (props) => {
     const stepStart = client.type(
       game.action.stepStart.type,
       () => {
-        onRoute({ activeView: 'game', game: { activePanel: 'step' } });
+        onRoute({ activeView: 'game', game: { activePanel: 'step' }, activeModal: null });
       },
       { event: 'add' },
     );

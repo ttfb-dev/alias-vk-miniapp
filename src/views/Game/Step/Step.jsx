@@ -82,9 +82,7 @@ const Step = ({ isSubscribing, ...props }) => {
   };
 
   const onStepEnd = () => {
-    dispatch.sync(game.action.setStepHistory());
-
-    dispatch.sync(game.action.stepEnd()).then(() => {
+    dispatch.sync(game.action.setStepHistory()).then(() => {
       const hasWinner = statistics.some((team) => team.score > 60);
       const isLastStepInRound = stepNumber === teamsCompleted;
 
@@ -97,6 +95,8 @@ const Step = ({ isSubscribing, ...props }) => {
           teamsCompleted,
           teams,
         });
+
+        dispatch.sync(game.action.stepEnd());
 
         dispatch.sync(game.action.setNextStep({ stepNumber: nextStepNumber, roundNumber: nextRoundNumber, step }));
       }
