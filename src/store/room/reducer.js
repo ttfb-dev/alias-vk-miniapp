@@ -2,12 +2,14 @@ import {
   activateSet,
   create,
   deactivateSet,
-  gameEnd,
-  gameStart,
   join,
   leave,
   setMembers,
   setRoomId,
+  // teamCreate,
+  // teamDelete,
+  // teamJoin,
+  // teamLeave,
   whereIAm,
 } from './action';
 
@@ -32,16 +34,19 @@ const reducer = (state = initialState, action) => {
 
   switch (type) {
     case 'room/state': {
-      const sets = payload.room.gameWordDatasets.filter((set) => ['active', 'inactive'].includes(set.status));
-      const availableSets = payload.room.gameWordDatasets.filter((set) => set.status === 'available');
-      const teamsList = payload.room.teams.reduce((list, team) => ({ ...list, [team.teamId]: team }), {});
-      const teamsCompleted = payload.room.teams.reduce((acc, team) => (acc += !!(team.memberIds.length > 1)), 0);
+      const { gameWordDatasets, teams, ...room } = payload.room;
+
+      const sets = gameWordDatasets.filter((set) => ['active', 'inactive'].includes(set.status));
+      const availableSets = gameWordDatasets.filter((set) => set.status === 'available');
+      const teamsList = teams.reduce((list, team) => ({ ...list, [team.teamId]: team }), {});
+      const teamsCompleted = teams.reduce((acc, team) => (acc += !!(team.memberIds.length > 1)), 0);
 
       return {
         ...state,
-        ...payload.room,
+        ...room,
         sets,
         availableSets,
+        teams,
         teamsList,
         teamsCompleted,
       };
@@ -136,16 +141,18 @@ const reducer = (state = initialState, action) => {
     }
 
     case 'room/user_joined':
-    case 'room/user_left':
-      const sets = payload.gameWordDatasets.filter((set) => ['active', 'inactive'].includes(set.status));
-      const availableSets = payload.gameWordDatasets.filter((set) => set.status === 'available');
+    case 'room/user_left': {
+      const { gameWordDatasets, memberIds } = payload;
+      const sets = gameWordDatasets.filter((set) => ['active', 'inactive'].includes(set.status));
+      const availableSets = gameWordDatasets.filter((set) => set.status === 'available');
 
       return {
         ...state,
-        memberIds: payload.memberIds,
+        memberIds,
         sets,
         availableSets,
       };
+    }
 
     case activateSet.type: {
       const sets = state.sets.slice();
@@ -171,8 +178,9 @@ const reducer = (state = initialState, action) => {
     }
 
     case 'room/dataset_purchased': {
-      const sets = payload.gameWordDatasets.filter((set) => ['active', 'inactive'].includes(set.status));
-      const availableSets = payload.gameWordDatasets.filter((set) => set.status === 'available');
+      const { gameWordDatasets } = payload;
+      const sets = gameWordDatasets.filter((set) => ['active', 'inactive'].includes(set.status));
+      const availableSets = gameWordDatasets.filter((set) => set.status === 'available');
 
       return {
         ...state,
@@ -180,18 +188,6 @@ const reducer = (state = initialState, action) => {
         availableSets,
       };
     }
-
-    case gameStart.type:
-      return {
-        ...state,
-        status: 'game',
-      };
-
-    case gameEnd.type:
-      return {
-        ...state,
-        status: 'lobby',
-      };
 
     default:
       return state;

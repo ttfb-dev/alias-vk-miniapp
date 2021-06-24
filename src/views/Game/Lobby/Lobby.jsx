@@ -66,7 +66,7 @@ const Lobby = ({ isSubscribing, ...props }) => {
       teams,
     });
 
-    dispatch.sync(game.action.setNextStep({ stepNumber: nextStepNumber, roundNumber: nextRoundNumber, step }));
+    dispatch.sync(game.action.stepNext({ stepNumber: nextStepNumber, roundNumber: nextRoundNumber, step }));
   };
 
   const onRoomLeave = () => {

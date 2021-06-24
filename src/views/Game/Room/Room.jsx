@@ -32,7 +32,7 @@ import { ReactComponent as Logo } from '@/assets/logo-mini.svg';
 import { Container } from '@/components';
 import { declension } from '@/helpers';
 import AppService from '@/services';
-import { general, room } from '@/store';
+import { game, general, room } from '@/store';
 
 import styles from './Room.module.scss';
 
@@ -97,7 +97,7 @@ const Room = ({ isSubscribing, ...props }) => {
   const onRoute = useCallback((route) => dispatch(general.action.route(route)), [dispatch]);
 
   const onGameStart = () => {
-    dispatch.sync(room.action.gameStart());
+    dispatch.sync(game.action.start());
   };
 
   const onLeave = () => {

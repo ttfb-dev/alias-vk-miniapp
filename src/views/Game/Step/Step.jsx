@@ -23,7 +23,7 @@ import clsx from 'clsx';
 
 import { ReactComponent as Logo } from '@/assets/logo-mini.svg';
 import { Container } from '@/components';
-import { game, general, room } from '@/store';
+import { game, general } from '@/store';
 
 import { formatTime, getNextStep } from '../helpers';
 import { useTimer } from '../hooks';
@@ -39,13 +39,13 @@ const Step = ({ isSubscribing, ...props }) => {
   const teamsList = useSelector((state) => state.room.teamsList);
   const myTeamId = useSelector((state) => state.room.myTeamId);
   const teams = useSelector((state) => state.room.teams);
+  const teamsCompleted = useSelector((state) => state.room.teamsCompleted);
   const currentWord = useSelector((state) => state.game.currentWord);
   const wordsCount = useSelector((state) => state.game.wordsCount);
-  const step = useSelector((state) => state.game.step);
-  const teamsCompleted = useSelector((state) => state.room.teamsCompleted);
   const stepNumber = useSelector((state) => state.game.stepNumber);
   const roundNumber = useSelector((state) => state.game.roundNumber);
   const statistics = useSelector((state) => state.game.statistics);
+  const step = useSelector((state) => state.game.step);
   const { time, status } = useTimer({ initTime: step?.startedAt ?? null });
   const [isOpened, setIsOpened] = useState(false);
 
@@ -59,16 +59,16 @@ const Step = ({ isSubscribing, ...props }) => {
 
   useEffect(() => {
     if (isExplainer) {
-      dispatch.sync(game.action.getWords()).then(() => dispatch(game.action.setNextWord()));
+      dispatch.sync(game.action.getWords()).then(() => dispatch(game.action.stepSetNextWord()));
     }
   }, [dispatch, isExplainer]);
 
   const onSetWord = (guessed) => {
     const word = { ...currentWord, guessed };
 
-    dispatch.sync(game.action.setStepWord({ word }));
+    dispatch.sync(game.action.stepSetWord({ word }));
 
-    dispatch(game.action.setNextWord());
+    dispatch(game.action.stepSetNextWord());
 
     if (wordsCount <= 5) {
       dispatch.sync(game.action.getWords());
@@ -78,16 +78,16 @@ const Step = ({ isSubscribing, ...props }) => {
   const onEditWord = (word, index) => {
     const newWord = { ...word, guessed: !word.guessed };
 
-    dispatch.sync(game.action.editStepWord({ word: newWord, index }));
+    dispatch.sync(game.action.stepEditWord({ word: newWord, index }));
   };
 
   const onStepEnd = () => {
-    dispatch.sync(game.action.setStepHistory()).then(() => {
+    dispatch.sync(game.action.stepSetHistory()).then(() => {
       const hasWinner = statistics.some((team) => team.score > 60);
       const isLastStepInRound = stepNumber === teamsCompleted;
 
       if (isLastStepInRound && hasWinner) {
-        dispatch.sync(room.action.gameEnd());
+        dispatch.sync(game.action.finish());
       } else {
         const { nextStepNumber, nextRoundNumber, step } = getNextStep({
           stepNumber,
@@ -96,9 +96,9 @@ const Step = ({ isSubscribing, ...props }) => {
           teams,
         });
 
-        dispatch.sync(game.action.stepEnd());
+        dispatch.sync(game.action.stepFinish());
 
-        dispatch.sync(game.action.setNextStep({ stepNumber: nextStepNumber, roundNumber: nextRoundNumber, step }));
+        dispatch.sync(game.action.stepNext({ stepNumber: nextStepNumber, roundNumber: nextRoundNumber, step }));
       }
     });
   };

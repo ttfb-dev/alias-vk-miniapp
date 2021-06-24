@@ -1,18 +1,21 @@
 import {
-  editStepWord,
+  finish,
   setInitState,
-  setNextStep,
-  setNextWord,
-  setStepHistory,
-  setStepWord,
   setWords,
-  stepEnd,
+  start,
+  stepEditWord,
+  stepFinish,
+  stepNext,
+  stepSetHistory,
+  stepSetNextWord,
+  stepSetWord,
   stepStart,
 } from './action';
 
 const initState = {
-  stepNumber: 1,
-  roundNumber: 1,
+  stepNumber: null,
+  roundNumber: null,
+  currentWord: {},
   statistics: [],
   statisticsList: {},
   step: {
@@ -23,11 +26,10 @@ const initState = {
     words: [],
     startedAt: null,
   },
-  stepHistory: [],
-  currentWord: {},
+  history: [],
   words: [],
   wordsCount: null,
-  status: 'lobby',
+  status: '',
 };
 
 const reducer = (state = initState, action) => {
@@ -35,8 +37,9 @@ const reducer = (state = initState, action) => {
 
   switch (type) {
     case 'room/state': {
-      const stepHistory = payload.game.stepHistory.slice();
-      const statisticsList = stepHistory.reduce((acc, step) => {
+      const { stepNumber, roundNumber, status, step, history } = payload.game;
+
+      const statisticsList = history.reduce((acc, step) => {
         if (acc[step.teamId]) {
           acc[step.teamId].id = step.teamId;
           acc[step.teamId].score += step.score;
@@ -52,58 +55,126 @@ const reducer = (state = initState, action) => {
 
       const statistics = Object.values(statisticsList).sort((prev, next) => next.score - prev.score);
 
-      return { ...state, ...payload.game, statistics, statisticsList };
+      return {
+        ...state,
+        stepNumber,
+        roundNumber,
+        status,
+        step,
+        history,
+        statistics,
+        statisticsList,
+      };
     }
 
     case setInitState.type:
-      return { ...payload };
+      return {
+        ...state,
+        ...payload,
+      };
+
+    case start.type:
+      return {
+        ...state,
+        status: 'game',
+      };
+
+    case finish.type:
+      return {
+        ...state,
+        status: 'lobby',
+      };
 
     case stepStart.type: {
       const { startedAt } = payload;
 
-      return { ...state, status: 'step', step: { ...state.step, startedAt } };
+      return {
+        ...state,
+        status: 'step',
+        step: {
+          ...state.step,
+          startedAt,
+        },
+      };
     }
+
+    case stepFinish.type:
+      return {
+        ...state,
+        status: 'lobby',
+        step: {
+          ...state.step,
+          startedAt: null,
+        },
+      };
+
+    case stepNext.type:
+      return {
+        ...state,
+        ...payload,
+      };
 
     case setWords.type: {
       const words = [...state.words, ...payload.words];
       const wordsCount = words.length;
 
-      return { ...state, words, wordsCount };
+      return {
+        ...state,
+        words,
+        wordsCount,
+      };
     }
 
-    case setStepWord.type: {
+    case stepSetWord.type: {
       const { word } = payload;
 
       const score = word.guessed ? state.step.score + 1 : state.step.score <= 0 ? 0 : state.step.score - 1;
       const words = [...state.step.words, word];
 
-      return { ...state, step: { ...state.step, score, words } };
+      return {
+        ...state,
+        step: {
+          ...state.step,
+          score,
+          words,
+        },
+      };
     }
 
-    case editStepWord.type: {
+    case stepEditWord.type: {
       const { word, index } = payload;
 
       const score = word.guessed ? state.step.score + 1 : state.step.score <= 0 ? 0 : state.step.score - 1;
       const words = [...state.step.words.slice(0, index), word, ...state.step.words.slice(index + 1)];
 
-      return { ...state, step: { ...state.step, score, words } };
+      return {
+        ...state,
+        step: {
+          ...state.step,
+          score,
+          words,
+        },
+      };
     }
 
-    case setNextWord.type: {
+    case stepSetNextWord.type: {
       const words = state.words.slice();
       const currentWord = words.shift();
       const wordsCount = words.length;
 
-      return { ...state, currentWord, words, wordsCount };
+      return {
+        ...state,
+        currentWord,
+        words,
+        wordsCount,
+      };
     }
 
-    case setNextStep.type:
-      return { ...state, ...payload };
-
-    case setStepHistory.type: {
+    case stepSetHistory.type: {
       const step = { ...state.step };
-      const stepHistory = [...state.stepHistory, step];
-      const statisticsList = stepHistory.reduce((acc, step) => {
+      const history = [...state.history, step];
+
+      const statisticsList = history.reduce((acc, step) => {
         if (acc[step.teamId]) {
           acc[step.teamId].id = step.teamId;
           acc[step.teamId].score += step.score;
@@ -119,11 +190,12 @@ const reducer = (state = initState, action) => {
 
       const statistics = Object.values(statisticsList).sort((prev, next) => next.score - prev.score);
 
-      return { ...state, stepHistory, statistics, statisticsList };
-    }
-
-    case stepEnd.type: {
-      return { ...state, status: 'lobby', step: { ...state.step, startedAt: null } };
+      return {
+        ...state,
+        history,
+        statistics,
+        statisticsList,
+      };
     }
 
     default:

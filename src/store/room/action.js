@@ -12,15 +12,11 @@ const teamCreate = defineAction('room/team_create');
 const teamDelete = defineAction('room/team_delete');
 const activateSet = defineAction('room/activate_game_dataset');
 const deactivateSet = defineAction('room/deactivate_game_dataset');
-const gameStart = defineAction('room/game_start');
-const gameEnd = defineAction('room/game_end');
 
 export {
   activateSet,
   create,
   deactivateSet,
-  gameEnd,
-  gameStart,
   join,
   leave,
   setMembers,

@@ -41,8 +41,8 @@ const Game = (props) => {
       { event: 'add' },
     );
 
-    const gameStart = client.type(
-      room.action.gameStart.type,
+    const start = client.type(
+      game.action.start.type,
       (_, meta) => {
         const { userId: parsedUserId } = parseId(meta.id);
         const actionUserId = parseInt(parsedUserId, 10);
@@ -59,7 +59,7 @@ const Game = (props) => {
             currentWord: {},
             words: [],
             wordsCount: null,
-            status: 'lobby',
+            status: '',
           }),
         );
 
@@ -76,24 +76,8 @@ const Game = (props) => {
       { event: 'add' },
     );
 
-    const stepStart = client.type(
-      game.action.stepStart.type,
-      () => {
-        onRoute({ activeView: 'game', game: { activePanel: 'step' }, activeModal: null });
-      },
-      { event: 'add' },
-    );
-
-    const stepEnd = client.type(
-      game.action.stepEnd.type,
-      () => {
-        onRoute({ activeView: 'game', game: { activePanel: 'lobby' } });
-      },
-      { event: 'add' },
-    );
-
-    const gameEnd = client.type(
-      room.action.gameEnd.type,
+    const finish = client.type(
+      game.action.finish.type,
       (_, meta) => {
         const { userId: parsedUserId } = parseId(meta.id);
         const actionUserId = parseInt(parsedUserId, 10);
@@ -111,12 +95,28 @@ const Game = (props) => {
       { event: 'add' },
     );
 
+    const stepStart = client.type(
+      game.action.stepStart.type,
+      () => {
+        onRoute({ activeView: 'game', game: { activePanel: 'step' }, activeModal: null });
+      },
+      { event: 'add' },
+    );
+
+    const stepFinish = client.type(
+      game.action.stepFinish.type,
+      () => {
+        onRoute({ activeView: 'game', game: { activePanel: 'lobby' } });
+      },
+      { event: 'add' },
+    );
+
     return () => {
       roomState();
-      gameStart();
+      start();
+      finish();
       stepStart();
-      stepEnd();
-      gameEnd();
+      stepFinish();
     };
   }, [client, dispatch, onRoute, teams, userId]);
 
