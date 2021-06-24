@@ -100,7 +100,7 @@ const Room = ({ isSubscribing, ...props }) => {
     dispatch.sync(game.action.start());
   };
 
-  const onLeave = () => {
+  const onRoomLeave = () => {
     setIsOpened(false);
 
     dispatch.sync(room.action.leave());
@@ -134,7 +134,7 @@ const Room = ({ isSubscribing, ...props }) => {
   return (
     <Panel {...props}>
       <Container>
-        <PanelHeader left={<PanelHeaderBack onClick={onLeave} />} separator={false} shadow={true}>
+        <PanelHeader left={<PanelHeaderBack onClick={onRoomLeave} />} separator={false} shadow={true}>
           <PanelHeaderContent
             before={
               <div style={{ lineHeight: 0 }}>
