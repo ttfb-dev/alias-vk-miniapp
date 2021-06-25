@@ -38,8 +38,7 @@ const Rules = ({ onClose, ...props }) => {
           Об игре
         </Title>
         <Text Component='p' weight='regular'>
-          Если вы&nbsp;являетесь пользователем ВКонтакте, то&nbsp;для участия в&nbsp;игре Alias ВКонтакте вам
-          понадобится только смартфон!
+          Для участия в&nbsp;игре Alias вам понадобится только смартфон!
         </Text>
         <Text Component='p' weight='regular'>
           Участники разбиваются на&nbsp;команды. В&nbsp;команде могут быть от&nbsp;двух и&nbsp;более человек.
