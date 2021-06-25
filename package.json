@@ -2,6 +2,22 @@
   "name": "alias-miniapp",
   "version": "0.1.0",
   "main": "src/index.jsx",
+  "author": {
+    "name": "Ilia Klimov",
+    "email": "klimov@ttfb.dev"
+  },
+  "contributors": [
+    {
+      "name": "Ilia Klimov",
+      "email": "klimov@ttfb.dev"
+    },
+    {
+      "name": "Dmitry",
+      "email": "bobrov@ttfb.dev"
+    }
+  ],
+  "keywords": [],
+  "license": "MIT",
   "scripts": {
     "start": "cross-env PORT=10888 HTTPS=true node scripts/start.js",
     "build": "node scripts/build.js",
@@ -20,9 +36,6 @@
     "update:deps": "yarn upgrade-interactive --latest && yarn upgrade",
     "update:cssdb": "npx browserslist@latest --update-db"
   },
-  "keywords": [],
-  "author": "",
-  "license": "MIT",
   "dependencies": {
     "@logux/actions": "^0.2.0",
     "@logux/client": "^0.12.0",
