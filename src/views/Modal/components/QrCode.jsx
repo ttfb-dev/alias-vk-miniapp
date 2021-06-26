@@ -1,22 +1,19 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { Icon20Info } from '@vkontakte/icons';
-import { Button, Div, MiniInfoCell, ModalCard } from '@vkontakte/vkui';
+import { Button, ModalCard } from '@vkontakte/vkui';
 
 import vkapi from '@/api';
 import { notify } from '@/components';
 import { queryStringParse } from '@/helpers';
 import { general, room } from '@/store';
 
-import styles from './index.module.scss';
-
 const QrCode = ({ onClose, ...props }) => {
   const dispatch = useDispatch();
 
   const onScan = async () => {
     try {
-      const code = await vkapi.openCodeReader();
-      const url = new URL(code);
+      const { code_data } = await vkapi.openCodeReader();
+      const url = new URL(code_data);
       const hashParams = queryStringParse(url.hash);
       const roomId = parseInt(hashParams?.roomId, 10);
 
@@ -33,24 +30,27 @@ const QrCode = ({ onClose, ...props }) => {
   };
 
   return (
-    <ModalCard {...props} onClose={onClose} header='Отсканируйте QR-код' subheader='или введите код комнаты'>
-      <Div className={styles.actions}>
-        <Button size='l' mode='primary' stretched onClick={onScan}>
-          Сканировать
-        </Button>
+    <ModalCard
+      {...props}
+      onClose={onClose}
+      header='Отсканируйте QR-код'
+      subheader='или введите код комнаты'
+      actions={[
+        <Button key='scan' size='l' mode='primary' stretched onClick={onScan}>
+          Сканировать QR
+        </Button>,
         <Button
+          key='enter'
           size='l'
           mode='primary'
           stretched
           onClick={() => dispatch(general.action.route({ activeModal: 'enter-code' }))}
         >
-          Ввести
-        </Button>
-      </Div>
-      <MiniInfoCell before={<Icon20Info />} textLevel='secondary' textWrap='full'>
-        Код вы можете получить у создателя комнаты
-      </MiniInfoCell>
-    </ModalCard>
+          Ввести код
+        </Button>,
+      ]}
+      actionsLayout='vertical'
+    />
   );
 };
 

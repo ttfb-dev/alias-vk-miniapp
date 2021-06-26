@@ -17,4 +17,8 @@
   font-size: 40px;
   font-family: var(--font-common);
   text-align: center;
+
+  @media screen and (max-width: 320px) {
+    font-size: 30px;
+  }
 }

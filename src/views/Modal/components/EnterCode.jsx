@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Icon20Info } from '@vkontakte/icons';
 import { Button, FormItem, FormLayout, Input, MiniInfoCell, ModalCard } from '@vkontakte/vkui';
@@ -8,6 +8,11 @@ import { room } from '@/store';
 const EnterCode = ({ onClose, ...props }) => {
   const dispatch = useDispatch();
   const [roomId, setRoomId] = useState(null);
+  const ref = useRef();
+
+  useEffect(() => {
+    ref.current.focus();
+  }, []);
 
   const onJoin = () => {
     if (roomId) {
@@ -22,20 +27,31 @@ const EnterCode = ({ onClose, ...props }) => {
   };
 
   return (
-    <ModalCard {...props} onClose={onClose} header='Введите код'>
-      <FormLayout>
+    <ModalCard
+      {...props}
+      onClose={onClose}
+      header='Введите код'
+      actions={
+        <Button type='submit' size='l' mode='primary' stretched onClick={onJoin}>
+          Присоединиться
+        </Button>
+      }
+    >
+      <FormLayout onSubmit={onJoin}>
         <FormItem>
-          <Input type='number' inputMode='numeric' align='center' placeholder='Номер комнаты' onChange={onChange} />
+          <Input
+            getRef={ref}
+            type='number'
+            inputMode='numeric'
+            align='center'
+            placeholder='Номер комнаты'
+            onChange={onChange}
+          />
         </FormItem>
-        <FormItem>
-          <Button type='submit' size='l' mode='primary' stretched onClick={onJoin}>
-            Присоединиться
-          </Button>
-        </FormItem>
+        <MiniInfoCell before={<Icon20Info />} textLevel='secondary' textWrap='full'>
+          Код вы можете получить у участников комнаты
+        </MiniInfoCell>
       </FormLayout>
-      <MiniInfoCell before={<Icon20Info />} textLevel='secondary' textWrap='full'>
-        Код вы можете получить у участников комнаты
-      </MiniInfoCell>
     </ModalCard>
   );
 };

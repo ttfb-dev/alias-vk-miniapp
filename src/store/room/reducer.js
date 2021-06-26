@@ -189,6 +189,18 @@ const reducer = (state = initialState, action) => {
       };
     }
 
+    case 'game/start':
+      return {
+        ...state,
+        status: 'game',
+      };
+
+    case 'game/finish':
+      return {
+        ...state,
+        status: 'lobby',
+      };
+
     default:
       return state;
   }

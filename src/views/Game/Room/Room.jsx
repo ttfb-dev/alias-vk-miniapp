@@ -1,10 +1,9 @@
-import React, { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { Suspense, useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Icon20Info,
   Icon28InfoOutline,
   Icon28QrCodeOutline,
-  Icon28SettingsOutline,
   Icon28UserAddOutline,
   Icon28WorkOutline,
 } from '@vkontakte/icons';
@@ -13,26 +12,21 @@ import {
   Badge,
   Button,
   Card,
-  CellButton,
   Div,
-  List,
   MiniInfoCell,
   Panel,
-  PanelHeader,
-  PanelHeaderBack,
-  PanelHeaderContent,
-  PanelHeaderContext,
   PanelSpinner,
   SimpleCell,
   Tabbar,
   TabbarItem,
 } from '@vkontakte/vkui';
 
-import { ReactComponent as Logo } from '@/assets/logo-mini.svg';
 import { Container } from '@/components';
 import { declension } from '@/helpers';
 import AppService from '@/services';
 import { game, general, room } from '@/store';
+
+import { Header } from '../components';
 
 import styles from './Room.module.scss';
 
@@ -43,11 +37,9 @@ const Room = ({ ...props }) => {
   const teamsCompleted = useSelector((state) => state.room.teamsCompleted);
   const roomId = useSelector((state) => state.room.roomId);
   const ownerId = useSelector((state) => state.room.ownerId);
-  const settings = useSelector((state) => state.room.settings);
   const memberIds = useSelector((state) => state.room.memberIds);
   const sets = useSelector((state) => state.room.sets);
   const availableSets = useSelector((state) => state.room.availableSets);
-  const [isOpened, setIsOpened] = useState(false);
 
   const hasTeam = useMemo(() => teams.some((team) => team.memberIds.includes(userId)), [teams, userId]);
 
@@ -100,32 +92,23 @@ const Room = ({ ...props }) => {
     dispatch.sync(game.action.start());
   };
 
-  const onRoomLeave = () => {
-    setIsOpened(false);
-
-    dispatch.sync(room.action.leave());
-
-    onRoute({ activeView: 'main', main: { activePanel: 'home' } });
-  };
-
   const tabbar = (
     <Tabbar>
-      <TabbarItem onClick={() => onRoute({ activeModal: 'teams' })} selected data-story='teams' text='Команды'>
+      <TabbarItem onClick={() => onRoute({ activeModal: 'teams' })} selected text='Команды'>
         <Icon28UserAddOutline />
       </TabbarItem>
       <TabbarItem
         onClick={() => onRoute({ activeModal: 'room-sets' })}
         indicator={<Badge mode='prominent' />}
         selected
-        data-story='room-sets'
         text='Наборы слов'
       >
         <Icon28WorkOutline />
       </TabbarItem>
-      <TabbarItem onClick={() => onRoute({ activeModal: 'share-code' })} selected data-story='share-code' text='QR-код'>
+      <TabbarItem onClick={() => onRoute({ activeModal: 'share-code' })} selected text='QR-код'>
         <Icon28QrCodeOutline />
       </TabbarItem>
-      <TabbarItem onClick={() => onRoute({ activeModal: 'rules' })} selected data-story='rules' text='Правила'>
+      <TabbarItem onClick={() => onRoute({ activeModal: 'rules' })} selected text='Правила'>
         <Icon28InfoOutline />
       </TabbarItem>
     </Tabbar>
@@ -134,29 +117,7 @@ const Room = ({ ...props }) => {
   return (
     <Panel {...props}>
       <Container>
-        <PanelHeader left={<PanelHeaderBack onClick={onRoomLeave} />} separator={false} shadow={true}>
-          <PanelHeaderContent
-            before={
-              <div style={{ lineHeight: 0 }}>
-                <Logo style={{ width: '32px', height: '32px', color: 'var(--header_tint)' }} />
-              </div>
-            }
-            aside={isOwner && <Icon28SettingsOutline width={20} height={20} style={{ marginLeft: '4px' }} />}
-            status={settings?.name}
-            onClick={isOwner && (() => setIsOpened(!isOpened))}
-          >
-            Комната
-          </PanelHeaderContent>
-        </PanelHeader>
-        {isOwner && (
-          <PanelHeaderContext opened={isOpened} onClose={() => setIsOpened(!isOpened)}>
-            <List>
-              <CellButton mode='primary' centered>
-                Настройки
-              </CellButton>
-            </List>
-          </PanelHeaderContext>
-        )}
+        <Header />
 
         <Suspense fallback={<PanelSpinner />}>
           <Div className={styles.grid}>

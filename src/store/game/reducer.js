@@ -1,8 +1,6 @@
 import {
-  finish,
   setInitState,
   setWords,
-  start,
   stepEditWord,
   stepFinish,
   stepNext,
@@ -71,18 +69,6 @@ const reducer = (state = initState, action) => {
       return {
         ...state,
         ...payload,
-      };
-
-    case start.type:
-      return {
-        ...state,
-        status: 'game',
-      };
-
-    case finish.type:
-      return {
-        ...state,
-        status: 'lobby',
       };
 
     case stepStart.type: {

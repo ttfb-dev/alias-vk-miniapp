@@ -20,8 +20,8 @@ const Home = (props) => {
 
   const onScanQR = async () => {
     try {
-      const code = await vkapi.openCodeReader();
-      const url = new URL(code);
+      const { code_data } = await vkapi.openCodeReader();
+      const url = new URL(code_data);
       const hashParams = queryStringParse(url.hash);
       const roomId = parseInt(hashParams?.roomId, 10);
 
@@ -67,7 +67,7 @@ const Home = (props) => {
       <div className={styles.container}>
         <div className={styles.wrapper}>
           <div className={styles.background} />
-          <Logo />
+          <Logo className={styles.logo} />
 
           <Spacing size={64} />
 

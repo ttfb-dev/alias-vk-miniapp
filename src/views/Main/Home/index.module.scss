@@ -61,6 +61,14 @@
   }
 }
 
+.logo {
+  width: 300px;
+
+  @media screen and (max-width: 320px) {
+    width: 200px;
+  }
+}
+
 .fixedLayout {
   position: fixed;
   bottom: 0;

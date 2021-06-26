@@ -59,21 +59,10 @@ const Main = (props) => {
       { event: 'add' },
     );
 
-    const leave = client.type(room.action.leave.type, (_, meta) => {
-      track(client, meta.id)
-        .then(() => {
-          onRoute({ activeView: 'main', main: { activePanel: 'home' }, activeModal: null });
-        })
-        .catch(({ action }) => {
-          notify.error({ message: action.message });
-        });
-    });
-
     return () => {
       whereIAm();
       whereIAmDone();
       join();
-      leave();
     };
   }, [client, dispatch, onRoute]);
 

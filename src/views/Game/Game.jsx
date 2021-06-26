@@ -31,12 +31,17 @@ const Game = (props) => {
     const state = client.type(
       'room/state',
       (action) => {
-        if (action.room.status === 'game') {
-          if (action.game.status === 'step') {
+        const { status: roomStatus } = action.room;
+        const { status: gameStatus } = action.game;
+
+        if (roomStatus === 'game') {
+          if (gameStatus === 'step') {
             onRoute({ activeView: 'game', game: { activePanel: 'step' } });
-          } else if (action.game.status === 'lobby') {
+          } else if (gameStatus === 'lobby') {
             onRoute({ activeView: 'game', game: { activePanel: 'lobby' } });
           }
+        } else if (roomStatus === 'lobby') {
+          onRoute({ activeView: 'game', game: { activePanel: 'room' } });
         }
       },
       { event: 'add' },
@@ -111,12 +116,19 @@ const Game = (props) => {
       { event: 'add' },
     );
 
+    const leave = client.type(room.action.leave.type, (_, meta) => {
+      track(client, meta.id).then(() => {
+        onRoute({ activeView: 'main', main: { activePanel: 'home' }, activeModal: null });
+      });
+    });
+
     return () => {
       state();
       start();
       finish();
       stepStart();
       stepFinish();
+      leave();
     };
   }, [client, dispatch, onRoute, teams, userId]);
 
