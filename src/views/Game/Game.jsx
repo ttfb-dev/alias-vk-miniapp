@@ -61,7 +61,7 @@ const Game = (props) => {
             statistics: [],
             statisticsList: {},
             step,
-            stepHistory: [],
+            history: [],
             currentWord: {},
             words: [],
             wordsCount: null,

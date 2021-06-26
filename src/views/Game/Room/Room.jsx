@@ -42,30 +42,13 @@ const Room = ({ ...props }) => {
   const availableSets = useSelector((state) => state.room.availableSets);
 
   const hasTeam = useMemo(() => teams.some((team) => team.memberIds.includes(userId)), [teams, userId]);
-
-  const isOwner = useMemo(() => {
-    return userId === ownerId;
-  }, [userId, ownerId]);
-
-  const teamsCount = useMemo(() => {
-    return teams.length;
-  }, [teams]);
-
-  const membersCount = useMemo(() => {
-    return memberIds.length;
-  }, [memberIds]);
-
-  const membersForm = useMemo(() => {
-    return declension(membersCount, ['человек', 'человека', 'человек']);
-  }, [membersCount]);
-
-  const setsActive = useMemo(() => {
-    return sets.filter((set) => set.status === 'active').length;
-  }, [sets]);
-
-  const setsCount = useMemo(() => {
-    return sets.length + availableSets.length;
-  }, [sets, availableSets]);
+  const isOwner = useMemo(() => userId === ownerId, [userId, ownerId]);
+  const teamsCount = useMemo(() => teams.length, [teams]);
+  const membersCount = useMemo(() => memberIds.length, [memberIds]);
+  const membersForm = useMemo(() => declension(membersCount, ['человек', 'человека', 'человек']), [membersCount]);
+  const setsActive = useMemo(() => sets.filter((set) => set.status === 'active').length, [sets]);
+  const setsCount = useMemo(() => sets.length + availableSets.length, [sets, availableSets]);
+  const isReadyToStart = useMemo(() => teamsCompleted >= 2 && setsActive >= 1, [teamsCompleted, setsActive]);
 
   const qrCode = useMemo(() => {
     const url = `https://vk.com/app7856384#roomId=${roomId}`;
@@ -174,9 +157,9 @@ const Room = ({ ...props }) => {
                   </MiniInfoCell>
                 </Card>
               </Div>
-            ) : hasTeam && isOwner ? (
+            ) : isOwner ? (
               <Div>
-                <Button mode='primary' size='l' disabled={teamsCompleted < 2} stretched onClick={onGameStart}>
+                <Button mode='primary' size='l' disabled={!isReadyToStart} stretched onClick={onGameStart}>
                   Начать игру
                 </Button>
               </Div>
