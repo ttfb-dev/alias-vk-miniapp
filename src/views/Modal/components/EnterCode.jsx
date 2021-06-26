@@ -37,7 +37,13 @@ const EnterCode = ({ onClose, ...props }) => {
         </Button>
       }
     >
-      <FormLayout onSubmit={onJoin}>
+      <FormLayout
+        onSubmit={(e) => {
+          e.preventDefault();
+
+          onJoin();
+        }}
+      >
         <FormItem>
           <Input
             getRef={ref}
