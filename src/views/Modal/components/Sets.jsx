@@ -1,9 +1,8 @@
 import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Icon16InfoCirle } from '@vkontakte/icons';
+import { Icon16InfoCirle, Icon28SmartphoneStarsOutline } from '@vkontakte/icons';
 import {
   ANDROID,
-  Avatar,
   Button,
   Group,
   Header,
@@ -76,7 +75,7 @@ const Sets = ({ onClose, ...props }) => {
               key={set.datasetId}
               hasActive={false}
               hasHover={false}
-              before={<Avatar size={40} />}
+              before={<Icon28SmartphoneStarsOutline />}
               after={<Switch checked={set.status === 'active'} onChange={() => onChange(set)} />}
               description={set.description}
             >
@@ -91,7 +90,7 @@ const Sets = ({ onClose, ...props }) => {
                 key={set.datasetId}
                 hasActive={false}
                 hasHover={false}
-                before={<Avatar size={40} />}
+                before={<Icon28SmartphoneStarsOutline fill={'rgb(160, 160, 160)'} />}
                 after={
                   <Button size='s' onClick={() => onClick(set.datasetId)}>
                     {set.price / 100} ₽
