@@ -6,7 +6,6 @@ import {
   Div,
   Group,
   Header,
-  IOS,
   List,
   MiniInfoCell,
   ModalPage,
@@ -92,9 +91,6 @@ const Sets = ({ onClose, ...props }) => {
                   ActionIcon = Icon28UserAddOutline;
                   break;
                 case 'donut':
-                  if (platform === IOS) {
-                    return '';
-                  }
                   onClick = () => dispatch(general.action.route({ activeModal: 'donut' }));
                   ActionIcon = Icon28DonateOutline;
                   break;
