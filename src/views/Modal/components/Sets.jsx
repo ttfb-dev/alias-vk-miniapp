@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Icon16InfoCirle } from '@vkontakte/icons';
+import { Icon16InfoCirle, Icon28DonateOutline, Icon28UserAddOutline } from '@vkontakte/icons';
 import {
   ANDROID,
-  Button,
+  Div,
   Group,
   Header,
   List,
@@ -18,7 +18,7 @@ import {
   VKCOM,
 } from '@vkontakte/vkui';
 
-import { profile } from '@/store';
+import { general, profile } from '@/store';
 
 import { CustomIcon } from '../../../components';
 
@@ -40,10 +40,6 @@ const Sets = ({ onClose, ...props }) => {
     },
     [dispatch],
   );
-
-  const onClick = (id) => {
-    dispatch.sync(profile.action.buySet({ datasetId: id }));
-  };
 
   return (
     <ModalPage
@@ -87,22 +83,40 @@ const Sets = ({ onClose, ...props }) => {
         </Group>
         {!!availableSets.length && (
           <Group header={<Header mode='secondary'>Доступны</Header>}>
-            {availableSets.map((set) => (
-              <SimpleCell
-                key={set.datasetId}
-                hasActive={false}
-                hasHover={false}
-                before={<CustomIcon type={set.icon} fill={'rgb(160, 160, 160)'} width={24} height={24} />}
-                after={
-                  <Button size='s' onClick={() => onClick(set.datasetId)}>
-                    {set.price / 100} ₽
-                  </Button>
-                }
-                description={set.description}
-              >
-                {set.name}
-              </SimpleCell>
-            ))}
+            {availableSets.map((set) => {
+              let onClick = () => {};
+              let ActionIcon = () => {};
+              switch (set.type) {
+                case 'subscribe':
+                  onClick = () => dispatch(general.action.route({ activeModal: 'join-group' }));
+                  ActionIcon = Icon28UserAddOutline;
+                  break;
+                case 'donut':
+                  onClick = () => dispatch(general.action.route({ activeModal: 'donut' }));
+                  ActionIcon = Icon28DonateOutline;
+                  break;
+                default:
+                  break;
+              }
+              if (set.type === 'subscribe') {
+              }
+              return (
+                <SimpleCell
+                  key={set.datasetId}
+                  hasActive={false}
+                  hasHover={false}
+                  before={<CustomIcon type={set.icon} fill={'rgb(160, 160, 160)'} width={24} height={24} />}
+                  after={
+                    <Div size='s' onClick={onClick}>
+                      <ActionIcon />
+                    </Div>
+                  }
+                  description={set.description}
+                >
+                  {set.name}
+                </SimpleCell>
+              );
+            })}
           </Group>
         )}
       </List>

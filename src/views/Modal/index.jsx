@@ -6,8 +6,10 @@ import { general } from '@/store';
 
 import {
   CreateRoom,
+  Donut,
   EnterCode,
   GameResults,
+  JoinGroup,
   Members,
   QrCode,
   RoomSets,
@@ -44,6 +46,10 @@ const Modal = () => {
       <RoomSets id={'room-sets'} onClose={onClose} dynamicContentHeight settlingHeight={100} />
 
       <GameResults id={'game-results'} onClose={onClose} />
+
+      <JoinGroup id={'join-group'} onClose={onClose} />
+
+      <Donut id={'donut'} onClose={onClose} />
     </ModalRoot>
   );
 };
