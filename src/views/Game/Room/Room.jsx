@@ -45,7 +45,6 @@ const Room = ({ ...props }) => {
   const isOwner = useMemo(() => userId === ownerId, [userId, ownerId]);
   const teamsCount = useMemo(() => teams.length, [teams]);
   const membersCount = useMemo(() => memberIds.length, [memberIds]);
-  const membersForm = useMemo(() => declension(membersCount, ['человек', 'человека', 'человек']), [membersCount]);
   const setsActive = useMemo(() => sets.filter((set) => set.status === 'active').length, [sets]);
   const setsCount = useMemo(() => sets.length + availableSets.length, [sets, availableSets]);
   const isReadyToStart = useMemo(() => teamsCompleted >= 2 && setsActive >= 1, [teamsCompleted, setsActive]);
@@ -123,7 +122,7 @@ const Room = ({ ...props }) => {
                 expandable
                 hasHover={false}
                 hasActive={false}
-                description={`${membersCount} ${membersForm}`}
+                description={`${membersCount} ${declension(membersCount, ['человек', 'человека', 'человек'])}`}
                 onClick={() => onRoute({ activeModal: 'members' })}
               >
                 Участники
@@ -134,7 +133,7 @@ const Room = ({ ...props }) => {
                 expandable
                 hasHover={false}
                 hasActive={false}
-                indicator={`${setsActive} из ${setsCount} выбрано`}
+                indicator={`${setsActive} из ${setsCount} ${declension(setsActive, ['выбран', 'выбрано', 'выбрано'])}`}
                 onClick={() => onRoute({ activeModal: 'room-sets' })}
               >
                 Наборы слов

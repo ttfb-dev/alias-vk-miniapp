@@ -7,8 +7,8 @@ import {
   Icon36Hearts2Outline,
 } from '@vkontakte/icons';
 
-const CustomIcon = (props) => {
-  switch (props.type) {
+const CustomIcon = ({ type, ...props }) => {
+  switch (type) {
     case 'apple':
       return <Icon24AppleOutline {...props} />;
     case 'plane':

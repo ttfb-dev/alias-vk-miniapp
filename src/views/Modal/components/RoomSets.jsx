@@ -18,9 +18,8 @@ import {
   VKCOM,
 } from '@vkontakte/vkui';
 
+import { CustomIcon } from '@/components';
 import { profile, room } from '@/store';
-
-import { CustomIcon } from '../../../components';
 
 import styles from './index.module.scss';
 
