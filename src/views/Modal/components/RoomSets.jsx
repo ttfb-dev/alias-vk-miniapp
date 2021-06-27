@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Icon16InfoCirle } from '@vkontakte/icons';
 import {
   ANDROID,
-  Avatar,
   Button,
   Group,
   Header,
@@ -20,6 +19,8 @@ import {
 } from '@vkontakte/vkui';
 
 import { profile, room } from '@/store';
+
+import { CustomIcon } from '../../../components';
 
 import styles from './index.module.scss';
 
@@ -81,7 +82,7 @@ const RoomSets = ({ onClose, ...props }) => {
               key={set.datasetId}
               hasActive={false}
               hasHover={false}
-              before={<Avatar size={40} />}
+              before={<CustomIcon type={set.icon} width={24} height={24} />}
               after={<Switch disabled={!isOwner} checked={set.status === 'active'} onChange={() => onChange(set)} />}
               description={set.description}
             >
@@ -96,7 +97,7 @@ const RoomSets = ({ onClose, ...props }) => {
                 key={set.datasetId}
                 hasActive={false}
                 hasHover={false}
-                before={<Avatar size={40} />}
+                before={<CustomIcon type={set.icon} fill={'rgb(160, 160, 160)'} width={24} height={24} />}
                 after={
                   <Button size='s' onClick={() => onClick(set.datasetId)}>
                     {set.price / 100} ₽

@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Icon16InfoCirle, Icon28SmartphoneStarsOutline } from '@vkontakte/icons';
+import { Icon16InfoCirle } from '@vkontakte/icons';
 import {
   ANDROID,
   Button,
@@ -19,6 +19,8 @@ import {
 } from '@vkontakte/vkui';
 
 import { profile } from '@/store';
+
+import { CustomIcon } from '../../../components';
 
 import styles from './index.module.scss';
 
@@ -75,7 +77,7 @@ const Sets = ({ onClose, ...props }) => {
               key={set.datasetId}
               hasActive={false}
               hasHover={false}
-              before={<Icon28SmartphoneStarsOutline />}
+              before={<CustomIcon type={set.icon} width={24} height={24} />}
               after={<Switch checked={set.status === 'active'} onChange={() => onChange(set)} />}
               description={set.description}
             >
@@ -90,7 +92,7 @@ const Sets = ({ onClose, ...props }) => {
                 key={set.datasetId}
                 hasActive={false}
                 hasHover={false}
-                before={<Icon28SmartphoneStarsOutline fill={'rgb(160, 160, 160)'} />}
+                before={<CustomIcon type={set.icon} fill={'rgb(160, 160, 160)'} width={24} height={24} />}
                 after={
                   <Button size='s' onClick={() => onClick(set.datasetId)}>
                     {set.price / 100} ₽
