@@ -4,10 +4,10 @@ import { Link, ModalCard } from '@vkontakte/vkui';
 
 import { general } from '@/store';
 
-const Donut = (props) => {
+const RoomDonut = (props) => {
   const dispatch = useDispatch();
 
-  const onBack = () => dispatch(general.action.route({ activeModal: 'sets' }));
+  const onBack = () => dispatch(general.action.route({ activeModal: 'room-sets' }));
 
   return (
     <ModalCard
@@ -25,4 +25,4 @@ const Donut = (props) => {
   );
 };
 
-export { Donut };
+export { RoomDonut };

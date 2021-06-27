@@ -1,9 +1,9 @@
 import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Icon16InfoCirle } from '@vkontakte/icons';
+import { Icon16InfoCirle, Icon28DonateOutline, Icon28UserAddOutline } from '@vkontakte/icons';
 import {
   ANDROID,
-  Button,
+  Div,
   Group,
   Header,
   List,
@@ -19,7 +19,7 @@ import {
 } from '@vkontakte/vkui';
 
 import { CustomIcon } from '@/components';
-import { profile, room } from '@/store';
+import { general, room } from '@/store';
 
 import styles from './index.module.scss';
 
@@ -44,10 +44,6 @@ const RoomSets = ({ onClose, ...props }) => {
     },
     [dispatch, roomId],
   );
-
-  const onClick = (setId) => {
-    dispatch.sync(profile.action.buySet({ datasetId: setId }));
-  };
 
   return (
     <ModalPage
@@ -91,22 +87,38 @@ const RoomSets = ({ onClose, ...props }) => {
         </Group>
         {!!availableSets.length && (
           <Group header={<Header mode='secondary'>Доступны</Header>}>
-            {availableSets.map((set) => (
-              <SimpleCell
-                key={set.datasetId}
-                hasActive={false}
-                hasHover={false}
-                before={<CustomIcon type={set.icon} fill={'rgb(160, 160, 160)'} width={24} height={24} />}
-                after={
-                  <Button size='s' onClick={() => onClick(set.datasetId)}>
-                    {set.price / 100} ₽
-                  </Button>
-                }
-                description={set.description}
-              >
-                {set.name}
-              </SimpleCell>
-            ))}
+            {availableSets.map((set) => {
+              let onClick = () => {};
+              let ActionIcon = () => {};
+              switch (set.type) {
+                case 'subscribe':
+                  onClick = () => dispatch(general.action.route({ activeModal: 'join-group' }));
+                  ActionIcon = Icon28UserAddOutline;
+                  break;
+                case 'donut':
+                  onClick = () => dispatch(general.action.route({ activeModal: 'donut' }));
+                  ActionIcon = Icon28DonateOutline;
+                  break;
+                default:
+                  break;
+              }
+              return (
+                <SimpleCell
+                  key={set.datasetId}
+                  hasActive={false}
+                  hasHover={false}
+                  before={<CustomIcon type={set.icon} fill={'rgb(160, 160, 160)'} width={24} height={24} />}
+                  after={
+                    <Div size='s' onClick={onClick}>
+                      <ActionIcon />
+                    </Div>
+                  }
+                  description={set.description}
+                >
+                  {set.name}
+                </SimpleCell>
+              );
+            })}
           </Group>
         )}
       </List>

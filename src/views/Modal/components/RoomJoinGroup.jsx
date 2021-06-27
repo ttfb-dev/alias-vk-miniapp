@@ -8,7 +8,7 @@ import { general } from '@/store';
 const JoinGroup = (props) => {
   const dispatch = useDispatch();
 
-  const onBack = () => dispatch(general.action.route({ activeModal: 'sets' }));
+  const onBack = () => dispatch(general.action.route({ activeModal: 'room-sets' }));
 
   const onJoin = () => {
     bridge.send('VKWebAppJoinGroup', { group_id: 204880239 }).then(onBack).catch(onBack);

@@ -97,8 +97,6 @@ const Sets = ({ onClose, ...props }) => {
                 default:
                   break;
               }
-              if (set.type === 'subscribe') {
-              }
               return (
                 <SimpleCell
                   key={set.datasetId}
