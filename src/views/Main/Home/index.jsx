@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Icon16Add, Icon28InfoOutline, Icon28ScanViewfinderOutline, Icon28WorkOutline } from '@vkontakte/icons';
-import { Badge, Button, Div, Panel, Spacing, Tabbar, TabbarItem } from '@vkontakte/vkui';
+import bridge from '@vkontakte/vk-bridge';
+import { isNumeric } from '@vkontakte/vkjs';
+import { Badge, Button, Div, Panel, Spacing, Tabbar, TabbarItem, Tooltip } from '@vkontakte/vkui';
 
 import vkapi from '@/api';
 import { ReactComponent as Logo } from '@/assets/logo.svg';
@@ -15,6 +17,22 @@ const Home = (props) => {
   const dispatch = useDispatch();
   const photos = useSelector((state) => state.general.friends.map((friend) => friend.photo_50));
   const firstNames = useSelector((state) => state.general.friends.map((friend) => friend.first_name));
+
+  const [showTooltipIndex, setShowTooltipIndex] = useState(0);
+
+  useEffect(() => {
+    bridge.send('VKWebAppStorageGet', { keys: ['showMainTooltipIndex'] }).then((result) => {
+      const value = result.keys[0].value;
+      const index = isNumeric(value) ? parseInt(value) : 1;
+      setShowTooltipIndex(index);
+    });
+  }, []);
+
+  const onTooltipClose = (next) => {
+    bridge.send('VKWebAppStorageSet', { key: 'showMainTooltipIndex', value: String(next) }).then(() => {
+      setShowTooltipIndex(next);
+    });
+  };
 
   const onRoute = (route) => dispatch(general.action.route(route));
 
@@ -45,18 +63,40 @@ const Home = (props) => {
   const tabbar = (
     <Tabbar>
       <TabbarItem
-        onClick={() => onRoute({ activeModal: 'sets' })}
+        onClick={() => {
+          if (showTooltipIndex === 3) {
+            return;
+          }
+          onRoute({ activeModal: 'sets' });
+        }}
         indicator={<Badge mode='prominent' />}
         selected
         data-story='sets'
         text='Наборы слов'
       >
-        <Icon28WorkOutline />
+        <Tooltip
+          isShown={showTooltipIndex === 3}
+          onClose={() => onTooltipClose(4)}
+          alignY='top'
+          alignX='left'
+          offsetX={-15}
+          mode={'light'}
+          text='Тут ты найдёшь все наборы слов, доступные для игры'
+        >
+          <Icon28WorkOutline />
+        </Tooltip>
       </TabbarItem>
       <TabbarItem onClick={onScanQR} selected data-story='qr-code' text='QR-код'>
         <Icon28ScanViewfinderOutline />
       </TabbarItem>
-      <TabbarItem onClick={() => onRoute({ activeModal: 'rules' })} selected data-story='rules' text='Правила'>
+      <TabbarItem
+        onClick={() => {
+          onRoute({ activeModal: 'rules' });
+        }}
+        selected
+        data-story='rules'
+        text='Правила'
+      >
         <Icon28InfoOutline />
       </TabbarItem>
     </Tabbar>
@@ -77,20 +117,42 @@ const Home = (props) => {
 
       <div className={styles.fixedLayout}>
         <Div>
-          <Button
-            onClick={() => onRoute({ activeModal: 'qr-code' })}
-            mode='primary'
-            size='l'
-            stretched
-            before={<Icon16Add />}
+          <Tooltip
+            isShown={showTooltipIndex === 1}
+            onClose={() => onTooltipClose(2)}
+            alignX='left'
+            alignY='top'
+            offsetX={window.innerWidth / 2 - 132}
+            cornerOffset={88}
+            mode={'light'}
+            text='Создай комнату и позови в неё друзей, чтобы начать игру'
           >
-            Присоединиться
-          </Button>
+            <Button onClick={onCreate} mode='primary' size='l' stretched>
+              Создать комнату
+            </Button>
+          </Tooltip>
           <Spacing size={12} />
-
-          <Button onClick={onCreate} mode='primary' size='l' stretched>
-            Создать комнату
-          </Button>
+          <Tooltip
+            isShown={showTooltipIndex === 2}
+            onClose={() => onTooltipClose(3)}
+            alignX='left'
+            alignY='top'
+            offsetX={window.innerWidth / 2 - 132}
+            offsetY={7}
+            cornerOffset={88}
+            mode={'light'}
+            text='Или присоединись, если кто&#8209;то уже создал :)'
+          >
+            <Button
+              onClick={() => onRoute({ activeModal: 'qr-code' })}
+              mode='secondary'
+              size='l'
+              stretched
+              before={<Icon16Add />}
+            >
+              Присоединиться
+            </Button>
+          </Tooltip>
         </Div>
       </div>
 
