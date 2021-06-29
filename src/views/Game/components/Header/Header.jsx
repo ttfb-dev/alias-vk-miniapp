@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useRouter } from '@happysanta/router';
-import { Icon20Dropdown, Icon28SettingsOutline } from '@vkontakte/icons';
+import { Icon20Dropdown } from '@vkontakte/icons';
 import {
   CellButton,
   List,
