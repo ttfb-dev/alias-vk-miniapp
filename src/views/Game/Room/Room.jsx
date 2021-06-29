@@ -217,17 +217,9 @@ const Room = ({ ...props }) => {
               </Div>
             ) : isOwner ? (
               <Div>
-                <Tooltip
-                  isShown={!isReadyToStart}
-                  alignY='top'
-                  alignX='left'
-                  mode='light'
-                  text='Для начала игры небходимо минимум две укомплектованные команды и минимум один набор слов.'
-                >
-                  <Button mode='primary' size='l' disabled={!isReadyToStart} stretched onClick={onGameStart}>
-                    Начать игру
-                  </Button>
-                </Tooltip>
+                <Button mode='primary' size='l' disabled={!isReadyToStart} stretched onClick={onGameStart}>
+                  Начать игру
+                </Button>
               </Div>
             ) : null}
           </div>
