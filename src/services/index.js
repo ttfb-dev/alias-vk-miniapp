@@ -40,7 +40,7 @@ class AppService {
   };
 
   onGetFriendProfilesError = async () => {
-    const isFriendsGetAppUsersDenied = await vkapi.storageGet([this.friendsGetStorageKey])[this.friendsGetStorageKey];
+    const isFriendsGetAppUsersDenied = (await vkapi.storageGet([this.friendsGetStorageKey]))[this.friendsGetStorageKey];
     if (isFriendsGetAppUsersDenied) {
       return;
     }
