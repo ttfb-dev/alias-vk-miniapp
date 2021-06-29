@@ -21,9 +21,11 @@ const appRoot = document.getElementById('root');
 const notificationRoot = document.getElementById('notification-root');
 
 AppService.initApp();
-AppService.getFriendProfiles().then((friends) => {
-  store.dispatch(general.action.setFriends({ friends }));
-});
+AppService.getFriendProfiles()
+  .then((friends) => {
+    store.dispatch(general.action.setFriends({ friends }));
+  })
+  .catch(AppService.onGetFriendProfilesError);
 
 ReactDOM.render(
   <ConfigProvider>

@@ -30,16 +30,16 @@ const Rules = ({ onClose, ...props }) => {
               <PanelHeaderClose onClick={onClose}>Закрыть</PanelHeaderClose>
             )
           }
+          right={
+            platform === IOS && (
+              <PanelHeaderClose onClick={onClose}>
+                <Icon24Dismiss />
+              </PanelHeaderClose>
+            )
+          }
         >
           Правила игры
         </ModalPageHeader>
-      }
-      right={
-        platform === IOS && (
-          <PanelHeaderClose onClick={onClose}>
-            <Icon24Dismiss />
-          </PanelHeaderClose>
-        )
       }
     >
       <Div>

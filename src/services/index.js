@@ -19,6 +19,12 @@ class AppService {
   };
 
   getFriendProfiles = async () => {
+    const storageKey = 'isFriendsGetAppUsersDenied';
+    const isFriendsGetAppUsersDenied = await vkapi.storageGet([storageKey])[storageKey];
+    if (isFriendsGetAppUsersDenied === 'true') {
+      throw new Error('Already denied');
+    }
+
     const { accessToken } = await vkapi.getAuthToken(7856384, 'friends');
 
     const friendIds = await vkapi.callAPIMethod('friends.getAppUsers', {
@@ -28,6 +34,15 @@ class AppService {
     const friendProfiles = await this.getUserProfiles(friendIds);
 
     return friendProfiles;
+  };
+
+  onGetFriendProfilesError = async () => {
+    const storageKey = 'isFriendsGetAppUsersDenied';
+    const isFriendsGetAppUsersDenied = await vkapi.storageGet([storageKey])[storageKey];
+    if (isFriendsGetAppUsersDenied) {
+      return;
+    }
+    await await vkapi.storageSet(storageKey, String(true));
   };
 
   setRoute = async (route) => {
