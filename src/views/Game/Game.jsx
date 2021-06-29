@@ -36,7 +36,7 @@ const Game = (props) => {
   const roomId = useSelector((state) => state.room.roomId);
   const teams = useSelector((state) => state.room.teams);
 
-  useSubscription([`room/${roomId}`]);
+  const isSubscribing = useSubscription([`room/${roomId}`]);
 
   useEffect(() => {
     const state = client.type(
@@ -211,11 +211,11 @@ const Game = (props) => {
       activePanel={location.getViewActivePanel(VIEW_GAME)}
       popout={roomLeaveAlert || gameFinishAlert}
     >
-      <Room nav={PANEL_ROOM} />
+      <Room nav={PANEL_ROOM} isSubscribing={isSubscribing} />
 
-      <Lobby nav={PANEL_LOBBY} />
+      <Lobby nav={PANEL_LOBBY} isSubscribing={isSubscribing} />
 
-      <Step nav={PANEL_STEP} />
+      <Step nav={PANEL_STEP} isSubscribing={isSubscribing} />
     </View>
   );
 };
