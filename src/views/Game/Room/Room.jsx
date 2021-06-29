@@ -131,9 +131,8 @@ const Room = ({ ...props }) => {
               alignX='left'
               mode={'accent'}
               offsetY={8}
-              text='Выбери команду, в которой будешь играть'
+              text='Выбери команду, в которой будешь играть.'
             >
-              {' '}
               <Card mode='shadow' className={styles.card}>
                 <SimpleCell
                   expandable
@@ -153,11 +152,11 @@ const Room = ({ ...props }) => {
               alignX='right'
               offsetY={9}
               offsetX={-1}
-              text='Покажи QR-код друзьям, чтобы они присоединились к тебе'
+              text='Покажи QR-код друзьям, чтобы они присоединились к тебе.'
             >
               <Card mode='shadow' className={styles.card}>
                 <Div dangerouslySetInnerHTML={{ __html: qrCode.svg }} className={styles.qrCodeWrapper} />
-              </Card>{' '}
+              </Card>
             </Tooltip>
             <Card mode='shadow' className={styles.card}>
               <SimpleCell
@@ -179,8 +178,8 @@ const Room = ({ ...props }) => {
               offsetY={8}
               text={
                 isOwner
-                  ? 'Тут живут наборы, которые ты встретишь в процессе игры'
-                  : 'Тут живут наборы, которые ты встретишь в процессе игры\nИми повелевает создатель комнаты'
+                  ? 'Тут живут наборы, которые ты встретишь в процессе игры.'
+                  : 'Тут живут наборы, которые ты встретишь в процессе игры. Ими повелевает создатель комнаты.'
               }
             >
               <Card mode='shadow' className={styles.card}>
@@ -218,9 +217,17 @@ const Room = ({ ...props }) => {
               </Div>
             ) : isOwner ? (
               <Div>
-                <Button mode='primary' size='l' disabled={!isReadyToStart} stretched onClick={onGameStart}>
-                  Начать игру
-                </Button>
+                <Tooltip
+                  isShown={!isReadyToStart}
+                  alignY='top'
+                  alignX='left'
+                  mode='light'
+                  text='Для начала игры небходимо минимум две укомплектованные команды и минимум один набор слов.'
+                >
+                  <Button mode='primary' size='l' disabled={!isReadyToStart} stretched onClick={onGameStart}>
+                    Начать игру
+                  </Button>
+                </Tooltip>
               </Div>
             ) : null}
           </div>

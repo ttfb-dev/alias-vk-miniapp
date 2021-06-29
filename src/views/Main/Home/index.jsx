@@ -80,7 +80,7 @@ const Home = (props) => {
           alignX='left'
           offsetX={-15}
           mode='light'
-          text='Тут ты найдёшь все наборы слов, доступные для игры'
+          text='Тут ты найдёшь все наборы слов, доступные для игры.'
         >
           <Icon28WorkOutline />
         </Tooltip>
@@ -122,8 +122,8 @@ const Home = (props) => {
             alignY='top'
             offsetX={window.innerWidth / 2 - 132}
             cornerOffset={88}
-            mode={'light'}
-            text='Создай комнату и позови в неё друзей, чтобы начать игру'
+            mode='light'
+            text='Создай комнату и позови в неё друзей, чтобы начать игру.'
           >
             <Button onClick={onCreate} mode='primary' size='l' stretched>
               Создать комнату
@@ -138,8 +138,8 @@ const Home = (props) => {
             offsetX={window.innerWidth / 2 - 132}
             offsetY={7}
             cornerOffset={88}
-            mode={'light'}
-            text='Или присоединись, если кто-то уже создал :)'
+            mode='light'
+            text='Или присоединись, если кто-то уже создал. :)'
           >
             <Button
               onClick={() => router.pushModal(MODAL_QR_CODE)}
