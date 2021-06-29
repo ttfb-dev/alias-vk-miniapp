@@ -1,4 +1,4 @@
-import React, { Suspense, useCallback, useEffect, useMemo } from 'react';
+import React, { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Icon20Info,
@@ -7,7 +7,9 @@ import {
   Icon28UserAddOutline,
   Icon28WorkOutline,
 } from '@vkontakte/icons';
+import bridge from '@vkontakte/vk-bridge';
 import qr from '@vkontakte/vk-qr';
+import { isNumeric } from '@vkontakte/vkjs';
 import {
   Badge,
   Button,
@@ -19,6 +21,7 @@ import {
   SimpleCell,
   Tabbar,
   TabbarItem,
+  Tooltip,
 } from '@vkontakte/vkui';
 
 import { Container } from '@/components';
@@ -48,6 +51,22 @@ const Room = ({ ...props }) => {
   const setsActive = useMemo(() => sets.filter((set) => set.status === 'active').length, [sets]);
   const setsCount = useMemo(() => sets.length + availableSets.length, [sets, availableSets]);
   const isReadyToStart = useMemo(() => teamsCompleted >= 2 && setsActive >= 1, [teamsCompleted, setsActive]);
+
+  const [showTooltipIndex, setShowTooltipIndex] = useState(0);
+
+  useEffect(() => {
+    bridge.send('VKWebAppStorageGet', { keys: ['showRoomTooltipIndex'] }).then((result) => {
+      const value = result.keys[0].value;
+      const index = isNumeric(value) ? parseInt(value) : 1;
+      setShowTooltipIndex(index);
+    });
+  }, []);
+
+  const onTooltipClose = (next) => {
+    bridge.send('VKWebAppStorageSet', { key: 'showRoomTooltipIndex', value: String(next) }).then(() => {
+      setShowTooltipIndex(next);
+    });
+  };
 
   const qrCode = useMemo(() => {
     const url = `https://vk.com/app7856384#roomId=${roomId}`;
@@ -103,20 +122,40 @@ const Room = ({ ...props }) => {
 
         <Suspense fallback={<PanelSpinner />}>
           <Div className={styles.grid}>
-            <Card mode='shadow' className={styles.card}>
-              <SimpleCell
-                expandable
-                hasHover={false}
-                hasActive={false}
-                description={`${teamsCompleted} и ${teamsCount}`}
-                onClick={() => onRoute({ activeModal: 'teams' })}
-              >
-                Команды
-              </SimpleCell>
-            </Card>
-            <Card mode='shadow' className={styles.card}>
-              <Div dangerouslySetInnerHTML={{ __html: qrCode.svg }} className={styles.qrCodeWrapper} />
-            </Card>
+            <Tooltip
+              isShown={showTooltipIndex === 2}
+              onClose={() => onTooltipClose(3)}
+              alignY='bottom'
+              alignX='left'
+              mode={'accent'}
+              offsetY={8}
+              text='Выбери команду, в которой будешь играть'
+            >
+              <Card mode='shadow' className={styles.card}>
+                <SimpleCell
+                  expandable
+                  hasHover={false}
+                  hasActive={false}
+                  description={`${teamsCompleted} и ${teamsCount}`}
+                  onClick={() => onRoute({ activeModal: 'teams' })}
+                >
+                  Команды
+                </SimpleCell>
+              </Card>
+            </Tooltip>
+            <Tooltip
+              isShown={showTooltipIndex === 1}
+              onClose={() => onTooltipClose(2)}
+              alignY='bottom'
+              alignX='right'
+              offsetY={9}
+              offsetX={-1}
+              text='Покажи QR-код друзьям, чтобы они присоединились к тебе'
+            >
+              <Card mode='shadow' className={styles.card}>
+                <Div dangerouslySetInnerHTML={{ __html: qrCode.svg }} className={styles.qrCodeWrapper} />
+              </Card>
+            </Tooltip>
             <Card mode='shadow' className={styles.card}>
               <SimpleCell
                 expandable
@@ -128,17 +167,35 @@ const Room = ({ ...props }) => {
                 Участники
               </SimpleCell>
             </Card>
-            <Card mode='shadow' className={styles.card}>
-              <SimpleCell
-                expandable
-                hasHover={false}
-                hasActive={false}
-                indicator={`${setsActive} из ${setsCount} ${declension(setsActive, ['выбран', 'выбрано', 'выбрано'])}`}
-                onClick={() => onRoute({ activeModal: 'room-sets' })}
-              >
-                Наборы слов
-              </SimpleCell>
-            </Card>
+            <Tooltip
+              isShown={showTooltipIndex === 3}
+              onClose={() => onTooltipClose(4)}
+              alignY='bottom'
+              alignX='left'
+              mode={'accent'}
+              offsetY={8}
+              text={
+                isOwner
+                  ? 'Тут живут наборы, которые ты встретишь в процессе игры'
+                  : 'Тут живут наборы, которые ты встретишь в процессе игры\nИми повелевает создатель комнаты'
+              }
+            >
+              <Card mode='shadow' className={styles.card}>
+                <SimpleCell
+                  expandable
+                  hasHover={false}
+                  hasActive={false}
+                  indicator={`${setsActive} из ${setsCount} ${declension(setsActive, [
+                    'выбран',
+                    'выбрано',
+                    'выбрано',
+                  ])}`}
+                  onClick={() => onRoute({ activeModal: 'room-sets' })}
+                >
+                  Наборы слов
+                </SimpleCell>
+              </Card>
+            </Tooltip>
           </Div>
 
           <div className={styles.fixedLayout}>
