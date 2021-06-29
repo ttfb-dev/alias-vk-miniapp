@@ -1,6 +1,8 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useLocation } from '@happysanta/router';
 import { AppRoot, Epic, Root } from '@vkontakte/vkui';
+
+import { VIEW_GAME, VIEW_MAIN } from '@/router';
 
 import { Game } from './Game';
 import { Main } from './Main';
@@ -9,15 +11,15 @@ import { Modal } from './Modal';
 import './index.scss';
 
 const App = () => {
-  const activeView = useSelector((state) => state.general.activeView);
+  const location = useLocation();
 
   return (
     <AppRoot>
       <Epic activeStory='app' tabbar>
-        <Root id='app' activeView={activeView} modal={<Modal />}>
-          <Main id='main' />
+        <Root nav='app' activeView={location.getViewId()} modal={<Modal />}>
+          <Main nav={VIEW_MAIN} />
 
-          <Game id='game' />
+          <Game nav={VIEW_GAME} />
         </Root>
       </Epic>
     </AppRoot>

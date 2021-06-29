@@ -1,13 +1,16 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import { useRouter } from '@happysanta/router';
 import { Button, ModalCard } from '@vkontakte/vkui';
 
 import vkapi from '@/api';
 import { notify } from '@/components';
 import { queryStringParse } from '@/helpers';
-import { general, room } from '@/store';
+import { MODAL_ENTER_CODE } from '@/router';
+import { room } from '@/store';
 
 const QrCode = ({ onClose, ...props }) => {
+  const router = useRouter();
   const dispatch = useDispatch();
 
   const onScan = async () => {
@@ -39,13 +42,7 @@ const QrCode = ({ onClose, ...props }) => {
         <Button key='scan' size='l' mode='primary' stretched onClick={onScan}>
           Сканировать QR
         </Button>,
-        <Button
-          key='enter'
-          size='l'
-          mode='primary'
-          stretched
-          onClick={() => dispatch(general.action.route({ activeModal: 'enter-code' }))}
-        >
+        <Button key='enter' size='l' mode='primary' stretched onClick={() => router.replaceModal(MODAL_ENTER_CODE)}>
           Ввести код
         </Button>,
       ]}

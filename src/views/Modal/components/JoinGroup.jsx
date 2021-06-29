@@ -1,14 +1,15 @@
-import { useDispatch } from 'react-redux';
+import React from 'react';
+import { useRouter } from '@happysanta/router';
 import { Icon56UserAddOutline } from '@vkontakte/icons';
 import bridge from '@vkontakte/vk-bridge';
 import { Button, ModalCard } from '@vkontakte/vkui';
 
-import { general } from '@/store';
+import { MODAL_SETS } from '@/router';
 
 const JoinGroup = (props) => {
-  const dispatch = useDispatch();
+  const router = useRouter();
 
-  const onBack = () => dispatch(general.action.route({ activeModal: 'sets' }));
+  const onBack = () => router.replaceModal(MODAL_SETS);
 
   const onJoin = () => {
     bridge.send('VKWebAppJoinGroup', { group_id: 204880239 }).then(onBack).catch(onBack);

@@ -1,31 +1,39 @@
 import vkapi from '@/api';
 
 class AppService {
-  init = () => {
-    vkapi.init();
+  initApp = () => {
+    vkapi.initApp();
   };
 
   getUserProfiles = async (ids) => {
-    const { access_token } = await vkapi.getAuthToken({ app_id: 7856384, scope: 'friends' });
+    const { accessToken } = await vkapi.getAuthToken(7856384, '');
 
-    const userProfiles = await vkapi.callAPIMethod({
-      method: 'users.get',
-      params: { user_ids: ids.join(','), fields: 'photo_50', v: '5.131', access_token },
+    const userProfiles = await vkapi.callAPIMethod('users.get', {
+      user_ids: ids.join(','),
+      fields: 'photo_50',
+      v: '5.131',
+      access_token: accessToken,
     });
 
     return userProfiles;
   };
 
   getFriendProfiles = async () => {
-    const { access_token } = await vkapi.getAuthToken({ app_id: 7856384, scope: 'friends' });
+    const { accessToken } = await vkapi.getAuthToken(7856384, 'friends');
 
-    const friendIds = await vkapi.callAPIMethod({
-      method: 'friends.getAppUsers',
-      params: { v: '5.131', access_token },
+    const friendIds = await vkapi.callAPIMethod('friends.getAppUsers', {
+      v: '5.131',
+      access_token: accessToken,
     });
     const friendProfiles = await this.getUserProfiles(friendIds);
 
     return friendProfiles;
+  };
+
+  setRoute = async (route) => {
+    const location = `location=${JSON.stringify(route)}`;
+
+    await vkapi.setLocation(location);
   };
 }
 

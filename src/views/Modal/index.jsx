@@ -1,8 +1,20 @@
 import React, { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useRouter } from '@happysanta/router';
 import { ModalRoot } from '@vkontakte/vkui';
 
-import { general } from '@/store';
+import {
+  MODAL_CREATE_ROOM,
+  MODAL_DONUT,
+  MODAL_ENTER_CODE,
+  MODAL_GAME_RESULTS,
+  MODAL_JOIN_GROUP,
+  MODAL_MEMBERS,
+  MODAL_QR_CODE,
+  MODAL_RULES,
+  MODAL_SETS,
+  MODAL_SHARE_CODE,
+  MODAL_TEAMS,
+} from '@/router';
 
 import {
   CreateRoom,
@@ -12,7 +24,6 @@ import {
   JoinGroup,
   Members,
   QrCode,
-  RoomSets,
   Rules,
   Sets,
   ShareCode,
@@ -20,36 +31,34 @@ import {
 } from './components';
 
 const Modal = () => {
-  const dispatch = useDispatch();
-  const activeModal = useSelector((state) => state.general.activeModal);
+  const router = useRouter();
+  const location = useLocation();
 
-  const onClose = useCallback(() => dispatch(general.action.route({ activeModal: null })), [dispatch]);
+  const onClose = useCallback(() => router.popPage(), [router]);
 
   return (
-    <ModalRoot activeModal={activeModal} onClose={onClose}>
-      <QrCode id={'qr-code'} onClose={onClose} />
+    <ModalRoot activeModal={location.getModalId()} onClose={onClose}>
+      <QrCode nav={MODAL_QR_CODE} onClose={onClose} />
 
-      <EnterCode id={'enter-code'} onClose={onClose} />
+      <EnterCode nav={MODAL_ENTER_CODE} onClose={onClose} />
 
-      <ShareCode id={'share-code'} onClose={onClose} dynamicContentHeight />
+      <ShareCode nav={MODAL_SHARE_CODE} onClose={onClose} dynamicContentHeight />
 
-      <CreateRoom id={'create-room'} onClose={onClose} dynamicContentHeight />
+      <CreateRoom nav={MODAL_CREATE_ROOM} onClose={onClose} dynamicContentHeight />
 
-      <Members id={'members'} onClose={onClose} dynamicContentHeight settlingHeight={100} />
+      <Members nav={MODAL_MEMBERS} onClose={onClose} dynamicContentHeight settlingHeight={100} />
 
-      <Teams id={'teams'} onClose={onClose} dynamicContentHeight settlingHeight={100} />
+      <Teams nav={MODAL_TEAMS} onClose={onClose} dynamicContentHeight settlingHeight={100} />
 
-      <Rules id={'rules'} onClose={onClose} dynamicContentHeight settlingHeight={100} />
+      <Rules nav={MODAL_RULES} onClose={onClose} dynamicContentHeight settlingHeight={100} />
 
-      <Sets id={'sets'} onClose={onClose} dynamicContentHeight settlingHeight={100} />
+      <Sets nav={MODAL_SETS} onClose={onClose} dynamicContentHeight settlingHeight={100} />
 
-      <RoomSets id={'room-sets'} onClose={onClose} dynamicContentHeight settlingHeight={100} />
+      <GameResults nav={MODAL_GAME_RESULTS} onClose={onClose} />
 
-      <GameResults id={'game-results'} onClose={onClose} />
+      <JoinGroup nav={MODAL_JOIN_GROUP} />
 
-      <JoinGroup id={'join-group'} onClose={onClose} />
-
-      <Donut id={'donut'} onClose={onClose} />
+      <Donut nav={MODAL_DONUT} />
     </ModalRoot>
   );
 };

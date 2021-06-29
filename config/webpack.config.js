@@ -322,6 +322,7 @@ module.exports = function (webpackEnv) {
         '@/components': path.resolve('src/components'),
         '@/helpers': path.resolve('src/helpers'),
         '@/metrics': path.resolve('src/metrics'),
+        '@/router': path.resolve('src/router'),
         '@/services': path.resolve('src/services'),
         '@/store': path.resolve('src/store'),
         '@/views': path.resolve('src/views'),

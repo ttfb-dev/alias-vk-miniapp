@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { useRouter } from '@happysanta/router';
 import { Icon20Dropdown, Icon28SettingsOutline } from '@vkontakte/icons';
 import {
   CellButton,
@@ -11,10 +12,10 @@ import {
 } from '@vkontakte/vkui';
 
 import { ReactComponent as Logo } from '@/assets/logo-mini.svg';
-import { general } from '@/store';
+import { POPOUT_GAME_LEAVE, POPOUT_ROOM_LEAVE } from '@/router';
 
 export const Header = () => {
-  const dispatch = useDispatch();
+  const router = useRouter();
   const userId = useSelector((state) => state.general.userId);
   const teamsList = useSelector((state) => state.room.teamsList);
   const ownerId = useSelector((state) => state.room.ownerId);
@@ -29,13 +30,13 @@ export const Header = () => {
   const onRoomLeave = () => {
     setIsOpened(false);
 
-    dispatch(general.action.alert({ isRoomLeaveAlert: true }));
+    router.pushPopup(POPOUT_ROOM_LEAVE);
   };
 
   const onGameFinish = () => {
     setIsOpened(false);
 
-    dispatch(general.action.alert({ isGameFinishAlert: true }));
+    router.pushPopup(POPOUT_GAME_LEAVE);
   };
 
   return (

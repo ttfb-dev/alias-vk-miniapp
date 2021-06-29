@@ -126,7 +126,7 @@ export class VKMiniAppAPI extends VKBridgeProvider {
     return this.bridge.send('VKWebAppScroll', { top, speed });
   };
 
-  setLocationHash = async (location) => {
+  setLocation = async (location) => {
     await this.bridge.send('VKWebAppSetLocation', { location });
   };
 

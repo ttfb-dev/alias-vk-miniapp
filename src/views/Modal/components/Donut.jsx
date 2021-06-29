@@ -1,13 +1,14 @@
-import { useDispatch } from 'react-redux';
+import React from 'react';
+import { useRouter } from '@happysanta/router';
 import { Icon56DonateOutline } from '@vkontakte/icons';
 import { Link, ModalCard } from '@vkontakte/vkui';
 
-import { general } from '@/store';
+import { MODAL_SETS } from '@/router';
 
 const Donut = (props) => {
-  const dispatch = useDispatch();
+  const router = useRouter();
 
-  const onBack = () => dispatch(general.action.route({ activeModal: 'sets' }));
+  const onBack = () => router.replaceModal(MODAL_SETS);
 
   return (
     <ModalCard

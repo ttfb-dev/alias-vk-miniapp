@@ -1,5 +1,6 @@
-import React, { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { Suspense, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from '@happysanta/router';
 import {
   Icon20Info,
   Icon28InfoOutline,
@@ -26,14 +27,16 @@ import {
 
 import { Container } from '@/components';
 import { declension } from '@/helpers';
+import { MODAL_MEMBERS, MODAL_RULES, MODAL_SETS, MODAL_SHARE_CODE, MODAL_TEAMS } from '@/router';
 import AppService from '@/services';
-import { game, general, room } from '@/store';
+import { game, room } from '@/store';
 
 import { Header } from '../components';
 
 import styles from './Room.module.scss';
 
 const Room = ({ ...props }) => {
+  const router = useRouter();
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.general.userId);
   const teams = useSelector((state) => state.room.teams);
@@ -44,6 +47,8 @@ const Room = ({ ...props }) => {
   const sets = useSelector((state) => state.room.sets);
   const availableSets = useSelector((state) => state.room.availableSets);
 
+  const [tooltipIndex, setTooltipIndex] = useState();
+
   const hasTeam = useMemo(() => teams.some((team) => team.memberIds.includes(userId)), [teams, userId]);
   const isOwner = useMemo(() => userId === ownerId, [userId, ownerId]);
   const teamsCount = useMemo(() => teams.length, [teams]);
@@ -52,19 +57,18 @@ const Room = ({ ...props }) => {
   const setsCount = useMemo(() => sets.length + availableSets.length, [sets, availableSets]);
   const isReadyToStart = useMemo(() => teamsCompleted >= 2 && setsActive >= 1, [teamsCompleted, setsActive]);
 
-  const [showTooltipIndex, setShowTooltipIndex] = useState(0);
-
   useEffect(() => {
-    bridge.send('VKWebAppStorageGet', { keys: ['showRoomTooltipIndex'] }).then((result) => {
+    bridge.send('VKWebAppStorageGet', { keys: ['roomTooltipIndex'] }).then((result) => {
       const value = result.keys[0].value;
-      const index = isNumeric(value) ? parseInt(value) : 1;
-      setShowTooltipIndex(index);
+      const index = isNumeric(value) ? parseInt(value, 10) : 1;
+
+      setTooltipIndex(index);
     });
   }, []);
 
   const onTooltipClose = (next) => {
-    bridge.send('VKWebAppStorageSet', { key: 'showRoomTooltipIndex', value: String(next) }).then(() => {
-      setShowTooltipIndex(next);
+    bridge.send('VKWebAppStorageSet', { key: 'roomTooltipIndex', value: String(next) }).then(() => {
+      setTooltipIndex(next);
     });
   };
 
@@ -87,29 +91,27 @@ const Room = ({ ...props }) => {
     });
   }, [memberIds, dispatch]);
 
-  const onRoute = useCallback((route) => dispatch(general.action.route(route)), [dispatch]);
-
   const onGameStart = () => {
     dispatch.sync(game.action.start());
   };
 
   const tabbar = (
     <Tabbar>
-      <TabbarItem onClick={() => onRoute({ activeModal: 'teams' })} selected text='Команды'>
+      <TabbarItem onClick={() => router.pushModal(MODAL_TEAMS)} selected text='Команды'>
         <Icon28UserAddOutline />
       </TabbarItem>
       <TabbarItem
-        onClick={() => onRoute({ activeModal: 'room-sets' })}
+        onClick={() => router.pushModal(MODAL_SETS, { from: 'room' })}
         indicator={<Badge mode='prominent' />}
         selected
         text='Наборы слов'
       >
         <Icon28WorkOutline />
       </TabbarItem>
-      <TabbarItem onClick={() => onRoute({ activeModal: 'share-code' })} selected text='QR-код'>
+      <TabbarItem onClick={() => router.pushModal(MODAL_SHARE_CODE)} selected text='QR-код'>
         <Icon28QrCodeOutline />
       </TabbarItem>
-      <TabbarItem onClick={() => onRoute({ activeModal: 'rules' })} selected text='Правила'>
+      <TabbarItem onClick={() => router.pushModal(MODAL_RULES)} selected text='Правила'>
         <Icon28InfoOutline />
       </TabbarItem>
     </Tabbar>
@@ -123,7 +125,7 @@ const Room = ({ ...props }) => {
         <Suspense fallback={<PanelSpinner />}>
           <Div className={styles.grid}>
             <Tooltip
-              isShown={showTooltipIndex === 2}
+              isShown={tooltipIndex === 2}
               onClose={() => onTooltipClose(3)}
               alignY='bottom'
               alignX='left'
@@ -131,20 +133,21 @@ const Room = ({ ...props }) => {
               offsetY={8}
               text='Выбери команду, в которой будешь играть'
             >
+              {' '}
               <Card mode='shadow' className={styles.card}>
                 <SimpleCell
                   expandable
                   hasHover={false}
                   hasActive={false}
                   description={`${teamsCompleted} и ${teamsCount}`}
-                  onClick={() => onRoute({ activeModal: 'teams' })}
+                  onClick={() => router.pushModal(MODAL_TEAMS)}
                 >
                   Команды
                 </SimpleCell>
               </Card>
             </Tooltip>
             <Tooltip
-              isShown={showTooltipIndex === 1}
+              isShown={tooltipIndex === 1}
               onClose={() => onTooltipClose(2)}
               alignY='bottom'
               alignX='right'
@@ -154,7 +157,7 @@ const Room = ({ ...props }) => {
             >
               <Card mode='shadow' className={styles.card}>
                 <Div dangerouslySetInnerHTML={{ __html: qrCode.svg }} className={styles.qrCodeWrapper} />
-              </Card>
+              </Card>{' '}
             </Tooltip>
             <Card mode='shadow' className={styles.card}>
               <SimpleCell
@@ -162,13 +165,13 @@ const Room = ({ ...props }) => {
                 hasHover={false}
                 hasActive={false}
                 description={`${membersCount} ${declension(membersCount, ['человек', 'человека', 'человек'])}`}
-                onClick={() => onRoute({ activeModal: 'members' })}
+                onClick={() => router.pushModal(MODAL_MEMBERS)}
               >
                 Участники
               </SimpleCell>
             </Card>
             <Tooltip
-              isShown={showTooltipIndex === 3}
+              isShown={tooltipIndex === 3}
               onClose={() => onTooltipClose(4)}
               alignY='bottom'
               alignX='left'
@@ -190,7 +193,7 @@ const Room = ({ ...props }) => {
                     'выбрано',
                     'выбрано',
                   ])}`}
-                  onClick={() => onRoute({ activeModal: 'room-sets' })}
+                  onClick={() => router.pushModal(MODAL_SETS, { from: 'room' })}
                 >
                   Наборы слов
                 </SimpleCell>
@@ -207,7 +210,7 @@ const Room = ({ ...props }) => {
                     mode='more'
                     textLevel='secondary'
                     textWrap='full'
-                    onClick={() => onRoute({ activeModal: 'teams' })}
+                    onClick={() => router.pushModal(MODAL_TEAMS)}
                   >
                     Для участия в игре выберите команду. После начала игры присоединиться новым участникам будет нельзя.
                   </MiniInfoCell>

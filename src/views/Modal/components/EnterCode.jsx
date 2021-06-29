@@ -16,7 +16,7 @@ const EnterCode = ({ onClose, ...props }) => {
 
   const onJoin = () => {
     if (roomId) {
-      dispatch.sync(room.action.join({ roomId })).catch(() => onClose());
+      dispatch.sync(room.action.join({ roomId }));
     }
   };
 

@@ -1,12 +1,26 @@
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useRouter } from '@happysanta/router';
 import { track } from '@logux/client';
 import { useClient } from '@logux/client/react';
 import { parseId } from '@logux/core';
 import { useSubscription } from '@logux/redux';
 import { Alert, View } from '@vkontakte/vkui';
 
-import { game, general, room } from '@/store';
+import {
+  MODAL_GAME_RESULTS,
+  PAGE_HOME,
+  PAGE_LOBBY,
+  PAGE_ROOM,
+  PAGE_STEP,
+  PANEL_LOBBY,
+  PANEL_ROOM,
+  PANEL_STEP,
+  POPOUT_GAME_LEAVE,
+  POPOUT_ROOM_LEAVE,
+  VIEW_GAME,
+} from '@/router';
+import { game, room } from '@/store';
 
 import { getInitStep } from './helpers';
 import { Lobby } from './Lobby';
@@ -14,18 +28,15 @@ import { Room } from './Room';
 import { Step } from './Step';
 
 const Game = (props) => {
+  const router = useRouter();
+  const location = useLocation();
   const client = useClient();
   const dispatch = useDispatch();
-  const activePanel = useSelector((state) => state.general.game.activePanel);
-  const userId = useSelector((state) => state.general.game.userId);
-  const isRoomLeaveAlert = useSelector((state) => state.general.isRoomLeaveAlert);
-  const isGameFinishAlert = useSelector((state) => state.general.isGameFinishAlert);
+  const userId = useSelector((state) => state.general.userId);
   const roomId = useSelector((state) => state.room.roomId);
   const teams = useSelector((state) => state.room.teams);
 
   useSubscription([`room/${roomId}`]);
-
-  const onRoute = useCallback((route) => dispatch(general.action.route(route)), [dispatch]);
 
   useEffect(() => {
     const state = client.type(
@@ -36,12 +47,10 @@ const Game = (props) => {
 
         if (roomStatus === 'game') {
           if (gameStatus === 'step') {
-            onRoute({ activeView: 'game', game: { activePanel: 'step' } });
+            router.pushPage(PAGE_STEP);
           } else if (gameStatus === 'lobby') {
-            onRoute({ activeView: 'game', game: { activePanel: 'lobby' } });
+            router.pushPage(PAGE_LOBBY);
           }
-        } else if (roomStatus === 'lobby') {
-          onRoute({ activeView: 'game', game: { activePanel: 'room' } });
         }
       },
       { event: 'add' },
@@ -70,11 +79,11 @@ const Game = (props) => {
 
         if (actionUserId !== userId) {
           // редиректить в игру всех, кроме инициатора экшена
-          onRoute({ activeView: 'game', game: { activePanel: 'lobby' }, activeModal: null });
+          router.pushPage(PAGE_LOBBY);
         } else {
           // у инициатора редирект происходит после перехода экшена в состояние processed
           track(client, meta.id).then(() => {
-            onRoute({ activeView: 'game', game: { activePanel: 'lobby' }, activeModal: null });
+            router.pushPage(PAGE_LOBBY);
           });
         }
       },
@@ -89,11 +98,13 @@ const Game = (props) => {
 
         // редиректить в комнату всех, кроме инициатора экшена
         if (actionUserId !== userId) {
-          onRoute({ activeView: 'game', game: { activePanel: 'room' }, activeModal: 'game-results' });
+          router.pushPage(PAGE_ROOM);
+          router.pushModal(MODAL_GAME_RESULTS);
         } else {
           // у инициатора редирект происходит после перехода экшена в состояние processed
           track(client, meta.id).then(() => {
-            onRoute({ activeView: 'game', game: { activePanel: 'room' }, activeModal: 'game-results' });
+            router.pushPage(PAGE_ROOM);
+            router.pushModal(MODAL_GAME_RESULTS);
           });
         }
       },
@@ -103,7 +114,7 @@ const Game = (props) => {
     const stepStart = client.type(
       game.action.stepStart.type,
       () => {
-        onRoute({ activeView: 'game', game: { activePanel: 'step' }, activeModal: null });
+        router.pushPage(PAGE_STEP);
       },
       { event: 'add' },
     );
@@ -111,14 +122,14 @@ const Game = (props) => {
     const stepFinish = client.type(
       game.action.stepFinish.type,
       () => {
-        onRoute({ activeView: 'game', game: { activePanel: 'lobby' } });
+        router.pushPage(PAGE_LOBBY);
       },
       { event: 'add' },
     );
 
     const leave = client.type(room.action.leave.type, (_, meta) => {
       track(client, meta.id).then(() => {
-        onRoute({ activeView: 'main', main: { activePanel: 'home' }, activeModal: null });
+        router.pushPage(PAGE_HOME);
       });
     });
 
@@ -130,75 +141,81 @@ const Game = (props) => {
       stepFinish();
       leave();
     };
-  }, [client, dispatch, onRoute, teams, userId]);
+  }, [client, dispatch, router, location, teams, userId]);
 
-  const onRoomLeave = useCallback(() => {
-    dispatch.sync(room.action.leave());
-  }, [dispatch]);
+  const onRoomLeave = useCallback(() => dispatch.sync(room.action.leave()), [dispatch]);
+  const onGameFinish = useCallback(() => dispatch.sync(game.action.finish()), [dispatch]);
+  const onClose = useCallback(() => router.popPage(), [router]);
 
-  const onGameFinish = useCallback(() => {
-    dispatch.sync(game.action.finish());
-  }, [dispatch]);
+  const roomLeaveAlert = (() => {
+    if (location.getPopupId() === POPOUT_ROOM_LEAVE) {
+      return (
+        <Alert
+          actions={[
+            {
+              title: 'Отмена',
+              autoclose: true,
+              mode: 'cancel',
+            },
+            {
+              title: 'Выйти',
+              autoclose: true,
+              mode: 'destructive',
+              action: onRoomLeave,
+            },
+          ]}
+          actionsLayout='horizontal'
+          onClose={onClose}
+          header='Выход из игры'
+          text='Вы уверены, что хотите выйти из игры и покинуть комнату?'
+        />
+      );
+    }
 
-  const onClose = useCallback(() => {
-    dispatch(general.action.alert({ isRoomLeaveAlert: false, isGameFinishAlert: false }));
-  }, [dispatch]);
+    return null;
+  })();
 
-  const roomLeaveAlert = (
-    <Alert
-      actions={[
-        {
-          title: 'Отмена',
-          autoclose: true,
-          mode: 'cancel',
-        },
-        {
-          title: 'Выйти',
-          autoclose: true,
-          mode: 'destructive',
-          action: onRoomLeave,
-        },
-      ]}
-      actionsLayout='horizontal'
-      onClose={onClose}
-      header='Выход из игры'
-      text='Вы уверены, что хотите выйти из игры и покинуть комнату?'
-    />
-  );
+  const gameFinishAlert = (() => {
+    if (location.getPopupId() === POPOUT_GAME_LEAVE) {
+      return (
+        <Alert
+          actions={[
+            {
+              title: 'Отмена',
+              autoclose: true,
+              mode: 'cancel',
+            },
+            {
+              title: 'Закончить',
+              autoclose: true,
+              mode: 'destructive',
+              action: onGameFinish,
+            },
+          ]}
+          actionsLayout='horizontal'
+          onClose={onClose}
+          header='Закончить игру'
+          text='Вы уверены, что хотите закончить игру?'
+        />
+      );
+    }
 
-  const gameFinishAlert = (
-    <Alert
-      actions={[
-        {
-          title: 'Отмена',
-          autoclose: true,
-          mode: 'cancel',
-        },
-        {
-          title: 'Закончить',
-          autoclose: true,
-          mode: 'destructive',
-          action: onGameFinish,
-        },
-      ]}
-      actionsLayout='horizontal'
-      onClose={onClose}
-      header='Закончить игру'
-      text='Вы уверены, что хотите закончить игру?'
-    />
-  );
+    return null;
+  })();
 
   return (
     <View
       {...props}
-      activePanel={activePanel}
-      popout={(isRoomLeaveAlert && roomLeaveAlert) || (isGameFinishAlert && gameFinishAlert)}
+      onSwipeBack={() => router.popPage()}
+      history={location.hasOverlay() ? [] : location.getViewHistory(VIEW_GAME)}
+      activePanel={location.getViewActivePanel(VIEW_GAME)}
+      popout={roomLeaveAlert || gameFinishAlert}
     >
-      <Room id='room' />
+      <Room nav={PANEL_ROOM} />
 
-      <Lobby id='lobby' />
+      <Lobby nav={PANEL_LOBBY} />
 
-      <Step id='step' />
+      <Step nav={PANEL_STEP} />
     </View>
   );
 };

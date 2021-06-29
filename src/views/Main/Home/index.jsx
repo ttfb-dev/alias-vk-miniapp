@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from '@happysanta/router';
 import { Icon16Add, Icon28InfoOutline, Icon28ScanViewfinderOutline, Icon28WorkOutline } from '@vkontakte/icons';
 import bridge from '@vkontakte/vk-bridge';
 import { isNumeric } from '@vkontakte/vkjs';
@@ -9,32 +10,33 @@ import vkapi from '@/api';
 import { ReactComponent as Logo } from '@/assets/logo.svg';
 import { CustomUsersStack, notify } from '@/components';
 import { queryStringParse } from '@/helpers';
-import { general, room } from '@/store';
+import { MODAL_QR_CODE, MODAL_RULES, MODAL_SETS, PAGE_ROOM } from '@/router';
+import { room } from '@/store';
 
 import styles from './index.module.scss';
 
 const Home = (props) => {
+  const router = useRouter();
   const dispatch = useDispatch();
   const photos = useSelector((state) => state.general.friends.map((friend) => friend.photo_50));
   const firstNames = useSelector((state) => state.general.friends.map((friend) => friend.first_name));
 
-  const [showTooltipIndex, setShowTooltipIndex] = useState(0);
+  const [tooltipIndex, setTooltipIndex] = useState();
 
   useEffect(() => {
-    bridge.send('VKWebAppStorageGet', { keys: ['showMainTooltipIndex'] }).then((result) => {
+    bridge.send('VKWebAppStorageGet', { keys: ['mainTooltipIndex'] }).then((result) => {
       const value = result.keys[0].value;
-      const index = isNumeric(value) ? parseInt(value) : 1;
-      setShowTooltipIndex(index);
+      const index = isNumeric(value) ? parseInt(value, 10) : 1;
+
+      setTooltipIndex(index);
     });
   }, []);
 
   const onTooltipClose = (next) => {
-    bridge.send('VKWebAppStorageSet', { key: 'showMainTooltipIndex', value: String(next) }).then(() => {
-      setShowTooltipIndex(next);
+    bridge.send('VKWebAppStorageSet', { key: 'mainTooltipIndex', value: String(next) }).then(() => {
+      setTooltipIndex(next);
     });
   };
-
-  const onRoute = (route) => dispatch(general.action.route(route));
 
   const onScanQR = async () => {
     try {
@@ -55,46 +57,42 @@ const Home = (props) => {
     }
   };
 
-  const onCreate = () =>
-    dispatch
-      .sync(room.action.create())
-      .then(() => onRoute({ activeView: 'game', game: { activePanel: 'room' /* , activeModal: 'teams' */ } }));
+  const onCreate = () => dispatch.sync(room.action.create()).then(() => router.pushPage(PAGE_ROOM));
 
   const tabbar = (
     <Tabbar>
       <TabbarItem
         onClick={() => {
-          if (showTooltipIndex === 3) {
+          if (tooltipIndex === 3) {
             return;
           }
-          onRoute({ activeModal: 'sets' });
+
+          router.pushModal(MODAL_SETS, { from: 'profile' });
         }}
         indicator={<Badge mode='prominent' />}
         selected
-        data-story='sets'
         text='Наборы слов'
       >
         <Tooltip
-          isShown={showTooltipIndex === 3}
+          isShown={tooltipIndex === 3}
           onClose={() => onTooltipClose(4)}
           alignY='top'
           alignX='left'
           offsetX={-15}
-          mode={'light'}
+          mode='light'
           text='Тут ты найдёшь все наборы слов, доступные для игры'
         >
           <Icon28WorkOutline />
         </Tooltip>
       </TabbarItem>
-      <TabbarItem onClick={onScanQR} selected data-story='qr-code' text='QR-код'>
+      <TabbarItem onClick={onScanQR} selected text='QR-код'>
         <Icon28ScanViewfinderOutline />
       </TabbarItem>
       <TabbarItem
         onClick={() => {
-          onRoute({ activeModal: 'rules' });
+          router.pushModal(MODAL_RULES);
         }}
         selected
-        data-story='rules'
         text='Правила'
       >
         <Icon28InfoOutline />
@@ -118,7 +116,7 @@ const Home = (props) => {
       <div className={styles.fixedLayout}>
         <Div>
           <Tooltip
-            isShown={showTooltipIndex === 1}
+            isShown={tooltipIndex === 1}
             onClose={() => onTooltipClose(2)}
             alignX='left'
             alignY='top'
@@ -133,7 +131,7 @@ const Home = (props) => {
           </Tooltip>
           <Spacing size={12} />
           <Tooltip
-            isShown={showTooltipIndex === 2}
+            isShown={tooltipIndex === 2}
             onClose={() => onTooltipClose(3)}
             alignX='left'
             alignY='top'
@@ -141,10 +139,10 @@ const Home = (props) => {
             offsetY={7}
             cornerOffset={88}
             mode={'light'}
-            text='Или присоединись, если кто&#8209;то уже создал :)'
+            text='Или присоединись, если кто-то уже создал :)'
           >
             <Button
-              onClick={() => onRoute({ activeModal: 'qr-code' })}
+              onClick={() => router.pushModal(MODAL_QR_CODE)}
               mode='secondary'
               size='l'
               stretched

@@ -1,5 +1,6 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useRouter } from '@happysanta/router';
 import { Icon16InfoCirle, Icon28DonateOutline, Icon28UserAddOutline } from '@vkontakte/icons';
 import {
   ANDROID,
@@ -19,25 +20,43 @@ import {
 } from '@vkontakte/vkui';
 
 import { CustomIcon } from '@/components';
-import { general, profile } from '@/store';
+import { MODAL_DONUT, MODAL_JOIN_GROUP } from '@/router';
+import { profile, room } from '@/store';
 
 import styles from './index.module.scss';
 
 const Sets = ({ onClose, ...props }) => {
+  const router = useRouter();
   const platform = usePlatform();
   const dispatch = useDispatch();
-  const sets = useSelector((state) => state.profile.sets);
-  const availableSets = useSelector((state) => state.profile.availableSets);
+  const roomId = useSelector((state) => state.room.roomId);
+  const userId = useSelector((state) => state.general.userId);
+  const ownerId = useSelector((state) => state.room.ownerId);
+  const from = useLocation().getParams()?.from ?? '';
+  const sets = useSelector((state) => state[from]?.sets ?? []);
+  const availableSets = useSelector((state) => state[from]?.availableSets ?? []);
+
+  const isOwner = useMemo(() => userId === ownerId, [userId, ownerId]);
+  const isRoom = useMemo(() => from === 'room', [from]);
+  const isProfile = useMemo(() => from === 'profile', [from]);
 
   const onChange = useCallback(
     (set) => {
-      if (set.status === 'active') {
-        dispatch.sync(profile.action.deactivateSet({ datasetId: set.datasetId }));
-      } else if (set.status === 'inactive') {
-        dispatch.sync(profile.action.activateSet({ datasetId: set.datasetId }));
+      if (isRoom) {
+        if (set.status === 'active') {
+          dispatch.sync(room.action.deactivateSet({ datasetId: set.datasetId, roomId }));
+        } else if (set.status === 'inactive') {
+          dispatch.sync(room.action.activateSet({ datasetId: set.datasetId, roomId }));
+        }
+      } else if (isProfile) {
+        if (set.status === 'active') {
+          dispatch.sync(profile.action.deactivateSet({ datasetId: set.datasetId }));
+        } else if (set.status === 'inactive') {
+          dispatch.sync(profile.action.activateSet({ datasetId: set.datasetId }));
+        }
       }
     },
-    [dispatch],
+    [dispatch, isProfile, isRoom, roomId],
   );
 
   return (
@@ -73,7 +92,13 @@ const Sets = ({ onClose, ...props }) => {
               hasActive={false}
               hasHover={false}
               before={<CustomIcon type={set.icon} width={24} height={24} />}
-              after={<Switch checked={set.status === 'active'} onChange={() => onChange(set)} />}
+              after={
+                <Switch
+                  disabled={isRoom && !isOwner}
+                  checked={set.status === 'active'}
+                  onChange={() => onChange(set)}
+                />
+              }
               description={set.description}
             >
               {set.name}
@@ -87,11 +112,11 @@ const Sets = ({ onClose, ...props }) => {
               let ActionIcon = () => {};
               switch (set.type) {
                 case 'subscribe':
-                  onClick = () => dispatch(general.action.route({ activeModal: 'join-group' }));
+                  onClick = () => router.replaceModal(MODAL_JOIN_GROUP);
                   ActionIcon = Icon28UserAddOutline;
                   break;
                 case 'donut':
-                  onClick = () => dispatch(general.action.route({ activeModal: 'donut' }));
+                  onClick = () => router.replaceModal(MODAL_DONUT);
                   ActionIcon = Icon28DonateOutline;
                   break;
                 default:
