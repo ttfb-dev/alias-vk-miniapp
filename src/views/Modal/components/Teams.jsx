@@ -141,14 +141,16 @@ const TeamsComponent = ({ onClose, updateModalHeight, ...props }) => {
         </List>
       </Group>
 
-      <div className={styles.info}>
-        <Spacing separator size={1} />
-        <Div>
-          <Button mode='secondary' size='l' stretched before={<Icon24Add />} onClick={onCreate}>
-            Добавить команду
-          </Button>
-        </Div>
-      </div>
+      {teams.length < 10 && (
+        <div className={styles.info}>
+          <Spacing separator size={1} />
+          <Div>
+            <Button mode='secondary' size='l' stretched before={<Icon24Add />} onClick={onCreate}>
+              Добавить команду
+            </Button>
+          </Div>
+        </div>
+      )}
     </ModalPage>
   );
 };
