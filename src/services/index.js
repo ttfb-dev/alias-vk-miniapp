@@ -23,7 +23,7 @@ class AppService {
   };
 
   getFriendProfiles = async () => {
-    const isFriendsGetAppUsersDenied = await vkapi.storageGet([this.friendsGetStorageKey])[this.friendsGetStorageKey];
+    const isFriendsGetAppUsersDenied = (await vkapi.storageGet([this.friendsGetStorageKey]))[this.friendsGetStorageKey];
     if (isFriendsGetAppUsersDenied === 'true') {
       throw new Error('Already denied');
     }
