@@ -48,17 +48,7 @@ export const Header = () => {
               <Logo style={{ width: '32px', height: '32px', color: 'var(--header_tint)' }} />
             </div>
           }
-          aside={
-            isOwner ? (
-              <Icon28SettingsOutline
-                width={20}
-                height={20}
-                style={{ transform: `rotate(${isOpened ? '180deg' : '0'})`, marginLeft: '4px' }}
-              />
-            ) : (
-              <Icon20Dropdown style={{ transform: `rotate(${isOpened ? '180deg' : '0'})` }} />
-            )
-          }
+          aside={<Icon20Dropdown style={{ transform: `rotate(${isOpened ? '180deg' : '0'})` }} />}
           status={!isGameStarted ? settings?.name : teamsList[myTeamId]?.name ?? 'Без названия'}
           onClick={() => setIsOpened(!isOpened)}
         >
