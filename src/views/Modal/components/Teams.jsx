@@ -145,7 +145,7 @@ const TeamsComponent = ({ onClose, updateModalHeight, ...props }) => {
         <div className={styles.info}>
           <Spacing separator size={1} />
           <Div>
-            <Button mode='secondary' size='l' stretched before={<Icon24Add />} onClick={onCreate}>
+            <Button mode='primary' size='l' stretched before={<Icon24Add />} onClick={onCreate}>
               Добавить команду
             </Button>
           </Div>
