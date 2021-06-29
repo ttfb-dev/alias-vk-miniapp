@@ -1,8 +1,10 @@
 import React from 'react';
+import { Icon24Dismiss } from '@vkontakte/icons';
 import {
   ANDROID,
   Button,
   Div,
+  IOS,
   ModalPage,
   ModalPageHeader,
   PanelHeaderClose,
@@ -31,6 +33,13 @@ const Rules = ({ onClose, ...props }) => {
         >
           Правила игры
         </ModalPageHeader>
+      }
+      right={
+        platform === IOS && (
+          <PanelHeaderClose onClick={onClose}>
+            <Icon24Dismiss />
+          </PanelHeaderClose>
+        )
       }
     >
       <Div>
