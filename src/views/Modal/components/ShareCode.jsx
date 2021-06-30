@@ -82,7 +82,7 @@ const ShareCode = ({ onClose, ...props }) => {
             )
           }
         >
-          QR-код для подключения
+          QR-код
         </ModalPageHeader>
       }
     >

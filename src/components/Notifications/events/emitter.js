@@ -2,6 +2,8 @@ const emitter = (() => {
   const events = new Map();
 
   return {
+    events,
+
     on(event, callback) {
       if (!events.has(event)) {
         events.set(event, []);

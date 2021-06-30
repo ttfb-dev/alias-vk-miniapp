@@ -116,7 +116,7 @@ const TeamsComponent = ({ onClose, updateModalHeight, ...props }) => {
             </>
           }
         >
-          Выбор команды
+          Команды
         </ModalPageHeader>
       }
     >

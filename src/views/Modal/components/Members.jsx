@@ -37,7 +37,7 @@ const MembersComponent = ({ onClose, updateModalHeight, ...props }) => {
             )
           }
         >
-          Список участников
+          Участники
         </ModalPageHeader>
       }
     >

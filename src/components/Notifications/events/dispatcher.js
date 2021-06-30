@@ -8,6 +8,8 @@ const events = {
 
 const dispatcher = ({ dispatch, delay }) => {
   emitter.on(events.SHOW, (notification) => {
+    // if (emitter.events.has(notification?.code)) return;
+
     dispatch({ type: 'ADD', notification });
 
     if (delay) {

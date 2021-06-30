@@ -38,7 +38,7 @@ const Rules = ({ onClose, ...props }) => {
             )
           }
         >
-          Правила игры
+          Правила
         </ModalPageHeader>
       }
     >

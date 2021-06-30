@@ -4,7 +4,6 @@ import { useLocation, useRouter } from '@happysanta/router';
 import { Icon16InfoCirle, Icon28DonateOutline, Icon28UserAddOutline } from '@vkontakte/icons';
 import {
   ANDROID,
-  Div,
   Group,
   Header,
   List,
@@ -112,11 +111,11 @@ const Sets = ({ onClose, ...props }) => {
               let ActionIcon = () => {};
               switch (set.type) {
                 case 'subscribe':
-                  onClick = () => router.replaceModal(MODAL_JOIN_GROUP);
+                  onClick = () => router.pushModal(MODAL_JOIN_GROUP);
                   ActionIcon = Icon28UserAddOutline;
                   break;
                 case 'donut':
-                  onClick = () => router.replaceModal(MODAL_DONUT);
+                  onClick = () => router.pushModal(MODAL_DONUT);
                   ActionIcon = Icon28DonateOutline;
                   break;
                 default:
@@ -128,11 +127,7 @@ const Sets = ({ onClose, ...props }) => {
                   hasActive={false}
                   hasHover={false}
                   before={<CustomIcon type={set.icon} fill={'rgb(160, 160, 160)'} width={24} height={24} />}
-                  after={
-                    <Div size='s' onClick={onClick}>
-                      <ActionIcon />
-                    </Div>
-                  }
+                  after={<ActionIcon onClick={onClick} />}
                   description={set.description}
                 >
                   {set.name}

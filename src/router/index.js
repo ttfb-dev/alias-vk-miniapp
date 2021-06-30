@@ -41,7 +41,6 @@ export const router = new Router(routes, {
   defaultPage: PAGE_HOME,
   enableLogging: true,
   preventSameLocationChange: true,
-  alwaysStartWithSlash: false,
 });
 
 router.start();
