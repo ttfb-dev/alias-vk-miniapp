@@ -115,11 +115,7 @@ const TeamsComponent = ({ onClose, updateModalHeight, ...props }) => {
               {(platform === ANDROID || platform === VKCOM) && (
                 <PanelHeaderEdit isActive={isEditActive} onClick={() => setIsEditActive(!isEditActive)} />
               )}
-              {platform === IOS && (
-                <PanelHeaderSubmit onClick={onClose} style={{ minWidth: 78, width: 78 }}>
-                  Готово
-                </PanelHeaderSubmit>
-              )}
+              {platform === IOS && <PanelHeaderSubmit onClick={onClose}>Закрыть</PanelHeaderSubmit>}
             </>
           }
         >
