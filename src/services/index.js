@@ -1,5 +1,4 @@
 import vkapi from '@/api';
-import { logger } from '@/helpers';
 
 class AppService {
   constructor() {
@@ -28,13 +27,9 @@ class AppService {
       this.friendsAccessDeniedKey,
     ]);
 
-    await logger.debug('getFriendProfiles', { isFriendsAccessDenied });
-
     if (isFriendsAccessDenied === 'true') {
-      await logger.debug('getFriendProfiles already denied', { isFriendsAccessDenied });
       throw new Error('Already denied');
     }
-    await logger.debug('getFriendProfiles allowed to ask', { isFriendsAccessDenied });
 
     const { accessToken } = await vkapi.getAuthToken(7856384, 'friends');
 
@@ -51,15 +46,12 @@ class AppService {
     const { [this.friendsAccessDeniedKey]: isFriendsAccessDenied } = await vkapi.storageGet([
       this.friendsAccessDeniedKey,
     ]);
-    await logger.debug('onGetFriendProfilesError', { isFriendsAccessDenied });
 
-    if (isFriendsAccessDenied !== 'true') {
-      await logger.debug('onGetFriendProfilesError already denied', { isFriendsAccessDenied });
+    if (isFriendsAccessDenied === 'true') {
       return;
     }
-    await logger.debug('onGetFriendProfilesError set to denied', { isFriendsAccessDenied });
 
-    await vkapi.storageSet(this.friendsGetStorageKey, String(true));
+    await vkapi.storageSet(this.friendsAccessDeniedKey, String(true));
   };
 }
 
