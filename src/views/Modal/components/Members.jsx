@@ -4,10 +4,12 @@ import {
   ANDROID,
   Avatar,
   Group,
+  IOS,
   List,
   ModalPage,
   ModalPageHeader,
   PanelHeaderClose,
+  PanelHeaderSubmit,
   SimpleCell,
   usePlatform,
   VKCOM,
@@ -36,6 +38,7 @@ const MembersComponent = ({ onClose, updateModalHeight, ...props }) => {
               <PanelHeaderClose onClick={onClose}>Закрыть</PanelHeaderClose>
             )
           }
+          right={platform === IOS && <PanelHeaderSubmit onClick={onClose}>Закрыть</PanelHeaderSubmit>}
         >
           Участники
         </ModalPageHeader>

@@ -6,11 +6,13 @@ import {
   ANDROID,
   Group,
   Header,
+  IOS,
   List,
   MiniInfoCell,
   ModalPage,
   ModalPageHeader,
   PanelHeaderClose,
+  PanelHeaderSubmit,
   SimpleCell,
   Spacing,
   Switch,
@@ -65,12 +67,11 @@ const Sets = ({ onClose, ...props }) => {
       header={
         <ModalPageHeader
           left={
-            <>
-              {(platform === ANDROID || platform === VKCOM) && (
-                <PanelHeaderClose onClick={onClose}>Закрыть</PanelHeaderClose>
-              )}
-            </>
+            (platform === ANDROID || platform === VKCOM) && (
+              <PanelHeaderClose onClick={onClose}>Закрыть</PanelHeaderClose>
+            )
           }
+          right={platform === IOS && <PanelHeaderSubmit onClick={onClose}>Закрыть</PanelHeaderSubmit>}
         >
           Наборы слов
         </ModalPageHeader>

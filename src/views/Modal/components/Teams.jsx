@@ -15,6 +15,7 @@ import {
   ModalPageHeader,
   PanelHeaderClose,
   PanelHeaderEdit,
+  PanelHeaderSubmit,
   Spacing,
   usePlatform,
   VKCOM,
@@ -82,7 +83,6 @@ const TeamsComponent = ({ onClose, updateModalHeight, ...props }) => {
 
   const getFirstNames = (teamId) => {
     const team = teams.find((team) => team.teamId === teamId);
-
     const teamMembers = members.filter((member) => team?.memberIds.includes(member.id));
 
     return `${teamMembers.reduce((acc, { first_name }, index) => `${acc}${index === 0 ? '' : ', '}${first_name}`, '')}`;
@@ -101,9 +101,11 @@ const TeamsComponent = ({ onClose, updateModalHeight, ...props }) => {
               )}
               {platform === IOS && (
                 <PanelHeaderEdit
-                  editLabel='Ред.'
+                  editLabel='Редак.'
+                  doneLabel='Принять'
                   isActive={isEditActive}
                   onClick={() => setIsEditActive(!isEditActive)}
+                  style={{ minWidth: 78, width: 78 }}
                 />
               )}
             </>
@@ -113,6 +115,7 @@ const TeamsComponent = ({ onClose, updateModalHeight, ...props }) => {
               {(platform === ANDROID || platform === VKCOM) && (
                 <PanelHeaderEdit isActive={isEditActive} onClick={() => setIsEditActive(!isEditActive)} />
               )}
+              {platform === IOS && <PanelHeaderSubmit onClick={onClose}>Закрыть</PanelHeaderSubmit>}
             </>
           }
         >

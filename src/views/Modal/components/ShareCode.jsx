@@ -7,9 +7,11 @@ import {
   Avatar,
   Button,
   Div,
+  IOS,
   ModalPage,
   ModalPageHeader,
   PanelHeaderClose,
+  PanelHeaderSubmit,
   Snackbar,
   Spacing,
   Text,
@@ -81,6 +83,7 @@ const ShareCode = ({ onClose, ...props }) => {
               <PanelHeaderClose onClick={onClose}>Закрыть</PanelHeaderClose>
             )
           }
+          right={platform === IOS && <PanelHeaderSubmit onClick={onClose}>Закрыть</PanelHeaderSubmit>}
         >
           QR-код
         </ModalPageHeader>

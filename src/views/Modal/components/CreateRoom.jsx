@@ -7,11 +7,13 @@ import {
   FormItem,
   FormLayout,
   Header,
+  IOS,
   List,
   MiniInfoCell,
   ModalPage,
   ModalPageHeader,
   PanelHeaderClose,
+  PanelHeaderSubmit,
   SimpleCell,
   Slider,
   Spacing,
@@ -36,6 +38,7 @@ const CreateRoom = ({ onClose, ...props }) => {
               <PanelHeaderClose onClick={onClose}>Закрыть</PanelHeaderClose>
             )
           }
+          right={platform === IOS && <PanelHeaderSubmit onClick={onClose}>Закрыть</PanelHeaderSubmit>}
         >
           Создать комнату
         </ModalPageHeader>
