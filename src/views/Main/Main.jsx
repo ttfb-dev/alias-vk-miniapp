@@ -25,7 +25,7 @@ const Main = (props) => {
         dispatch(general.action.setFriends({ friends }));
       })
       .catch(AppService.onGetFriendProfilesError);
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     const whereIAm = client.type(
