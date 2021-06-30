@@ -9,7 +9,7 @@ import { NotificationProvider } from '@/components';
 import { webVitals } from '@/metrics';
 import { router } from '@/router';
 import AppService from '@/services';
-import { general, store } from '@/store';
+import { store } from '@/store';
 import { App } from '@/views';
 
 import '@vkontakte/vkui/dist/vkui.css';
@@ -21,11 +21,6 @@ const appRoot = document.getElementById('root');
 const notificationRoot = document.getElementById('notification-root');
 
 AppService.initApp();
-AppService.getFriendProfiles()
-  .then((friends) => {
-    store.dispatch(general.action.setFriends({ friends }));
-  })
-  .catch(AppService.onGetFriendProfilesError);
 
 ReactDOM.render(
   <ConfigProvider>
