@@ -1,6 +1,9 @@
 .container {
   position: fixed;
-  z-index: 100;
+  z-index: 99;
+
+  display: grid;
+  gap: 12px;
 
   box-sizing: border-box;
   width: 100%;

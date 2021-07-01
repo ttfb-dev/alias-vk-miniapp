@@ -6,7 +6,7 @@ import { useClient } from '@logux/client/react';
 import { ScreenSpinner, View } from '@vkontakte/vkui';
 
 import { notify } from '@/components';
-import { PAGE_HOME, PAGE_ONBOARDING, PAGE_ROOM, PANEL_HOME, PANEL_ONBOARDING, VIEW_MAIN } from '@/router';
+import { PAGE_ROOM, PANEL_HOME, PANEL_ONBOARDING, VIEW_MAIN } from '@/router';
 import AppService from '@/services';
 import { general, room } from '@/store';
 
@@ -19,30 +19,12 @@ const Main = (props) => {
   const client = useClient();
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
-  const [isNewUser, setIsNewUser] = useState(false);
 
   useEffect(() => {
-    if (isLoading || isNewUser) {
-      return false;
-    }
-    AppService.getFriendProfiles()
-      .then((friends) => {
-        dispatch(general.action.setFriends({ friends }));
-      })
-      .catch(AppService.onGetFriendProfilesError);
-  }, [dispatch, isLoading, isNewUser]);
-
-  useEffect(() => {
-    AppService.isNewUser().then(setIsNewUser);
-  }, []);
-
-  useEffect(() => {
-    if (isNewUser) {
-      router.pushPage(PAGE_ONBOARDING);
-      return;
-    }
-    router.pushPage(PAGE_HOME);
-  }, [isNewUser, router, location]);
+    AppService.getFriendProfiles().then((friends) => {
+      dispatch(general.action.setFriends({ friends }));
+    });
+  }, [dispatch]);
 
   useEffect(() => {
     const whereIAm = client.type(

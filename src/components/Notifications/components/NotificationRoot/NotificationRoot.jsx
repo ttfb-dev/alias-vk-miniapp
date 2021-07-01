@@ -5,9 +5,9 @@ import clsx from 'clsx';
 
 import { Notification } from '..';
 
-import styles from './NotificationContainer.module.scss';
+import styles from './NotificationRoot.module.scss';
 
-const NotificationContainer = memo(({ notifications, container, onClose }) => {
+const NotificationRoot = memo(({ notifications, container, onClose }) => {
   const platform = usePlatform();
   const [mountNode, setMountNode] = useState();
 
@@ -25,6 +25,6 @@ const NotificationContainer = memo(({ notifications, container, onClose }) => {
     : null;
 });
 
-NotificationContainer.displayName = 'NotificationContainer';
+NotificationRoot.displayName = 'NotificationRoot';
 
-export { NotificationContainer };
+export { NotificationRoot };
