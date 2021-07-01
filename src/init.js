@@ -8,9 +8,6 @@ import { general, profile, room, store } from '@/store';
 
 import { creds, env, misc } from './config';
 
-// app init
-AppService.initApp();
-
 // store init
 store.client.start();
 if (creds.userId) {
@@ -24,20 +21,24 @@ if (creds.userId && !misc.roomId) {
   store.dispatch.sync(room.action.join({ roomId: misc.roomId }));
 }
 
-// router init
-router.start();
-AppService.isOnboardingFinished().then(function (isFinished) {
+(async function () {
+  // app init
+  await AppService.initApp();
+  const isFinished = await AppService.isOnboardingFinished();
+
+  // router init
+  router.start();
   if (!isFinished) {
     router.replacePage(PAGE_ONBOARDING);
   }
-});
 
-// if we have access for friends list then fetch it
-if (misc.tokenSettings?.includes('friends')) {
-  AppService.getFriendProfiles().then((friends) => {
+  // if we have access for friends list then fetch it
+  if (misc.tokenSettings?.includes('friends')) {
+    const friends = await AppService.getFriendProfiles();
+
     store.dispatch(general.action.setFriends({ friends }));
-  });
-}
+  }
+})();
 
 // metrics init
 webVitals();
