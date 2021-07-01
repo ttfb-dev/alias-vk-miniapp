@@ -8,9 +8,7 @@ import {
   Icon28UserAddOutline,
   Icon28WorkOutline,
 } from '@vkontakte/icons';
-import bridge from '@vkontakte/vk-bridge';
 import qr from '@vkontakte/vk-qr';
-import { isNumeric } from '@vkontakte/vkjs';
 import {
   Badge,
   Button,
@@ -60,19 +58,16 @@ const Room = ({ isSubscribing, ...props }) => {
   const isReadyToStart = useMemo(() => teamsCompleted >= 2 && setsActive >= 1, [teamsCompleted, setsActive]);
 
   useEffect(() => {
-    bridge.send('VKWebAppStorageGet', { keys: ['roomTooltipIndex'] }).then((result) => {
-      const value = result.keys[0].value;
-      const index = isNumeric(value) ? parseInt(value, 10) : 1;
-
+    AppService.getTooltipIndex('roomTooltipIndex').then((index) => {
       setTooltipIndex(index);
     });
   }, []);
 
-  const onTooltipClose = (next) => {
-    bridge.send('VKWebAppStorageSet', { key: 'roomTooltipIndex', value: String(next) }).then(() => {
-      setTooltipIndex(next);
+  useEffect(() => {
+    AppService.getUserProfiles(memberIds).then((members) => {
+      dispatch(room.action.setMembers({ members }));
     });
-  };
+  }, [memberIds, dispatch]);
 
   const qrCode = useMemo(() => {
     const url = `https://vk.com/app7856384#roomId=${roomId}`;
@@ -87,11 +82,11 @@ const Room = ({ isSubscribing, ...props }) => {
     return { url, svg };
   }, [roomId]);
 
-  useEffect(() => {
-    AppService.getUserProfiles(memberIds).then((members) => {
-      dispatch(room.action.setMembers({ members }));
-    });
-  }, [memberIds, dispatch]);
+  const onTooltipClose = (index) => {
+    AppService.setTooltipIndex('roomTooltipIndex', index);
+
+    setTooltipIndex(index);
+  };
 
   const onGameStart = (e) => {
     e.stopPropagation();

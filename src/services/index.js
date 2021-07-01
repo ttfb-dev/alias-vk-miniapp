@@ -1,11 +1,8 @@
+import { isNumeric } from '@vkontakte/vkjs';
+
 import vkapi from '@/api';
 
 class AppService {
-  constructor() {
-    this.friendsAccessDeniedKey = 'isFriendsAccessDenied';
-    this.isOnboardingFinishedKey = 'isOnboardingFinished';
-  }
-
   initApp = () => {
     vkapi.initApp();
   };
@@ -24,9 +21,7 @@ class AppService {
   };
 
   getFriendProfiles = async () => {
-    const { [this.friendsAccessDeniedKey]: isFriendsAccessDenied } = await vkapi.storageGet([
-      this.friendsAccessDeniedKey,
-    ]);
+    const { isFriendsAccessDenied } = await vkapi.storageGet(['isFriendsAccessDenied']);
 
     if (isFriendsAccessDenied === 'true') {
       return [];
@@ -43,20 +38,28 @@ class AppService {
 
       return friendProfiles;
     } catch (e) {
-      await vkapi.storageSet(this.friendsAccessDeniedKey, 'true');
+      await vkapi.storageSet('isFriendsAccessDenied', 'true');
     }
   };
 
+  setOnboardingFinished = () => {
+    vkapi.storageSet('isOnboardingFinished', 'true');
+  };
+
   isOnboardingFinished = async () => {
-    const { [this.isOnboardingFinishedKey]: isOnboardingFinished } = await vkapi.storageGet([
-      this.isOnboardingFinishedKey,
-    ]);
+    const { isOnboardingFinished } = await vkapi.storageGet(['isOnboardingFinished']);
 
     return isOnboardingFinished === 'true';
   };
 
-  setOnboardingFinished = async () => {
-    await vkapi.storageSet(this.isOnboardingFinishedKey, 'true');
+  getTooltipIndex = async (key) => {
+    const { [key]: index } = await vkapi.storageGet([key]);
+
+    return isNumeric(index) ? parseInt(index, 10) : 1;
+  };
+
+  setTooltipIndex = (key, index) => {
+    vkapi.storageSet(key, String(index));
   };
 }
 

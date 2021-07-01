@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from '@happysanta/router';
 import { Icon16Add, Icon28InfoOutline, Icon28ScanViewfinderOutline, Icon28WorkOutline } from '@vkontakte/icons';
-import bridge from '@vkontakte/vk-bridge';
-import { isNumeric } from '@vkontakte/vkjs';
 import { Badge, Button, Div, Panel, Spacing, Tabbar, TabbarItem, Tooltip } from '@vkontakte/vkui';
 
 import vkapi from '@/api';
@@ -11,6 +9,7 @@ import { ReactComponent as Logo } from '@/assets/logo.svg';
 import { CustomUsersStack, notify } from '@/components';
 import { queryStringParse } from '@/helpers';
 import { MODAL_QR_CODE, MODAL_RULES, MODAL_SETS, PAGE_ROOM } from '@/router';
+import AppService from '@/services';
 import { room } from '@/store';
 
 import styles from './index.module.scss';
@@ -24,18 +23,15 @@ const Home = (props) => {
   const [tooltipIndex, setTooltipIndex] = useState();
 
   useEffect(() => {
-    bridge.send('VKWebAppStorageGet', { keys: ['mainTooltipIndex'] }).then((result) => {
-      const value = result.keys[0].value;
-      const index = isNumeric(value) ? parseInt(value, 10) : 1;
-
+    AppService.getTooltipIndex('homeTooltipIndex').then((index) => {
       setTooltipIndex(index);
     });
   }, []);
 
-  const onTooltipClose = (next) => {
-    bridge.send('VKWebAppStorageSet', { key: 'mainTooltipIndex', value: String(next) }).then(() => {
-      setTooltipIndex(next);
-    });
+  const onTooltipClose = (index) => {
+    AppService.setTooltipIndex('homeTooltipIndex', index);
+
+    setTooltipIndex(index);
   };
 
   const onScanQR = async () => {
