@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ReactComponent as LogoBackground } from '@/assets/logo-bg.svg';
 
-import styles from './index.module.scss';
+import styles from './Container.module.scss';
 
 const Container = ({ children }) => (
   <div className={styles.container}>
