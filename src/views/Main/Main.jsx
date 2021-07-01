@@ -7,8 +7,7 @@ import { ScreenSpinner, View } from '@vkontakte/vkui';
 
 import { notify } from '@/components';
 import { PAGE_ROOM, PANEL_HOME, PANEL_ONBOARDING, VIEW_MAIN } from '@/router';
-import AppService from '@/services';
-import { general, room } from '@/store';
+import { room } from '@/store';
 
 import { Home } from './Home';
 import { Onboarding } from './Onboarding';
@@ -19,12 +18,6 @@ const Main = (props) => {
   const client = useClient();
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    AppService.getFriendProfiles().then((friends) => {
-      dispatch(general.action.setFriends({ friends }));
-    });
-  }, [dispatch]);
 
   useEffect(() => {
     const whereIAm = client.type(

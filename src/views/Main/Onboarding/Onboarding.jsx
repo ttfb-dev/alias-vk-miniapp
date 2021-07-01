@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useRouter } from '@happysanta/router';
 import {
   Icon28UserAddedOutline,
@@ -11,6 +12,7 @@ import { Button, FormItem, Gallery, Panel } from '@vkontakte/vkui';
 import { Container } from '@/components';
 import { PAGE_HOME } from '@/router';
 import AppService from '@/services';
+import { general } from '@/store';
 
 import { Slide } from './components';
 
@@ -47,6 +49,7 @@ const slides = [
 
 const Onboarding = (props) => {
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const [index, setIndex] = useState(0);
 
@@ -55,9 +58,15 @@ const Onboarding = (props) => {
 
   const onNext = () => {
     if (isLast) {
-      AppService.setOnboardingFinished();
+      AppService.getFriendProfiles()
+        .then((friends) => {
+          dispatch(general.action.setFriends({ friends }));
+        })
+        .finally(() => {
+          AppService.setOnboardingFinished();
 
-      router.pushPage(PAGE_HOME);
+          router.pushPage(PAGE_HOME);
+        });
 
       return;
     }

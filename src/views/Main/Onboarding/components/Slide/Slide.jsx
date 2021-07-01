@@ -11,8 +11,8 @@ const Slide = ({ icon, paragraphs }) => {
 
         <div className={styles.paragraphs}>
           {!!paragraphs?.length &&
-            paragraphs.map((paragraph) => (
-              <Text weight='regular' className={styles.text}>
+            paragraphs.map((paragraph, index) => (
+              <Text key={index} weight='regular' className={styles.text}>
                 {paragraph}
               </Text>
             ))}

@@ -1,14 +1,51 @@
 import { isNumeric } from '@vkontakte/vkjs';
 
 import vkapi from '@/api';
+import { capitalize } from '@/helpers';
+
+import { misc } from '../config';
 
 class AppService {
+  #tokens = new Map();
+
+  #getToken = (scope) => {
+    return this.#tokens.get(scope);
+  };
+
+  #setToken = (scope, token) => {
+    this.#tokens.set(scope, token);
+  };
+
   initApp = () => {
     vkapi.initApp();
   };
 
+  getAuthToken = async (scope) => {
+    try {
+      const { accessToken } = await vkapi.getAuthToken(misc.appId, scope);
+
+      this.#setToken(scope, accessToken);
+
+      return accessToken;
+    } catch ({ error_data }) {
+      const { error_code, error_reason } = error_data;
+
+      if (error_code === 4 && error_reason === 'User denied') {
+        const capScope = capitalize(scope, 'en');
+
+        await vkapi.storageSet(`is${capScope}AccessDenied`, 'true');
+      }
+    }
+  };
+
   getUserProfiles = async (ids) => {
-    const { accessToken } = await vkapi.getAuthToken(7856384, '');
+    const scope = '';
+    let accessToken;
+    if (!this.#tokens.has(scope)) {
+      accessToken = await this.getAuthToken(scope);
+    } else {
+      accessToken = this.#getToken(scope);
+    }
 
     const userProfiles = await vkapi.callAPIMethod('users.get', {
       user_ids: ids.join(','),
@@ -22,24 +59,25 @@ class AppService {
 
   getFriendProfiles = async () => {
     const { isFriendsAccessDenied } = await vkapi.storageGet(['isFriendsAccessDenied']);
-
     if (isFriendsAccessDenied === 'true') {
       return [];
     }
 
-    try {
-      const { accessToken } = await vkapi.getAuthToken(7856384, 'friends');
-
-      const friendIds = await vkapi.callAPIMethod('friends.getAppUsers', {
-        v: '5.131',
-        access_token: accessToken,
-      });
-      const friendProfiles = await this.getUserProfiles(friendIds);
-
-      return friendProfiles;
-    } catch (e) {
-      await vkapi.storageSet('isFriendsAccessDenied', 'true');
+    const scope = 'friends';
+    let accessToken;
+    if (!this.#tokens.has(scope)) {
+      accessToken = await this.getAuthToken(scope);
+    } else {
+      accessToken = this.#getToken(scope);
     }
+
+    const friendIds = await vkapi.callAPIMethod('friends.getAppUsers', {
+      v: '5.131',
+      access_token: accessToken,
+    });
+    const friendProfiles = await this.getUserProfiles(friendIds);
+
+    return friendProfiles;
   };
 
   setOnboardingFinished = () => {

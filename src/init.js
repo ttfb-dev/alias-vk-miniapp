@@ -32,6 +32,13 @@ AppService.isOnboardingFinished().then((isFinished) => {
   }
 });
 
+// if we have access for friends list then fetch it
+if (misc.tokenSettings?.includes('friends')) {
+  AppService.getFriendProfiles().then((friends) => {
+    store.dispatch(general.action.setFriends({ friends }));
+  });
+}
+
 // metrics init
 webVitals();
 

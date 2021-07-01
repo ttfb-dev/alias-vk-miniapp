@@ -62,7 +62,7 @@ export class VKMiniAppAPI extends VKBridgeProvider {
 
     const { access_token } = await this.bridge.send('VKWebAppGetAuthToken', {
       app_id: appId,
-      scope: strScope.length ? strScope : '',
+      scope: strScope !== null ? strScope : '',
     });
 
     return {
