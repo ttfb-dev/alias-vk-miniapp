@@ -11,14 +11,14 @@ import AppService from '@/services';
 import { general, room } from '@/store';
 
 import { Home } from './Home';
-import { OnBoard } from './OnBoard';
+import { Onboarding } from './Onboarding';
 
 const Main = (props) => {
   const router = useRouter();
   const location = useLocation();
   const client = useClient();
   const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     AppService.getFriendProfiles().then((friends) => {
@@ -83,7 +83,8 @@ const Main = (props) => {
       activePanel={location.getViewActivePanel(VIEW_MAIN)}
       popout={isLoading && <ScreenSpinner />}
     >
-      <OnBoard nav={PANEL_ONBOARDING} />
+      <Onboarding nav={PANEL_ONBOARDING} />
+
       <Home nav={PANEL_HOME} />
     </View>
   );

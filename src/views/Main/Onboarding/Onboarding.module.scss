@@ -1,0 +1,31 @@
+.container {
+  display: flex;
+  flex: 1;
+
+  flex-direction: column;
+  padding-top: calc(var(--safe-area-inset-top) + var(--panelheader_height_vkcom));
+}
+
+.gallery {
+  flex: 1;
+}
+
+.title {
+  margin-right: 12px;
+  padding: 12px;
+
+  color: #fff;
+
+  font-weight: bold;
+  font-size: 18px;
+  font-family: inherit;
+  line-height: 20px;
+  letter-spacing: -0.24px;
+  text-align: right;
+  text-transform: uppercase;
+
+  background-color: var(--text_link);
+
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
