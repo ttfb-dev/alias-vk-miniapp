@@ -22,7 +22,7 @@ ReactDOM.render(
     <AdaptivityProvider>
       <RouterContext.Provider value={router}>
         <ClientContext.Provider value={store.client}>
-          <NotificationProvider container={notificationRoot}>
+          <NotificationProvider container={notificationRoot} delay={4000}>
             <Provider store={store}>
               <StrictMode>
                 <App />
