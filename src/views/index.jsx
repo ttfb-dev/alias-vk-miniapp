@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation } from '@happysanta/router';
-import { AppRoot, Epic, Root } from '@vkontakte/vkui';
+import { AppRoot, Root } from '@vkontakte/vkui';
 
 import { VIEW_GAME, VIEW_MAIN } from '@/router';
 
@@ -15,13 +15,11 @@ const App = () => {
 
   return (
     <AppRoot>
-      <Epic activeStory='app' tabbar>
-        <Root nav='app' activeView={location.getViewId()} modal={<Modal />}>
-          <Main nav={VIEW_MAIN} />
+      <Root nav='app' activeView={location.getViewId()} modal={<Modal />}>
+        <Main nav={VIEW_MAIN} />
 
-          <Game nav={VIEW_GAME} />
-        </Root>
-      </Epic>
+        <Game nav={VIEW_GAME} />
+      </Root>
     </AppRoot>
   );
 };

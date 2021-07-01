@@ -76,7 +76,9 @@ const Step = ({ isSubscribing, ...props }) => {
 
               {isRunning && <Word />}
             </Div>
-            {isStopped && <Spacing size={20} />}
+
+            {isStopped && <Spacing size={68} />}
+
             {isStopped && (
               <div className={styles.fixedLayout}>
                 <Div>

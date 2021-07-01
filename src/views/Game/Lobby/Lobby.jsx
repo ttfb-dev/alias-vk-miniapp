@@ -56,7 +56,7 @@ const Lobby = ({ isSubscribing, ...props }) => {
               <Statistics />
             </Div>
 
-            {isExplainer && <Spacing size={20} />}
+            {isExplainer && <Spacing size={68} />}
 
             {(isExplainer || isDebug) && (
               <div className={styles.fixedLayout}>
