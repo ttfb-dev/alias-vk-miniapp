@@ -46,5 +46,3 @@ export const router = new Router(routes, {
   enableLogging: true,
   preventSameLocationChange: true,
 });
-
-router.start();

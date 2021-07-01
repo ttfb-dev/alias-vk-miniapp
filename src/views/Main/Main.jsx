@@ -20,11 +20,9 @@ const Main = (props) => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    AppService.getFriendProfiles()
-      .then((friends) => {
-        dispatch(general.action.setFriends({ friends }));
-      })
-      .catch(AppService.onGetFriendProfilesError);
+    AppService.getFriendProfiles().then((friends) => {
+      dispatch(general.action.setFriends({ friends }));
+    });
   }, [dispatch]);
 
   useEffect(() => {

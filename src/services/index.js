@@ -3,6 +3,7 @@ import vkapi from '@/api';
 class AppService {
   constructor() {
     this.friendsAccessDeniedKey = 'isFriendsAccessDenied';
+    this.isOnboardingFinishedKey = 'isOnboardingFinished';
   }
 
   initApp = () => {
@@ -28,30 +29,30 @@ class AppService {
     ]);
 
     if (isFriendsAccessDenied === 'true') {
-      throw new Error('Already denied');
+      return [];
     }
 
-    const { accessToken } = await vkapi.getAuthToken(7856384, 'friends');
+    try {
+      const { accessToken } = await vkapi.getAuthToken(7856384, 'friends');
 
-    const friendIds = await vkapi.callAPIMethod('friends.getAppUsers', {
-      v: '5.131',
-      access_token: accessToken,
-    });
-    const friendProfiles = await this.getUserProfiles(friendIds);
+      const friendIds = await vkapi.callAPIMethod('friends.getAppUsers', {
+        v: '5.131',
+        access_token: accessToken,
+      });
+      const friendProfiles = await this.getUserProfiles(friendIds);
 
-    return friendProfiles;
+      return friendProfiles;
+    } catch (e) {
+      await vkapi.storageSet(this.friendsAccessDeniedKey, 'true');
+    }
   };
 
-  onGetFriendProfilesError = async () => {
-    const { [this.friendsAccessDeniedKey]: isFriendsAccessDenied } = await vkapi.storageGet([
-      this.friendsAccessDeniedKey,
+  isOnboardingFinished = async () => {
+    const { [this.isOnboardingFinishedKey]: isOnboardingFinished } = await vkapi.storageGet([
+      this.isOnboardingFinishedKey,
     ]);
 
-    if (isFriendsAccessDenied === 'true') {
-      return;
-    }
-
-    await vkapi.storageSet(this.friendsAccessDeniedKey, String(true));
+    return isOnboardingFinished === 'true';
   };
 }
 
