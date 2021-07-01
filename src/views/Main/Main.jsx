@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useLocation, useRouter } from '@happysanta/router';
 import { track } from '@logux/client';
 import { useClient } from '@logux/client/react';
-import { ScreenSpinner, View } from '@vkontakte/vkui';
+import { ScreenSpinner, usePlatform, View } from '@vkontakte/vkui';
 
 import { notify } from '@/components';
 import { PAGE_ROOM, PANEL_HOME, PANEL_ONBOARDING, VIEW_MAIN } from '@/router';
@@ -17,6 +17,7 @@ const Main = (props) => {
   const location = useLocation();
   const client = useClient();
   const dispatch = useDispatch();
+  const platform = usePlatform();
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -67,6 +68,23 @@ const Main = (props) => {
       join();
     };
   }, [client, dispatch, router, location]);
+
+  const panel = location.getViewActivePanel(VIEW_MAIN);
+
+  useEffect(() => {
+    AppService.isOnboardingFinished().then((result) => {
+      dispatch.sync({
+        type: 'log/send',
+        level: 'debug',
+        data: {
+          message: `render main`,
+          isOnboardingFinished: result,
+          platform,
+          panel,
+        },
+      });
+    });
+  }, [dispatch, location, platform, panel]);
 
   return (
     <View
