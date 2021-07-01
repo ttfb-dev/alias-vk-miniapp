@@ -7,6 +7,8 @@ import {
 } from '@vkontakte/icons';
 import { Button, FormItem, Gallery } from '@vkontakte/vkui';
 
+import AppService from '@/services';
+
 import Slide from './Slide';
 
 import styles from './index.module.scss';
@@ -45,6 +47,8 @@ const Slider = () => {
     },
   ];
 
+  const isLastSlide = slideIndex + 1 === slides.length;
+
   return (
     <>
       <Gallery
@@ -64,10 +68,14 @@ const Slider = () => {
           size='l'
           stretched
           onClick={() => {
+            if (isLastSlide) {
+              AppService.setOnboardingFinished();
+              return;
+            }
             setSlideIndex((slideIndex + 1) % 4);
           }}
         >
-          Далее
+          {isLastSlide ? 'Готово' : 'Далее'}
         </Button>
       </FormItem>
     </>
