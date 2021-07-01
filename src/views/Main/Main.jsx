@@ -7,6 +7,7 @@ import { ScreenSpinner, usePlatform, View } from '@vkontakte/vkui';
 
 import { notify } from '@/components';
 import { PAGE_ROOM, PANEL_HOME, PANEL_ONBOARDING, VIEW_MAIN } from '@/router';
+import AppService from '@/services';
 import { room } from '@/store';
 
 import { Home } from './Home';
