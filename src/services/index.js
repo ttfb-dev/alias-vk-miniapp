@@ -3,6 +3,7 @@ import vkapi from '@/api';
 class AppService {
   constructor() {
     this.friendsAccessDeniedKey = 'isFriendsAccessDenied';
+    this.isNewUserKey = 'isNewUser';
   }
 
   initApp = () => {
@@ -52,6 +53,16 @@ class AppService {
     }
 
     await vkapi.storageSet(this.friendsAccessDeniedKey, String(true));
+  };
+
+  isNewUser = async () => {
+    const { [this.isNewUserKey]: isNewUser } = await vkapi.storageGet([this.isNewUserKey]);
+
+    return isNewUser !== 'false';
+  };
+
+  setUserNotNew = async () => {
+    await vkapi.storageSet(this.isNewUserKey, String(false));
   };
 }
 
