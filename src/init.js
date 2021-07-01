@@ -21,7 +21,7 @@ if (creds.userId && !misc.roomId) {
   store.dispatch.sync(room.action.join({ roomId: misc.roomId }));
 }
 
-(async function () {
+(async () => {
   // app init
   await AppService.initApp();
   const isFinished = await AppService.isOnboardingFinished();

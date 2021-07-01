@@ -18,9 +18,9 @@ const appRoot = document.getElementById('root');
 const notificationRoot = document.getElementById('notification-root');
 
 ReactDOM.render(
-  <ConfigProvider>
-    <AdaptivityProvider>
-      <RouterContext.Provider value={router}>
+  <RouterContext.Provider value={router}>
+    <ConfigProvider>
+      <AdaptivityProvider>
         <ClientContext.Provider value={store.client}>
           <NotificationProvider container={notificationRoot} delay={4000}>
             <Provider store={store}>
@@ -30,8 +30,8 @@ ReactDOM.render(
             </Provider>
           </NotificationProvider>
         </ClientContext.Provider>
-      </RouterContext.Provider>
-    </AdaptivityProvider>
-  </ConfigProvider>,
+      </AdaptivityProvider>
+    </ConfigProvider>
+  </RouterContext.Provider>,
   appRoot,
 );

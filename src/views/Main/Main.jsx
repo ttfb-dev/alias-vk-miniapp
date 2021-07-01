@@ -85,7 +85,7 @@ const Main = (props) => {
         },
       });
     });
-  }, [dispatch, location, platform, panel]);
+  }, [dispatch, platform, panel]);
 
   return (
     <View
