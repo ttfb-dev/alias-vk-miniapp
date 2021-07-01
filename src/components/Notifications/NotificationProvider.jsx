@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { NotificationRoot } from './components';
+import { NotificationContainer } from './components';
 import { dispatcher, emitter, events } from './events';
 import { useNotification } from './hooks';
 import { NotificationContext } from './NotificationContext';
@@ -23,7 +23,7 @@ const NotificationProvider = ({ children, container, delay }) => {
   return (
     <NotificationContext.Provider value={''}>
       {children}
-      <NotificationRoot notifications={notifications} container={container} onClose={onClose} />
+      <NotificationContainer notifications={notifications} container={container} onClose={onClose} />
     </NotificationContext.Provider>
   );
 };

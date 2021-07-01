@@ -127,7 +127,7 @@ const Room = ({ isSubscribing, ...props }) => {
         <Header />
 
         {isSubscribing ? (
-          <PanelSpinner />
+          <PanelSpinner height={192} size='large' />
         ) : (
           <>
             <Div className={styles.grid}>

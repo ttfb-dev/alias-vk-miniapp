@@ -1,0 +1,32 @@
+.container {
+  position: fixed;
+  z-index: 100;
+
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 16px;
+}
+
+.ios {
+  top: calc(env(safe-area-inset-top) + var(--panelheader_height_ios));
+  right: env(safe-area-inset-right);
+  left: env(safe-area-inset-left);
+
+  padding: 0 12px;
+}
+
+.andriod {
+  top: calc(env(safe-area-inset-top) + var(--panelheader_height_android));
+  right: env(safe-area-inset-right);
+  left: env(safe-area-inset-left);
+
+  padding: 0 16px;
+}
+
+.vkcom {
+  top: calc(env(safe-area-inset-top) + var(--panelheader_height_vkcom));
+  right: env(safe-area-inset-right);
+  left: env(safe-area-inset-left);
+
+  padding: 0 16px;
+}

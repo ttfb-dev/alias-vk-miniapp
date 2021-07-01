@@ -10,7 +10,7 @@ class AppService {
   };
 
   getUserProfiles = async (ids) => {
-    const { accessToken } = await vkapi.getAuthToken(7856384, 'friends');
+    const { accessToken } = await vkapi.getAuthToken(7856384, '');
 
     const userProfiles = await vkapi.callAPIMethod('users.get', {
       user_ids: ids.join(','),
