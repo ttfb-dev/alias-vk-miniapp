@@ -1,8 +1,8 @@
 import { VKBridgeProvider } from './provider';
 
 export class VKMiniAppAPI extends VKBridgeProvider {
-  initApp = () => {
-    this.bridge.send('VKWebAppInit');
+  initApp = async () => {
+    await this.bridge.send('VKWebAppInit');
   };
 
   onUpdateConfig = (callback) => this.subscribe('VKWebAppUpdateConfig', callback);

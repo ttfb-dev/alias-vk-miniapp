@@ -26,7 +26,7 @@ if (creds.userId && !misc.roomId) {
 
 // router init
 router.start();
-AppService.isOnboardingFinished().then((isFinished) => {
+AppService.isOnboardingFinished().then(function (isFinished) {
   if (!isFinished) {
     router.replacePage(PAGE_ONBOARDING);
   }

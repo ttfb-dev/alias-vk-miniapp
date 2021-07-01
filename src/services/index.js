@@ -16,8 +16,8 @@ class AppService {
     this.#tokens.set(scope, token);
   };
 
-  initApp = () => {
-    vkapi.initApp();
+  initApp = async () => {
+    await vkapi.initApp();
   };
 
   getAuthToken = async (scope) => {
