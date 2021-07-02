@@ -33,8 +33,8 @@ const reducer = (state = initialState, action) => {
 
   switch (type) {
     case 'room/state': {
-      const { gameWordDatasets, teams, ...room } = payload.room;
-
+      const { gameWordDatasets, members, teams, ...room } = payload.room;
+      const membersList = members.reduce((list, member) => ({ ...list, [member.id]: member }), {});
       const sets = gameWordDatasets.filter((set) => ['active', 'inactive'].includes(set.status));
       const availableSets = gameWordDatasets.filter((set) => set.status === 'available');
       const teamsList = teams.reduce((list, team) => ({ ...list, [team.teamId]: team }), {});
@@ -43,11 +43,13 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         ...room,
-        sets,
-        availableSets,
+        members,
+        membersList,
         teams,
         teamsList,
         teamsCompleted,
+        sets,
+        availableSets,
       };
     }
 
@@ -143,6 +145,7 @@ const reducer = (state = initialState, action) => {
     case 'room/user_joined':
     case 'room/user_left': {
       const { gameWordDatasets, members, teams } = payload;
+      const membersList = members.reduce((list, member) => ({ ...list, [member.id]: member }), {});
       const sets = gameWordDatasets.filter((set) => ['active', 'inactive'].includes(set.status));
       const availableSets = gameWordDatasets.filter((set) => set.status === 'available');
       const teamsList = teams.reduce((list, team) => ({ ...list, [team.teamId]: team }), {});
@@ -151,6 +154,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         members,
+        membersList,
         teams,
         teamsList,
         teamsCompleted,
