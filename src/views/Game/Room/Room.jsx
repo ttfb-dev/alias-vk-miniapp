@@ -28,7 +28,7 @@ import { Container } from '@/components';
 import { declension } from '@/helpers';
 import { MODAL_MEMBERS, MODAL_RULES, MODAL_SETS, MODAL_SHARE_CODE, MODAL_TEAMS } from '@/router';
 import AppService from '@/services';
-import { game, room } from '@/store';
+import { game } from '@/store';
 
 import { Header } from '../components';
 
@@ -42,7 +42,7 @@ const Room = ({ isSubscribing, ...props }) => {
   const teamsCompleted = useSelector((state) => state.room.teamsCompleted);
   const roomId = useSelector((state) => state.room.roomId);
   const ownerId = useSelector((state) => state.room.ownerId);
-  const memberIds = useSelector((state) => state.room.memberIds);
+  const members = useSelector((state) => state.room.members);
   const sets = useSelector((state) => state.room.sets);
   const availableSets = useSelector((state) => state.room.availableSets);
 
@@ -51,7 +51,7 @@ const Room = ({ isSubscribing, ...props }) => {
   const hasTeam = useMemo(() => teams.some((team) => team.memberIds.includes(userId)), [teams, userId]);
   const isOwner = useMemo(() => userId === ownerId, [userId, ownerId]);
   const teamsCount = useMemo(() => teams.length, [teams]);
-  const membersCount = useMemo(() => memberIds.length, [memberIds]);
+  const membersCount = useMemo(() => members.length, [members]);
   const setsActive = useMemo(() => sets.filter((set) => set.status === 'active').length, [sets]);
   const setsCount = useMemo(() => sets.length + availableSets.length, [sets, availableSets]);
   const isReadyToStart = useMemo(() => teamsCompleted >= 1 && setsActive >= 1, [teamsCompleted, setsActive]);
@@ -61,12 +61,6 @@ const Room = ({ isSubscribing, ...props }) => {
       setTooltipIndex(index);
     });
   }, []);
-
-  useEffect(() => {
-    AppService.getUserProfiles(memberIds).then((members) => {
-      dispatch(room.action.setMembers({ members }));
-    });
-  }, [memberIds, dispatch]);
 
   const qrCode = useMemo(() => {
     const url = `https://vk.com/app7856384#roomId=${roomId}`;

@@ -60,13 +60,14 @@ export class VKMiniAppAPI extends VKBridgeProvider {
   getAuthToken = async (appId, scope) => {
     const strScope = Array.isArray(scope) ? scope.join(',') : scope;
 
-    const { access_token } = await this.bridge.send('VKWebAppGetAuthToken', {
+    const data = await this.bridge.send('VKWebAppGetAuthToken', {
       app_id: appId,
       scope: strScope !== null ? strScope : '',
     });
 
     return {
-      accessToken: access_token,
+      accessToken: data.access_token,
+      scope: data.scope,
     };
   };
 

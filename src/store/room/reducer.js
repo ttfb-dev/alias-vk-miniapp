@@ -16,7 +16,6 @@ import {
 const initialState = {
   status: '',
   roomId: null,
-  memberIds: [],
   members: [],
   membersList: {},
   sets: [],
@@ -143,7 +142,7 @@ const reducer = (state = initialState, action) => {
 
     case 'room/user_joined':
     case 'room/user_left': {
-      const { gameWordDatasets, memberIds, teams } = payload;
+      const { gameWordDatasets, members, teams } = payload;
       const sets = gameWordDatasets.filter((set) => ['active', 'inactive'].includes(set.status));
       const availableSets = gameWordDatasets.filter((set) => set.status === 'available');
       const teamsList = teams.reduce((list, team) => ({ ...list, [team.teamId]: team }), {});
@@ -151,7 +150,7 @@ const reducer = (state = initialState, action) => {
 
       return {
         ...state,
-        memberIds,
+        members,
         teams,
         teamsList,
         teamsCompleted,

@@ -70,10 +70,10 @@ const Main = (props) => {
     };
   }, [client, dispatch, router, location]);
 
-  const panel = location.getViewActivePanel(VIEW_MAIN);
-
   useEffect(() => {
     AppService.isOnboardingFinished().then((result) => {
+      const panel = location.getViewActivePanel(VIEW_MAIN);
+
       dispatch.sync({
         type: 'log/send',
         level: 'debug',
@@ -85,7 +85,7 @@ const Main = (props) => {
         },
       });
     });
-  }, [dispatch, platform, panel]);
+  }, [dispatch, platform, location]);
 
   return (
     <View
