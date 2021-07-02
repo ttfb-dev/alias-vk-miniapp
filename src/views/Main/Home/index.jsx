@@ -44,11 +44,9 @@ const Home = (props) => {
       if (roomId) {
         dispatch.sync(room.action.join({ roomId }));
       }
-    } catch ({ error_type, error_data }) {
+    } catch ({ error_data }) {
       if (error_data?.error_reason === 'Unsupported platform') {
-        notify.error({ message: 'Ваше устройство не поддерживает сканирование QR-кодов.' });
-      } else {
-        notify.error({ message: 'Что-то пошло не так, попробуйте ещё раз отсканировать QR-код.' });
+        notify.error({ message: 'Ваше устройство не поддерживает сканирование QR-кодов.', code: 'qr-unsupported' });
       }
     }
   };

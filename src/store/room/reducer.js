@@ -129,12 +129,13 @@ const reducer = (state = initialState, action) => {
     case 'room/user_left_team':
     case 'room/team_created':
     case 'room/team_deleted': {
-      const teamsList = payload.teams.reduce((list, team) => ({ ...list, [team.teamId]: team }), {});
-      const teamsCompleted = payload.teams.reduce((acc, team) => (acc += !!(team.memberIds.length > 1)), 0);
+      const { teams } = payload;
+      const teamsList = teams.reduce((list, team) => ({ ...list, [team.teamId]: team }), {});
+      const teamsCompleted = teams.reduce((acc, team) => (acc += !!(team.memberIds.length > 1)), 0);
 
       return {
         ...state,
-        ...payload,
+        teams,
         teamsList,
         teamsCompleted,
       };
@@ -142,13 +143,18 @@ const reducer = (state = initialState, action) => {
 
     case 'room/user_joined':
     case 'room/user_left': {
-      const { gameWordDatasets, memberIds } = payload;
+      const { gameWordDatasets, memberIds, teams } = payload;
       const sets = gameWordDatasets.filter((set) => ['active', 'inactive'].includes(set.status));
       const availableSets = gameWordDatasets.filter((set) => set.status === 'available');
+      const teamsList = teams.reduce((list, team) => ({ ...list, [team.teamId]: team }), {});
+      const teamsCompleted = teams.reduce((acc, team) => (acc += !!(team.memberIds.length > 1)), 0);
 
       return {
         ...state,
         memberIds,
+        teams,
+        teamsList,
+        teamsCompleted,
         sets,
         availableSets,
       };

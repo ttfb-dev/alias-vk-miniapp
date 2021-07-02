@@ -1,20 +1,47 @@
 import React, { useEffect } from 'react';
 
 import { NotificationRoot } from './components';
-import { dispatcher, emitter, events } from './events';
+import { emitter, events } from './emitter';
 import { useNotification } from './hooks';
 import { NotificationContext } from './NotificationContext';
 
-const NotificationProvider = ({ children, container, delay }) => {
+import './index.scss';
+
+const NotificationProvider = ({ children, container, delay = 3500, limit = 3, position = 'bottom' }) => {
   const { notifications, dispatch } = useNotification();
 
   useEffect(() => {
-    dispatcher({ dispatch, delay });
+    const show = emitter.on(events.SHOW, (notification) => {
+      const dupe = notifications.find((n) => n.code === notification.code);
+      if (dupe) {
+        return;
+      }
+
+      if (notifications.length >= limit) {
+        const firstId = notifications[0].id;
+
+        dispatch({ type: 'REMOVE', id: firstId });
+      }
+
+      dispatch({ type: 'ADD', notification });
+
+      if (delay) {
+        setTimeout(() => {
+          dispatch({ type: 'REMOVE', id: notification.id });
+        }, delay);
+      }
+    });
+
+    const hide = emitter.on(events.HIDE, (id) => dispatch({ type: 'REMOVE', id }));
+
+    const hideAll = emitter.on(events.HIDE_ALL, () => dispatch({ type: 'REMOVE_ALL' }));
 
     return () => {
-      emitter.off();
+      show();
+      hide();
+      hideAll();
     };
-  }, [dispatch, delay]);
+  }, [dispatch, notifications, delay, limit]);
 
   const onClose = (id) => {
     emitter.emit(events.HIDE, id);
@@ -23,7 +50,7 @@ const NotificationProvider = ({ children, container, delay }) => {
   return (
     <NotificationContext.Provider value={''}>
       {children}
-      <NotificationRoot notifications={notifications} container={container} onClose={onClose} />
+      <NotificationRoot notifications={notifications} container={container} position={position} onClose={onClose} />
     </NotificationContext.Provider>
   );
 };
