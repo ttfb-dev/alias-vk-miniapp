@@ -5,7 +5,7 @@ import { emitter, events } from './emitter';
 import { useNotification } from './hooks';
 import { NotificationContext } from './NotificationContext';
 
-const NotificationProvider = ({ children, container, delay }) => {
+const NotificationProvider = ({ children, container, delay, limit }) => {
   const { notifications, dispatch } = useNotification();
 
   useEffect(() => {
@@ -13,6 +13,12 @@ const NotificationProvider = ({ children, container, delay }) => {
       const dupe = notifications.find((n) => n.code === notification.code);
       if (dupe) {
         return;
+      }
+
+      if (notifications.length >= limit) {
+        const firstId = notifications[0].id;
+
+        dispatch({ type: 'REMOVE', id: firstId });
       }
 
       dispatch({ type: 'ADD', notification });
@@ -33,7 +39,7 @@ const NotificationProvider = ({ children, container, delay }) => {
       hide();
       hideAll();
     };
-  }, [dispatch, notifications, delay]);
+  }, [dispatch, notifications, delay, limit]);
 
   const onClose = (id) => {
     emitter.emit(events.HIDE, id);
