@@ -133,7 +133,7 @@ const Room = ({ isSubscribing, ...props }) => {
                     expandable
                     hasHover={false}
                     hasActive={false}
-                    description={`${teamsCompleted} и ${teamsCount}`}
+                    description={`${teamsCompleted} из ${teamsCount}`}
                     onClick={() => router.pushModal(MODAL_TEAMS)}
                   >
                     Команды
