@@ -7,8 +7,9 @@ const getNextStep = ({ stepNumber, roundNumber, teamsCompleted, teams }) => {
   const teamsList = new LinkedList(filteredTeams);
   const nextTeam = teamsList.get(stepNumber - 1).next.data;
   const memberIdsList = new LinkedList(nextTeam.memberIds);
-  const nextExplainerId = memberIdsList.get((roundNumber - 1) % teamsCompleted).next.data;
-  const nextGuesserId = memberIdsList.get((roundNumber - 1) % teamsCompleted).next.next.data;
+  const membersCount = memberIdsList.size;
+  const nextExplainerId = memberIdsList.get((roundNumber - 1) % membersCount).next.data;
+  const nextGuesserId = memberIdsList.get((roundNumber - 1) % membersCount).next.next.data;
 
   const step = {
     teamId: nextTeam.teamId,

@@ -18,7 +18,7 @@ import {
   Panel,
   PanelSpinner,
   SimpleCell,
-  Snackbar,
+  Spacing,
   Tabbar,
   TabbarItem,
   Tooltip,
@@ -47,7 +47,6 @@ const Room = ({ isSubscribing, ...props }) => {
   const availableSets = useSelector((state) => state.room.availableSets);
 
   const [tooltipIndex, setTooltipIndex] = useState();
-  const [notReady, setNotReady] = useState(false);
 
   const hasTeam = useMemo(() => teams.some((team) => team.memberIds.includes(userId)), [teams, userId]);
   const isOwner = useMemo(() => userId === ownerId, [userId, ownerId]);
@@ -55,7 +54,7 @@ const Room = ({ isSubscribing, ...props }) => {
   const membersCount = useMemo(() => memberIds.length, [memberIds]);
   const setsActive = useMemo(() => sets.filter((set) => set.status === 'active').length, [sets]);
   const setsCount = useMemo(() => sets.length + availableSets.length, [sets, availableSets]);
-  const isReadyToStart = useMemo(() => teamsCompleted >= 2 && setsActive >= 1, [teamsCompleted, setsActive]);
+  const isReadyToStart = useMemo(() => teamsCompleted >= 1 && setsActive >= 1, [teamsCompleted, setsActive]);
 
   useEffect(() => {
     AppService.getTooltipIndex('roomTooltipIndex').then((index) => {
@@ -219,21 +218,26 @@ const Room = ({ isSubscribing, ...props }) => {
                   </Card>
                 </Div>
               ) : isOwner ? (
-                <Div onClick={() => setNotReady(true)}>
+                <Div>
                   <Button mode='primary' size='l' disabled={!isReadyToStart} stretched onClick={onGameStart}>
                     Начать игру
                   </Button>
+
+                  {!isReadyToStart && (
+                    <>
+                      <Spacing size={12} />
+                      <Card mode='shadow'>
+                        <MiniInfoCell before={<Icon20Info />} textLevel='secondary' textWrap='full'>
+                          Для начала игры небходимо минимум две укомплектованные команды и хотя бы один набор слов.
+                        </MiniInfoCell>
+                      </Card>
+                    </>
+                  )}
                 </Div>
               ) : null}
             </div>
 
             {tabbar}
-
-            {notReady && (
-              <Snackbar duration={3000} onClick={() => setNotReady(false)} onClose={() => setNotReady(false)}>
-                Для начала игры небходимо минимум две укомплектованные команды и минимум один набор слов.
-              </Snackbar>
-            )}
           </>
         )}
       </Container>

@@ -128,8 +128,9 @@ const Sets = ({ onClose, ...props }) => {
                   hasActive={false}
                   hasHover={false}
                   before={<CustomIcon type={set.icon} fill={'rgb(160, 160, 160)'} width={24} height={24} />}
-                  after={<ActionIcon onClick={onClick} />}
+                  after={<ActionIcon />}
                   description={set.description}
+                  onClick={onClick}
                 >
                   {set.name}
                 </SimpleCell>
