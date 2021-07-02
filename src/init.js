@@ -8,6 +8,8 @@ import { general, profile, room, store } from '@/store';
 
 import { creds, env, misc } from './config';
 
+let haveToJoinRoom = false;
+
 // store init
 store.client.start();
 if (creds.userId) {
@@ -17,8 +19,7 @@ if (creds.userId) {
 if (creds.userId && !misc.roomId) {
   store.dispatch.sync(room.action.whereIAm());
 } else if (creds.userId && misc.roomId) {
-  store.dispatch(room.action.setRoomId({ roomId: misc.roomId }));
-  store.dispatch.sync(room.action.join({ roomId: misc.roomId }));
+  haveToJoinRoom = true;
 }
 
 (async () => {
@@ -30,6 +31,9 @@ if (creds.userId && !misc.roomId) {
   router.start();
   if (!isFinished) {
     router.replacePage(PAGE_ONBOARDING);
+  } else if (haveToJoinRoom) {
+    store.dispatch(room.action.setRoomId({ roomId: misc.roomId }));
+    store.dispatch.sync(room.action.join({ roomId: misc.roomId }));
   }
 
   // if we have access for friends list then fetch it
