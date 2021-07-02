@@ -38,9 +38,7 @@ class AppService {
 
           await vkapi.storageSet(`is${capitalizeScope}AccessDenied`, 'true');
         });
-      }
-
-      if (appScope !== userScope) {
+      } else if (appScope !== userScope) {
         appScope = appScope.split(',');
         userScope = userScope.split(',');
         let deniedScope = appScope.filter((scope) => !userScope.includes(scope));
