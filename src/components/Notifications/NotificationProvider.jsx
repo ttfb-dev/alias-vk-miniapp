@@ -5,7 +5,9 @@ import { emitter, events } from './emitter';
 import { useNotification } from './hooks';
 import { NotificationContext } from './NotificationContext';
 
-const NotificationProvider = ({ children, container, delay, limit }) => {
+import './index.scss';
+
+const NotificationProvider = ({ children, container, delay = 3500, limit = 3, position = 'bottom' }) => {
   const { notifications, dispatch } = useNotification();
 
   useEffect(() => {
@@ -48,7 +50,7 @@ const NotificationProvider = ({ children, container, delay, limit }) => {
   return (
     <NotificationContext.Provider value={''}>
       {children}
-      <NotificationRoot notifications={notifications} container={container} onClose={onClose} />
+      <NotificationRoot notifications={notifications} container={container} position={position} onClose={onClose} />
     </NotificationContext.Provider>
   );
 };
