@@ -31,7 +31,13 @@ class AppService {
       this.#setToken(userScope, accessToken);
 
       if (userScope === '') {
-        return accessToken;
+        let deniedScope = appScope.split(',');
+
+        deniedScope.forEach(async (scope) => {
+          let capitalizeScope = capitalize(scope, 'en');
+
+          await vkapi.storageSet(`is${capitalizeScope}AccessDenied`, 'true');
+        });
       }
 
       if (appScope !== userScope) {
