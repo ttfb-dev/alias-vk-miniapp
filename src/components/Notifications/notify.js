@@ -1,4 +1,14 @@
-import { emitter, events, notifier } from './events';
+import { nanoid } from 'nanoid';
+
+import { emitter, events } from './emitter';
+
+const notifier = ({ title, message, type, code }) => ({
+  id: nanoid(),
+  title,
+  message,
+  type,
+  code,
+});
 
 const applyNotify = ({ ...notification }) => emitter.emit(events.SHOW, notifier({ ...notification }));
 

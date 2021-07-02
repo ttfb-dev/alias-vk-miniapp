@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { NotificationRoot } from './components';
-import { dispatcher, emitter, events } from './events';
+import { emitter, events } from './emitter';
 import { useNotification } from './hooks';
 import { NotificationContext } from './NotificationContext';
 
@@ -9,12 +9,31 @@ const NotificationProvider = ({ children, container, delay }) => {
   const { notifications, dispatch } = useNotification();
 
   useEffect(() => {
-    dispatcher({ dispatch, delay });
+    const show = emitter.on(events.SHOW, (notification) => {
+      const dupe = notifications.find((n) => n.code === notification.code);
+      if (dupe) {
+        return;
+      }
+
+      dispatch({ type: 'ADD', notification });
+
+      if (delay) {
+        setTimeout(() => {
+          dispatch({ type: 'REMOVE', id: notification.id });
+        }, delay);
+      }
+    });
+
+    const hide = emitter.on(events.HIDE, (id) => dispatch({ type: 'REMOVE', id }));
+
+    const hideAll = emitter.on(events.HIDE_ALL, () => dispatch({ type: 'REMOVE_ALL' }));
 
     return () => {
-      emitter.off();
+      show();
+      hide();
+      hideAll();
     };
-  }, [dispatch, delay]);
+  }, [dispatch, notifications, delay]);
 
   const onClose = (id) => {
     emitter.emit(events.HIDE, id);
