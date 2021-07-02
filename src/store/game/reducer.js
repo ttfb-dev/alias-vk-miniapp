@@ -130,7 +130,7 @@ const reducer = (state = initState, action) => {
     case stepEditWord.type: {
       const { word, index } = payload;
 
-      const score = word.guessed ? state.step.score + 1 : state.step.score - 1;
+      const score = word.guessed ? state.step.score + 2 : state.step.score - 2;
       const words = [...state.step.words.slice(0, index), word, ...state.step.words.slice(index + 1)];
 
       return {
