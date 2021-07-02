@@ -1,5 +1,7 @@
 import { Page, Router } from '@happysanta/router';
 
+import { env } from '../config';
+
 export const PAGE_HOME = '/';
 export const PAGE_ONBOARDING = '/onboarding';
 export const PAGE_ROOM = '/room';
@@ -43,6 +45,6 @@ export const router = new Router(routes, {
   defaultView: VIEW_MAIN,
   defaultPanel: PANEL_HOME,
   defaultPage: PAGE_HOME,
-  enableLogging: true,
+  enableLogging: env.isDev,
   preventSameLocationChange: true,
 });

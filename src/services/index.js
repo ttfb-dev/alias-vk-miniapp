@@ -65,7 +65,7 @@ class AppService {
     }
 
     const scope = 'friends';
-    const accessToken = this.#getToken(scope);
+    const accessToken = await this.#getToken(scope);
 
     const friendIds = await vkapi.callAPIMethod('friends.getAppUsers', {
       v: '5.131',
