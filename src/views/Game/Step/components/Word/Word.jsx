@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, CellButton, Div, Group, Header, Spacing } from '@vkontakte/vkui';
 
@@ -6,12 +6,24 @@ import { game } from '@/store';
 
 import styles from './Word.module.scss';
 
+let wordStartAt;
+
 export const Word = () => {
   const dispatch = useDispatch();
   const currentWord = useSelector((state) => state.game.currentWord);
   const wordsCount = useSelector((state) => state.game.wordsCount);
 
+  useEffect(() => {
+    wordStartAt = Date.now();
+  });
+
   const onSetWord = (guessed) => {
+    dispatch({
+      type: 'analytics/send',
+      event: 'word.guessing_duration',
+      data: { word: currentWord.value, wordIndex: currentWord.index, guessed, duration: Date.now() - wordStartAt },
+    });
+
     const word = { ...currentWord, guessed };
 
     dispatch.sync(game.action.stepSetWord({ word }));
