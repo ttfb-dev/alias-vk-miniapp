@@ -25,6 +25,12 @@ class AppService {
   };
 
   getAuthToken = async (appScope) => {
+    let denied = async (scope) => {
+      let capitalizeScope = capitalize(scope, 'en');
+
+      await vkapi.storageSet(`is${capitalizeScope}AccessDenied`, 'true');
+    };
+
     try {
       let { accessToken, scope: userScope } = await vkapi.getAuthToken(misc.appId, appScope);
 
@@ -33,21 +39,13 @@ class AppService {
       if (userScope === '') {
         let deniedScope = appScope.split(',');
 
-        deniedScope.forEach(async (scope) => {
-          let capitalizeScope = capitalize(scope, 'en');
-
-          await vkapi.storageSet(`is${capitalizeScope}AccessDenied`, 'true');
-        });
+        deniedScope.forEach((scope) => denied(scope));
       } else if (appScope !== userScope) {
         appScope = appScope.split(',');
         userScope = userScope.split(',');
         let deniedScope = appScope.filter((scope) => !userScope.includes(scope));
 
-        deniedScope.forEach(async (scope) => {
-          let capitalizeScope = capitalize(scope, 'en');
-
-          await vkapi.storageSet(`is${capitalizeScope}AccessDenied`, 'true');
-        });
+        deniedScope.forEach((scope) => denied(scope));
       }
 
       return accessToken;
@@ -55,9 +53,7 @@ class AppService {
       const { error_code, error_reason } = error_data;
 
       if (error_code === 4 && error_reason === 'User denied') {
-        const capitalizeScope = capitalize(appScope, 'en');
-
-        await vkapi.storageSet(`is${capitalizeScope}AccessDenied`, 'true');
+        denied(appScope);
       }
     }
   };
