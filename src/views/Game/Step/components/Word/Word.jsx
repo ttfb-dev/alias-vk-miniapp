@@ -18,7 +18,7 @@ export const Word = () => {
   });
 
   const onSetWord = (guessed) => {
-    dispatch({
+    dispatch.sync({
       type: 'analytics/send',
       event: 'word.guessing_duration',
       data: { word: currentWord.value, wordIndex: currentWord.index, guessed, duration: Date.now() - wordStartAt },
