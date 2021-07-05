@@ -40,6 +40,8 @@ class AppService {
         let deniedScope = appScope.split(',');
 
         deniedScope.forEach((scope) => denied(scope));
+
+        // vkapi.storageSet('scope', 'true');
       } else if (appScope !== userScope) {
         appScope = appScope.split(',');
         userScope = userScope.split(',');
@@ -81,8 +83,8 @@ class AppService {
     return friendProfiles;
   };
 
-  setOnboardingFinished = () => {
-    vkapi.storageSet('isOnboardingFinished', 'true');
+  setOnboardingFinished = async () => {
+    await vkapi.storageSet('isOnboardingFinished', 'true');
   };
 
   isOnboardingFinished = async () => {

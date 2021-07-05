@@ -49,7 +49,7 @@ import { creds, env, misc } from './config';
 // metrics init
 webVitals();
 
-if (env.isDev) {
+if (env.isProd) {
   import('./eruda').then(({ default: eruda }) => {
     window.eruda = eruda;
   });
