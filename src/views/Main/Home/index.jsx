@@ -23,14 +23,12 @@ const Home = (props) => {
   const [tooltipIndex, setTooltipIndex] = useState();
 
   useEffect(() => {
-    AppService.getTooltipIndex('homeTooltipIndex').then((index) => {
-      setTooltipIndex(index);
-    });
+    const index = AppService.getTooltipIndex('homeTooltipIndex');
+    setTooltipIndex(index);
   }, []);
 
   const onTooltipClose = (index) => {
     AppService.setTooltipIndex('homeTooltipIndex', index);
-
     setTooltipIndex(index);
   };
 

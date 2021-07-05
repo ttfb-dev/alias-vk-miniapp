@@ -91,14 +91,14 @@ class AppService {
     return Boolean(localStorage.getItem('isOnboardingFinished'));
   };
 
-  getTooltipIndex = async (key) => {
-    const { [key]: index } = await vkapi.storageGet([key]);
+  getTooltipIndex = (key) => {
+    const index = localStorage.getItem(key);
 
     return isNumeric(index) ? parseInt(index, 10) : 1;
   };
 
   setTooltipIndex = (key, index) => {
-    vkapi.storageSet(key, String(index));
+    localStorage.setItem(key, index);
   };
 }
 

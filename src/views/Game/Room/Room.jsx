@@ -57,9 +57,8 @@ const Room = ({ isSubscribing, ...props }) => {
   const isReadyToStart = useMemo(() => teamsCompleted >= 1 && setsActive >= 1, [teamsCompleted, setsActive]);
 
   useEffect(() => {
-    AppService.getTooltipIndex('roomTooltipIndex').then((index) => {
-      setTooltipIndex(index);
-    });
+    const index = AppService.getTooltipIndex('roomTooltipIndex');
+    setTooltipIndex(index);
   }, []);
 
   const qrCode = useMemo(() => {
@@ -77,7 +76,6 @@ const Room = ({ isSubscribing, ...props }) => {
 
   const onTooltipClose = (index) => {
     AppService.setTooltipIndex('roomTooltipIndex', index);
-
     setTooltipIndex(index);
   };
 
