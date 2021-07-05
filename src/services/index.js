@@ -25,10 +25,10 @@ class AppService {
   };
 
   getAuthToken = async (appScope) => {
-    let denied = async (scope) => {
+    let denied = (scope) => {
       let capitalizeScope = capitalize(scope, 'en');
 
-      await vkapi.storageSet(`is${capitalizeScope}AccessDenied`, 'true');
+      localStorage.setItem(`is${capitalizeScope}AccessDenied`, true);
     };
 
     try {
@@ -61,8 +61,8 @@ class AppService {
   };
 
   getFriendProfiles = async () => {
-    const { isFriendsAccessDenied } = await vkapi.storageGet(['isFriendsAccessDenied']);
-    if (isFriendsAccessDenied === 'true') {
+    const isFriendsAccessDenied = localStorage.getItem('isFriendsAccessDenied');
+    if (isFriendsAccessDenied) {
       return [];
     }
 
@@ -83,14 +83,12 @@ class AppService {
     return friendProfiles;
   };
 
-  setOnboardingFinished = async () => {
-    await vkapi.storageSet('isOnboardingFinished', 'true');
+  setOnboardingFinished = () => {
+    localStorage.setItem('isOnboardingFinished', true);
   };
 
   isOnboardingFinished = async () => {
-    const { isOnboardingFinished } = await vkapi.storageGet(['isOnboardingFinished']);
-
-    return isOnboardingFinished === 'true';
+    return Boolean(localStorage.getItem('isOnboardingFinished'));
   };
 
   getTooltipIndex = async (key) => {
