@@ -1,0 +1,18 @@
+version: '3.6'
+
+networks:
+  default:
+    external:
+      name: ttfb
+
+services:
+  nginx:
+    restart: 'no'
+    networks:
+      default:
+        aliases:
+          - alias.lc
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.alias.rule=Host(`alias.lc`)
+      - traefik.http.routers.alias.entrypoints=web

@@ -1,0 +1,15 @@
+version: '3.6'
+
+networks:
+  default:
+    external:
+      name: network
+
+services:
+  vk-miniapp-frontend:
+    container_name: vk-miniapp-frontend
+    build:
+      context: ./
+      dockerfile: ./build/nginx/Dockerfile
+    image: registry.gitlab.com/nastavnichestvo/vk-miniapp-frontend:nginx
+    restart: 'always'
