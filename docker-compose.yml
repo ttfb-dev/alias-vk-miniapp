@@ -11,5 +11,5 @@ services:
     build:
       context: ./
       dockerfile: ./build/nginx/Dockerfile
-    image: registry.gitlab.com/alias/vk-miniapp:nginx
+    image: registry.gitlab.com/aliasgame/vk-miniapp:nginx
     restart: 'always'
