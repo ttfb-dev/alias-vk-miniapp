@@ -17,3 +17,5 @@ const token = window.location.search.substring(1) ?? '';
 export const creds = { userId, token };
 export const env = { isDev, isProd };
 export const misc = { appId, communityId, roomId, tokenSettings };
+
+console.log(misc.tokenSettings); // eslint-disable-line
