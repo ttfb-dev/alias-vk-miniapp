@@ -1,0 +1,14 @@
+#!/bin/bash
+set -e
+
+export USER_ID=$(id -u)
+export GROUP_ID=$(id -g)
+
+docker network create network || true
+
+export COMPOSE_FILE=docker-compose.yml:docker-compose.dev.yml
+export COMPOSE_PROJECT_NAME=vk-miniapp-frontend
+
+docker-compose build
+docker-compose up -d --remove-orphans
+docker-compose logs -f
