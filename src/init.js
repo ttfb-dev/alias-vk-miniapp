@@ -13,8 +13,6 @@ import { creds, env, misc } from './config';
   await AppService.initApp();
   const isFinished = await AppService.isOnboardingFinished();
 
-  console.log(isFinished); // eslint-disable-line
-
   // store init
   store.client.start();
 
@@ -51,7 +49,7 @@ import { creds, env, misc } from './config';
 // metrics init
 webVitals();
 
-if (env.isProd) {
+if (true) {
   import('./eruda').then(({ default: eruda }) => {
     window.eruda = eruda;
   });
