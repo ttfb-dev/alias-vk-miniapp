@@ -53,9 +53,11 @@ if (true) {
   import('./eruda').then(({ default: eruda }) => {
     window.eruda = eruda;
   });
-
+}
+if (env.isDev) {
   window.sync = store.dispatch.sync;
-
+}
+if (env.isDev) {
   log(store.client);
   badge(store.client, {
     messages: badgeRu,
