@@ -90,6 +90,8 @@ class AppService {
   isOnboardingFinished = async () => {
     const { isOnboardingFinished } = await vkapi.storageGet(['isOnboardingFinished']);
 
+    console.log(isOnboardingFinished); // eslint-disable-line
+
     return isOnboardingFinished === 'true';
   };
 
