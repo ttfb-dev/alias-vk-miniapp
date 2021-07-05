@@ -13,6 +13,8 @@ import { creds, env, misc } from './config';
   await AppService.initApp();
   const isFinished = await AppService.isOnboardingFinished();
 
+  console.log(isFinished); // eslint-disable-line
+
   // store init
   store.client.start();
 
