@@ -6,7 +6,7 @@ networks:
       name: ttfb
 
 services:
-  nginx:
+  vk-miniapp-nginx:
     restart: 'no'
     networks:
       default:

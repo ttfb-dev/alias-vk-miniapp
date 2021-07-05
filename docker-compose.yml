@@ -6,10 +6,10 @@ networks:
       name: network
 
 services:
-  vk-miniapp-frontend:
-    container_name: vk-miniapp-frontend
+  vk-miniapp-nginx:
+    container_name: vk-miniapp-nginx
     build:
       context: ./
       dockerfile: ./build/nginx/Dockerfile
-    image: registry.gitlab.com/nastavnichestvo/vk-miniapp-frontend:nginx
+    image: registry.gitlab.com/alias/vk-miniapp:nginx
     restart: 'always'
