@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from '@happysanta/router';
 import { Icon16Add, Icon28InfoOutline, Icon28ScanViewfinderOutline, Icon28WorkOutline } from '@vkontakte/icons';
@@ -20,15 +20,11 @@ const Home = (props) => {
   const photos = useSelector((state) => state.general.friends.map((friend) => friend.photo_50));
   const firstNames = useSelector((state) => state.general.friends.map((friend) => friend.first_name));
 
-  const [tooltipIndex, setTooltipIndex] = useState();
-
-  useEffect(() => {
-    const index = AppService.getTooltipIndex('homeTooltipIndex');
-    setTooltipIndex(index);
-  }, []);
+  const [tooltipIndex, setTooltipIndex] = useState(AppService.getTooltipIndex('homeTooltipIndex'));
 
   const onTooltipClose = (index) => {
     AppService.setTooltipIndex('homeTooltipIndex', index);
+
     setTooltipIndex(index);
   };
 

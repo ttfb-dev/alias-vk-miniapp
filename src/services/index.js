@@ -28,7 +28,7 @@ class AppService {
     let denied = (scope) => {
       let capitalizeScope = capitalize(scope, 'en');
 
-      localStorage.setItem(`is${capitalizeScope}AccessDenied`, true);
+      window.localStorage.setItem(`is${capitalizeScope}AccessDenied`, true);
     };
 
     try {
@@ -40,8 +40,6 @@ class AppService {
         let deniedScope = appScope.split(',');
 
         deniedScope.forEach((scope) => denied(scope));
-
-        // vkapi.storageSet('scope', 'true');
       } else if (appScope !== userScope) {
         appScope = appScope.split(',');
         userScope = userScope.split(',');
@@ -61,7 +59,7 @@ class AppService {
   };
 
   getFriendProfiles = async () => {
-    const isFriendsAccessDenied = localStorage.getItem('isFriendsAccessDenied');
+    const isFriendsAccessDenied = window.localStorage.getItem('isFriendsAccessDenied');
     if (isFriendsAccessDenied) {
       return [];
     }
@@ -84,11 +82,13 @@ class AppService {
   };
 
   setOnboardingFinished = () => {
-    localStorage.setItem('isOnboardingFinished', true);
+    window.localStorage.setItem('isOnboardingFinished', true);
   };
 
-  isOnboardingFinished = async () => {
-    return Boolean(localStorage.getItem('isOnboardingFinished'));
+  isOnboardingFinished = () => {
+    const isOnboardingFinished = window.localStorage.getItem('isOnboardingFinished');
+
+    return isOnboardingFinished === 'true';
   };
 
   getTooltipIndex = (key) => {
@@ -98,7 +98,7 @@ class AppService {
   };
 
   setTooltipIndex = (key, index) => {
-    localStorage.setItem(key, index);
+    window.localStorage.setItem(key, index);
   };
 }
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from '@happysanta/router';
 import {
@@ -46,7 +46,7 @@ const Room = ({ isSubscribing, ...props }) => {
   const sets = useSelector((state) => state.room.sets);
   const availableSets = useSelector((state) => state.room.availableSets);
 
-  const [tooltipIndex, setTooltipIndex] = useState();
+  const [tooltipIndex, setTooltipIndex] = useState(AppService.getTooltipIndex('roomTooltipIndex'));
 
   const hasTeam = useMemo(() => teams.some((team) => team.memberIds.includes(userId)), [teams, userId]);
   const isOwner = useMemo(() => userId === ownerId, [userId, ownerId]);
@@ -55,11 +55,6 @@ const Room = ({ isSubscribing, ...props }) => {
   const setsActive = useMemo(() => sets.filter((set) => set.status === 'active').length, [sets]);
   const setsCount = useMemo(() => sets.length + availableSets.length, [sets, availableSets]);
   const isReadyToStart = useMemo(() => teamsCompleted >= 1 && setsActive >= 1, [teamsCompleted, setsActive]);
-
-  useEffect(() => {
-    const index = AppService.getTooltipIndex('roomTooltipIndex');
-    setTooltipIndex(index);
-  }, []);
 
   const qrCode = useMemo(() => {
     const url = `https://vk.com/app7856384#roomId=${roomId}`;
@@ -76,6 +71,7 @@ const Room = ({ isSubscribing, ...props }) => {
 
   const onTooltipClose = (index) => {
     AppService.setTooltipIndex('roomTooltipIndex', index);
+
     setTooltipIndex(index);
   };
 

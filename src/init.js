@@ -11,7 +11,7 @@ import { creds, env, misc } from './config';
 (async () => {
   // app init
   await AppService.initApp();
-  const isFinished = await AppService.isOnboardingFinished();
+  const isFinished = AppService.isOnboardingFinished();
 
   // store init
   store.client.start();
