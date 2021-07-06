@@ -1,7 +1,7 @@
 import { isNumeric } from '@vkontakte/vkjs';
 
 import vkapi from '@/api';
-import { capitalize } from '@/helpers';
+import { capitalize } from '@/lib';
 
 import { misc } from '../config';
 

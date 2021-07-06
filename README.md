@@ -1,70 +1,90 @@
-# Getting Started with Create React App
+Этот проект был запущен с [Create React App](https://create-react-app.dev/).
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Среда исполнения: **NodeJS v14**
 
-## Available Scripts
+## Структура проекта
 
-In the project directory, you can run:
+```
+src/
+  api/
+  components/
+  lib/
+  metrics/
+  services/
+  views/
+```
+
+- `api` - Обёртка для работы с `@vkontakte/vk-bridge` [https://vk.com/dev/vkbridge](https://vk.com/dev/vkbridge)
+- `components` - Общие компоненты проекта, из которых можно собрать страницы, либо использовать независимо. Допускается использовать `components` при описании какой-то страницы.
+- `lib` - Внутренняя бибилиотека общих вспомогательных функций. Допускается использовать `lib` при описании какой-то страницы или компонента.
+- `metrics` - Метрики производительности проекта. Для сбора данных используется `web-vitals` [https://github.com/GoogleChrome/web-vitals](https://github.com/GoogleChrome/web-vitals).
+- `views` - Страницы проекта. Вложенность должна отражать реальный роутинг в проекте.
+
+## Доступные скрипты
+
+Ниже представлен список скриптов доступных для исполнения:
 
 ### `yarn start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Запускает сервер в режиме `development`.<br />
+Сервер будет доступен по адресу [http://localhost:10888](http://localhost:10888).
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+В этом режиме страница перерисовывается при изменениях в исходом коде.<br />
+Также в консоль выводятся ошибки форматирования.
 
 ### `yarn build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Собирает приложение в режиме `production` в папку `build`.<br />
+Собирает приложение в режиме `production` и оптимизирует сборку для лучшей производительности.<br />
+Сборка минифицируется, а имена файлов имеют хэш.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### `yarn test`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Запускает среду для тестирования.<br />
+Больше информации о среде тестирования можно найти в разделе посвященному [тестированию](https://create-react-app.dev/docs/running-tests/).
 
-### `yarn eject`
+### `yarn lint`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Запускает все линтеры на проверку форматирования и исправление ошибок исходного кода.<br />
+Это алиас для:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+§ yarn lint:all:eslint
+§ yarn lint:all:prettier
+§ yarn lint:all:stylelint
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### `yarn lint:eslint`
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Запускает `eslint` на проверку форматирования и исправление ошибок исходного кода в заданной директории.
+Больше информации о линтинге можно найти на сайте [eslint](https://eslint.org/docs/user-guide/getting-started).
 
-## Learn More
+### `yarn link:prettier`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Запускает `prettier` на проверку форматирования и исправление ошибок исходного кода в заданной директории.
+Больше информации о линтинге можно найти на сайте [prettier](https://prettier.io/docs/en/install.html).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### `yarn lint:stylelint`
 
-### Code Splitting
+Запускает `stylelint` на проверку форматирования и исправление ошибок исходного кода в заданной директории.
+Больше информации о линтинге можно найти на сайте [stylelint](https://stylelint.io/user-guide/get-started).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### `yarn lint:all:eslint`
 
-### Analyzing the Bundle Size
+Запускает `eslint` для всех `.js, .jsx, .ts, .tsx` файлов в директории `src`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### `yarn lint:all:prettier`
 
-### Making a Progressive Web App
+Запускает `prettier` для всех файлов в директории `src`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### `yarn lint:all:stylelint`
 
-### Advanced Configuration
+Запускает `stylelint` для всех `.css, .scss` файлов в директории `src`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### `yarn update:deps`
 
-### Deployment
+Запускает интерактивное обновление зависимостей проекта.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### `yarn update:cssdb`
 
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Запускает обновление базы данных `caniuse-lite`
