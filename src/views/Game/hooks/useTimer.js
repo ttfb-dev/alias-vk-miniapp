@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
 
+import { store } from '@/store';
+
 const timeDiff = ({ initTime, round }) => {
-  const diff = (Date.now() - initTime) / 1000;
+  const timeFix = store.node.timeFix;
+  const fixedTime = Date.now() + timeFix;
+  const diff = (fixedTime - initTime) / 1000;
   const time = diff > 0 ? Math.floor(diff) : Math.ceil(diff);
   const timeLeft = round - Math.abs(time);
 
