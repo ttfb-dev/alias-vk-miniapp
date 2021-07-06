@@ -5,7 +5,6 @@ import { Button, ModalCard } from '@vkontakte/vkui';
 
 import vkapi from '@/api';
 import { notify } from '@/components';
-import { queryStringParse } from '@/helpers';
 import { MODAL_ENTER_CODE } from '@/router';
 import { room } from '@/store';
 
@@ -17,8 +16,8 @@ const QrCode = ({ onClose, ...props }) => {
     try {
       const { code_data } = await vkapi.openCodeReader();
       const url = new URL(code_data);
-      const hashParams = queryStringParse(url.hash);
-      const roomId = parseInt(hashParams?.roomId, 10);
+      const hashParams = new URLSearchParams(url.hash.substring(1));
+      const roomId = parseInt(hashParams.get('roomId'), 10);
 
       if (roomId) {
         dispatch.sync(room.action.join({ roomId }));

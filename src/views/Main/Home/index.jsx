@@ -7,7 +7,6 @@ import { Badge, Button, Div, Panel, Spacing, Tabbar, TabbarItem, Tooltip } from 
 import vkapi from '@/api';
 import { ReactComponent as Logo } from '@/assets/logo.svg';
 import { CustomUsersStack, notify } from '@/components';
-import { queryStringParse } from '@/helpers';
 import { MODAL_QR_CODE, MODAL_RULES, MODAL_SETS, PAGE_ROOM } from '@/router';
 import AppService from '@/services';
 import { room } from '@/store';
@@ -32,8 +31,8 @@ const Home = (props) => {
     try {
       const { code_data } = await vkapi.openCodeReader();
       const url = new URL(code_data);
-      const hashParams = queryStringParse(url.hash);
-      const roomId = parseInt(hashParams?.roomId, 10);
+      const hashParams = new URLSearchParams(url.hash.substring(1));
+      const roomId = parseInt(hashParams.get('roomId'), 10);
 
       if (roomId) {
         dispatch.sync(room.action.join({ roomId }));
