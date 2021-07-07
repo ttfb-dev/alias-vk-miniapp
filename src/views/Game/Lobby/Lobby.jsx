@@ -14,6 +14,7 @@ import { Round, Statistics, Team } from './components';
 import styles from './Lobby.module.scss';
 
 const Lobby = ({ isSubscribing, ...props }) => {
+  const client = useClient();
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.general.userId);
   const isDebug = useSelector((state) => state.general.isDebug);
@@ -22,7 +23,6 @@ const Lobby = ({ isSubscribing, ...props }) => {
   const stepNumber = useSelector((state) => state.game.stepNumber);
   const roundNumber = useSelector((state) => state.game.roundNumber);
   const step = useSelector((state) => state.game.step);
-  const client = useClient();
 
   const isExplainer = useMemo(() => userId === step?.explainerId, [userId, step]);
 

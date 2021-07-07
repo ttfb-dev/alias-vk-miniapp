@@ -19,9 +19,6 @@ const Main = (props) => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
 
-  // eslint-disable-next-line no-console
-  console.log(client.node.timeFix);
-
   useEffect(() => {
     const whereIAm = client.type(
       room.action.whereIAm.type,

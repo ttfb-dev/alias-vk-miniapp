@@ -40,7 +40,7 @@ if (!isFinished) {
   // app init
   await AppService.initApp();
   if (misc.tokenSettings?.includes('friends')) {
-    // если у есть права на получение инфы о друзьях пользователя, то запрашиваем этот список
+    // если у приложения есть права на получение инфы о друзьях пользователя, то запрашиваем этот список
     const friends = await AppService.getFriendProfiles();
     store.dispatch(general.action.setFriends({ friends }));
   }

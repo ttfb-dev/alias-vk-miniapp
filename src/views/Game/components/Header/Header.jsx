@@ -70,7 +70,7 @@ export const Header = () => {
             </>
           )}
           <CellButton mode='danger' centered onClick={onRoomLeave}>
-            Выйти из игры
+            Выйти из комнаты
           </CellButton>
         </List>
       </PanelHeaderContext>
