@@ -175,7 +175,6 @@ const Game = (props) => {
           />
         );
       case POPOUT_ROOM_LEAVE:
-      default:
         return (
           <Alert
             actions={[
@@ -197,6 +196,8 @@ const Game = (props) => {
             text='Вы уверены, что хотите выйти из игры и покинуть комнату?'
           />
         );
+      default:
+        return <></>;
     }
   })();
 
