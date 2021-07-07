@@ -147,60 +147,57 @@ const Game = (props) => {
   const onGameFinish = useCallback(() => dispatch.sync(game.action.finish()), [dispatch]);
   const onClose = useCallback(() => router.popPage(), [router]);
 
-  const roomLeaveAlert = (() => {
-    if (location.getPopupId() === POPOUT_ROOM_LEAVE) {
-      return (
-        <Alert
-          actions={[
-            {
-              title: 'Отмена',
-              autoclose: true,
-              mode: 'cancel',
-            },
-            {
-              title: 'Выйти',
-              autoclose: true,
-              mode: 'destructive',
-              action: onRoomLeave,
-            },
-          ]}
-          actionsLayout='horizontal'
-          onClose={onClose}
-          header='Выход из игры'
-          text='Вы уверены, что хотите выйти из игры и покинуть комнату?'
-        />
-      );
+  const leaveAlert = (() => {
+    // eslint-disable-next-line no-console
+    console.log(location.getPopupId());
+
+    switch (location.getPopupId()) {
+      case POPOUT_GAME_LEAVE:
+        return (
+          <Alert
+            actions={[
+              {
+                title: 'Отмена',
+                autoclose: true,
+                mode: 'cancel',
+              },
+              {
+                title: 'Закончить',
+                autoclose: true,
+                mode: 'destructive',
+                action: onGameFinish,
+              },
+            ]}
+            actionsLayout='horizontal'
+            onClose={onClose}
+            header='Закончить игру'
+            text='Вы уверены, что хотите закончить игру?'
+          />
+        );
+      case POPOUT_ROOM_LEAVE:
+      default:
+        return (
+          <Alert
+            actions={[
+              {
+                title: 'Отмена',
+                autoclose: true,
+                mode: 'cancel',
+              },
+              {
+                title: 'Выйти',
+                autoclose: true,
+                mode: 'destructive',
+                action: onRoomLeave,
+              },
+            ]}
+            actionsLayout='horizontal'
+            onClose={onClose}
+            header='Выход из игры'
+            text='Вы уверены, что хотите выйти из игры и покинуть комнату?'
+          />
+        );
     }
-
-    return <></>;
-  })();
-
-  const gameFinishAlert = (() => {
-    if (location.getPopupId() === POPOUT_GAME_LEAVE) {
-      return (
-        <Alert
-          actions={[
-            {
-              title: 'Отмена',
-              autoclose: true,
-              mode: 'cancel',
-            },
-            {
-              title: 'Закончить',
-              autoclose: true,
-              mode: 'destructive',
-              action: onGameFinish,
-            },
-          ]}
-          actionsLayout='horizontal'
-          onClose={onClose}
-          header='Закончить игру'
-          text='Вы уверены, что хотите закончить игру?'
-        />
-      );
-    }
-
-    return null;
   })();
 
   return (
@@ -209,7 +206,7 @@ const Game = (props) => {
       onSwipeBack={() => router.popPage()}
       history={location.hasOverlay() ? [] : location.getViewHistory(VIEW_GAME)}
       activePanel={location.getViewActivePanel(VIEW_GAME)}
-      popout={roomLeaveAlert || gameFinishAlert}
+      popout={leaveAlert}
     >
       <Room nav={PANEL_ROOM} isSubscribing={isSubscribing} />
 
