@@ -1,4 +1,4 @@
-import { CrossTabClient } from '@logux/client';
+import { Client } from '@logux/client';
 import { createStoreCreator } from '@logux/redux';
 import { combineReducers } from 'redux';
 
@@ -9,7 +9,7 @@ import { general } from './general';
 import { profile } from './profile';
 import { room } from './room';
 
-const client = new CrossTabClient({
+const client = new Client({
   subprotocol: '1.0.0',
   server: 'wss://mythanks.ru:443',
   userId: creds.userId,
