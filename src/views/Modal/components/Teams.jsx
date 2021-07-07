@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { track } from '@logux/client';
 import { useClient } from '@logux/client/react';
@@ -31,10 +31,16 @@ const TeamsComponent = ({ onClose, updateModalHeight, ...props }) => {
   const platform = usePlatform();
   const client = useClient();
   const dispatch = useDispatch();
+  const userId = useSelector((state) => state.general.userId);
   const teams = useSelector((state) => state.room.teams);
   const roomId = useSelector((state) => state.room.roomId);
-  const myTeamId = useSelector((state) => state.room.myTeamId);
   const members = useSelector((state) => state.room.members);
+
+  const myTeamId = useMemo(
+    () => teams.find((team) => team.memberIds.includes(userId))?.teamId ?? null,
+    [teams, userId],
+  );
+
   const [isEditActive, setIsEditActive] = useState(false);
 
   useLayoutEffect(() => {
@@ -57,20 +63,23 @@ const TeamsComponent = ({ onClose, updateModalHeight, ...props }) => {
     };
   }, [client]);
 
-  const onChange = useCallback(
-    (teamId) => {
-      if (!isEditActive) {
-        if (myTeamId === null) {
-          dispatch.sync(room.action.teamJoin({ teamId, roomId }));
-        } else if (teamId !== myTeamId) {
-          dispatch.sync(room.action.teamLeave({ roomId })).then(() => {
-            dispatch.sync(room.action.teamJoin({ teamId, roomId }));
-          });
+  const onChange = (teamId) => {
+    if (!isEditActive) {
+      const newTeams = teams.slice();
+
+      newTeams.forEach((team) => {
+        if (team.memberIds.includes(userId)) {
+          team.memberIds = team.memberIds.filter((memberId) => memberId !== userId);
         }
-      }
-    },
-    [dispatch, isEditActive, roomId, myTeamId],
-  );
+
+        if (team.teamId === teamId) {
+          team.memberIds.push(userId);
+        }
+      });
+
+      dispatch.sync(room.action.teamChange({ teams: newTeams }));
+    }
+  };
 
   const onDelete = (teamId) => {
     // const nextTeams = [...teams.slice(0, index), teams.slice(index + 1)];

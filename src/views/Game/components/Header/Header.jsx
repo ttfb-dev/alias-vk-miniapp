@@ -17,15 +17,19 @@ import { POPOUT_GAME_LEAVE, POPOUT_ROOM_LEAVE } from '@/router';
 export const Header = () => {
   const router = useRouter();
   const userId = useSelector((state) => state.general.userId);
+  const teams = useSelector((state) => state.room.teams);
   const teamsList = useSelector((state) => state.room.teamsList);
   const ownerId = useSelector((state) => state.room.ownerId);
   const settings = useSelector((state) => state.room.settings);
-  const myTeamId = useSelector((state) => state.room.myTeamId);
   const status = useSelector((state) => state.room.status);
   const [isOpened, setIsOpened] = useState(false);
 
   const isOwner = useMemo(() => userId === ownerId, [userId, ownerId]);
   const isGameStarted = useMemo(() => status === 'game', [status]);
+  const myTeamId = useMemo(
+    () => teams.find((team) => team.memberIds.includes(userId))?.teamId ?? null,
+    [teams, userId],
+  );
 
   const onRoomLeave = () => {
     setIsOpened(false);

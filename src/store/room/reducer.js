@@ -10,6 +10,7 @@ import {
   // teamDelete,
   // teamJoin,
   // teamLeave,
+  teamChange,
   whereIAm,
 } from './action';
 
@@ -38,7 +39,7 @@ const reducer = (state = initialState, action) => {
       const sets = gameWordDatasets.filter((set) => ['active', 'inactive'].includes(set.status));
       const availableSets = gameWordDatasets.filter((set) => set.status === 'available');
       const teamsList = teams.reduce((list, team) => ({ ...list, [team.teamId]: team }), {});
-      const teamsCompleted = teams.reduce((acc, team) => (acc += !!(team.memberIds.length > 1)), 0);
+      const teamsCompleted = teams.reduce((acc, team) => (acc += team.memberIds.length > 1), 0);
 
       return {
         ...state,
@@ -110,6 +111,24 @@ const reducer = (state = initialState, action) => {
         ...payload,
       };
 
+    case teamChange.type: {
+      const { teams } = payload;
+      const teamsList = teams.reduce((list, team) => ({ ...list, [team.teamId]: team }), {});
+      const teamsCompleted = teams.reduce((acc, team) => (acc += team.memberIds.length > 1), 0);
+
+      return {
+        ...state,
+        teams,
+        teamsList,
+        teamsCompleted,
+      };
+    }
+    case `${teamChange.type}_success`:
+      return {
+        ...state,
+        ...payload,
+      };
+
     case 'room/team_join':
     case 'room/team_leave':
     case 'room/team_create':
@@ -132,7 +151,7 @@ const reducer = (state = initialState, action) => {
     case 'room/team_deleted': {
       const { teams } = payload;
       const teamsList = teams.reduce((list, team) => ({ ...list, [team.teamId]: team }), {});
-      const teamsCompleted = teams.reduce((acc, team) => (acc += !!(team.memberIds.length > 1)), 0);
+      const teamsCompleted = teams.reduce((acc, team) => (acc += team.memberIds.length > 1), 0);
 
       return {
         ...state,
@@ -149,7 +168,7 @@ const reducer = (state = initialState, action) => {
       const sets = gameWordDatasets.filter((set) => ['active', 'inactive'].includes(set.status));
       const availableSets = gameWordDatasets.filter((set) => set.status === 'available');
       const teamsList = teams.reduce((list, team) => ({ ...list, [team.teamId]: team }), {});
-      const teamsCompleted = teams.reduce((acc, team) => (acc += !!(team.memberIds.length > 1)), 0);
+      const teamsCompleted = teams.reduce((acc, team) => (acc += team.memberIds.length > 1), 0);
 
       return {
         ...state,

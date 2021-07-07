@@ -6,6 +6,7 @@ const create = defineAction('room/create');
 const join = defineAction('room/join');
 const leave = defineAction('room/leave');
 const whereIAm = defineAction('room/where_i_am');
+const teamChange = defineAction('room/team_change');
 const teamJoin = defineAction('room/team_join');
 const teamLeave = defineAction('room/team_leave');
 const teamCreate = defineAction('room/team_create');
@@ -21,6 +22,7 @@ export {
   leave,
   setMembers,
   setRoomId,
+  teamChange,
   teamCreate,
   teamDelete,
   teamJoin,
