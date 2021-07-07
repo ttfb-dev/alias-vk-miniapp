@@ -32,10 +32,14 @@ export const Header = () => {
   );
 
   const onRoomLeave = () => {
+    setIsOpened(false);
+
     router.pushPopup(POPOUT_ROOM_LEAVE);
   };
 
   const onGameFinish = () => {
+    setIsOpened(false);
+
     router.pushPopup(POPOUT_GAME_LEAVE);
   };
 
