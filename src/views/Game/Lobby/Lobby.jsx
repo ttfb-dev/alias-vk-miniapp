@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useClient } from '@logux/client/react';
 import { Button, Div, Panel, PanelSpinner, Spacing } from '@vkontakte/vkui';
 
 import { Container } from '@/components';
@@ -21,11 +22,12 @@ const Lobby = ({ isSubscribing, ...props }) => {
   const stepNumber = useSelector((state) => state.game.stepNumber);
   const roundNumber = useSelector((state) => state.game.roundNumber);
   const step = useSelector((state) => state.game.step);
+  const client = useClient();
 
   const isExplainer = useMemo(() => userId === step?.explainerId, [userId, step]);
 
   const onStepStart = () => {
-    dispatch.sync(game.action.stepStart({ startedAt: Date.now() }));
+    dispatch.sync(game.action.stepStart({ startedAt: Date.now() - client.node.timeFix }));
   };
 
   const onNextStep = () => {
