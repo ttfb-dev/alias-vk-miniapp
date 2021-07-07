@@ -18,16 +18,18 @@ const NotificationRoot = memo(({ notifications, container, position, onClose }) 
     [position, platform],
   );
 
-  return mountNode
-    ? createPortal(
-        <section className={clsx(styles.container, styles[containerPosition], styles[platform])}>
-          {notifications.map((notification) => (
-            <Notification key={notification.id} onClose={onClose} {...notification} />
-          ))}
-        </section>,
-        mountNode,
-      )
-    : null;
+  return mountNode ? (
+    createPortal(
+      <section className={clsx(styles.container, styles[containerPosition], styles[platform])}>
+        {notifications.map((notification) => (
+          <Notification key={notification.id} onClose={onClose} {...notification} />
+        ))}
+      </section>,
+      mountNode,
+    )
+  ) : (
+    <></>
+  );
 });
 
 NotificationRoot.displayName = 'NotificationRoot';

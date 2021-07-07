@@ -172,7 +172,7 @@ const Game = (props) => {
       );
     }
 
-    return null;
+    return <></>;
   })();
 
   const gameFinishAlert = (() => {
