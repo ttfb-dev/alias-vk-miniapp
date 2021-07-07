@@ -18,8 +18,6 @@ const NotificationRoot = memo(({ notifications, container, position, onClose }) 
     [position, platform],
   );
 
-  console.log(mountNode); // eslint-disable-line
-
   return mountNode
     ? createPortal(
         <section className={clsx(styles.container, styles[containerPosition], styles[platform])}>
