@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button, Div, Panel, PanelSpinner, Spacing } from '@vkontakte/vkui';
 
 import { Container } from '@/components';
-import { game } from '@/store';
+import { game, store } from '@/store';
 
 import { Header } from '../components';
 import { getNextStep } from '../helpers';
@@ -23,7 +23,7 @@ const Step = ({ isSubscribing, ...props }) => {
   const roundNumber = useSelector((state) => state.game.roundNumber);
   const statistics = useSelector((state) => state.game.statistics);
   const step = useSelector((state) => state.game.step);
-  const { time, status } = useTimer({ initTime: step?.startedAt ?? null });
+  const { time, status } = useTimer({ initTime: step?.startedAt ?? null, timeFix: store.client.node.timeFix ?? 0 });
 
   const isExplainer = useMemo(() => userId === step?.explainerId, [userId, step]);
   const isWatcher = useMemo(() => userId !== step?.explainerId, [userId, step]);

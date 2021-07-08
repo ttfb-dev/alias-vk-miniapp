@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button, Div, Panel, PanelSpinner, Spacing } from '@vkontakte/vkui';
 
 import { Container } from '@/components';
-import { game } from '@/store';
+import { game, store } from '@/store';
 
 import { Header } from '../components';
-import { getAbsoluteTime, getNextStep } from '../helpers';
+import { getNextStep } from '../helpers';
 
 import { Round, Statistics, Team } from './components';
 
@@ -25,7 +25,7 @@ const Lobby = ({ isSubscribing, ...props }) => {
   const isExplainer = useMemo(() => userId === step?.explainerId, [userId, step]);
 
   const onStepStart = () => {
-    dispatch.sync(game.action.stepStart({ startedAt: getAbsoluteTime() }));
+    dispatch.sync(game.action.stepStart({ startedAt: Date.now() - store.client.node.timeFix }));
   };
 
   const onNextStep = () => {
