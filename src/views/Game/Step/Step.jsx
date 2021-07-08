@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useClient } from '@logux/client/react';
 import { Button, Div, Panel, PanelSpinner, Spacing } from '@vkontakte/vkui';
 
 import { Container } from '@/components';
@@ -16,7 +15,6 @@ import styles from './Step.module.scss';
 
 const Step = ({ isSubscribing, ...props }) => {
   const dispatch = useDispatch();
-  const client = useClient();
   const userId = useSelector((state) => state.general.userId);
   const isDebug = useSelector((state) => state.general.isDebug);
   const teams = useSelector((state) => state.room.teams);
@@ -25,7 +23,7 @@ const Step = ({ isSubscribing, ...props }) => {
   const roundNumber = useSelector((state) => state.game.roundNumber);
   const statistics = useSelector((state) => state.game.statistics);
   const step = useSelector((state) => state.game.step);
-  const { time, status } = useTimer({ initTime: step?.startedAt - client.node.timeFix ?? null });
+  const { time, status } = useTimer({ initTime: step?.startedAt ?? null });
 
   const isExplainer = useMemo(() => userId === step?.explainerId, [userId, step]);
   const isWatcher = useMemo(() => userId !== step?.explainerId, [userId, step]);
