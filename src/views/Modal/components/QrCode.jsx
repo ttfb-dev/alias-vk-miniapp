@@ -1,10 +1,11 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 import { useRouter } from '@happysanta/router';
 import { Button, ModalCard } from '@vkontakte/vkui';
 
 import vkapi from '@/api';
-import { notify } from '@/components';
+import { Notification } from '@/components';
 import { MODAL_ENTER_CODE } from '@/router';
 import { room } from '@/store';
 
@@ -24,7 +25,9 @@ const QrCode = ({ onClose, ...props }) => {
       }
     } catch ({ error_data }) {
       if (error_data?.error_reason === 'Unsupported platform') {
-        notify.error({ message: 'Ваше устройство не поддерживает сканирование QR-кодов.', code: 'qr-unsupported' });
+        toast.error(<Notification message='Ваше устройство не поддерживает сканирование QR-кодов.' type='error' />, {
+          toastId: 'qr-unsupported',
+        });
       }
     }
   };

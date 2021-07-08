@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 import { useLocation, useRouter } from '@happysanta/router';
 import { track } from '@logux/client';
 import { useClient } from '@logux/client/react';
 import { ScreenSpinner, View } from '@vkontakte/vkui';
 
-import { notify } from '@/components';
+import { Notification } from '@/components';
 import { PAGE_ROOM, PANEL_HOME, PANEL_ONBOARDING, VIEW_MAIN } from '@/router';
 import { room } from '@/store';
 
@@ -55,7 +56,7 @@ const Main = (props) => {
           .catch(({ action }) => {
             setIsLoading(false);
 
-            notify.error({ message: action.message });
+            toast.error(<Notification message={action.message} type='error' />);
           });
       },
       { event: 'add' },

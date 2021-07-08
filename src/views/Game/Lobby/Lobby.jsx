@@ -1,9 +1,10 @@
 import React, { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useClient } from '@logux/client/react';
 import { Button, Div, Panel, PanelSpinner, Spacing } from '@vkontakte/vkui';
 
 import { Container } from '@/components';
-import { game, store } from '@/store';
+import { game } from '@/store';
 
 import { Header } from '../components';
 import { getNextStep } from '../helpers';
@@ -13,6 +14,7 @@ import { Round, Statistics, Team } from './components';
 import styles from './Lobby.module.scss';
 
 const Lobby = ({ isSubscribing, ...props }) => {
+  const client = useClient();
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.general.userId);
   const isDebug = useSelector((state) => state.general.isDebug);
@@ -25,7 +27,7 @@ const Lobby = ({ isSubscribing, ...props }) => {
   const isExplainer = useMemo(() => userId === step?.explainerId, [userId, step]);
 
   const onStepStart = () => {
-    dispatch.sync(game.action.stepStart({ startedAt: Date.now() - store.client.node.timeFix }));
+    dispatch.sync(game.action.stepStart({ startedAt: Date.now() - client.node.timeFix }));
   };
 
   const onNextStep = () => {

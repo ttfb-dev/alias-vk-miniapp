@@ -1,5 +1,6 @@
 import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import { track } from '@logux/client';
 import { useClient } from '@logux/client/react';
 import { Icon24Add } from '@vkontakte/icons';
@@ -22,7 +23,7 @@ import {
   withModalRootContext,
 } from '@vkontakte/vkui';
 
-import { notify } from '@/components';
+import { Notification } from '@/components';
 import { room } from '@/store';
 
 import styles from './index.module.scss';
@@ -33,15 +34,16 @@ const TeamsComponent = ({ onClose, updateModalHeight, ...props }) => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.general.userId);
   const teams = useSelector((state) => state.room.teams);
+  const teamsList = useSelector((state) => state.room.teamsList);
   const roomId = useSelector((state) => state.room.roomId);
   const members = useSelector((state) => state.room.members);
+
+  const [isEditActive, setIsEditActive] = useState(false);
 
   const myTeamId = useMemo(
     () => teams.find((team) => team.memberIds.includes(userId))?.teamId ?? null,
     [teams, userId],
   );
-
-  const [isEditActive, setIsEditActive] = useState(false);
 
   useLayoutEffect(() => {
     updateModalHeight();
@@ -52,7 +54,11 @@ const TeamsComponent = ({ onClose, updateModalHeight, ...props }) => {
       room.action.teamDelete.type,
       (_, meta) => {
         track(client, meta.id).catch(({ action }) => {
-          notify.error({ message: action.message });
+          toast.error(<Notification message={action.message} type='error' />, {
+            position: toast.POSITION.BOTTOM_CENTER,
+            toastId: 'team-delete',
+            newestOnTop: false,
+          });
         });
       },
       { event: 'add' },
@@ -91,7 +97,7 @@ const TeamsComponent = ({ onClose, updateModalHeight, ...props }) => {
   };
 
   const getFirstNames = (teamId) => {
-    const team = teams.find((team) => team.teamId === teamId);
+    const team = teamsList[teamId];
     const teamMembers = members.filter((member) => team?.memberIds.includes(member.id));
 
     return `${teamMembers.reduce((acc, { first_name }, index) => `${acc}${index === 0 ? '' : ', '}${first_name}`, '')}`;

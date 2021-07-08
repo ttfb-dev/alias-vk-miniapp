@@ -1,9 +1,10 @@
 import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useClient } from '@logux/client/react';
 import { Button, Div, Panel, PanelSpinner, Spacing } from '@vkontakte/vkui';
 
 import { Container } from '@/components';
-import { game, store } from '@/store';
+import { game } from '@/store';
 
 import { Header } from '../components';
 import { getNextStep } from '../helpers';
@@ -14,6 +15,7 @@ import { Score, Timer, Word, Words } from './components';
 import styles from './Step.module.scss';
 
 const Step = ({ isSubscribing, ...props }) => {
+  const client = useClient();
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.general.userId);
   const isDebug = useSelector((state) => state.general.isDebug);
@@ -23,7 +25,7 @@ const Step = ({ isSubscribing, ...props }) => {
   const roundNumber = useSelector((state) => state.game.roundNumber);
   const statistics = useSelector((state) => state.game.statistics);
   const step = useSelector((state) => state.game.step);
-  const { time, status } = useTimer({ initTime: step?.startedAt + store.client.node.timeFix ?? null });
+  const { time, status } = useTimer({ initTime: step?.startedAt + client.node.timeFix ?? null });
 
   const isExplainer = useMemo(() => userId === step?.explainerId, [userId, step]);
   const isWatcher = useMemo(() => userId !== step?.explainerId, [userId, step]);
