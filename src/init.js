@@ -47,7 +47,7 @@ if (!isFinished) {
 })();
 
 // metrics init
-webVitals({ enabled: false });
+webVitals();
 
 if (true) {
   import('./eruda').then(({ default: eruda }) => {

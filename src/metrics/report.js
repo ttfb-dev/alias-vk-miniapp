@@ -13,7 +13,7 @@ let webVitals = ({ enabled = isProd } = {}) => {
   let addToQueue = (data) => {
     let metric = {
       userId: creds.userId,
-      data,
+      ...data,
     };
 
     queue.add(metric);
@@ -23,7 +23,7 @@ let webVitals = ({ enabled = isProd } = {}) => {
     if (queue.size > 0) {
       let body = JSON.stringify([...queue]);
 
-      navigator.sendBeacon('/analytics', body);
+      navigator.sendBeacon('/metrics', body);
 
       queue.clear();
     }
