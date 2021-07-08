@@ -1,5 +1,7 @@
 import { getCLS, getFCP, getFID, getLCP, getTTFB } from 'web-vitals';
 
+import { creds } from '@/config';
+
 const isProd = process.env.NODE_ENV === 'production';
 
 let webVitals = ({ enabled = isProd } = {}) => {
@@ -8,7 +10,12 @@ let webVitals = ({ enabled = isProd } = {}) => {
   }
 
   let queue = new Set();
-  let addToQueue = (metric) => {
+  let addToQueue = (data) => {
+    let metric = {
+      userId: creds.userId,
+      data,
+    };
+
     queue.add(metric);
   };
 
