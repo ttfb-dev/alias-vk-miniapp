@@ -14,6 +14,8 @@ import {
 import { ReactComponent as Logo } from '@/assets/logo-mini.svg';
 import { POPOUT_GAME_LEAVE, POPOUT_ROOM_LEAVE } from '@/router';
 
+const settingsReady = false;
+
 export const Header = () => {
   const router = useRouter();
   const userId = useSelector((state) => state.general.userId);
@@ -63,7 +65,7 @@ export const Header = () => {
         <List>
           {isOwner && (
             <>
-              {!isGameStarted && (
+              {settingsReady && !isGameStarted && (
                 <CellButton mode='primary' centered>
                   Настройки
                 </CellButton>
