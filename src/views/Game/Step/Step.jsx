@@ -23,7 +23,7 @@ const Step = ({ isSubscribing, ...props }) => {
   const roundNumber = useSelector((state) => state.game.roundNumber);
   const statistics = useSelector((state) => state.game.statistics);
   const step = useSelector((state) => state.game.step);
-  const { time, status } = useTimer({ initTime: step?.startedAt ?? null, timeFix: store.client.node.timeFix ?? 0 });
+  const { time, status } = useTimer({ initTime: step?.startedAt + store.client.node.timeFix ?? null });
 
   const isExplainer = useMemo(() => userId === step?.explainerId, [userId, step]);
   const isWatcher = useMemo(() => userId !== step?.explainerId, [userId, step]);
