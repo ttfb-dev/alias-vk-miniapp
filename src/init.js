@@ -1,7 +1,7 @@
 import { badge, badgeRu, log } from '@logux/client';
 import { badgeStyles } from '@logux/client/badge/styles';
 
-// import { webVitals } from '@/metrics';
+import { webVitals } from '@/metrics';
 import { PAGE_ONBOARDING, router } from '@/router';
 import AppService from '@/services';
 import { general, profile, room, store } from '@/store';
@@ -47,7 +47,7 @@ if (!isFinished) {
 })();
 
 // metrics init
-// webVitals();
+webVitals({ enabled: false });
 
 if (true) {
   import('./eruda').then(({ default: eruda }) => {
