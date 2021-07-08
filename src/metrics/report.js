@@ -1,5 +1,6 @@
 import { getCLS, getFCP, getFID, getLCP, getTTFB } from 'web-vitals';
 
+import vkapi from '@/api';
 import { creds } from '@/config';
 
 const isProd = process.env.NODE_ENV === 'production';
@@ -34,6 +35,10 @@ let webVitals = ({ enabled = isProd } = {}) => {
   getFCP(addToQueue);
   getLCP(addToQueue);
   getTTFB(addToQueue);
+
+  vkapi.onViewHide(() => {
+    sendQueue();
+  });
 
   window.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'hidden') {
