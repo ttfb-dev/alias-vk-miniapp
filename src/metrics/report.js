@@ -31,8 +31,9 @@ let webVitals = ({ enabled = isProd } = {}) => {
 
   let sendQueue = () => {
     if (queue.size > 0) {
-      let headers = { type: 'application/json; charset=UTF-8' };
-      let body = new Blob([JSON.stringify([...queue])], headers);
+      let body = JSON.stringify([...queue]);
+
+      console.log(body); // eslint-disable-line
 
       navigator.sendBeacon('https://api.mythanks.ru/metrics', body);
 
@@ -47,6 +48,8 @@ let webVitals = ({ enabled = isProd } = {}) => {
   getTTFB(addToQueue);
 
   vkapi.onViewHide(() => {
+    console.log('onViewHide'); // eslint-disable-line
+
     sendQueue();
   });
 
