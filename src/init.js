@@ -25,15 +25,14 @@ if (creds.userId) {
 if (!isFinished) {
   // если онбординг не пройден, то редиректим туда
   router.replacePage(PAGE_ONBOARDING);
-} else {
-  if (creds.userId && !misc.roomId) {
-    // иначе если мы не знаем номер комнаты, то запрашиваем его
-    store.dispatch.sync(room.action.whereIAm());
-  } else if (creds.userId && misc.roomId) {
-    // если номер комнаты известен, то сохраняем номер и делаем джоин к комнате
-    store.dispatch(room.action.setRoomId({ roomId: misc.roomId }));
-    store.dispatch.sync(room.action.join({ roomId: misc.roomId }));
-  }
+}
+
+if (creds.userId && !misc.roomId) {
+  // если мы не знаем номер комнаты, то запрашиваем его
+  store.dispatch.sync(room.action.whereIAm());
+} else if (creds.userId && misc.roomId) {
+  // если номер комнаты известен, то сохраняем номер
+  store.dispatch(room.action.setRoomId({ roomId: misc.roomId }));
 }
 
 (async () => {

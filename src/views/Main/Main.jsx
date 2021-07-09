@@ -36,7 +36,6 @@ const Main = (props) => {
 
         if (action.roomId) {
           dispatch(room.action.setRoomId({ roomId: action.roomId }));
-          router.pushPage(PAGE_ROOM);
         }
       },
       { event: 'add' },

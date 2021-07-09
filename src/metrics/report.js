@@ -24,6 +24,8 @@ let webVitals = ({ enabled = isProd } = {}) => {
     if (queue.size > 0) {
       let body = JSON.stringify([...queue]);
 
+      console.log(body); // eslint-disable-line
+
       navigator.sendBeacon('/metrics', body);
 
       queue.clear();

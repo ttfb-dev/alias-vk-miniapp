@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useRouter } from '@happysanta/router';
 import { track } from '@logux/client';
@@ -127,11 +127,17 @@ const Game = (props) => {
       { event: 'add' },
     );
 
-    const leave = client.type(room.action.leave.type, (_, meta) => {
-      track(client, meta.id).then(() => {
-        router.pushPage(PAGE_HOME);
-      });
-    });
+    const leave = client.type(
+      room.action.leave.type,
+      (_, meta) => {
+        track(client, meta.id).then(() => {
+          router.pushPage(PAGE_HOME);
+
+          dispatch(room.action.setRoomId({ roomId: null }));
+        });
+      },
+      { event: 'add' },
+    );
 
     return () => {
       state();
@@ -143,9 +149,9 @@ const Game = (props) => {
     };
   }, [client, dispatch, router, location, teams, userId]);
 
-  const onRoomLeave = useCallback(() => dispatch.sync(room.action.leave()), [dispatch]);
-  const onGameFinish = useCallback(() => dispatch.sync(game.action.finish()), [dispatch]);
-  const onClose = useCallback(() => router.popPage(), [router]);
+  const onRoomLeave = () => dispatch.sync(room.action.leave());
+  const onGameFinish = () => dispatch.sync(game.action.finish());
+  const onClose = () => router.popPage();
 
   const alerts = (() => {
     switch (location.getPopupId()) {
