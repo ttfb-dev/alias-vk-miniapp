@@ -39,6 +39,8 @@ let webVitals = ({ enabled = isProd } = {}) => {
   getTTFB(addToQueue);
 
   vkapi.onViewHide(() => {
+    console.log('onViewHide'); // eslint-disable-line
+
     sendQueue();
   });
 
