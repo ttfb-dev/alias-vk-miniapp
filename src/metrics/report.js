@@ -26,7 +26,7 @@ let webVitals = ({ enabled = isProd } = {}) => {
 
       console.log(body); // eslint-disable-line
 
-      navigator.sendBeacon('/metrics', body);
+      navigator.sendBeacon('https://api.mythanks.ru/metrics', body);
 
       queue.clear();
     }
