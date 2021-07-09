@@ -3,6 +3,8 @@ import { getCLS, getFCP, getFID, getLCP, getTTFB } from 'web-vitals';
 import vkapi from '@/api';
 import { creds } from '@/config';
 
+import { thresholds } from './thresholds';
+
 const isProd = process.env.NODE_ENV === 'production';
 
 let webVitals = ({ enabled = isProd } = {}) => {
@@ -11,13 +13,20 @@ let webVitals = ({ enabled = isProd } = {}) => {
   }
 
   let queue = new Set();
-  let addToQueue = (data) => {
-    let metric = {
-      userId: creds.userId,
-      ...data,
-    };
+  let addToQueue = ({ id, delta, entries, name, value }) => {
+    let { error, warn } = thresholds[name];
 
-    queue.add(metric);
+    let event = value > error ? 'web-vitals.error' : value > warn ? 'web-vitals.warn' : null;
+
+    if (event) {
+      let metric = {
+        event,
+        userId: creds.userId,
+        data: { id, delta, entries, name, value },
+      };
+
+      queue.add(metric);
+    }
   };
 
   let sendQueue = () => {
