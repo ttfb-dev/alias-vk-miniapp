@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { UsersStack } from '@vkontakte/vkui';
 
-import { declension } from '@/lib';
+import { declension } from '@/shared/lib';
 
 const CustomUsersStack = ({ photos, firstNames, visibleCount, ...props }) => {
   const othersFirstNameCount = useMemo(() => Math.max(0, firstNames.length - visibleCount), [firstNames, visibleCount]);

@@ -1,4 +1,4 @@
-import { LinkedList } from '@/lib';
+import { LinkedList } from '@/shared/lib';
 
 const getNextStep = ({ stepNumber, roundNumber, teamsCompleted, teams }) => {
   const nextStepNumber = stepNumber >= teamsCompleted ? 1 : stepNumber + 1;

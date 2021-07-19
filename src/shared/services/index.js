@@ -1,8 +1,8 @@
 import { isNumeric } from '@vkontakte/vkjs';
 
-import { capitalize } from '@/lib';
 import vkapi from '@/shared/api';
 import { misc } from '@/shared/config';
+import { capitalize } from '@/shared/lib';
 
 class App {
   #tokens = new Map();

@@ -25,7 +25,7 @@ import {
 } from '@vkontakte/vkui';
 
 import { MODAL_MEMBERS, MODAL_RULES, MODAL_SETS, MODAL_SHARE_CODE, MODAL_TEAMS } from '@/app/router';
-import { declension } from '@/lib';
+import { declension } from '@/shared/lib';
 import App from '@/shared/services';
 import { Container } from '@/shared/ui';
 import { game } from '@/store';
