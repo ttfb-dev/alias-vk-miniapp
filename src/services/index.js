@@ -1,11 +1,10 @@
 import { isNumeric } from '@vkontakte/vkjs';
 
-import vkapi from '@/api';
 import { capitalize } from '@/lib';
+import vkapi from '@/shared/api';
+import { misc } from '@/shared/config';
 
-import { misc } from '../config';
-
-class AppService {
+class App {
   #tokens = new Map();
 
   #getToken = async (scope) => {
@@ -20,7 +19,7 @@ class AppService {
     this.#tokens.set(scope, token);
   };
 
-  initApp = async () => {
+  init = async () => {
     await vkapi.initApp();
   };
 
@@ -102,4 +101,4 @@ class AppService {
   };
 }
 
-export default new AppService();
+export default new App();

@@ -2,7 +2,7 @@ import { CrossTabClient } from '@logux/client';
 import { createStoreCreator } from '@logux/redux';
 import { combineReducers } from 'redux';
 
-import { creds } from '../config';
+import { creds } from '@/shared/config';
 
 import { game } from './game';
 import { general } from './general';
