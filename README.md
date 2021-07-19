@@ -95,10 +95,10 @@
 Запускает все линтеры на проверку форматирования и исправление ошибок исходного кода.<br />
 Это алиас для:
 
-```bash
-§ yarn lint:all:eslint
-§ yarn lint:all:prettier
-§ yarn lint:all:stylelint
+```sh
+§ yarn lint:all:js
+§ yarn lint:all:css
+§ yarn format:all
 ```
 
 ### `yarn lint:js`
