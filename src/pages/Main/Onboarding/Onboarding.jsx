@@ -10,7 +10,7 @@ import {
 import { Button, FormItem, Gallery, Panel } from '@vkontakte/vkui';
 
 import { PAGE_HOME } from '@/app/router';
-import AppService from '@/services';
+import AppService from '@/shared/services';
 import { Container } from '@/shared/ui';
 import { general } from '@/store';
 

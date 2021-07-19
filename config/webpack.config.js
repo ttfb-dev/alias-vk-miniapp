@@ -321,7 +321,6 @@ module.exports = function (webpackEnv) {
         '@/assets': path.resolve('src/assets'),
         '@/lib': path.resolve('src/lib'),
         '@/pages': path.resolve('src/pages'),
-        '@/services': path.resolve('src/services'),
         '@/shared': path.resolve('src/shared'),
         '@/store': path.resolve('src/store'),
       },

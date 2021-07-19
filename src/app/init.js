@@ -1,8 +1,8 @@
 import { badge, badgeRu, log } from '@logux/client';
 import { badgeStyles } from '@logux/client/badge/styles';
 
-import App from '@/services';
 import { creds, env, misc } from '@/shared/config';
+import App from '@/shared/services';
 import { general, profile, room, store } from '@/store';
 
 import { webVitals } from './metrics';

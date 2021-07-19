@@ -26,7 +26,7 @@ import {
 
 import { MODAL_MEMBERS, MODAL_RULES, MODAL_SETS, MODAL_SHARE_CODE, MODAL_TEAMS } from '@/app/router';
 import { declension } from '@/lib';
-import AppService from '@/services';
+import AppService from '@/shared/services';
 import { Container } from '@/shared/ui';
 import { game } from '@/store';
 
