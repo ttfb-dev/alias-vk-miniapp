@@ -1,24 +1,71 @@
 Этот проект был запущен с [Create React App](https://create-react-app.dev/).
 
-Среда исполнения: **NodeJS v14**
+Среда исполнения: **NodeJS v14+**
 
-## Структура проекта
+## Абстракции
 
+### `Layers`
+
+Первый уровень абстрагирования
+
+- `app` - инициализация приложения _(init, styles, providers, ...)_
+- `pages` - страницы приложения _(user-page, ...)_
+- `features` - части функциональности приложения _(auth-by-oauth, ...)_
+- `entities` - бизнес-сущности _(viewer, order, ...)_
+- `shared` - переиспользуемый инфраструктурный код _(UIKit, libs, API, ...)_
+
+### `Slices`
+
+Второй уровень абстрагирования - **согласно бизнес-домену**
+
+Правила, по которым код разделяется на слайсы, _зависят от конкретного проекта и его бизнес-правил_ и не определяются методологией
+
+### `Segments`
+
+Третий уровень абстрагирования - **согласно назначению в реализации**
+
+- `ui` - UI-представление модуля _(components, widgets, canvas, ...)_
+- `model` - бизнес-логика модуля _(store, effects/actions, hooks/contracts, ...)_
+- `lib` - вспомогательные библиотеки
+- `api` - логика взаимодействия с API
+- `config` - модуль конфигурации приложения и его окружения
+
+## Структура приложения
+
+```sh
+└── src/
+    ├── app/                    # Layer: Приложение
+    |                           #
+    ├── pages/                  # Layer: Страницы
+    |   ├── {some-page}/        #     Slice: (н-р страница ProfilePage)
+    |   |   ├── lib/            #         Segment: Инфраструктурная-логика (хелперы)
+    |   |   ├── model/          #         Segment: Бизнес-логика
+    |   |   └── ui/             #         Segment: UI-логика
+    |   ...                     #
+    |                           #
+    ├── features/               # Layer: Фичи
+    |   ├── {some-feature}/     #     Slice: (н-р фича AuthByPhone)
+    |   |   ├── lib/            #         Segment: Инфраструктурная-логика (хелперы)
+    |   |   ├── model/          #         Segment: Бизнес-логика
+    |   |   └── ui/             #         Segment: UI-логика
+    |   ...                     #
+    |                           #
+    ├── entities/               # Layer: Бизнес-сущности
+    |   ├── {some-entity}/      #     Slice: (н-р сущность User)
+    |   |   ├── lib/            #         Segment: Инфраструктурная-логика (хелперы)
+    |   |   ├── model/          #         Segment: Бизнес-логика
+    |   |   └── ui/             #         Segment: UI-логика
+    |   ...                     #
+    |                           #
+    ├── shared/                 # Layer: Переиспользуемые ресурсы
+    |   ├── api/                #         Segment: Логика запросов к API
+    |   ├── config/             #         Segment: Конфигурация приложения
+    |   ├── lib/                #         Segment: Инфраструктурная логика приложения
+    |   └── ui/                 #         Segment: UIKit приложения
+    |   ...                     #
+    |                           #
+    └── index.js/              #
 ```
-src/
-  api/
-  components/
-  lib/
-  metrics/
-  services/
-  views/
-```
-
-- `api` - Обёртка для работы с `@vkontakte/vk-bridge` [https://vk.com/dev/vkbridge](https://vk.com/dev/vkbridge)
-- `components` - Общие компоненты проекта, из которых можно собрать страницы, либо использовать независимо. Допускается использовать `components` при описании какой-то страницы.
-- `lib` - Внутренняя бибилиотека общих вспомогательных функций. Допускается использовать `lib` при описании какой-то страницы или компонента.
-- `metrics` - Метрики производительности проекта. Для сбора данных используется `web-vitals` [https://github.com/GoogleChrome/web-vitals](https://github.com/GoogleChrome/web-vitals).
-- `views` - Страницы проекта. Вложенность должна отражать реальный роутинг в проекте.
 
 ## Доступные скрипты
 
@@ -54,30 +101,30 @@ src/
 § yarn lint:all:stylelint
 ```
 
-### `yarn lint:eslint`
+### `yarn lint:js`
 
 Запускает `eslint` на проверку форматирования и исправление ошибок исходного кода в заданной директории.
 Больше информации о линтинге можно найти на сайте [eslint](https://eslint.org/docs/user-guide/getting-started).
 
-### `yarn link:prettier`
+### `yarn format`
 
 Запускает `prettier` на проверку форматирования и исправление ошибок исходного кода в заданной директории.
 Больше информации о линтинге можно найти на сайте [prettier](https://prettier.io/docs/en/install.html).
 
-### `yarn lint:stylelint`
+### `yarn lint:css`
 
 Запускает `stylelint` на проверку форматирования и исправление ошибок исходного кода в заданной директории.
 Больше информации о линтинге можно найти на сайте [stylelint](https://stylelint.io/user-guide/get-started).
 
-### `yarn lint:all:eslint`
+### `yarn lint:all:js`
 
 Запускает `eslint` для всех `.js, .jsx, .ts, .tsx` файлов в директории `src`
 
-### `yarn lint:all:prettier`
+### `yarn format:all`
 
 Запускает `prettier` для всех файлов в директории `src`
 
-### `yarn lint:all:stylelint`
+### `yarn lint:all:css`
 
 Запускает `stylelint` для всех `.css, .scss` файлов в директории `src`
 
