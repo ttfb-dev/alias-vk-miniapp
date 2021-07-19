@@ -6,11 +6,11 @@ import { Button, Div, Panel, PanelSpinner, Spacing } from '@vkontakte/vkui';
 import { Container } from '@/shared/ui';
 import { game } from '@/store';
 
-import { Header } from '../components';
-import { getNextStep } from '../helpers';
-import { useTimer } from '../hooks';
+import { getNextStep } from '../lib/helpers';
+import { useTimer } from '../lib/hooks';
+import { Header } from '../ui';
 
-import { Score, Timer, Word, Words } from './components';
+import { Score, Timer, Word, Words } from './ui';
 
 import styles from './Step.module.scss';
 

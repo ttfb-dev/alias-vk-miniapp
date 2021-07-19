@@ -10,7 +10,7 @@ import {
 import { Button, FormItem, Gallery, Panel } from '@vkontakte/vkui';
 
 import { PAGE_HOME } from '@/app/router';
-import AppService from '@/shared/services';
+import App from '@/shared/services';
 import { Container } from '@/shared/ui';
 import { general } from '@/store';
 
@@ -58,12 +58,12 @@ const Onboarding = (props) => {
 
   const onNext = () => {
     if (isLast) {
-      AppService.getFriendProfiles()
+      App.getFriendProfiles()
         .then((friends) => {
           dispatch(general.action.setFriends({ friends }));
         })
         .finally(() => {
-          AppService.setOnboardingFinished();
+          App.setOnboardingFinished();
 
           router.pushPage(PAGE_HOME);
         });

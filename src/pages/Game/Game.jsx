@@ -22,7 +22,7 @@ import {
 } from '@/app/router';
 import { game, room } from '@/store';
 
-import { getInitStep } from './helpers';
+import { getInitStep } from './lib/helpers';
 import { Lobby } from './Lobby';
 import { Room } from './Room';
 import { Step } from './Step';

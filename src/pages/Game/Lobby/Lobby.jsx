@@ -6,10 +6,10 @@ import { Button, Div, Panel, PanelSpinner, Spacing } from '@vkontakte/vkui';
 import { Container } from '@/shared/ui';
 import { game } from '@/store';
 
-import { Header } from '../components';
-import { getNextStep } from '../helpers';
+import { getNextStep } from '../lib/helpers';
+import { Header } from '../ui';
 
-import { Round, Statistics, Team } from './components';
+import { Round, Statistics, Team } from './ui';
 
 import styles from './Lobby.module.scss';
 

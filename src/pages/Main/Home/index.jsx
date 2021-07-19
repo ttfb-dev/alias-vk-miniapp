@@ -8,7 +8,7 @@ import { Badge, Button, CellButton, Div, Panel, Spacing, Tabbar, TabbarItem, Too
 import { MODAL_QR_CODE, MODAL_RULES, MODAL_SETS, PAGE_ROOM } from '@/app/router';
 import { ReactComponent as Logo } from '@/assets/logo.svg';
 import vkapi from '@/shared/api';
-import AppService from '@/shared/services';
+import App from '@/shared/services';
 import { CustomUsersStack, Notification } from '@/shared/ui';
 import { room } from '@/store';
 
@@ -21,10 +21,10 @@ const Home = (props) => {
   const photos = useSelector((state) => state.general.friends.map((friend) => friend.photo_50));
   const firstNames = useSelector((state) => state.general.friends.map((friend) => friend.first_name));
 
-  const [tooltipIndex, setTooltipIndex] = useState(AppService.getTooltipIndex('homeTooltipIndex'));
+  const [tooltipIndex, setTooltipIndex] = useState(App.getTooltipIndex('homeTooltipIndex'));
 
   const onTooltipClose = (index) => {
-    AppService.setTooltipIndex('homeTooltipIndex', index);
+    App.setTooltipIndex('homeTooltipIndex', index);
 
     setTooltipIndex(index);
   };

@@ -26,11 +26,11 @@ import {
 
 import { MODAL_MEMBERS, MODAL_RULES, MODAL_SETS, MODAL_SHARE_CODE, MODAL_TEAMS } from '@/app/router';
 import { declension } from '@/lib';
-import AppService from '@/shared/services';
+import App from '@/shared/services';
 import { Container } from '@/shared/ui';
 import { game } from '@/store';
 
-import { Header } from '../components';
+import { Header } from '../ui';
 
 import styles from './Room.module.scss';
 
@@ -46,7 +46,7 @@ const Room = ({ isSubscribing, ...props }) => {
   const sets = useSelector((state) => state.room.sets);
   const availableSets = useSelector((state) => state.room.availableSets);
 
-  const [tooltipIndex, setTooltipIndex] = useState(AppService.getTooltipIndex('roomTooltipIndex'));
+  const [tooltipIndex, setTooltipIndex] = useState(App.getTooltipIndex('roomTooltipIndex'));
 
   const hasTeam = useMemo(() => teams.some((team) => team.memberIds.includes(userId)), [teams, userId]);
   const isOwner = useMemo(() => userId === ownerId, [userId, ownerId]);
@@ -70,7 +70,7 @@ const Room = ({ isSubscribing, ...props }) => {
   }, [roomId]);
 
   const onTooltipClose = (index) => {
-    AppService.setTooltipIndex('roomTooltipIndex', index);
+    App.setTooltipIndex('roomTooltipIndex', index);
 
     setTooltipIndex(index);
   };
