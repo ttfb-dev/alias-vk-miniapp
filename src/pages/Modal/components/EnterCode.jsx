@@ -21,7 +21,7 @@ const EnterCode = ({ onClose, ...props }) => {
   };
 
   const onChange = (e) => {
-    const roomId = parseInt(e.target.value, 10);
+    const roomId = e.target.value;
 
     setRoomId(roomId);
   };

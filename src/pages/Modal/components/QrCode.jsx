@@ -18,7 +18,7 @@ const QrCode = ({ onClose, ...props }) => {
       const { code_data } = await vkapi.openCodeReader();
       const url = new URL(code_data);
       const hashParams = new URLSearchParams(url.hash.substring(1));
-      const roomId = parseInt(hashParams.get('roomId'), 10);
+      const roomId = hashParams.get('roomId');
 
       if (roomId) {
         dispatch.sync(room.action.join({ roomId }));
