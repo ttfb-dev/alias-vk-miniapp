@@ -45,14 +45,7 @@ const EnterCode = ({ onClose, ...props }) => {
         }}
       >
         <FormItem>
-          <Input
-            getRef={ref}
-            type='number'
-            inputMode='numeric'
-            align='center'
-            placeholder='Номер комнаты'
-            onChange={onChange}
-          />
+          <Input getRef={ref} align='center' placeholder='Номер комнаты' onChange={onChange} />
         </FormItem>
         <MiniInfoCell before={<Icon20Info />} textLevel='secondary' textWrap='full'>
           Код вы можете получить у участников комнаты
