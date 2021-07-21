@@ -45,7 +45,7 @@ const ShareCode = ({ onClose, ...props }) => {
   }, [roomId]);
 
   const onShareCode = () => {
-    vkapi.share({ link: qrCode.url });
+    vkapi.share(qrCode.url);
   };
 
   const onCopyCode = async () => {
