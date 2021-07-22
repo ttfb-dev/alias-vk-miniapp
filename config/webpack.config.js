@@ -319,6 +319,8 @@ module.exports = function (webpackEnv) {
         ...(modules.webpackAliases || {}),
         '@/app': path.resolve('src/app'),
         '@/assets': path.resolve('src/assets'),
+        '@/entities': path.resolve('src/entities'),
+        '@/features': path.resolve('src/features'),
         '@/pages': path.resolve('src/pages'),
         '@/shared': path.resolve('src/shared'),
         '@/store': path.resolve('src/store'),
