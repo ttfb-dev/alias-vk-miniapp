@@ -1,0 +1,1 @@
+export { roomSetModel } from './model';
