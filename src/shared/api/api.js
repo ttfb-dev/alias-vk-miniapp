@@ -147,6 +147,10 @@ export class VKMiniAppAPI extends VKBridgeProvider {
     await this.bridge.send('VKWebAppDisableSwipeBack');
   };
 
+  showSubscriptionBox = async ({ action, item, subscription_id = undefined }) => {
+    await this.bridge.send('VKWebAppShowSubscriptionBox', { action, item, subscription_id });
+  };
+
   storageGet = async (keys) => {
     const data = await this.bridge.send('VKWebAppStorageGet', { keys });
 
