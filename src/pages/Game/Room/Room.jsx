@@ -24,7 +24,7 @@ import {
   Tooltip,
 } from '@vkontakte/vkui';
 
-import { MODAL_MEMBERS, MODAL_RULES, MODAL_SETS, MODAL_SHARE_CODE, MODAL_TEAMS } from '@/app/router';
+import { MODAL_MEMBERS, MODAL_ROOM_SETS, MODAL_RULES, MODAL_SHARE_CODE, MODAL_TEAMS } from '@/app/router';
 import { declension } from '@/shared/lib';
 import App from '@/shared/services';
 import { Container } from '@/shared/ui';
@@ -87,7 +87,7 @@ const Room = ({ isSubscribing, ...props }) => {
         <Icon28UserAddOutline />
       </TabbarItem>
       <TabbarItem
-        onClick={() => router.pushModal(MODAL_SETS, { from: 'room' })}
+        onClick={() => router.pushModal(MODAL_ROOM_SETS, { from: 'room' })}
         indicator={<Badge mode='prominent' />}
         selected
         text='Наборы слов'
@@ -181,7 +181,7 @@ const Room = ({ isSubscribing, ...props }) => {
                       'выбрано',
                       'выбрано',
                     ])}`}
-                    onClick={() => router.pushModal(MODAL_SETS, { from: 'room' })}
+                    onClick={() => router.pushModal(MODAL_ROOM_SETS, { from: 'room' })}
                   >
                     Наборы слов
                   </SimpleCell>

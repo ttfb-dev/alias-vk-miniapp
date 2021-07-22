@@ -10,6 +10,7 @@ import {
   MODAL_JOIN_GROUP,
   MODAL_MEMBERS,
   MODAL_QR_CODE,
+  MODAL_ROOM_SETS,
   MODAL_RULES,
   MODAL_SETS,
   MODAL_SHARE_CODE,
@@ -24,11 +25,12 @@ import {
   JoinGroup,
   Members,
   QrCode,
+  RoomSets,
   Rules,
   Sets,
   ShareCode,
   Teams,
-} from './components';
+} from './ui';
 
 const Modal = () => {
   const router = useRouter();
@@ -53,6 +55,7 @@ const Modal = () => {
       <Rules nav={MODAL_RULES} onClose={onClose} dynamicContentHeight settlingHeight={100} />
 
       <Sets nav={MODAL_SETS} onClose={onClose} dynamicContentHeight settlingHeight={100} />
+      <RoomSets nav={MODAL_ROOM_SETS} onClose={onClose} dynamicContentHeight settlingHeight={100} />
 
       <GameResults nav={MODAL_GAME_RESULTS} onClose={onClose} />
 

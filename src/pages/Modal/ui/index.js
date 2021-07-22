@@ -5,6 +5,7 @@ export { GameResults } from './GameResults';
 export { JoinGroup } from './JoinGroup';
 export { Members } from './Members';
 export { QrCode } from './QrCode';
+export { RoomSets } from './RoomSets';
 export { Rules } from './Rules';
 export { Sets } from './Sets';
 export { ShareCode } from './ShareCode';

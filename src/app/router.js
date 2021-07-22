@@ -24,6 +24,7 @@ export const MODAL_GAME_RESULTS = 'modal_game_results';
 export const MODAL_JOIN_GROUP = 'modal_join_group';
 export const MODAL_MEMBERS = 'modal_members';
 export const MODAL_QR_CODE = 'modal_qr_code';
+export const MODAL_ROOM_SETS = 'modal_room_sets';
 export const MODAL_RULES = 'modal_rules';
 export const MODAL_SETS = 'modal_sets';
 export const MODAL_SHARE_CODE = 'modal_share_code';

@@ -9,7 +9,21 @@ const reducer = (state = initialState, action) => {
   const { type, ...payload } = action;
 
   switch (type) {
-    case 'room/state':
+    case 'room/state': {
+      const {
+        room: { gameWordDatasets },
+      } = payload;
+
+      const sets = gameWordDatasets.filter((set) => ['active', 'inactive'].includes(set.status));
+      const availableSets = gameWordDatasets.filter((set) => set.status === 'available');
+
+      return {
+        ...state,
+        sets,
+        availableSets,
+      };
+    }
+
     case 'room/user_left':
     case 'room/dataset_purchased': {
       const { gameWordDatasets } = payload;
