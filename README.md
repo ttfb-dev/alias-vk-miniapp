@@ -38,21 +38,21 @@
     |                           #
     ├── pages/                  # Layer: Страницы
     |   ├── {some-page}/        #     Slice: (н-р страница ProfilePage)
-    |   |   ├── lib/            #         Segment: Инфраструктурная-логика (хелперы)
+    |   |   ├── lib/            #         Segment: Инфраструктурная логика страницы
     |   |   ├── model/          #         Segment: Бизнес-логика
     |   |   └── ui/             #         Segment: UI-логика
     |   ...                     #
     |                           #
     ├── features/               # Layer: Фичи
     |   ├── {some-feature}/     #     Slice: (н-р фича AuthByPhone)
-    |   |   ├── lib/            #         Segment: Инфраструктурная-логика (хелперы)
+    |   |   ├── lib/            #         Segment: Инфраструктурная логика фичи
     |   |   ├── model/          #         Segment: Бизнес-логика
     |   |   └── ui/             #         Segment: UI-логика
     |   ...                     #
     |                           #
     ├── entities/               # Layer: Бизнес-сущности
     |   ├── {some-entity}/      #     Slice: (н-р сущность User)
-    |   |   ├── lib/            #         Segment: Инфраструктурная-логика (хелперы)
+    |   |   ├── lib/            #         Segment: Инфраструктурная логика сущности
     |   |   ├── model/          #         Segment: Бизнес-логика
     |   |   └── ui/             #         Segment: UI-логика
     |   ...                     #
