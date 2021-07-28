@@ -7,12 +7,14 @@ const getSets = defineAction('profile/get_game_datasets');
 const toggleSet = defineAction('profile/toggle_dataset');
 const activateSet = defineAction('profile/activate_dataset');
 const deactivateSet = defineAction('profile/deactivate_dataset');
+const datasetsChanged = defineAction('profile/datasets_changed');
 
 export const creators = {
   getSets,
   toggleSet,
   activateSet,
   deactivateSet,
+  datasetsChanged,
 };
 
 export const actions = {
@@ -41,7 +43,8 @@ export const reducer = (state = initialState, action) => {
   switch (type) {
     case `${creators.getSets.type}_success`:
     case `${creators.activateSet.type}_success`:
-    case `${creators.deactivateSet.type}_success`: {
+    case `${creators.deactivateSet.type}_success`:
+    case `${creators.datasetsChanged.type}`: {
       const { datasets: sets } = payload;
 
       return sets;
