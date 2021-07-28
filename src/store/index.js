@@ -25,8 +25,12 @@ const store = createStore(
     general: general.reducer,
     profile: profile.reducer,
     room: room.reducer,
-    sets: setModel.reducer,
-    roomSets: roomSetModel.reducer,
+    user: combineReducers({
+      sets: setModel.reducer,
+    }),
+    roomNew: combineReducers({
+      sets: roomSetModel.reducer,
+    }),
   }),
 );
 

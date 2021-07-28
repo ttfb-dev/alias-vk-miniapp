@@ -1,1 +1,1 @@
-export { roomSetModel } from './model';
+export * as roomSetModel from './model';

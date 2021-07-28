@@ -1,2 +1,2 @@
-export { setModel } from './model';
-export { SetRow } from './ui';
+export * as setModel from './model';
+export * from './ui';
