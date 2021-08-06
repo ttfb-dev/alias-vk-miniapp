@@ -19,10 +19,9 @@ import {
   VKCOM,
 } from '@vkontakte/vkui';
 
-import { MODAL_JOIN_GROUP } from '@/app/router';
+import { MODAL_DONUT, MODAL_JOIN_GROUP } from '@/app/router';
 import { roomSetModel } from '@/entities/room-set';
 import { SetRow } from '@/entities/set';
-import { subscriptionService } from '@/shared/services/subscription';
 
 import styles from './index.module.scss';
 
@@ -88,7 +87,7 @@ export const RoomSets = ({ onClose, ...props }) => {
                   ActionIcon = Icon28UserAddOutline;
                   break;
                 case 'donut':
-                  onClick = () => subscriptionService.create();
+                  onClick = () => router.pushModal(MODAL_DONUT);
                   ActionIcon = Icon28DonateOutline;
                   break;
                 default:
