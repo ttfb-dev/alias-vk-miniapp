@@ -1,4 +1,5 @@
 import {
+  Icon16WindRain,
   Icon24AppleOutline,
   Icon28HorseToyOutline,
   Icon28PlaneOutline,
@@ -22,6 +23,8 @@ const CustomIcon = ({ type, ...props }) => {
       return <Icon36Hearts2Outline {...props} />;
     case 'star':
       return <Icon56FavoriteOutline {...props} />;
+    case 'wind':
+      return <Icon16WindRain {...props} />;
     default:
       return <Icon28SmartphoneStarsOutline {...props} />;
   }
