@@ -46,6 +46,7 @@ export const reducer = (state = initialState, action) => {
     }
 
     case 'room/user_left':
+    case 'room/user_joined':
     case 'room/dataset_purchased': {
       const { gameWordDatasets } = payload;
 
