@@ -28,7 +28,7 @@ export const Sets = ({ onClose, ...props }) => {
   const platform = usePlatform();
 
   const purchasedSets = setModel.selectors.usePurchasedSets();
-  const availableSets = setModel.selectors.useAvailableSets();
+  const availableSets = setModel.selectors.useAvailableSets().filter((set) => platform !== IOS || set.type !== 'donut');
 
   return (
     <ModalPage

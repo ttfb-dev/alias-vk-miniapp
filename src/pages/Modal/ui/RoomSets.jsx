@@ -34,7 +34,9 @@ export const RoomSets = ({ onClose, ...props }) => {
   const isOwner = useMemo(() => userId === ownerId, [userId, ownerId]);
 
   const purchasedSets = roomSetModel.selectors.usePurchasedSets();
-  const availableSets = roomSetModel.selectors.useAvailableSets();
+  const availableSets = roomSetModel.selectors
+    .useAvailableSets()
+    .filter((set) => platform !== IOS || set.type !== 'donut');
 
   return (
     <ModalPage
