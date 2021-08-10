@@ -18,6 +18,7 @@
   ],
   "keywords": [],
   "license": "MIT",
+  "homepage": "./",
   "scripts": {
     "start": "cross-env PORT=10888 HTTPS=true node scripts/start.js",
     "build": "node scripts/build.js",

@@ -13,6 +13,7 @@ package-lock.json
 
 # production
 *.zip
+dist
 
 # misc
 .idea
