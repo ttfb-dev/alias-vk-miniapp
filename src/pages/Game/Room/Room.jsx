@@ -216,7 +216,7 @@ const Room = ({ isSubscribing, ...props }) => {
                       <Spacing size={12} />
                       <Card mode='shadow'>
                         <MiniInfoCell before={<Icon20Info />} textLevel='secondary' textWrap='full'>
-                          Для начала игры небходимо минимум две укомплектованные команды и хотя бы один набор слов.
+                          Для начала игры небходима минимум одна укомплектованная команда и хотя бы один набор слов.
                         </MiniInfoCell>
                       </Card>
                     </>
