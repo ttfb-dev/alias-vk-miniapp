@@ -61,7 +61,11 @@ export const Sets = ({ onClose, ...props }) => {
               key={set.datasetId}
               set={set}
               action={
-                <Switch checked={set.status === 'active'} onChange={() => setModel.actions.toggleSet(set.datasetId)} />
+                <Switch
+                  checked={set.status === 'active'}
+                  onChange={() => setModel.actions.toggleSet(set.datasetId)}
+                  className={styles.cursorPointer}
+                />
               }
             />
           ))}

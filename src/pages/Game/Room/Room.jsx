@@ -83,10 +83,16 @@ const Room = ({ isSubscribing, ...props }) => {
 
   const tabbar = (
     <Tabbar>
-      <TabbarItem onClick={() => router.pushModal(MODAL_TEAMS)} selected text='Команды'>
+      <TabbarItem
+        onClick={() => router.pushModal(MODAL_TEAMS)}
+        selected
+        text='Команды'
+        className={styles.cursorPointer}
+      >
         <Icon28UserAddOutline />
       </TabbarItem>
       <TabbarItem
+        className={styles.cursorPointer}
         onClick={() => router.pushModal(MODAL_ROOM_SETS, { from: 'room' })}
         indicator={<Badge mode='prominent' />}
         selected
@@ -94,10 +100,20 @@ const Room = ({ isSubscribing, ...props }) => {
       >
         <Icon28WorkOutline />
       </TabbarItem>
-      <TabbarItem onClick={() => router.pushModal(MODAL_SHARE_CODE)} selected text='QR-код'>
+      <TabbarItem
+        onClick={() => router.pushModal(MODAL_SHARE_CODE)}
+        selected
+        text='QR-код'
+        className={styles.cursorPointer}
+      >
         <Icon28QrCodeOutline />
       </TabbarItem>
-      <TabbarItem onClick={() => router.pushModal(MODAL_RULES)} selected text='Правила'>
+      <TabbarItem
+        onClick={() => router.pushModal(MODAL_RULES)}
+        selected
+        text='Правила'
+        className={styles.cursorPointer}
+      >
         <Icon28InfoOutline />
       </TabbarItem>
     </Tabbar>

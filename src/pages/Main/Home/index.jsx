@@ -54,6 +54,7 @@ const Home = (props) => {
   const tabbar = (
     <Tabbar>
       <TabbarItem
+        className={styles.cursorPointer}
         onClick={() => {
           if (tooltipIndex === 3) {
             return;
@@ -77,10 +78,11 @@ const Home = (props) => {
           <Icon28WorkOutline />
         </Tooltip>
       </TabbarItem>
-      <TabbarItem onClick={onScanQR} selected text='QR-код'>
+      <TabbarItem onClick={onScanQR} selected text='QR-код' className={styles.cursorPointer}>
         <Icon28ScanViewfinderOutline />
       </TabbarItem>
       <TabbarItem
+        className={styles.cursorPointer}
         onClick={() => {
           router.pushModal(MODAL_RULES);
         }}

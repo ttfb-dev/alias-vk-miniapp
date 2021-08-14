@@ -73,6 +73,7 @@ export const RoomSets = ({ onClose, ...props }) => {
                   checked={set.status === 'active'}
                   disabled={!isOwner}
                   onChange={() => roomSetModel.actions.toggleSet(set.datasetId)}
+                  className={styles.cursorPointer}
                 />
               }
             />
