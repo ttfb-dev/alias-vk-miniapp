@@ -21,7 +21,7 @@ const JoinGroup = (props) => {
       onClose={onBack}
       icon={<Icon56UserAddOutline />}
       header='Вступи в нашу группу, чтобы разблокировать этот набор'
-      subheader='Там ты сможешь выбирать какой следующий набор мы выпустим :)'
+      subheader='Там ты сможешь выбирать, какой следующий набор мы выпустим :)'
       actions={
         <Button size='l' mode='primary' onClick={onJoin}>
           Давайте
