@@ -25,6 +25,7 @@ import {
 } from '@vkontakte/vkui';
 
 import { MODAL_MEMBERS, MODAL_ROOM_SETS, MODAL_RULES, MODAL_SHARE_CODE, MODAL_TEAMS } from '@/app/router';
+import { roomSetModel } from '@/entities/room-set';
 import { declension } from '@/shared/lib';
 import App from '@/shared/services';
 import { Container } from '@/shared/ui';
@@ -43,8 +44,8 @@ const Room = ({ isSubscribing, ...props }) => {
   const roomId = useSelector((state) => state.room.roomId);
   const ownerId = useSelector((state) => state.room.ownerId);
   const members = useSelector((state) => state.room.members);
-  const sets = useSelector((state) => state.room.sets);
-  const availableSets = useSelector((state) => state.room.availableSets);
+  const sets = useSelector((roomSetModel) => roomSetModel.room.sets);
+  const availableSets = roomSetModel.selectors.useAvailableSets();
 
   const [tooltipIndex, setTooltipIndex] = useState(App.getTooltipIndex('roomTooltipIndex'));
 
@@ -52,7 +53,7 @@ const Room = ({ isSubscribing, ...props }) => {
   const isOwner = useMemo(() => userId === ownerId, [userId, ownerId]);
   const teamsCount = useMemo(() => teams.length, [teams]);
   const membersCount = useMemo(() => members.length, [members]);
-  const setsActive = useMemo(() => sets.filter((set) => set.status === 'active').length, [sets]);
+  const setsActive = roomSetModel.selectors.useActiveSets();
   const setsCount = useMemo(() => sets.length + availableSets.length, [sets, availableSets]);
   const isReadyToStart = useMemo(() => teamsCompleted >= 1 && setsActive >= 1, [teamsCompleted, setsActive]);
 

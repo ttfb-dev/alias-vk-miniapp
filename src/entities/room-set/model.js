@@ -18,6 +18,10 @@ export const actions = {
 };
 
 export const selectors = {
+  useSets: () => {
+    return useSelector((store) => store.roomNew.sets);
+  },
+
   useSet: (id) => {
     return useSelector((store) => store.roomNew.sets.find((set) => set?.datasetId === id));
   },
@@ -28,6 +32,10 @@ export const selectors = {
 
   useAvailableSets: () => {
     return useSelector((store) => store.roomNew.sets.filter((set) => set?.status === 'available'));
+  },
+
+  useActiveSets: () => {
+    return useSelector((store) => store.roomNew.sets.filter((set) => set?.status === 'active').length);
   },
 };
 
