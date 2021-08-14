@@ -34,7 +34,7 @@ export const Statistics = () => {
         </List>
       ) : (
         <Placeholder icon={<Icon24CupOutline width={48} height={48} />}>
-          Здесь будет вестить статистика команд
+          Здесь будет вестись статистика команд
         </Placeholder>
       )}
     </Group>
