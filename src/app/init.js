@@ -1,8 +1,10 @@
+import { toast } from 'react-toastify';
 import { badge, badgeRu, log } from '@logux/client';
 import { badgeStyles } from '@logux/client/badge/styles';
 
 import { creds, env, misc } from '@/shared/config';
 import App from '@/shared/services';
+import { Notification } from '@/shared/ui';
 import { general, profile, room, store } from '@/store';
 
 import { webVitals } from './metrics';
@@ -32,7 +34,16 @@ if (creds.userId && !misc.roomId) {
   store.dispatch.sync(room.action.whereIAm());
 } else if (creds.userId && misc.roomId) {
   // если номер комнаты известен, то сохраняем номер
-  store.dispatch(room.action.setRoomId({ roomId: misc.roomId }));
+  store.dispatch.sync(room.action.whereIAm()).then(() => {
+    const state = store.getState();
+    if (state.room.roomId) {
+      toast.error(
+        <Notification message='Не удалось присоединиться. Вы уже находитесь в другой комнате' type='error' />,
+      );
+      return;
+    }
+    store.dispatch(room.action.setRoomId({ roomId: misc.roomId }));
+  });
 }
 
 (async () => {
