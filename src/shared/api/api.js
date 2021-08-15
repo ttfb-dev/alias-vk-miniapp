@@ -57,6 +57,12 @@ export class VKMiniAppAPI extends VKBridgeProvider {
     await this.bridge.send('VKWebAppClose', { status, payload });
   };
 
+  copyText = async ({ text }) => {
+    const done = await this.bridge.send('VKWebAppCopyText', { text });
+
+    return done;
+  };
+
   getAuthToken = async (appId, scope) => {
     const strScope = Array.isArray(scope) ? scope.join(',') : scope;
 

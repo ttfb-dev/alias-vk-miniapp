@@ -73,57 +73,58 @@ const ShareCode = ({ onClose, ...props }) => {
   }, [showCopyMessage]);
 
   return (
-    <ModalPage
-      {...props}
-      onClose={onClose}
-      header={
-        <ModalPageHeader
-          left={
-            (platform === ANDROID || platform === VKCOM) && (
-              <PanelHeaderClose onClick={onClose}>Закрыть</PanelHeaderClose>
-            )
-          }
-          right={platform === IOS && <PanelHeaderSubmit onClick={onClose}>Закрыть</PanelHeaderSubmit>}
-        >
-          QR-код
-        </ModalPageHeader>
-      }
-    >
-      <Div>
-        <Div className={styles.qrCodeWrapper} dangerouslySetInnerHTML={{ __html: qrCode.svg }} />
+    <>
+      <ModalPage
+        {...props}
+        onClose={onClose}
+        header={
+          <ModalPageHeader
+            left={
+              (platform === ANDROID || platform === VKCOM) && (
+                <PanelHeaderClose onClick={onClose}>Закрыть</PanelHeaderClose>
+              )
+            }
+            right={platform === IOS && <PanelHeaderSubmit onClick={onClose}>Закрыть</PanelHeaderSubmit>}
+          >
+            QR-код
+          </ModalPageHeader>
+        }
+      >
+        <Div>
+          <Div className={styles.qrCodeWrapper} dangerouslySetInnerHTML={{ __html: qrCode.svg }} />
 
-        <Text
-          style={{
-            textAlign: 'center',
-          }}
-        >
-          Передайте его другим участникам. Либо используйте текстовый код:
-          <br />
-          <Spacing size={12} />
-          <Text weight='semibold'>{roomId}</Text>
-        </Text>
+          <Text
+            style={{
+              textAlign: 'center',
+            }}
+          >
+            Передайте его другим участникам. Либо используйте текстовый код:
+            <br />
+            <Spacing size={12} />
+            <Text weight='semibold'>{roomId}</Text>
+          </Text>
 
-        <Spacing size={24} />
+          <Spacing size={24} />
 
-        <CustomUsersStack photos={photos} firstNames={firstNames} size='m' visibleCount={3} layout='vertical' />
+          <CustomUsersStack photos={photos} firstNames={firstNames} size='m' visibleCount={3} layout='vertical' />
 
-        <Spacing size={24} />
-      </Div>
-
-      <div className={styles.info}>
-        <Div className={styles.actions}>
-          <Button size='l' mode='primary' stretched onClick={onShareCode}>
-            Поделиться
-          </Button>
-          <Button size='l' mode='primary' stretched onClick={onCopyCode}>
-            Скопировать
-          </Button>
+          <Spacing size={24} />
         </Div>
-      </div>
 
+        <div className={styles.info}>
+          <Div className={styles.actions}>
+            <Button size='l' mode='primary' stretched onClick={onShareCode}>
+              Поделиться
+            </Button>
+            <Button size='l' mode='primary' stretched onClick={onCopyCode}>
+              Скопировать
+            </Button>
+          </Div>
+        </div>
+      </ModalPage>
       {showCopyMessage && (
         <Snackbar
-          duration={3000}
+          duration={2000}
           onClose={() => setShowCopyMessage(false)}
           before={
             <Avatar size={24} style={{ background: 'var(--accent)' }}>
@@ -134,7 +135,7 @@ const ShareCode = ({ onClose, ...props }) => {
           Код скопирован
         </Snackbar>
       )}
-    </ModalPage>
+    </>
   );
 };
 
