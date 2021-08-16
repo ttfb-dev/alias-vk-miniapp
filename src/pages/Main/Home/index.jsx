@@ -8,6 +8,7 @@ import { Badge, Button, CellButton, Div, Panel, Spacing, Tabbar, TabbarItem, Too
 import { MODAL_QR_CODE, MODAL_RULES, MODAL_SETS, PAGE_ROOM } from '@/app/router';
 import { ReactComponent as Logo } from '@/assets/logo.svg';
 import vkapi from '@/shared/api';
+import { misc } from '@/shared/config';
 import App from '@/shared/services';
 import { CustomUsersStack, Notification } from '@/shared/ui';
 import { room } from '@/store';
@@ -18,6 +19,7 @@ const Home = (props) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const roomId = useSelector((state) => state.room.roomId);
+  const hasHashRoomId = misc.roomId !== null;
   const photos = useSelector((state) => state.general.friends.map((friend) => friend.photo_50));
   const firstNames = useSelector((state) => state.general.friends.map((friend) => friend.first_name));
 
@@ -37,7 +39,7 @@ const Home = (props) => {
       const roomId = hashParams.get('roomId');
 
       if (roomId) {
-        dispatch.sync(room.action.join({ roomId }));
+        dispatch.sync(room.action.join({ roomId }).then(() => router.pushPage(PAGE_ROOM)));
       }
     } catch ({ error_data }) {
       if (error_data?.error_reason === 'Unsupported platform') {
@@ -111,11 +113,11 @@ const Home = (props) => {
         {roomId ? (
           <Div>
             <Button onClick={onJoinRoom} mode='primary' size='l' stretched>
-              Вернуться в комнату
+              {hasHashRoomId ? 'Подключиться к комнате' : 'Вернуться в комнату'}
             </Button>
             <Spacing size={12} />
             <CellButton mode='danger' centered onClick={onLeaveRoom}>
-              Выйти из комнаты
+              {hasHashRoomId ? 'Отмена' : 'Выйти из комнаты'}
             </CellButton>
           </Div>
         ) : (

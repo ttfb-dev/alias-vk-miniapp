@@ -36,13 +36,15 @@ if (creds.userId && !misc.roomId) {
   // если номер комнаты известен, то сохраняем номер
   store.dispatch.sync(room.action.whereIAm()).then(() => {
     const state = store.getState();
-    if (state.room.roomId) {
+    if (state.room.roomId && state.room.roomId !== misc.roomId) {
       toast.error(
         <Notification message='Не удалось присоединиться. Вы уже находитесь в другой комнате' type='error' />,
       );
       return;
     }
-    store.dispatch(room.action.setRoomId({ roomId: misc.roomId }));
+    if (state.room.roomId !== misc.roomId) {
+      store.dispatch.sync(room.action.join({ roomId: misc.roomId }));
+    }
   });
 }
 

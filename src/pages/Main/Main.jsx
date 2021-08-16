@@ -6,7 +6,7 @@ import { track } from '@logux/client';
 import { useClient } from '@logux/client/react';
 import { ScreenSpinner, View } from '@vkontakte/vkui';
 
-import { PAGE_ROOM, PANEL_HOME, PANEL_ONBOARDING, VIEW_MAIN } from '@/app/router';
+import { PANEL_HOME, PANEL_ONBOARDING, VIEW_MAIN } from '@/app/router';
 import { Notification } from '@/shared/ui';
 import { room } from '@/store';
 
@@ -49,8 +49,6 @@ const Main = (props) => {
         track(client, meta.id)
           .then(() => {
             setIsLoading(false);
-
-            router.pushPage(PAGE_ROOM);
           })
           .catch(({ action }) => {
             setIsLoading(false);
