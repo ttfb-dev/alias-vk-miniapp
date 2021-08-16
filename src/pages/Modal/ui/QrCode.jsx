@@ -25,7 +25,7 @@ const QrCode = ({ onClose, ...props }) => {
 
       if (roomId) {
         // eslint-disable-next-line no-console
-        console.log('called dispatch.sync');
+        console.log('called dispatch.sync', room);
         dispatch.sync(
           room.action.join({ roomId }).then((e) => {
             // eslint-disable-next-line no-console
