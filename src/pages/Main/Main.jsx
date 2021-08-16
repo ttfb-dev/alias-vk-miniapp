@@ -44,8 +44,6 @@ const Main = (props) => {
     const join = client.type(
       room.action.join.type,
       (_, meta) => {
-        // eslint-disable-next-line no-console
-        console.log('called join');
         setIsLoading(true);
 
         track(client, meta.id)

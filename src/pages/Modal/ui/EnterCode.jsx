@@ -20,7 +20,7 @@ const EnterCode = ({ onClose, ...props }) => {
   const onJoin = () => {
     if (roomId) {
       try {
-        dispatch.sync(room.action.join({ roomId }).then(() => router.pushPage(PAGE_ROOM)));
+        dispatch.sync(room.action.join({ roomId })).then(() => router.pushPage(PAGE_ROOM));
       } catch {
         toast.error(<Notification message='Комната не найдена' type='error' />);
       }

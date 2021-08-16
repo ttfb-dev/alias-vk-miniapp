@@ -22,6 +22,7 @@
   "scripts": {
     "start": "cross-env PORT=10888 HTTPS=true node scripts/start.js",
     "build": "node scripts/build.js",
+    "build-dist": "yarn build && rm dist.zip && zip -r dist.zip dist",
     "test": "node scripts/test.js",
     "lint": "npm-run-all lint:all:* format:all",
     "lint:js": "eslint --fix",
