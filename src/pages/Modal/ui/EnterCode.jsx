@@ -1,9 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 import { Icon20Info } from '@vkontakte/icons';
 import { Button, FormItem, FormLayout, Input, MiniInfoCell, ModalCard } from '@vkontakte/vkui';
 
 import { PAGE_ROOM, router } from '@/app/router';
+import { Notification } from '@/shared/ui';
 import { room } from '@/store';
 
 const EnterCode = ({ onClose, ...props }) => {
@@ -17,7 +19,11 @@ const EnterCode = ({ onClose, ...props }) => {
 
   const onJoin = () => {
     if (roomId) {
-      dispatch.sync(room.action.join({ roomId }).then(() => router.pushPage(PAGE_ROOM)));
+      try {
+        dispatch.sync(room.action.join({ roomId }).then(() => router.pushPage(PAGE_ROOM)));
+      } catch {
+        toast.error(<Notification message='Комната не найдена' type='error' />);
+      }
     }
   };
 
