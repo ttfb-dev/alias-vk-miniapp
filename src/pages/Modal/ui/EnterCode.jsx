@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { Icon20Info } from '@vkontakte/icons';
 import { Button, FormItem, FormLayout, Input, MiniInfoCell, ModalCard } from '@vkontakte/vkui';
 
+import { PAGE_ROOM, router } from '@/app/router';
 import { room } from '@/store';
 
 const EnterCode = ({ onClose, ...props }) => {
@@ -16,7 +17,7 @@ const EnterCode = ({ onClose, ...props }) => {
 
   const onJoin = () => {
     if (roomId) {
-      dispatch.sync(room.action.join({ roomId }));
+      dispatch.sync(room.action.join({ roomId }).then(() => router.pushPage(PAGE_ROOM)));
     }
   };
 
