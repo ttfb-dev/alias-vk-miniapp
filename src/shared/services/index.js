@@ -24,10 +24,10 @@ class App {
   };
 
   getAuthToken = async (appScope) => {
-    let denied = (scope) => {
+    let denied = async (scope) => {
       let capitalizeScope = capitalize(scope, 'en');
 
-      window.localStorage.setItem(`is${capitalizeScope}AccessDenied`, true);
+      await vkapi.storageSet(`is${capitalizeScope}AccessDenied`, true);
     };
 
     try {
@@ -38,13 +38,13 @@ class App {
       if (userScope === '') {
         let deniedScope = appScope.split(',');
 
-        deniedScope.forEach((scope) => denied(scope));
+        await deniedScope.forEach(async (scope) => await denied(scope));
       } else if (appScope !== userScope) {
         appScope = appScope.split(',');
         userScope = userScope.split(',');
         let deniedScope = appScope.filter((scope) => !userScope.includes(scope));
 
-        deniedScope.forEach((scope) => denied(scope));
+        await deniedScope.forEach(async (scope) => await denied(scope));
       }
 
       return accessToken;
@@ -52,13 +52,13 @@ class App {
       const { error_code, error_reason } = error_data;
 
       if (error_code === 4 && error_reason === 'User denied') {
-        denied(appScope);
+        await denied(appScope);
       }
     }
   };
 
   getFriendProfiles = async () => {
-    const isFriendsAccessDenied = window.localStorage.getItem('isFriendsAccessDenied');
+    const isFriendsAccessDenied = await vkapi.storageGet('isFriendsAccessDenied');
     if (isFriendsAccessDenied) {
       return [];
     }
@@ -80,24 +80,38 @@ class App {
     return friendProfiles;
   };
 
-  setOnboardingFinished = () => {
-    window.localStorage.setItem('isOnboardingFinished', true);
+  setOnboardingFinished = async () => {
+    await vkapi.storageSet('isOnboardingFinished', true);
   };
 
-  isOnboardingFinished = () => {
-    const isOnboardingFinished = window.localStorage.getItem('isOnboardingFinished');
+  isOnboardingFinished = async () => {
+    const isOnboardingFinished = await vkapi.storageGet('isOnboardingFinished');
 
     return isOnboardingFinished === 'true';
   };
 
-  getTooltipIndex = (key) => {
-    const index = localStorage.getItem(key);
+  getTooltipIndex = async (key) => {
+    const index = await vkapi.storageGet(key);
 
     return isNumeric(index) ? parseInt(index, 10) : 1;
   };
 
-  setTooltipIndex = (key, index) => {
-    window.localStorage.setItem(key, index);
+  setTooltipIndex = async (key, index) => {
+    await vkapi.storageSet(key, index);
+  };
+
+  cleanStorage = async () => {
+    const keys = [
+      'isfriendsAccessDenied',
+      'isOnboardingFinished',
+      'isFriendsAccessDenied',
+      'roomTooltipIndex',
+      'homeTooltipIndex',
+    ];
+
+    await keys.forEach(async (key) => {
+      await vkapi.storageSet(key, null);
+    });
   };
 }
 

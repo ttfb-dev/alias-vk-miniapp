@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from '@happysanta/router';
 import {
@@ -47,7 +47,14 @@ const Room = ({ isSubscribing, ...props }) => {
   const sets = useSelector((roomSetModel) => roomSetModel.room.sets);
   const availableSets = roomSetModel.selectors.useAvailableSets();
 
-  const [tooltipIndex, setTooltipIndex] = useState(App.getTooltipIndex('roomTooltipIndex'));
+  const [tooltipIndex, setTooltipIndex] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      const tooltipIndex = await App.getTooltipIndex('roomTooltipIndex');
+      setTooltipIndex(tooltipIndex);
+    })();
+  }, []);
 
   const hasTeam = useMemo(() => teams.some((team) => team.memberIds.includes(userId)), [teams, userId]);
   const isOwner = useMemo(() => userId === ownerId, [userId, ownerId]);
@@ -70,8 +77,8 @@ const Room = ({ isSubscribing, ...props }) => {
     return { url, svg };
   }, [roomId]);
 
-  const onTooltipClose = (index) => {
-    App.setTooltipIndex('roomTooltipIndex', index);
+  const onTooltipClose = async (index) => {
+    await App.setTooltipIndex('roomTooltipIndex', index);
 
     setTooltipIndex(index);
   };

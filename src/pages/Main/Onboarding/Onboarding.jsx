@@ -62,8 +62,8 @@ const Onboarding = (props) => {
         .then((friends) => {
           dispatch(general.action.setFriends({ friends }));
         })
-        .finally(() => {
-          App.setOnboardingFinished();
+        .finally(async () => {
+          await App.setOnboardingFinished();
 
           router.pushPage(PAGE_HOME);
         });

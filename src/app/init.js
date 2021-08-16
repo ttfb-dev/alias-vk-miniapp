@@ -10,45 +10,45 @@ import { general, profile, room, store } from '@/store';
 import { webVitals } from './metrics';
 import { PAGE_ONBOARDING, router } from './router';
 
-const isFinished = App.isOnboardingFinished();
-
-// store init
-store.client.start();
-
-// router init
-router.start();
-
-if (creds.userId) {
-  // если мы знаем айди, то сохраням его и запрашиваем сеты пользователя
-  store.dispatch(general.action.setUserId({ userId: parseInt(creds.userId, 10) }));
-  store.dispatch.sync(profile.action.getSets());
-}
-
-if (!isFinished) {
-  // если онбординг не пройден, то редиректим туда
-  router.replacePage(PAGE_ONBOARDING);
-}
-
-if (creds.userId && !misc.roomId) {
-  // если мы не знаем номер комнаты, то запрашиваем его
-  store.dispatch.sync(room.action.whereIAm());
-} else if (creds.userId && misc.roomId) {
-  // если номер комнаты известен, то сохраняем номер
-  store.dispatch.sync(room.action.whereIAm()).then(() => {
-    const state = store.getState();
-    if (state.room.roomId && state.room.roomId !== misc.roomId) {
-      toast.error(
-        <Notification message='Не удалось присоединиться. Вы уже находитесь в другой комнате' type='error' />,
-      );
-      return;
-    }
-    if (state.room.roomId !== misc.roomId) {
-      store.dispatch.sync(room.action.join({ roomId: misc.roomId }));
-    }
-  });
-}
-
 (async () => {
+  const isFinished = await App.isOnboardingFinished();
+
+  // store init
+  store.client.start();
+
+  // router init
+  router.start();
+
+  if (creds.userId) {
+    // если мы знаем айди, то сохраням его и запрашиваем сеты пользователя
+    store.dispatch(general.action.setUserId({ userId: parseInt(creds.userId, 10) }));
+    store.dispatch.sync(profile.action.getSets());
+  }
+
+  if (!isFinished) {
+    // если онбординг не пройден, то редиректим туда
+    router.replacePage(PAGE_ONBOARDING);
+  }
+
+  if (creds.userId && !misc.roomId) {
+    // если мы не знаем номер комнаты, то запрашиваем его
+    store.dispatch.sync(room.action.whereIAm());
+  } else if (creds.userId && misc.roomId) {
+    // если номер комнаты известен, то сохраняем номер
+    store.dispatch.sync(room.action.whereIAm()).then(() => {
+      const state = store.getState();
+      if (state.room.roomId && state.room.roomId !== misc.roomId) {
+        toast.error(
+          <Notification message='Не удалось присоединиться. Вы уже находитесь в другой комнате' type='error' />,
+        );
+        return;
+      }
+      if (state.room.roomId !== misc.roomId) {
+        store.dispatch.sync(room.action.join({ roomId: misc.roomId }));
+      }
+    });
+  }
+
   // app init
   await App.init();
   if (misc.tokenSettings?.includes('friends')) {
@@ -60,7 +60,7 @@ if (creds.userId && !misc.roomId) {
 
 // metrics init
 webVitals();
-if (env.isDev || misc.devUserIds.includes(parseInt(creds.userId))) {
+if (env.isDev || env.isDevUser) {
   import('./eruda').then(({ default: eruda }) => {
     window.eruda = eruda;
   });

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { useRouter } from '@happysanta/router';
@@ -23,10 +23,17 @@ const Home = (props) => {
   const photos = useSelector((state) => state.general.friends.map((friend) => friend.photo_50));
   const firstNames = useSelector((state) => state.general.friends.map((friend) => friend.first_name));
 
-  const [tooltipIndex, setTooltipIndex] = useState(App.getTooltipIndex('homeTooltipIndex'));
+  const [tooltipIndex, setTooltipIndex] = useState(false);
 
-  const onTooltipClose = (index) => {
-    App.setTooltipIndex('homeTooltipIndex', index);
+  useEffect(() => {
+    (async () => {
+      const tooltipIndex = await App.getTooltipIndex('homeTooltipIndex');
+      setTooltipIndex(tooltipIndex);
+    })();
+  }, []);
+
+  const onTooltipClose = async (index) => {
+    await App.setTooltipIndex('homeTooltipIndex', index);
 
     setTooltipIndex(index);
   };

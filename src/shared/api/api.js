@@ -157,14 +157,20 @@ export class VKMiniAppAPI extends VKBridgeProvider {
     await this.bridge.send('VKWebAppShowSubscriptionBox', { action, item, subscription_id });
   };
 
-  storageGet = async (keys) => {
+  storageGet = async (key) => {
+    const data = await this.storageGetMany([key]);
+
+    return data[key];
+  };
+
+  storageGetMany = async (keys) => {
     const data = await this.bridge.send('VKWebAppStorageGet', { keys });
 
     return data?.keys.length > 0 ? data.keys.reduce((acc, { key, value }) => ({ ...acc, [key]: value }), {}) : {};
   };
 
   storageSet = async (key, value) => {
-    await this.bridge.send('VKWebAppStorageSet', { key, value });
+    await this.bridge.send('VKWebAppStorageSet', { key: String(key), value: String(value) });
   };
 
   tapticImpactOccurred = async (power = 'medium') => {

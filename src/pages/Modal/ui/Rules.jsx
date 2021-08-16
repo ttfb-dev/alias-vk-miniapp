@@ -8,11 +8,15 @@ import {
   ModalPageHeader,
   PanelHeaderClose,
   PanelHeaderSubmit,
+  Spacing,
   Text,
   Title,
   usePlatform,
   VKCOM,
 } from '@vkontakte/vkui';
+
+import { env } from '@/shared/config';
+import App from '@/shared/services';
 
 import styles from './index.module.scss';
 
@@ -131,6 +135,21 @@ const Rules = ({ onClose, ...props }) => {
           <Button size='l' mode='primary' stretched onClick={onClose}>
             Всё понятно!
           </Button>
+          {env.isDevUser && (
+            <>
+              <Spacing separator size={16} />
+              <Button
+                size='l'
+                mode='primary'
+                stretched
+                onClick={() => {
+                  App.cleanStorage();
+                }}
+              >
+                Очистить сторадж
+              </Button>
+            </>
+          )}
         </Div>
       </Div>
     </ModalPage>
