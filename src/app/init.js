@@ -60,12 +60,11 @@ if (creds.userId && !misc.roomId) {
 
 // metrics init
 webVitals();
-
-// if (env.isDev) {
-import('./eruda').then(({ default: eruda }) => {
-  window.eruda = eruda;
-});
-// }
+if (env.isDev || misc.devUserIds.includes(parseInt(creds.userId))) {
+  import('./eruda').then(({ default: eruda }) => {
+    window.eruda = eruda;
+  });
+}
 if (env.isDev) {
   log(store.client);
   badge(store.client, {

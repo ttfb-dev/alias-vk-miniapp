@@ -20,8 +20,19 @@ const QrCode = ({ onClose, ...props }) => {
       const hashParams = new URLSearchParams(url.hash.substring(1));
       const roomId = hashParams.get('roomId');
 
+      // eslint-disable-next-line no-console
+      console.log(roomId);
+
       if (roomId) {
-        dispatch.sync(room.action.join({ roomId }).then(() => router.pushPage(PAGE_ROOM)));
+        // eslint-disable-next-line no-console
+        console.log('called dispatch.sync');
+        dispatch.sync(
+          room.action.join({ roomId }).then((e) => {
+            // eslint-disable-next-line no-console
+            console.log('called then', e);
+            router.pushPage(PAGE_ROOM);
+          }),
+        );
       }
     } catch ({ error_data }) {
       if (error_data?.error_reason === 'Unsupported platform') {
