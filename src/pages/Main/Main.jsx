@@ -47,13 +47,11 @@ const Main = (props) => {
         setIsLoading(true);
 
         track(client, meta.id)
-          .then(() => {
-            setIsLoading(false);
-          })
           .catch(({ action }) => {
-            setIsLoading(false);
-
             toast.error(<Notification message={action.message} type='error' />);
+          })
+          .finally(() => {
+            setIsLoading(false);
           });
       },
       { event: 'add' },
