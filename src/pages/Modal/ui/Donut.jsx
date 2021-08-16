@@ -27,7 +27,12 @@ const Donut = (props) => {
       subheader={subheader}
       actions={
         !isIOS ? (
-          <Button size='l' mode='primary' target='_blank' href='https://vk.com/club204880239'>
+          <Button
+            size='l'
+            mode='primary'
+            target='_blank'
+            href='https://vk.com/club204880239?source=description&w=donut_payment-204880239'
+          >
             Подробнее
           </Button>
         ) : (
