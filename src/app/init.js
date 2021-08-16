@@ -61,7 +61,7 @@ if (creds.userId && !misc.roomId) {
 // metrics init
 webVitals();
 
-if (env.isDev || true) {
+if (env.isDev) {
   import('./eruda').then(({ default: eruda }) => {
     window.eruda = eruda;
   });
