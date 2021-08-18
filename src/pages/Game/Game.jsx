@@ -27,6 +27,8 @@ import { Lobby } from './Lobby';
 import { Room } from './Room';
 import { Step } from './Step';
 
+let showResultsModal = true;
+
 const Game = (props) => {
   const router = useRouter();
   const location = useLocation();
@@ -102,12 +104,20 @@ const Game = (props) => {
         // редиректить в комнату всех, кроме инициатора экшена
         if (actionUserId !== userId) {
           router.pushPage(PAGE_ROOM);
-          router.pushModal(MODAL_GAME_RESULTS);
+          // eslint-disable-next-line no-console
+          console.log('other, ', showResultsModal);
+          if (showResultsModal) {
+            router.pushModal(MODAL_GAME_RESULTS);
+          }
         } else {
           // у инициатора редирект происходит после перехода экшена в состояние processed
           track(client, meta.id).then(() => {
             router.pushPage(PAGE_ROOM);
-            router.pushModal(MODAL_GAME_RESULTS);
+            // eslint-disable-next-line no-console
+            console.log('track, ', showResultsModal);
+            if (showResultsModal) {
+              router.pushModal(MODAL_GAME_RESULTS);
+            }
           });
         }
       },
@@ -154,7 +164,12 @@ const Game = (props) => {
 
   const onRoomLeave = () => {
     if (isGameStarted) {
-      dispatch.sync(game.action.finish()).then(() => dispatch.sync(room.action.leave()));
+      showResultsModal = false;
+      dispatch.sync(game.action.finish()).then(() =>
+        dispatch.sync(room.action.leave()).then(() => {
+          showResultsModal = true;
+        }),
+      );
     } else {
       dispatch.sync(room.action.leave());
     }
