@@ -59,7 +59,7 @@ class App {
 
   getFriendProfiles = async () => {
     const isFriendsAccessDenied = await vkapi.storageGet('isFriendsAccessDenied');
-    if (isFriendsAccessDenied) {
+    if (isFriendsAccessDenied === 'true') {
       return [];
     }
 
@@ -101,13 +101,7 @@ class App {
   };
 
   cleanStorage = async () => {
-    const keys = [
-      'isfriendsAccessDenied',
-      'isOnboardingFinished',
-      'isFriendsAccessDenied',
-      'roomTooltipIndex',
-      'homeTooltipIndex',
-    ];
+    const keys = ['isOnboardingFinished', 'isFriendsAccessDenied', 'roomTooltipIndex', 'homeTooltipIndex'];
 
     await keys.forEach(async (key) => {
       await vkapi.storageSet(key, null);
