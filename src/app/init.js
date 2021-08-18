@@ -10,20 +10,23 @@ import { general, profile, room, store } from '@/store';
 import { webVitals } from './metrics';
 import { PAGE_ONBOARDING, router } from './router';
 
+// store init
+store.client.start();
+
+// router init
+router.start();
+
+if (creds.userId) {
+  // если мы знаем айди, то сохраням его и запрашиваем сеты пользователя
+  store.dispatch(general.action.setUserId({ userId: parseInt(creds.userId, 10) }));
+  store.dispatch.sync(profile.action.getSets());
+}
+
 (async () => {
+  // app init
+  await App.init();
+
   const isFinished = await App.isOnboardingFinished();
-
-  // store init
-  store.client.start();
-
-  // router init
-  router.start();
-
-  if (creds.userId) {
-    // если мы знаем айди, то сохраням его и запрашиваем сеты пользователя
-    store.dispatch(general.action.setUserId({ userId: parseInt(creds.userId, 10) }));
-    store.dispatch.sync(profile.action.getSets());
-  }
 
   if (!isFinished) {
     // если онбординг не пройден, то редиректим туда
@@ -49,8 +52,6 @@ import { PAGE_ONBOARDING, router } from './router';
     });
   }
 
-  // app init
-  await App.init();
   if (misc.tokenSettings?.includes('friends')) {
     // если у приложения есть права на получение инфы о друзьях пользователя, то запрашиваем этот список
     const friends = await App.getFriendProfiles();
