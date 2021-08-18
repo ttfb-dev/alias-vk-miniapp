@@ -149,7 +149,9 @@ const Game = (props) => {
     };
   }, [client, dispatch, router, location, teams, userId]);
 
-  const onRoomLeave = () => dispatch.sync(room.action.leave());
+  const onRoomLeave = () => {
+    dispatch.sync(game.action.finish()).then(() => dispatch.sync(room.action.leave()));
+  };
   const onGameFinish = () => dispatch.sync(game.action.finish());
   const onClose = () => router.popPage();
 
@@ -174,7 +176,7 @@ const Game = (props) => {
             actionsLayout='horizontal'
             onClose={onClose}
             header='Выйти из комнаты'
-            text='Вы уверены, что хотите выйти из комнаты?'
+            text='Вы уверены, что хотите выйти из комнаты? Игра будет завершена.'
           />
         );
 
