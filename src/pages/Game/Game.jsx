@@ -104,8 +104,6 @@ const Game = (props) => {
         // редиректить в комнату всех, кроме инициатора экшена
         if (actionUserId !== userId) {
           router.pushPage(PAGE_ROOM);
-          // eslint-disable-next-line no-console
-          console.log('other, ', showResultsModal);
           if (showResultsModal) {
             router.pushModal(MODAL_GAME_RESULTS);
           }
@@ -113,8 +111,6 @@ const Game = (props) => {
           // у инициатора редирект происходит после перехода экшена в состояние processed
           track(client, meta.id).then(() => {
             router.pushPage(PAGE_ROOM);
-            // eslint-disable-next-line no-console
-            console.log('track, ', showResultsModal);
             if (showResultsModal) {
               router.pushModal(MODAL_GAME_RESULTS);
             }
