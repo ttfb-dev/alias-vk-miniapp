@@ -112,9 +112,7 @@ const Home = (props) => {
 
           <Spacing size={64} />
 
-          {photos && (
-            <CustomUsersStack photos={photos} firstNames={firstNames} size='m' visibleCount={3} layout='vertical' />
-          )}
+          <CustomUsersStack photos={photos} firstNames={firstNames} size='m' visibleCount={3} layout='vertical' />
         </div>
       </div>
 
