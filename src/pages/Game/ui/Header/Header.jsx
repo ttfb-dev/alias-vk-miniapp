@@ -68,9 +68,11 @@ export const Header = () => {
                   Настройки
                 </CellButton>
               )} */}
-              <CellButton mode='danger' centered onClick={onGameFinish}>
-                Закончить игру
-              </CellButton>
+              {isGameStarted && (
+                <CellButton mode='danger' centered onClick={onGameFinish}>
+                  Закончить игру
+                </CellButton>
+              )}
             </>
           )}
           <CellButton mode='danger' centered onClick={onRoomLeave}>
