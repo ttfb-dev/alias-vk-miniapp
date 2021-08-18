@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useRouter } from '@happysanta/router';
 import { track } from '@logux/client';
@@ -35,6 +35,9 @@ const Game = (props) => {
   const userId = useSelector((state) => state.general.userId);
   const roomId = useSelector((state) => state.room.roomId);
   const teams = useSelector((state) => state.room.teams);
+  const status = useSelector((state) => state.room.status);
+
+  const isGameStarted = useMemo(() => status === 'game', [status]);
 
   const isSubscribing = useSubscription([`room/${roomId}`]);
 
@@ -150,7 +153,11 @@ const Game = (props) => {
   }, [client, dispatch, router, location, teams, userId]);
 
   const onRoomLeave = () => {
-    dispatch.sync(game.action.finish()).then(() => dispatch.sync(room.action.leave()));
+    if (isGameStarted) {
+      dispatch.sync(game.action.finish()).then(() => dispatch.sync(room.action.leave()));
+    } else {
+      dispatch.sync(room.action.leave());
+    }
   };
   const onGameFinish = () => dispatch.sync(game.action.finish());
   const onClose = () => router.popPage();
