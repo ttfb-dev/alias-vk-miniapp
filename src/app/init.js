@@ -10,21 +10,21 @@ import { general, profile, room, store } from '@/store';
 import { webVitals } from './metrics';
 import { PAGE_ONBOARDING, router } from './router';
 
+// store init
+store.client.start();
+
+// router init
+router.start();
+
+if (creds.userId) {
+  // если мы знаем айди, то сохраням его и запрашиваем сеты пользователя
+  store.dispatch(general.action.setUserId({ userId: parseInt(creds.userId, 10) }));
+  store.dispatch.sync(profile.action.getSets());
+}
+
 (async () => {
   // app init
   await App.init();
-
-  // store init
-  store.client.start();
-
-  // router init
-  router.start();
-
-  if (creds.userId) {
-    // если мы знаем айди, то сохраням его и запрашиваем сеты пользователя
-    store.dispatch(general.action.setUserId({ userId: parseInt(creds.userId, 10) }));
-    store.dispatch.sync(profile.action.getSets());
-  }
 
   const isFinished = await App.isOnboardingFinished();
 
