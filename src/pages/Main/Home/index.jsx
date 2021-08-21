@@ -11,7 +11,7 @@ import vkapi from '@/shared/api';
 import { misc } from '@/shared/config';
 import App from '@/shared/services';
 import { CustomUsersStack, Notification } from '@/shared/ui';
-import { room } from '@/store';
+import { game, room } from '@/store';
 
 import styles from './index.module.scss';
 
@@ -57,7 +57,9 @@ const Home = (props) => {
 
   const onJoinRoom = () => router.pushPage(PAGE_ROOM);
   const onLeaveRoom = () =>
-    dispatch.sync(room.action.leave()).then(() => dispatch(room.action.setRoomId({ roomId: null })));
+    dispatch
+      .sync(game.action.finish())
+      .then(() => dispatch.sync(room.action.leave()).then(() => dispatch(room.action.setRoomId({ roomId: null }))));
   const onCreateRoom = () => dispatch.sync(room.action.create()).then(() => router.pushPage(PAGE_ROOM));
 
   const tabbar = (
