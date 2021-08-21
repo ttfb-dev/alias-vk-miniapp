@@ -57,6 +57,8 @@ if (creds.userId) {
     const friends = await App.getFriendProfiles();
     store.dispatch(general.action.setFriends({ friends }));
   }
+
+  await App.registerRestoreCallback();
 })();
 
 // metrics init
