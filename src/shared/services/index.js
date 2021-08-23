@@ -87,9 +87,6 @@ class App {
   isOnboardingFinished = async () => {
     const isOnboardingFinished = await vkapi.storageGet('isOnboardingFinished');
 
-    // eslint-disable-next-line no-console
-    console.log(`isOnboardingFinished: ${isOnboardingFinished} as ${typeof isOnboardingFinished}`);
-
     return isOnboardingFinished === 'true';
   };
 

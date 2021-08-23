@@ -22,22 +22,34 @@ if (creds.userId) {
   store.dispatch.sync(profile.action.getSets());
 }
 
-if (env.isDev || env.isDevUser) {
-  import('./eruda').then(({ default: eruda }) => {
-    window.eruda = eruda;
-  });
-}
+(async () => {
+  // app init
+  await App.init();
 
-// app init
-App.init().then(async () => {
   const isFinished = await App.isOnboardingFinished();
-
-  // eslint-disable-next-line no-console
-  console.log(isFinished);
 
   if (!isFinished) {
     // если онбординг не пройден, то редиректим туда
     router.replacePage(PAGE_ONBOARDING);
+  }
+
+  if (creds.userId && !misc.roomId) {
+    // если мы не знаем номер комнаты, то запрашиваем его
+    store.dispatch.sync(room.action.whereIAm());
+  } else if (creds.userId && misc.roomId) {
+    // если номер комнаты известен, то сохраняем номер
+    store.dispatch.sync(room.action.whereIAm()).then(() => {
+      const state = store.getState();
+      if (state.room.roomId && state.room.roomId !== misc.roomId) {
+        toast.error(
+          <Notification message='Не удалось присоединиться. Вы уже находитесь в другой комнате' type='error' />,
+        );
+        return;
+      }
+      if (state.room.roomId !== misc.roomId) {
+        store.dispatch.sync(room.action.join({ roomId: misc.roomId }));
+      }
+    });
   }
 
   if (misc.tokenSettings?.includes('friends')) {
@@ -45,32 +57,15 @@ App.init().then(async () => {
     const friends = await App.getFriendProfiles();
     store.dispatch(general.action.setFriends({ friends }));
   }
-
-  await App.registerRestoreCallback();
-});
-
-if (creds.userId && !misc.roomId) {
-  // если мы не знаем номер комнаты, то запрашиваем его
-  store.dispatch.sync(room.action.whereIAm());
-} else if (creds.userId && misc.roomId) {
-  // если номер комнаты известен, то сохраняем номер
-  store.dispatch.sync(room.action.whereIAm()).then(() => {
-    const state = store.getState();
-    if (state.room.roomId && state.room.roomId !== misc.roomId) {
-      toast.error(
-        <Notification message='Не удалось присоединиться. Вы уже находитесь в другой комнате' type='error' />,
-      );
-      return;
-    }
-    if (state.room.roomId !== misc.roomId) {
-      store.dispatch.sync(room.action.join({ roomId: misc.roomId }));
-    }
-  });
-}
+})();
 
 // metrics init
 webVitals();
-
+if (env.isDev || env.isDevUser) {
+  import('./eruda').then(({ default: eruda }) => {
+    window.eruda = eruda;
+  });
+}
 if (env.isDev) {
   log(store.client);
   badge(store.client, {
