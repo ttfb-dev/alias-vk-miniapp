@@ -90,7 +90,9 @@ export const reducer = (state = initialState, action) => {
 
       const sets = state.slice();
       const setIndex = sets.findIndex((set) => set?.datasetId === id);
-      sets[setIndex].status = sets[setIndex].status === 'active' ? 'inactive' : 'active';
+      const togglingSet = JSON.parse(JSON.stringify(sets[setIndex]));
+      togglingSet.status = togglingSet.status === 'active' ? 'inactive' : 'active';
+      sets[setIndex] = togglingSet;
 
       return sets;
     }

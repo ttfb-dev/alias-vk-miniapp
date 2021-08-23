@@ -110,6 +110,13 @@ class App {
       await vkapi.storageSet(key, null);
     });
   };
+
+  registerRestoreCallback = async () => {
+    await vkapi.onViewRestore(() => {
+      // eslint-disable-next-line no-console
+      console.log('roomId', misc.roomId);
+    });
+  };
 }
 
 export default new App();
