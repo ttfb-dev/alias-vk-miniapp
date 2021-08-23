@@ -28,10 +28,8 @@ if (env.isDev || env.isDevUser) {
   });
 }
 
-(async () => {
-  // app init
-  await App.init();
-
+// app init
+App.init().then(async () => {
   const isFinished = await App.isOnboardingFinished();
 
   // eslint-disable-next-line no-console
@@ -42,25 +40,6 @@ if (env.isDev || env.isDevUser) {
     router.replacePage(PAGE_ONBOARDING);
   }
 
-  if (creds.userId && !misc.roomId) {
-    // если мы не знаем номер комнаты, то запрашиваем его
-    store.dispatch.sync(room.action.whereIAm());
-  } else if (creds.userId && misc.roomId) {
-    // если номер комнаты известен, то сохраняем номер
-    store.dispatch.sync(room.action.whereIAm()).then(() => {
-      const state = store.getState();
-      if (state.room.roomId && state.room.roomId !== misc.roomId) {
-        toast.error(
-          <Notification message='Не удалось присоединиться. Вы уже находитесь в другой комнате' type='error' />,
-        );
-        return;
-      }
-      if (state.room.roomId !== misc.roomId) {
-        store.dispatch.sync(room.action.join({ roomId: misc.roomId }));
-      }
-    });
-  }
-
   if (misc.tokenSettings?.includes('friends')) {
     // если у приложения есть права на получение инфы о друзьях пользователя, то запрашиваем этот список
     const friends = await App.getFriendProfiles();
@@ -68,7 +47,26 @@ if (env.isDev || env.isDevUser) {
   }
 
   await App.registerRestoreCallback();
-})();
+});
+
+if (creds.userId && !misc.roomId) {
+  // если мы не знаем номер комнаты, то запрашиваем его
+  store.dispatch.sync(room.action.whereIAm());
+} else if (creds.userId && misc.roomId) {
+  // если номер комнаты известен, то сохраняем номер
+  store.dispatch.sync(room.action.whereIAm()).then(() => {
+    const state = store.getState();
+    if (state.room.roomId && state.room.roomId !== misc.roomId) {
+      toast.error(
+        <Notification message='Не удалось присоединиться. Вы уже находитесь в другой комнате' type='error' />,
+      );
+      return;
+    }
+    if (state.room.roomId !== misc.roomId) {
+      store.dispatch.sync(room.action.join({ roomId: misc.roomId }));
+    }
+  });
+}
 
 // metrics init
 webVitals();
