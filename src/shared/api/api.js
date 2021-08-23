@@ -166,6 +166,9 @@ export class VKMiniAppAPI extends VKBridgeProvider {
   storageGetMany = async (keys) => {
     const data = await this.bridge.send('VKWebAppStorageGet', { keys });
 
+    // eslint-disable-next-line no-console
+    console.log(`data: `, data);
+
     return data?.keys.length > 0 ? data.keys.reduce((acc, { key, value }) => ({ ...acc, [key]: value }), {}) : {};
   };
 
