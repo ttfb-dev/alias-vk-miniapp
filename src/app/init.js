@@ -22,11 +22,20 @@ if (creds.userId) {
   store.dispatch.sync(profile.action.getSets());
 }
 
+if (env.isDev || env.isDevUser) {
+  import('./eruda').then(({ default: eruda }) => {
+    window.eruda = eruda;
+  });
+}
+
 (async () => {
   // app init
   await App.init();
 
   const isFinished = await App.isOnboardingFinished();
+
+  // eslint-disable-next-line no-console
+  console.log(isFinished);
 
   if (!isFinished) {
     // если онбординг не пройден, то редиректим туда
@@ -61,11 +70,7 @@ if (creds.userId) {
 
 // metrics init
 webVitals();
-if (env.isDev || env.isDevUser) {
-  import('./eruda').then(({ default: eruda }) => {
-    window.eruda = eruda;
-  });
-}
+
 if (env.isDev) {
   log(store.client);
   badge(store.client, {
