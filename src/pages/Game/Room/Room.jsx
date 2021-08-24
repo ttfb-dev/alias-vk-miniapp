@@ -24,7 +24,15 @@ import {
   Tooltip,
 } from '@vkontakte/vkui';
 
-import { MODAL_MEMBERS, MODAL_ROOM_SETS, MODAL_RULES, MODAL_SHARE_CODE, MODAL_TEAMS } from '@/app/router';
+import {
+  MODAL_MEMBERS,
+  MODAL_ROOM_SETS,
+  MODAL_RULES,
+  MODAL_SHARE_CODE,
+  MODAL_TEAMS,
+  PAGE_LOBBY,
+  PAGE_STEP,
+} from '@/app/router';
 import { roomSetModel } from '@/entities/room-set';
 import { declension } from '@/shared/lib';
 import App from '@/shared/services';
@@ -46,6 +54,8 @@ const Room = ({ isSubscribing, ...props }) => {
   const members = useSelector((state) => state.room.members);
   const sets = useSelector((roomSetModel) => roomSetModel.room.sets);
   const availableSets = roomSetModel.selectors.useAvailableSets();
+  const status = useSelector((state) => state.room.status);
+  const gameStatus = useSelector((state) => state.game.status);
 
   const [tooltipIndex, setTooltipIndex] = useState(false);
 
@@ -87,6 +97,20 @@ const Room = ({ isSubscribing, ...props }) => {
     e.stopPropagation();
 
     dispatch.sync(game.action.start());
+  };
+
+  const onGameBack = (e) => {
+    e.stopPropagation();
+
+    switch (gameStatus) {
+      case 'step':
+        router.pushPage(PAGE_STEP);
+        break;
+      case 'lobby':
+      default:
+        router.pushPage(PAGE_LOBBY);
+        break;
+    }
   };
 
   const tabbar = (
@@ -231,9 +255,15 @@ const Room = ({ isSubscribing, ...props }) => {
                 </Div>
               ) : isOwner ? (
                 <Div>
-                  <Button mode='primary' size='l' disabled={!isReadyToStart} stretched onClick={onGameStart}>
-                    Начать игру
-                  </Button>
+                  {status !== 'game' ? (
+                    <Button mode='primary' size='l' disabled={!isReadyToStart} stretched onClick={onGameStart}>
+                      Начать игру
+                    </Button>
+                  ) : (
+                    <Button mode='primary' size='l' disabled={!isReadyToStart} stretched onClick={onGameBack}>
+                      Вернуться в игру
+                    </Button>
+                  )}
 
                   {!isReadyToStart && (
                     <>

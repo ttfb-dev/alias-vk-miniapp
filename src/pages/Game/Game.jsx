@@ -234,7 +234,7 @@ const Game = (props) => {
   return (
     <View
       {...props}
-      onSwipeBack={() => router.popPage()}
+      onSwipeBack={() => (isGameStarted ? () => {} : router.popPage())}
       history={location.hasOverlay() ? [] : location.getViewHistory(VIEW_GAME)}
       activePanel={location.getViewActivePanel(VIEW_GAME)}
       popout={alerts}
