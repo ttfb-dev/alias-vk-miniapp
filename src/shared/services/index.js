@@ -1,8 +1,11 @@
+import { toast } from 'react-toastify';
 import { isNumeric } from '@vkontakte/vkjs';
 
 import vkapi from '@/shared/api';
 import { misc } from '@/shared/config';
 import { capitalize } from '@/shared/lib';
+import { Notification } from '@/shared/ui';
+import { room, store } from '@/store';
 
 class App {
   #tokens = new Map();
@@ -110,8 +113,19 @@ class App {
 
   registerRestoreCallback = async () => {
     await vkapi.onViewRestore(() => {
-      // eslint-disable-next-line no-console
-      console.log('roomId', misc.roomId);
+      if (!misc.roomId) {
+        return;
+      }
+      store.dispatch.sync(room.action.whereIAm()).then(() => {
+        const state = store.getState();
+        if (!state.room.roomId && state.room.roomId !== misc.roomId) {
+          store.dispatch.sync(room.action.join({ roomId: misc.roomId }));
+        } else {
+          toast.error(
+            <Notification message='Не удалось присоединиться. Вы уже находитесь в другой комнате' type='error' />,
+          );
+        }
+      });
     });
   };
 }
