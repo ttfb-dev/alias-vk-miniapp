@@ -276,6 +276,10 @@ const Room = ({ isSubscribing, ...props }) => {
                     </>
                   )}
                 </Div>
+              ) : status === 'game' ? (
+                <Button mode='primary' size='l' disabled={!isReadyToStart} stretched onClick={onGameBack}>
+                  Вернуться в игру
+                </Button>
               ) : null}
             </div>
 
