@@ -41,6 +41,11 @@ const Game = (props) => {
 
   const isGameStarted = useMemo(() => status === 'game', [status]);
 
+  // фикс перехода назад после выхода из комнаты
+  if (roomId === null) {
+    router.pushPage(PAGE_HOME);
+  }
+
   const isSubscribing = useSubscription([`room/${roomId}`]);
 
   useEffect(() => {
