@@ -1,6 +1,7 @@
 const initialState = {
   sets: [],
   availableSets: [],
+  isOnboardingFinished: true,
 };
 
 const reducer = (state = initialState, action) => {
@@ -20,6 +21,12 @@ const reducer = (state = initialState, action) => {
         availableSets,
       };
     }
+
+    case 'profile/is_onboarding_finished_success':
+      return {
+        ...state,
+        isOnboardingFinished: payload.isFinished,
+      };
 
     default:
       return state;

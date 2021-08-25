@@ -12,7 +12,7 @@ import { Button, FormItem, Gallery, Panel } from '@vkontakte/vkui';
 import { PAGE_HOME } from '@/app/router';
 import App from '@/shared/services';
 import { Container } from '@/shared/ui';
-import { general } from '@/store';
+import { general, profile } from '@/store';
 
 import { Slide } from './components';
 
@@ -63,7 +63,7 @@ const Onboarding = (props) => {
           dispatch(general.action.setFriends({ friends }));
         })
         .finally(async () => {
-          await App.setOnboardingFinished();
+          dispatch.sync(profile.action.setOnboardingFinished());
 
           router.pushPage(PAGE_HOME);
         });

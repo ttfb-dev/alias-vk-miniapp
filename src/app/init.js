@@ -22,16 +22,17 @@ if (creds.userId) {
   store.dispatch.sync(profile.action.getSets());
 }
 
-(async () => {
-  // app init
-  await App.init();
-
-  const isFinished = await App.isOnboardingFinished();
-
-  if (!isFinished) {
+store.dispatch.sync(profile.action.isOnboardingFinished()).then(() => {
+  const state = store.getState();
+  if (!state.profile.isOnboardingFinished) {
     // если онбординг не пройден, то редиректим туда
     router.replacePage(PAGE_ONBOARDING);
   }
+});
+
+(async () => {
+  // app init
+  await App.init();
 
   if (creds.userId && !misc.roomId) {
     // если мы не знаем номер комнаты, то запрашиваем его
