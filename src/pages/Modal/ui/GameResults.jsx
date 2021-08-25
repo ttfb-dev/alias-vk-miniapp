@@ -24,7 +24,7 @@ const GameResults = ({ onClose, ...props }) => {
       }
       actionsLayout='horizontal'
     >
-      {statistics.count ? (
+      {statistics.length ? (
         <List>
           {statistics.map((team) => (
             <SimpleCell
