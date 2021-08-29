@@ -4,7 +4,7 @@ import { useClient } from '@logux/client/react';
 import { Button, Div, Panel, PanelSpinner, Spacing } from '@vkontakte/vkui';
 
 import { Container } from '@/shared/ui';
-import { game } from '@/store';
+import { game, store } from '@/store';
 
 import { getNextStep } from '../lib/helpers';
 import { useTimer } from '../lib/hooks';
@@ -23,7 +23,6 @@ const Step = ({ isSubscribing, ...props }) => {
   const teamsCompleted = useSelector((state) => state.room.teamsCompleted);
   const stepNumber = useSelector((state) => state.game.stepNumber);
   const roundNumber = useSelector((state) => state.game.roundNumber);
-  const statistics = useSelector((state) => state.game.statistics);
   const step = useSelector((state) => state.game.step);
   const { time, status } = useTimer({ initTime: step?.startedAt + client.node.timeFix ?? null });
 
@@ -40,6 +39,9 @@ const Step = ({ isSubscribing, ...props }) => {
 
   const onStepFinish = () => {
     dispatch.sync(game.action.stepSetHistory()).then(() => {
+      // тут нужно брать свежее значение, стор ещё не перезаписался почему-то
+      const state = store.getState();
+      const statistics = state.game.statistics;
       const hasWinner = statistics.some((team) => team.score > 60);
       const isLastStepInRound = stepNumber === teamsCompleted;
 
