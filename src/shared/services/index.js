@@ -119,7 +119,7 @@ class App {
       store.dispatch.sync(room.action.whereIAm()).then(() => {
         const state = store.getState();
         if (!state.room.roomId && state.room.roomId !== misc.roomId) {
-          store.dispatch.sync(room.action.join({ roomId: misc.roomId }));
+          store.dispatch.sync(room.action.join({ roomId: misc.roomId, method: 'link' }));
         } else {
           toast.error(
             <Notification message='Не удалось присоединиться. Вы уже находитесь в другой комнате' type='error' />,

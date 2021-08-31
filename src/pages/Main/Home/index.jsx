@@ -46,7 +46,7 @@ const Home = (props) => {
       const roomId = hashParams.get('roomId');
 
       if (roomId) {
-        dispatch.sync(room.action.join({ roomId })).then(() => router.pushPage(PAGE_ROOM));
+        dispatch.sync(room.action.join({ roomId, method: 'qr.home' })).then(() => router.pushPage(PAGE_ROOM));
       }
     } catch ({ error_data }) {
       if (error_data?.error_reason === 'Unsupported platform') {

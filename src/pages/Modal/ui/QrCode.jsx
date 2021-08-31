@@ -21,7 +21,7 @@ const QrCode = ({ onClose, ...props }) => {
       const roomId = hashParams.get('roomId');
 
       if (roomId) {
-        dispatch.sync(room.action.join({ roomId })).then(() => router.pushPage(PAGE_ROOM));
+        dispatch.sync(room.action.join({ roomId, method: 'qr.modal' })).then(() => router.pushPage(PAGE_ROOM));
       }
     } catch ({ error_data }) {
       if (error_data?.error_reason === 'Unsupported platform') {
