@@ -166,7 +166,7 @@ const Game = (props) => {
   const onRoomLeave = () => {
     if (isGameStarted) {
       showResultsModal = false;
-      dispatch.sync(game.action.finish()).then(() =>
+      dispatch.sync(game.action.finish({ reason: 'popout_room_leave' })).then(() =>
         dispatch.sync(room.action.leave()).then(() => {
           showResultsModal = true;
         }),
@@ -175,7 +175,7 @@ const Game = (props) => {
       dispatch.sync(room.action.leave());
     }
   };
-  const onGameFinish = () => dispatch.sync(game.action.finish());
+  const onGameFinish = () => dispatch.sync(game.action.finish({ reason: 'popout_game_leave' }));
   const onClose = () => router.popPage();
 
   const alerts = (() => {

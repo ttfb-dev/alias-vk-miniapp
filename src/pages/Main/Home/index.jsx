@@ -58,7 +58,7 @@ const Home = (props) => {
   const onJoinRoom = () => router.pushPage(PAGE_ROOM);
   const onLeaveRoom = () =>
     dispatch
-      .sync(game.action.finish())
+      .sync(game.action.finish({ reason: 'reconnect_cancel' }))
       .then(() => dispatch.sync(room.action.leave()).then(() => dispatch(room.action.setRoomId({ roomId: null }))));
   const onCreateRoom = () => dispatch.sync(room.action.create()).then(() => router.pushPage(PAGE_ROOM));
 

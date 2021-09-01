@@ -44,7 +44,7 @@ const Step = ({ isSubscribing, ...props }) => {
       const isLastStepInRound = stepNumber === teamsCompleted;
 
       if (isLastStepInRound && hasWinner) {
-        dispatch.sync(game.action.finish());
+        dispatch.sync(game.action.finish({ reason: 'has_winner' }));
       } else {
         const { nextStepNumber, nextRoundNumber, step } = getNextStep({
           stepNumber,
