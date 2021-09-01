@@ -48,7 +48,7 @@ store.dispatch.sync(profile.action.isOnboardingFinished()).then(() => {
         return;
       }
       if (state.room.roomId !== misc.roomId) {
-        store.dispatch.sync(room.action.join({ roomId: misc.roomId }));
+        store.dispatch.sync(room.action.join({ roomId: misc.roomId, method: 'link' }));
       }
     });
   }

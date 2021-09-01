@@ -15,7 +15,7 @@ export const Word = () => {
 
   useEffect(() => {
     wordStartAt = Date.now();
-  });
+  }, [currentWord]);
 
   const onSetWord = (guessed) => {
     dispatch.sync({
