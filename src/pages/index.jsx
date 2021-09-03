@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useLocation } from '@happysanta/router';
+import { useClient } from '@logux/client/react';
 import { AppRoot, Root } from '@vkontakte/vkui';
 
 import { VIEW_GAME, VIEW_MAIN } from '@/app/router';
+import { store } from '@/store';
 
 import { Game } from './Game';
 import { Main } from './Main';
@@ -12,6 +14,25 @@ import './index.scss';
 
 const PagesContainer = () => {
   const location = useLocation();
+
+  const client = useClient();
+
+  useEffect(() => {
+    const onError = client.type(
+      'logux/undo',
+      (action) => {
+        store.dispatch.sync({
+          type: 'log/send',
+          level: 'critical',
+          data: { message: action.type, reason: action.reason, action: action.action },
+        });
+      },
+      { event: 'add' },
+    );
+    return () => {
+      onError();
+    };
+  });
 
   return (
     <AppRoot>
