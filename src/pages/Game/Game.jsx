@@ -146,8 +146,6 @@ const Game = (props) => {
       (_, meta) => {
         track(client, meta.id).then(() => {
           router.pushPage(PAGE_HOME);
-
-          dispatch(room.action.setRoomId({ roomId: null }));
         });
       },
       { event: 'add' },
@@ -162,6 +160,12 @@ const Game = (props) => {
       leave();
     };
   }, [client, dispatch, router, location, teams, userId]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(room.action.setRoomId({ roomId: null }));
+    };
+  }, [roomId, dispatch]);
 
   const onRoomLeave = () => {
     if (isGameStarted) {
