@@ -23,7 +23,7 @@ const PagesContainer = () => {
       (action) => {
         store.dispatch.sync({
           type: 'log/send',
-          level: 'critical',
+          level: action.reason === 'error' ? 'critical' : 'error',
           data: { message: action.type, reason: action.reason, action: action.action },
         });
       },
