@@ -65,7 +65,7 @@ const Modal = () => {
 
       <Donut nav={MODAL_DONUT} />
 
-      <RoomSettings nav={MODAL_ROOM_SETTINGS} />
+      <RoomSettings nav={MODAL_ROOM_SETTINGS} onClose={onClose} />
     </ModalRoot>
   );
 };

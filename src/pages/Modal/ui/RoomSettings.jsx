@@ -34,7 +34,7 @@ const RoomSettings = ({ onClose, ...props }) => {
           }
           right={platform === IOS && <PanelHeaderSubmit onClick={onClose}>Закрыть</PanelHeaderSubmit>}
         >
-          Настройки комнаты
+          Настройки
         </ModalPageHeader>
       }
     >
@@ -47,7 +47,7 @@ const RoomSettings = ({ onClose, ...props }) => {
             <Slider defaultValue={60} min={30} max={90} step={5} onChange={setRoundScope} />
           </FormItem>
           <FormItem>
-            <Button size='l' stretched>
+            <Button size='l' stretched onClick={onClose}>
               Сохранить
             </Button>
           </FormItem>
