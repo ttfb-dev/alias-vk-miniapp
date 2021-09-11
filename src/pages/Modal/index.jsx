@@ -11,6 +11,7 @@ import {
   MODAL_MEMBERS,
   MODAL_QR_CODE,
   MODAL_ROOM_SETS,
+  MODAL_ROOM_SETTINGS,
   MODAL_RULES,
   MODAL_SETS,
   MODAL_SHARE_CODE,
@@ -26,6 +27,7 @@ import {
   Members,
   QrCode,
   RoomSets,
+  RoomSettings,
   Rules,
   Sets,
   ShareCode,
@@ -62,6 +64,8 @@ const Modal = () => {
       <JoinGroup nav={MODAL_JOIN_GROUP} />
 
       <Donut nav={MODAL_DONUT} />
+
+      <RoomSettings nav={MODAL_ROOM_SETTINGS} />
     </ModalRoot>
   );
 };

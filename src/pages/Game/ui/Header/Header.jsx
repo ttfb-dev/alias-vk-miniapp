@@ -11,8 +11,9 @@ import {
   PanelHeaderContext,
 } from '@vkontakte/vkui';
 
-import { POPOUT_GAME_LEAVE, POPOUT_ROOM_LEAVE } from '@/app/router';
+import { MODAL_ROOM_SETTINGS, POPOUT_GAME_LEAVE, POPOUT_ROOM_LEAVE } from '@/app/router';
 import { ReactComponent as Logo } from '@/assets/logo-mini.svg';
+import { env } from '@/shared/config';
 
 export const Header = () => {
   const router = useRouter();
@@ -43,6 +44,11 @@ export const Header = () => {
     router.pushPopup(POPOUT_GAME_LEAVE);
   };
 
+  const onSettings = () => {
+    setIsOpened(false);
+    router.pushModal(MODAL_ROOM_SETTINGS);
+  };
+
   return (
     <>
       <PanelHeader left={<PanelHeaderBack onClick={onRoomLeave} />} separator={false} shadow={true}>
@@ -63,11 +69,11 @@ export const Header = () => {
         <List>
           {isOwner && (
             <>
-              {/* {!isGameStarted && (
-                <CellButton mode='primary' centered>
+              {!isGameStarted && env.isDev && (
+                <CellButton mode='primary' centered onClick={onSettings}>
                   Настройки
                 </CellButton>
-              )} */}
+              )}
               {isGameStarted && (
                 <CellButton mode='danger' centered onClick={onGameFinish}>
                   Закончить игру

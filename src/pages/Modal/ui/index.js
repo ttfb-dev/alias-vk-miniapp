@@ -6,6 +6,7 @@ export { JoinGroup } from './JoinGroup';
 export { Members } from './Members';
 export { QrCode } from './QrCode';
 export { RoomSets } from './RoomSets';
+export { RoomSettings } from './RoomSettings';
 export { Rules } from './Rules';
 export { Sets } from './Sets';
 export { ShareCode } from './ShareCode';
