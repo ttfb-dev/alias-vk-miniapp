@@ -5,7 +5,7 @@ import {
   Icon20Info,
   Icon28InfoOutline,
   Icon28QrCodeOutline,
-  Icon28UserAddOutline,
+  Icon28SettingsOutline,
   Icon28WorkOutline,
 } from '@vkontakte/icons';
 import qr from '@vkontakte/vk-qr';
@@ -27,6 +27,7 @@ import {
 import {
   MODAL_MEMBERS,
   MODAL_ROOM_SETS,
+  MODAL_ROOM_SETTINGS,
   MODAL_RULES,
   MODAL_SHARE_CODE,
   MODAL_TEAMS,
@@ -34,6 +35,7 @@ import {
   PAGE_STEP,
 } from '@/app/router';
 import { roomSetModel } from '@/entities/room-set';
+import { env } from '@/shared/config';
 import { declension } from '@/shared/lib';
 import App from '@/shared/services';
 import { Container } from '@/shared/ui';
@@ -55,6 +57,7 @@ const Room = ({ isSubscribing, ...props }) => {
   const sets = useSelector((roomSetModel) => roomSetModel.room.sets);
   const availableSets = roomSetModel.selectors.useAvailableSets();
   const status = useSelector((state) => state.room.status);
+  const settings = useSelector((state) => state.room.settings);
   const gameStatus = useSelector((state) => state.game.status);
 
   const [tooltipIndex, setTooltipIndex] = useState(false);
@@ -116,14 +119,6 @@ const Room = ({ isSubscribing, ...props }) => {
   const tabbar = (
     <Tabbar>
       <TabbarItem
-        onClick={() => router.pushModal(MODAL_TEAMS)}
-        selected
-        text='Команды'
-        className={styles.cursorPointer}
-      >
-        <Icon28UserAddOutline />
-      </TabbarItem>
-      <TabbarItem
         className={styles.cursorPointer}
         onClick={() => router.pushModal(MODAL_ROOM_SETS, { from: 'room' })}
         indicator={<Badge mode='prominent' />}
@@ -133,14 +128,6 @@ const Room = ({ isSubscribing, ...props }) => {
         <Icon28WorkOutline />
       </TabbarItem>
       <TabbarItem
-        onClick={() => router.pushModal(MODAL_SHARE_CODE)}
-        selected
-        text='QR-код'
-        className={styles.cursorPointer}
-      >
-        <Icon28QrCodeOutline />
-      </TabbarItem>
-      <TabbarItem
         onClick={() => router.pushModal(MODAL_RULES)}
         selected
         text='Правила'
@@ -148,6 +135,24 @@ const Room = ({ isSubscribing, ...props }) => {
       >
         <Icon28InfoOutline />
       </TabbarItem>
+      <TabbarItem
+        onClick={() => router.pushModal(MODAL_SHARE_CODE)}
+        selected
+        text='Пригласить'
+        className={styles.cursorPointer}
+      >
+        <Icon28QrCodeOutline />
+      </TabbarItem>
+      {env.isDevUser && (
+        <TabbarItem
+          onClick={() => router.pushModal(MODAL_ROOM_SETTINGS)}
+          selected
+          text='Настройки'
+          className={styles.cursorPointer}
+        >
+          <Icon28SettingsOutline />
+        </TabbarItem>
+      )}
     </Tabbar>
   );
 
@@ -235,6 +240,19 @@ const Room = ({ isSubscribing, ...props }) => {
                   </SimpleCell>
                 </Card>
               </Tooltip>
+              {env.isDevUser && (
+                <Card mode='shadow' className={styles.card}>
+                  <SimpleCell
+                    expandable
+                    hasHover={false}
+                    hasActive={false}
+                    description={`${settings.stepDuration} секунд, ${settings.pointsToWin} очков`}
+                    onClick={() => router.pushModal(MODAL_ROOM_SETTINGS, { from: 'room' })}
+                  >
+                    Настройки
+                  </SimpleCell>
+                </Card>
+              )}
             </Div>
 
             <div className={styles.fixedLayout}>

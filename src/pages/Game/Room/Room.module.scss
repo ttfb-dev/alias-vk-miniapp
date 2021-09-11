@@ -3,7 +3,8 @@
   grid-template-areas:
     'a b'
     'c b'
-    'd d';
+    'd d'
+    'e e';
   grid-template-rows: repeat(2, 21.8vw) 56px;
   grid-template-columns: 1fr 1fr;
   gap: 8px;
@@ -25,6 +26,9 @@
   }
   &:nth-child(4) {
     grid-area: d;
+  }
+  &:nth-child(5) {
+    grid-area: e;
   }
 }
 

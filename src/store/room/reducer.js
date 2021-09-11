@@ -11,6 +11,7 @@ import {
   // teamJoin,
   // teamLeave,
   teamChange,
+  updateSettings,
   whereIAm,
 } from './action';
 
@@ -227,6 +228,13 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         status: 'lobby',
+      };
+
+    case updateSettings.type:
+      const { settings } = payload;
+      return {
+        ...state,
+        settings,
       };
 
     default:

@@ -13,6 +13,7 @@ const teamCreate = defineAction('room/team_create');
 const teamDelete = defineAction('room/team_delete');
 const activateSet = defineAction('room/activate_game_dataset');
 const deactivateSet = defineAction('room/deactivate_game_dataset');
+const updateSettings = defineAction('room/update_settings');
 
 export {
   activateSet,
@@ -27,5 +28,6 @@ export {
   teamDelete,
   teamJoin,
   teamLeave,
+  updateSettings,
   whereIAm,
 };

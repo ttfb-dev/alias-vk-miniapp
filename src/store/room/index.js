@@ -11,6 +11,7 @@ import {
   teamDelete,
   teamJoin,
   teamLeave,
+  updateSettings,
   whereIAm,
 } from './action';
 import { reducer } from './reducer';
@@ -30,6 +31,7 @@ const room = {
     teamJoin,
     teamLeave,
     whereIAm,
+    updateSettings,
   },
   reducer,
 };
