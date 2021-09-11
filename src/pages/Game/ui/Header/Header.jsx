@@ -69,7 +69,7 @@ export const Header = () => {
         <List>
           {isOwner && (
             <>
-              {!isGameStarted && env.isDev && (
+              {!isGameStarted && env.isDevUser && (
                 <CellButton mode='primary' centered onClick={onSettings}>
                   Настройки
                 </CellButton>
