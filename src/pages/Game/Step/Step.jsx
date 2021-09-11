@@ -20,11 +20,15 @@ const Step = ({ isSubscribing, ...props }) => {
   const userId = useSelector((state) => state.general.userId);
   const isDebug = useSelector((state) => state.general.isDebug);
   const teams = useSelector((state) => state.room.teams);
+  const settings = useSelector((state) => state.room.settings);
   const teamsCompleted = useSelector((state) => state.room.teamsCompleted);
   const stepNumber = useSelector((state) => state.game.stepNumber);
   const roundNumber = useSelector((state) => state.game.roundNumber);
   const step = useSelector((state) => state.game.step);
-  const { time, status } = useTimer({ initTime: step?.startedAt + client.node.timeFix ?? null });
+  const { time, status } = useTimer({
+    initTime: step?.startedAt + client.node.timeFix ?? null,
+    round: settings.stepDuration ?? 60,
+  });
 
   const isExplainer = useMemo(() => userId === step?.explainerId, [userId, step]);
   const isWatcher = useMemo(() => userId !== step?.explainerId, [userId, step]);
@@ -40,9 +44,10 @@ const Step = ({ isSubscribing, ...props }) => {
   const onStepFinish = () => {
     dispatch.sync(game.action.stepSetHistory()).then(() => {
       // тут нужно брать свежее значение, стор ещё не перезаписался почему-то
+      const pointsToWin = settings.pointsToWin ?? 60;
       const state = store.getState();
       const statistics = state.game.statistics;
-      const hasWinner = statistics.some((team) => team.score > 60);
+      const hasWinner = statistics.some((team) => team.score > pointsToWin);
       const isLastStepInRound = stepNumber === teamsCompleted;
 
       if (isLastStepInRound && hasWinner) {
