@@ -12,6 +12,7 @@ export const Word = () => {
   const dispatch = useDispatch();
   const currentWord = useSelector((state) => state.game.currentWord);
   const wordsCount = useSelector((state) => state.game.wordsCount);
+  const takeOffScore = useSelector((state) => state.room.settings.takeOffScore);
 
   useEffect(() => {
     wordStartAt = Date.now();
@@ -21,12 +22,18 @@ export const Word = () => {
     dispatch.sync({
       type: 'analytics/send',
       event: 'word.guessing_duration',
-      data: { word: currentWord.value, wordIndex: currentWord.index, guessed, duration: Date.now() - wordStartAt },
+      data: {
+        word: currentWord.value,
+        wordIndex: currentWord.index,
+        guessed,
+        duration: Date.now() - wordStartAt,
+        takeOffScore,
+      },
     });
 
     const word = { ...currentWord, guessed };
 
-    dispatch.sync(game.action.stepSetWord({ word }));
+    dispatch.sync(game.action.stepSetWord({ word, takeOffScore }));
 
     dispatch(game.action.stepSetNextWord());
 

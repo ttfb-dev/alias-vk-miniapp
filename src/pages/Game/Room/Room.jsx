@@ -35,7 +35,6 @@ import {
   PAGE_STEP,
 } from '@/app/router';
 import { roomSetModel } from '@/entities/room-set';
-import { env } from '@/shared/config';
 import { declension } from '@/shared/lib';
 import App from '@/shared/services';
 import { Container } from '@/shared/ui';
@@ -244,7 +243,7 @@ const Room = ({ isSubscribing, ...props }) => {
                   expandable
                   hasHover={false}
                   hasActive={false}
-                  description={`${settings.stepDuration} секунд, ${settings.pointsToWin} очков`}
+                  description={`${settings.stepDuration} секунд, ${settings.scoreToWin} очков`}
                   onClick={() => router.pushModal(MODAL_ROOM_SETTINGS, { from: 'room' })}
                 >
                   Настройки

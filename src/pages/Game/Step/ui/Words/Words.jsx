@@ -11,13 +11,14 @@ export const Words = () => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.general.userId);
   const step = useSelector((state) => state.game.step);
+  const takeOffScore = useSelector((state) => state.room.settings.takeOffScore);
 
   const isExplainer = useMemo(() => userId === step?.explainerId, [userId, step]);
 
   const onEditWord = (word, index) => {
     const newWord = { ...word, guessed: !word.guessed };
 
-    dispatch.sync(game.action.stepEditWord({ word: newWord, index }));
+    dispatch.sync(game.action.stepEditWord({ word: newWord, index, takeOffScore }));
   };
 
   return (

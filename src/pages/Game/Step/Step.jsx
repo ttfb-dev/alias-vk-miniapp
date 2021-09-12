@@ -45,8 +45,8 @@ const Step = ({ isSubscribing, ...props }) => {
     dispatch.sync(game.action.stepSetHistory()).then(() => {
       const state = store.getState();
       const statistics = state.game.statistics;
-      const pointsToWin = state.room.settings.pointsToWin ?? 60;
-      const hasWinner = statistics.some((team) => team.score > pointsToWin);
+      const scoreToWin = state.room.settings.scoreToWin ?? 60;
+      const hasWinner = statistics.some((team) => team.score > scoreToWin);
       const isLastStepInRound = stepNumber === teamsCompleted;
 
       if (isLastStepInRound && hasWinner) {
@@ -97,13 +97,11 @@ const Step = ({ isSubscribing, ...props }) => {
               </div>
             )}
             {isDebug && (
-              <div className={styles.fixedLayout}>
-                <Div>
-                  <Button stretched mode='destructive' size='l' onClick={onStepFinish}>
-                    Закончить ход
-                  </Button>
-                </Div>
-              </div>
+              <Div>
+                <Button stretched mode='destructive' size='l' onClick={onStepFinish}>
+                  Закончить ход
+                </Button>
+              </Div>
             )}
           </>
         )}

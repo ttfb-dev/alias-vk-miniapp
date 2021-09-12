@@ -1,9 +1,10 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Icon20Info } from '@vkontakte/icons';
 import {
   ANDROID,
   Button,
+  Checkbox,
   Div,
   FormItem,
   FormLayout,
@@ -18,12 +19,14 @@ import {
   VKCOM,
 } from '@vkontakte/vkui';
 
+import { env } from '@/shared/config';
 import { room } from '@/store';
 
 const RoomSettings = ({ onClose, ...props }) => {
   const platform = usePlatform();
   const stepDuration = useSelector((state) => state.room.settings.stepDuration);
-  const pointsToWin = useSelector((state) => state.room.settings.pointsToWin);
+  const scoreToWin = useSelector((state) => state.room.settings.scoreToWin);
+  const takeOffScore = useSelector((state) => state.room.settings.takeOffScore);
   const settings = useSelector((state) => state.room.settings);
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.general.userId);
@@ -32,18 +35,25 @@ const RoomSettings = ({ onClose, ...props }) => {
   const isOwner = useMemo(() => userId === ownerId, [userId, ownerId]);
 
   const [localStepDuration, setStepDuration] = useState(stepDuration);
-  const [localPointsToWin, setPointsToWin] = useState(pointsToWin);
+  const [localScoreToWin, setScoreToWin] = useState(scoreToWin);
+
+  const takeOffScoreCheckbox = useRef();
 
   useMemo(() => {
     setStepDuration(stepDuration);
-    setPointsToWin(pointsToWin);
-  }, [pointsToWin, stepDuration]);
+    setScoreToWin(scoreToWin);
+  }, [scoreToWin, stepDuration]);
 
   const onSave = () => {
     dispatch
       .sync(
         room.action.updateSettings({
-          settings: { ...settings, stepDuration: localStepDuration, pointsToWin: localPointsToWin },
+          settings: {
+            ...settings,
+            stepDuration: localStepDuration,
+            scoreToWin: localScoreToWin,
+            takeOffScore: takeOffScoreCheckbox.current.checked,
+          },
         }),
       )
       .finally(() => {
@@ -81,17 +91,24 @@ const RoomSettings = ({ onClose, ...props }) => {
               onChange={setStepDuration}
             />
           </FormItem>
-          <FormItem top={`Условие победы: ${localPointsToWin} очков`}>
+          <FormItem top={`Условие победы: ${localScoreToWin} очков`}>
             <Slider
-              defaultValue={pointsToWin}
-              value={localPointsToWin}
+              defaultValue={scoreToWin}
+              value={localScoreToWin}
               min={30}
               max={90}
               step={5}
               disabled={!isOwner}
-              onChange={setPointsToWin}
+              onChange={setScoreToWin}
             />
           </FormItem>
+          {env.isDevUser && (
+            <FormItem>
+              <Checkbox getRef={takeOffScoreCheckbox} defaultChecked={takeOffScore}>
+                Вычитать очко за пропуск слова
+              </Checkbox>
+            </FormItem>
+          )}
           <FormItem>
             {isOwner ? (
               <Button size='l' stretched onClick={onSave}>

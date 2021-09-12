@@ -13,7 +13,6 @@ import {
 
 import { MODAL_ROOM_SETTINGS, POPOUT_GAME_LEAVE, POPOUT_ROOM_LEAVE } from '@/app/router';
 import { ReactComponent as Logo } from '@/assets/logo-mini.svg';
-import { env } from '@/shared/config';
 
 export const Header = () => {
   const router = useRouter();
