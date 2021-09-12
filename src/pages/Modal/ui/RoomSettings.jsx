@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Icon20Info } from '@vkontakte/icons';
 import {
   ANDROID,
   Button,
@@ -7,6 +8,7 @@ import {
   FormItem,
   FormLayout,
   IOS,
+  MiniInfoCell,
   ModalPage,
   ModalPageHeader,
   PanelHeaderClose,
@@ -20,16 +22,33 @@ import { room } from '@/store';
 
 const RoomSettings = ({ onClose, ...props }) => {
   const platform = usePlatform();
+  const stepDuration = useSelector((state) => state.room.settings.stepDuration);
+  const pointsToWin = useSelector((state) => state.room.settings.pointsToWin);
   const settings = useSelector((state) => state.room.settings);
   const dispatch = useDispatch();
+  const userId = useSelector((state) => state.general.userId);
+  const ownerId = useSelector((state) => state.room.ownerId);
 
-  const [stepDuration, setStepDuration] = useState(settings.stepDuration);
-  const [pointsToWin, setPointsToWin] = useState(settings.pointsToWin);
+  const isOwner = useMemo(() => userId === ownerId, [userId, ownerId]);
+
+  const [localStepDuration, setStepDuration] = useState(stepDuration);
+  const [localPointsToWin, setPointsToWin] = useState(pointsToWin);
+
+  useMemo(() => {
+    setStepDuration(stepDuration);
+    setPointsToWin(pointsToWin);
+  }, [pointsToWin, stepDuration]);
 
   const onSave = () => {
-    dispatch.sync(room.action.updateSettings({ settings: { ...settings, stepDuration, pointsToWin } })).finally(() => {
-      onClose();
-    });
+    dispatch
+      .sync(
+        room.action.updateSettings({
+          settings: { ...settings, stepDuration: localStepDuration, pointsToWin: localPointsToWin },
+        }),
+      )
+      .finally(() => {
+        onClose();
+      });
   };
 
   return (
@@ -51,16 +70,38 @@ const RoomSettings = ({ onClose, ...props }) => {
     >
       <Div>
         <FormLayout>
-          <FormItem top={`Время раунда: ${stepDuration} секунд`}>
-            <Slider defaultValue={settings.stepDuration} min={30} max={90} step={5} onChange={setStepDuration} />
+          <FormItem top={`Время раунда: ${localStepDuration} секунд`}>
+            <Slider
+              defaultValue={stepDuration}
+              value={localStepDuration}
+              min={30}
+              max={90}
+              step={5}
+              disabled={!isOwner}
+              onChange={setStepDuration}
+            />
           </FormItem>
-          <FormItem top={`Условие победы: ${pointsToWin} очков`}>
-            <Slider defaultValue={settings.pointsToWin} min={30} max={90} step={5} onChange={setPointsToWin} />
+          <FormItem top={`Условие победы: ${localPointsToWin} очков`}>
+            <Slider
+              defaultValue={pointsToWin}
+              value={localPointsToWin}
+              min={30}
+              max={90}
+              step={5}
+              disabled={!isOwner}
+              onChange={setPointsToWin}
+            />
           </FormItem>
           <FormItem>
-            <Button size='l' stretched onClick={onSave}>
-              Сохранить
-            </Button>
+            {isOwner ? (
+              <Button size='l' stretched onClick={onSave}>
+                Сохранить
+              </Button>
+            ) : (
+              <MiniInfoCell before={<Icon20Info />} textLevel='secondary' textWrap='full'>
+                Только создатель комнаты может менять настройки
+              </MiniInfoCell>
+            )}
           </FormItem>
         </FormLayout>
       </Div>
