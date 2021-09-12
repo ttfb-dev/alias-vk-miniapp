@@ -143,16 +143,14 @@ const Room = ({ isSubscribing, ...props }) => {
       >
         <Icon28QrCodeOutline />
       </TabbarItem>
-      {env.isDevUser && (
-        <TabbarItem
-          onClick={() => router.pushModal(MODAL_ROOM_SETTINGS)}
-          selected
-          text='Настройки'
-          className={styles.cursorPointer}
-        >
-          <Icon28SettingsOutline />
-        </TabbarItem>
-      )}
+      <TabbarItem
+        onClick={() => router.pushModal(MODAL_ROOM_SETTINGS)}
+        selected
+        text='Настройки'
+        className={styles.cursorPointer}
+      >
+        <Icon28SettingsOutline />
+      </TabbarItem>
     </Tabbar>
   );
 
@@ -240,19 +238,18 @@ const Room = ({ isSubscribing, ...props }) => {
                   </SimpleCell>
                 </Card>
               </Tooltip>
-              {env.isDevUser && (
-                <Card mode='shadow' className={styles.card}>
-                  <SimpleCell
-                    expandable
-                    hasHover={false}
-                    hasActive={false}
-                    description={`${settings.stepDuration} секунд, ${settings.pointsToWin} очков`}
-                    onClick={() => router.pushModal(MODAL_ROOM_SETTINGS, { from: 'room' })}
-                  >
-                    Настройки
-                  </SimpleCell>
-                </Card>
-              )}
+
+              <Card mode='shadow' className={styles.card}>
+                <SimpleCell
+                  expandable
+                  hasHover={false}
+                  hasActive={false}
+                  description={`${settings.stepDuration} секунд, ${settings.pointsToWin} очков`}
+                  onClick={() => router.pushModal(MODAL_ROOM_SETTINGS, { from: 'room' })}
+                >
+                  Настройки
+                </SimpleCell>
+              </Card>
             </Div>
 
             <div className={styles.fixedLayout}>
