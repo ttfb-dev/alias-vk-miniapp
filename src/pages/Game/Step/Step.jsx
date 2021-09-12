@@ -43,10 +43,9 @@ const Step = ({ isSubscribing, ...props }) => {
 
   const onStepFinish = () => {
     dispatch.sync(game.action.stepSetHistory()).then(() => {
-      // тут нужно брать свежее значение, стор ещё не перезаписался почему-то
-      const pointsToWin = settings.pointsToWin ?? 60;
       const state = store.getState();
       const statistics = state.game.statistics;
+      const pointsToWin = state.room.settings.pointsToWin ?? 60;
       const hasWinner = statistics.some((team) => team.score > pointsToWin);
       const isLastStepInRound = stepNumber === teamsCompleted;
 
