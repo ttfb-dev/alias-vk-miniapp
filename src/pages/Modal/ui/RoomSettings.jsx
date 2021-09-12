@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Icon20Info } from '@vkontakte/icons';
 import {
@@ -19,7 +19,6 @@ import {
   VKCOM,
 } from '@vkontakte/vkui';
 
-import { env } from '@/shared/config';
 import { room } from '@/store';
 
 const RoomSettings = ({ onClose, ...props }) => {
@@ -36,8 +35,7 @@ const RoomSettings = ({ onClose, ...props }) => {
 
   const [localStepDuration, setStepDuration] = useState(stepDuration);
   const [localScoreToWin, setScoreToWin] = useState(scoreToWin);
-
-  const takeOffScoreCheckbox = useRef();
+  const [localTakeOffScore, setTakeOffScore] = useState(takeOffScore);
 
   useMemo(() => {
     setStepDuration(stepDuration);
@@ -52,7 +50,7 @@ const RoomSettings = ({ onClose, ...props }) => {
             ...settings,
             stepDuration: localStepDuration,
             scoreToWin: localScoreToWin,
-            takeOffScore: takeOffScoreCheckbox.current.checked,
+            takeOffScore: localTakeOffScore,
           },
         }),
       )
@@ -102,13 +100,17 @@ const RoomSettings = ({ onClose, ...props }) => {
               onChange={setScoreToWin}
             />
           </FormItem>
-          {env.isDevUser && (
-            <FormItem>
-              <Checkbox getRef={takeOffScoreCheckbox} defaultChecked={takeOffScore}>
-                Вычитать очко за пропуск слова
-              </Checkbox>
-            </FormItem>
-          )}
+          <FormItem>
+            <Checkbox
+              defaultChecked={takeOffScore}
+              onChange={(e) => {
+                setTakeOffScore(e.target.checked);
+              }}
+              disabled={!isOwner}
+            >
+              Вычитать очко за пропуск слова
+            </Checkbox>
+          </FormItem>
           <FormItem>
             {isOwner ? (
               <Button size='l' stretched onClick={onSave}>
