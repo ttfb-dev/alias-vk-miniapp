@@ -108,7 +108,7 @@ const RoomSettings = ({ onClose, ...props }) => {
               }}
               disabled={!isOwner}
             >
-              Вычитать очко за пропуск слова
+              Вычитать очки за пропуск слов
             </Checkbox>
           </FormItem>
           <FormItem>
