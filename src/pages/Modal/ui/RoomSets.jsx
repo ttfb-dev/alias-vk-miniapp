@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useRouter } from '@happysanta/router';
-import { Icon16InfoCirle, Icon28DonateOutline, Icon28UserAddOutline } from '@vkontakte/icons';
+import { Icon16InfoCirle, Icon28DonateOutline, Icon28PlayCards2Outline, Icon28UserAddOutline } from '@vkontakte/icons';
 import {
   ANDROID,
   Group,
@@ -19,7 +19,7 @@ import {
   VKCOM,
 } from '@vkontakte/vkui';
 
-import { MODAL_DONUT, MODAL_JOIN_GROUP } from '@/app/router';
+import { MODAL_DONUT, MODAL_EVENT_HALLOWEEN_2021, MODAL_JOIN_GROUP } from '@/app/router';
 import { roomSetModel } from '@/entities/room-set';
 import { SetRow } from '@/entities/set';
 
@@ -83,7 +83,7 @@ export const RoomSets = ({ onClose, ...props }) => {
           <Group header={<Header mode='secondary'>Доступны</Header>}>
             {availableSets.map((set) => {
               let onClick = () => {};
-              let ActionIcon = () => {};
+              let ActionIcon = Icon28PlayCards2Outline;
               switch (set.type) {
                 case 'subscribe':
                   onClick = () => router.pushModal(MODAL_JOIN_GROUP);
@@ -92,6 +92,10 @@ export const RoomSets = ({ onClose, ...props }) => {
                 case 'donut':
                   onClick = () => router.pushModal(MODAL_DONUT);
                   ActionIcon = Icon28DonateOutline;
+                  break;
+                case 'event_halloween_2021':
+                  onClick = () => router.pushModal(MODAL_EVENT_HALLOWEEN_2021);
+                  ActionIcon = Icon28PlayCards2Outline;
                   break;
                 default:
                   break;
