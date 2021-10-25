@@ -1,6 +1,7 @@
 export { CreateRoom } from './CreateRoom';
 export { Donut } from './Donut';
 export { EnterCode } from './EnterCode';
+export { EventModalHalloween2021 } from './EventModalHalloween2021';
 export { GameResults } from './GameResults';
 export { JoinGroup } from './JoinGroup';
 export { Members } from './Members';

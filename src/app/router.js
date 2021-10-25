@@ -30,6 +30,7 @@ export const MODAL_SETS = 'modal_sets';
 export const MODAL_SHARE_CODE = 'modal_share_code';
 export const MODAL_TEAMS = 'modal_teams';
 export const MODAL_ROOM_SETTINGS = 'modal_room_settings';
+export const MODAL_EVENT_HALLOWEEN_2021 = 'modal_event_halloween_2021';
 
 export const POPOUT_ROOM_LEAVE = 'popout_room_leave';
 export const POPOUT_GAME_LEAVE = 'popout_game_leave';
