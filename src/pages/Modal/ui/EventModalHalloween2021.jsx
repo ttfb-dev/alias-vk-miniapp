@@ -15,7 +15,7 @@ const EventModalHalloween2021 = (props) => {
       {...props}
       onClose={onBack}
       icon={<Icon28PlayCards2Outline height={56} width={56} />}
-      header='Сыграй с друзьями в Alias и расскажи нам понравилось ли тебе!'
+      header='Сыграй с друзьями в Alias и расскажи нам, понравилось ли тебе?'
       subheader='Успей до 31 октября и этот набор будет твоим :)'
       actions={
         <Button size='l' mode='primary' target='_blank' href='https://vk.com/topic-204880239_48193061'>
