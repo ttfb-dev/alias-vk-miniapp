@@ -13,7 +13,7 @@ import { room } from './room';
 
 const client = new CrossTabClient({
   subprotocol: '1.0.0',
-  server: 'wss://mythanks.ru:443',
+  server: 'wss://alias-game.ru:443',
   userId: creds.userId,
   token: creds.token,
 });

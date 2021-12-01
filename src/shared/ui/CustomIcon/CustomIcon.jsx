@@ -9,6 +9,7 @@ import {
   Icon36Hearts2Outline,
   Icon56FavoriteOutline,
   Icon56GhostOutline,
+  Icon56MentionOutline,
 } from '@vkontakte/icons';
 
 const CustomIcon = ({ type, ...props }) => {
@@ -31,6 +32,8 @@ const CustomIcon = ({ type, ...props }) => {
       return <Icon56GhostOutline {...props} />;
     case 'snow':
       return <Icon28SnowflakeOutline {...props} />;
+    case 'at':
+      return <Icon56MentionOutline {...props} />;
     default:
       return <Icon28SmartphoneStarsOutline {...props} />;
   }

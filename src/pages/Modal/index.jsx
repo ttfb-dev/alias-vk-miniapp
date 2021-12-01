@@ -6,6 +6,7 @@ import {
   MODAL_CREATE_ROOM,
   MODAL_DONUT,
   MODAL_ENTER_CODE,
+  MODAL_EVENT_HALLOWEEN_2021,
   MODAL_GAME_RESULTS,
   MODAL_JOIN_GROUP,
   MODAL_MEMBERS,
@@ -22,6 +23,7 @@ import {
   CreateRoom,
   Donut,
   EnterCode,
+  EventModalHalloween2021,
   GameResults,
   JoinGroup,
   Members,
@@ -66,6 +68,8 @@ const Modal = () => {
       <Donut nav={MODAL_DONUT} />
 
       <RoomSettings nav={MODAL_ROOM_SETTINGS} onClose={onClose} />
+
+      <EventModalHalloween2021 nav={MODAL_EVENT_HALLOWEEN_2021} onClose={onClose} />
     </ModalRoot>
   );
 };
