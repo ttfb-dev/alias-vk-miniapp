@@ -1,6 +1,7 @@
 import {
   Icon16WindRain,
   Icon24AppleOutline,
+  Icon28CrownOutline,
   Icon28HorseToyOutline,
   Icon28PlaneOutline,
   Icon28SmartphoneStarsOutline,
@@ -34,6 +35,8 @@ const CustomIcon = ({ type, ...props }) => {
       return <Icon28SnowflakeOutline {...props} />;
     case 'at':
       return <Icon56MentionOutline {...props} />;
+    case 'crown':
+      return <Icon28CrownOutline {...props} />;
     default:
       return <Icon28SmartphoneStarsOutline {...props} />;
   }
