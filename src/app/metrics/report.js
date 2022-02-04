@@ -33,7 +33,7 @@ let webVitals = ({ enabled = isProd } = {}) => {
     if (queue.size > 0) {
       let body = JSON.stringify([...queue]);
 
-      navigator.sendBeacon('https://api.mythanks.ru/metrics', body);
+      navigator.sendBeacon('https://api.alias-game.ru/metrics', body);
 
       queue.clear();
     }
